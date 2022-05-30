@@ -1,0 +1,51 @@
+.myModal {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  // flex: 1;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 999;
+  .loadIcon {
+    // background-color: pink;
+    // width: 100%;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+  }
+  p {
+    color: #fff;
+  }
+  .modalChaild {
+    background-color: #fff;
+    // height: 80px;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p {
+      color: #000;
+      text-align: center;
+      width: 75%;
+    }
+    .modalbutton {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-around;
+      -webkit-app-region: no-drag;
+
+      Button {
+        width: 270px;
+        background-color: #e1206d;
+        color: #fff;
+        border-width: 0;
+        font-size: 18px;
+        height: 50px;
+      }
+    }
+  }
+}

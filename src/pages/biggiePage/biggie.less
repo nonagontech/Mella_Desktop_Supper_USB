@@ -1,0 +1,120 @@
+.biggie {
+  width: 100%;
+  display: flex;
+  // background-color: hotpink;
+  height: 100%;
+  align-items: center;
+  // justify-content: space-around;
+  // flex-direction: row;
+  flex-direction: column;
+  .top {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .biggiel {
+      width: 20%;
+      background-color: #e6e5e5;
+      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      align-items: center;
+      .lT {
+        // backgroundColor: '#87C563',
+        // alignItems: 'center',
+        // justifyContent: 'center'
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        height: 0;
+        padding-bottom: 100%;
+        overflow: hidden;
+        margin: 0;
+        position: relative;
+      }
+      .lTText {
+        // color: '#fff',
+        // textalo: 'center'
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        // background-color: pink;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 0;
+        color: #fff;
+        text-align: center;
+      }
+      .lC {
+        text-align: center;
+        // fontSize: px(14),
+        // marginTop: mTop(12)
+      }
+    }
+  
+    .cen {
+      width: 35%;
+      background-color: #e6e5e5;
+      align-items: center;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      .lT {
+        // backgroundColor: '#87C563',
+        // alignItems: 'center',
+        // justifyContent: 'center'
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        height: 0;
+        padding-bottom: 100%;
+        overflow: hidden;
+        margin: 0;
+        position: relative;
+        img{
+          position: absolute;
+          top: 0;
+        }
+      }
+    }
+
+    .cenCText {
+      // fontSize: px(25),
+      // marginTop: mTop(15),
+      color: #3b3a3a;
+    }
+    .cTText {
+      color: #fff;
+      width: 100%;
+      text-align: center;
+      position: absolute;
+      // font-weight: 800;
+      // color: '#fff',
+      // width: '100%',
+      // textAlign: 'center',
+      // position: 'absolute',
+    }
+  }
+  .biggiefoot {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    .biggiefootbtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #e1206d;
+      border-radius: 180px;
+      width: 40%;
+    }
+  }
+}
