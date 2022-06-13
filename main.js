@@ -6,7 +6,8 @@
 const Store = require("electron-store");
 Store.initRenderer()
 
-const { app, BrowserWindow, ipcMain, Tray, Menu, MenuItem } = require('electron');
+const { app, BrowserWindow, ipcMain, Tray, Menu, MenuItem, session } = require('electron');
+const os = require('os')
 const request = require("request");
 const dialog = require('electron').dialog;
 let remote = require('electron').remote
@@ -15,6 +16,24 @@ const isDev = require('electron-is-dev');
 const { autoUpdater } = require('electron-updater')
 const updateElectronApp = require('update-electron-app')
 const { keyboard, Key, mouse, left, right, up, down } = require("@nut-tree/nut-js");
+// const installExtension = require('electron-devtools-installer')
+// const { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = installExtension
+const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+
+
+
+app.whenReady().then(async () => {
+    if (isDev) {
+        installExtension(REACT_DEVELOPER_TOOLS)
+            .then((name) => console.log(`Added Extension:  ${name}`))
+            .catch((err) => console.log('An error occurred: ', err));
+        installExtension(REDUX_DEVTOOLS)
+            .then((name) => console.log(`Added Extension:  ${name}`))
+            .catch((err) => console.log('An error occurred: ', err));
+
+
+    }
+})
 
 
 const devWidth = 1920;
@@ -78,7 +97,7 @@ usbDetect.on('remove', function (device) {
  * 
  */
 
-function openUsb() {   //搜索底座存不存在，不存在就去展示
+function openUsb () {   //搜索底座存不存在，不存在就去展示
     let flog = false,
         path = ''       //usb所在的接口路径
     let devices = HID.devices();
@@ -154,21 +173,21 @@ function openUsb() {   //搜索底座存不存在，不存在就去展示
 /**
  * 打开底座usb的蓝牙通信
  */
-function open_USB_Communication() {
+function open_USB_Communication () {
     console.log('打开了底座通信');
     device.write([0x00, 0xAA, 0x04, 0x36, 0x11, 0x23, 0x55])
 }
 /**
  * 关闭底座usb的蓝牙通信
  */
-function close_USB_Communication() {
+function close_USB_Communication () {
     device && device.write([0x00, 0xAA, 0x04, 0x36, 0x00, 0x32, 0x55])
 }
 /**
  * 对接收的数据进行处理 
  */
 let testFlog = 0 //为了模拟体脂称数据
-function processed_data(arr) {
+function processed_data (arr) {
     let j, newArr = [], trueArr = [], length = arr.length
 
     // console.log('入参', arr);
@@ -212,7 +231,7 @@ function processed_data(arr) {
     return trueArr
 }
 //校验数据是否有误
-function check(arr) {
+function check (arr) {
     if (arr.length < 3) {
         return
     }
@@ -230,7 +249,7 @@ function check(arr) {
 //向蓝牙发送的数据进行转换，
 //入参 十六进制的控制命令字符串、数据位数组，数组的内容也是十六进制字符串
 //返回值：返回要发送的数组，数组里的每一位都是十进制的数字
-function sendData(command, arr) {
+function sendData (command, arr) {
     //帧长,如果帧长是一位,前面加0
     let sendArr = []
 
@@ -260,7 +279,7 @@ function sendData(command, arr) {
 //托盘对象
 var appTray = null;
 
-function show(val) {
+function show (val) {
     let size = require('electron').screen.getPrimaryDisplay().workAreaSize
     // console.log('-----===========---------', require('electron').screen.getAllDisplays());
     //1920 1080
@@ -296,15 +315,12 @@ function show(val) {
 
 
 
-function createWindow() {
+function createWindow () {
 
     const windowOptions = {
-        width: show(400).width,       //运行时窗体大小
-        height: show(800).height,      //运行时窗体大小
-        maxWidth: show(600).width,    //最大宽度
-        minWidth: show(400).width,    //最小宽度
-        maxHeight: show(1200).height,  //最大高度
-        minHeight: show(800).height,   //最小高度
+        // width: show(800).width,       //运行时窗体大小
+        // height: show(800).height,      //运行时窗体大小
+
         // width:400/factor,       //运行时窗体大小
         // height: 800/factor ,      //运行时窗体大小
         // maxWidth: 600/factor ,    //最大宽度
@@ -312,7 +328,7 @@ function createWindow() {
         // maxHeight:1200/factor ,  //最大高度
         // minHeight: 800/factor ,   //最小高度
         resizable: true,   //能否改变窗体大小
-        frame: false,//为false则是无边框窗口
+        // frame: false,//为false则是无边框窗口
         webPreferences: {
             nodeIntegration: true, // 是否集成 Nodejs,把之前预加载的js去了，发现也可以运行
             // preload: path.join(__dirname, './public/renderer.js')
@@ -447,7 +463,7 @@ menu.append(new MenuItem({
         },
         {
             // role: 'hideOthers',
-            accelerator: 'Cmd+Q',
+            accelerator: `Cmd+Q`,
             label: 'Quit Mella',
             // type: 'separator',
             click: () => {
@@ -576,7 +592,11 @@ app.on('ready', () => {
     //     clearTimeout(timer)
     // }, 10000);
 
-});
+})
+// .whenReady()
+// .then(() => {
+
+// })
 
 
 
@@ -619,7 +639,7 @@ ipcMain.on('window-max', function () {
 ipcMain.on('window-close', function () {
     mainWindow.close();
 })
-function wind(width1, height1, data) {
+function wind (width1, height1, data) {
     let width = show(width1).height
     let height = show(height1).height
     if (data) {
@@ -909,7 +929,7 @@ ipcMain.on('reUpload', (event, data) => {
     sendNum = 0
 })
 
-function sendUpload(params) {
+function sendUpload (params) {
     console.log(sendNum);
     if (sendNum < dataArr.length) {
         let value = dataArr[sendNum++]
@@ -941,7 +961,7 @@ function sendUpload(params) {
  * @param {String} val 
  * 
  */
-async function keyboardWritingFun(val) {
+async function keyboardWritingFun (val) {
     keyboard.config.autoDelayMs = 20
     if (process.platform === 'darwin') {
         console.log('这是mac');
