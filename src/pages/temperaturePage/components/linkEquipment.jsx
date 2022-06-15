@@ -3,16 +3,19 @@ import React, {
     useState,
 } from 'react';
 import { Image, Layout } from 'antd';
+import { connect } from 'react-redux';
 import PressButton_Pro from './../../../assets/img/PressButton_Pro.png';
 import AxillaryPlacement from './../../../assets/img/AxillaryPlacement.png';
-import HeaderItem from './headerItem'
+import HeaderItem from './headerItem';
+import { selectHardwareModalShowFun, petSortTypeFun, petDetailInfoFun } from '../../../store/actions';
+import _ from 'lodash';
 import './linkEquipment.less';
 const { Content, Header } = Layout;
-const LinkEquipment = () => {
+const LinkEquipment = ({ petMessage }) => {
 
     return (
         <>
-            <HeaderItem/>
+            <HeaderItem />
             <Content className={"contentBox"}>
                 <div className='startBox'>
                     <p className='startTitle'>Turn on yourMella Thermometer or Pair New Mella</p>
@@ -29,4 +32,9 @@ const LinkEquipment = () => {
         </>
     );
 }
-export default LinkEquipment;
+export default connect(
+    state => ({
+        petMessage: state.petReduce.petDetailInfo
+    }),
+    { selectHardwareModalShowFun, petSortTypeFun, petDetailInfoFun }
+)(LinkEquipment);
