@@ -450,7 +450,7 @@ const Heard = ({
 
   const inputChange = (text) => {
 
-    function isNumber(val) {
+    function isNumber (val) {
       var regPos = /^\d+(\.\d+)?$/; //非负浮点数
       var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
       if (regPos.test(val) || regNeg.test(val)) {
@@ -584,8 +584,8 @@ const Heard = ({
        * toUpperCase（）方法：将字符串统一转成大写
        * 
        */
-      // let list = allPetList
-      let list = electronStore.get('doctorExam')
+      // let list = allPetList 
+      let list = electronStore.get('doctorExam') || []
 
       let searchData = []
       let keyWord = search
@@ -903,7 +903,7 @@ const Heard = ({
     }
 
 
-    function getRamNumber() {
+    function getRamNumber () {
       var result = '';
       for (var i = 0; i < 2; i++) {
         result += Math.floor(Math.random() * 16).toString(16);//获取0-15并通过toString转16进制
@@ -1251,14 +1251,11 @@ const Heard = ({
       style={{ height: px(50) }}
     >
       <div className='l'>
-        <div className='menuF'>
+        <div className='menuF' style={{ marginLeft: px(40), marginRight: px(40) }}>
           <div className="menu"
             onMouseOver={menuMouseOver}
             onMouseOut={menuMouseOut}>
-            <img src={menu}
-              style={{ height: px(20), }}
-            />
-
+            <img src={menu} style={{ width: px(20), }} />
             {
               menuVisible
                 // true
@@ -1290,16 +1287,12 @@ const Heard = ({
         </div>
 
 
-        <div className="return"
-          onClick={() => {
-
-            onReturn()
-          }}
-
+        {/* <div className="return" style={{ marginLeft: px(10) }}
+          onClick={() => { onReturn() }}
         >
           <img src={heardLeft} style={{ height: px(25), }} />
-        </div>
-        <div className="search">
+        </div> */}
+        <div className="search" style={{ width: px(300) }}>
 
           <input
             placeholder="Search Pet    &#xe63f;"
@@ -1400,17 +1393,16 @@ const Heard = ({
 
       <div className="r"
       >
-        <div className='kong'></div>
+
 
         <div className='heardCenter'>
           <div className="message"
-            // style={{ width: px(25), height: px(25) }}
             onClick={() => history.push('/menuOptions/unassigned')}
           >
             <img src={message} alt="" style={{ height: px(25), width: px(25) }} />
           </div>
           <div className="help"
-            // style={{ width: px(25), height: px(25) }}
+            style={{ margin: `0 ${px(25)}px` }}
             onClick={() => history.push('/menuOptions/help')}
           >
             <img src={help} alt="" style={{ height: px(25) }} />

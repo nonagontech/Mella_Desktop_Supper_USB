@@ -1,3 +1,3 @@
 
-export * from './loginType'
-export * from './testType'
+export * from './hardwareType'
+export * from './petType'

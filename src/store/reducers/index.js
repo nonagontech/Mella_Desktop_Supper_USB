@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 
-import login from './login'
-import test from './test'
+import hardwareReduce from './hardwareReduce'
+import petReduce from './petReduce'
 export default combineReducers({
-  login,
-  test
+  hardwareReduce,
+  petReduce
 })
