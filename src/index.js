@@ -10,6 +10,7 @@ import App from './components/mainbody/index'
 ReactDOM.render(
   <Provider store={store}>
     <App />
+    {/* <TemperaturePage/> */}
   </Provider>
   ,
   document.getElementById('root'))
