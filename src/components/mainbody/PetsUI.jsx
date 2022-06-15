@@ -60,65 +60,65 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
         if (res.flag === true) {
           let data = []
           let oldList = res.data
-          for (let i = 0; i < oldList.length; i++) {
-            let { age, url, createTime, patientId, speciesId, petName, firstName, birthday, lastName, breedName, gender, petId, weight, rfid, l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference, pethubId, macId,
-              h2tLength, torsoLength } = oldList[i]
-            let owner = ''
-            patientId = isUnKnow(patientId)
-            petName = isUnKnow(petName)
-            breedName = isUnKnow(breedName)
-            age = isUnKnow(age)
-            weight = isUnKnow(weight)
-            if (!firstName) {
-              firstName = ''
-            }
-            if (!lastName) {
-              lastName = ''
-            }
-            if (lastName === '' && firstName === '') {
-              owner = 'unknown'
-            } else {
-              owner = `${lastName} ${firstName}`
-            }
-            createTime = moment(createTime).format('X')
-            let petGender = ''
-            switch (`${gender}`) {
-              case '1': petGender = 'F'
+          // for (let i = 0; i < oldList.length; i++) {
+          //   let { age, url, createTime, patientId, speciesId, petName, firstName, birthday, lastName, breedName, gender, petId, weight, rfid, l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference, pethubId, macId,
+          //     h2tLength, torsoLength } = oldList[i]
+          //   let owner = ''
+          //   patientId = isUnKnow(patientId)
+          //   petName = isUnKnow(petName)
+          //   breedName = isUnKnow(breedName)
+          //   age = isUnKnow(age)
+          //   weight = isUnKnow(weight)
+          //   if (!firstName) {
+          //     firstName = ''
+          //   }
+          //   if (!lastName) {
+          //     lastName = ''
+          //   }
+          //   if (lastName === '' && firstName === '') {
+          //     owner = 'unknown'
+          //   } else {
+          //     owner = `${lastName} ${firstName}`
+          //   }
+          //   createTime = moment(createTime).format('X')
+          //   let petGender = ''
+          //   switch (`${gender}`) {
+          //     case '1': petGender = 'F'
 
-                break;
-              case '0': petGender = "M"
-                break;
-              default: petGender = 'unknown'
-                break;
-            }
-            let petAge = 'unknown'
-            if (birthday) {
-              petAge = moment(new Date()).diff(moment(birthday), 'years')
-            }
+          //       break;
+          //     case '0': petGender = "M"
+          //       break;
+          //     default: petGender = 'unknown'
+          //       break;
+          //   }
+          //   let petAge = 'unknown'
+          //   if (birthday) {
+          //     petAge = moment(new Date()).diff(moment(birthday), 'years')
+          //   }
 
-            let json = {
-              insertedAt: createTime,
-              patientId,
-              petName,
-              owner,
-              breed: breedName,
-              gender: petGender,
-              age: petAge,
-              petId,
-              id: i,
-              weight,
-              rfid,
-              url,
-              speciesId,
-              l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference,
-              h2tLength, torsoLength,
-              pethubId, macId,
+          //   let json = {
+          //     insertedAt: createTime,
+          //     patientId,
+          //     petName,
+          //     owner,
+          //     breed: breedName,
+          //     gender: petGender,
+          //     age: petAge,
+          //     petId,
+          //     id: i,
+          //     weight,
+          //     rfid,
+          //     url,
+          //     speciesId,
+          //     l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference,
+          //     h2tLength, torsoLength,
+          //     pethubId, macId,
 
-            }
-            data.push(json)
+          //   }
+          //   data.push(json)
 
-          }
-          let petArr = dataSort(data)
+          // }
+          let petArr = dataSort(oldList)
           setPetList(petArr)
         } else {
 

@@ -992,10 +992,8 @@ class App extends Component {
           <HardAndPetsUI
             bodyHeight={bodyHeight}
           />
+          <TemperaturePage />
         </div>
-
-
-
       </div>
     )
   }
