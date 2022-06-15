@@ -58,19 +58,21 @@ const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareIndex, chan
 
     return <li key={`${index}`} style={{ padding: `${px(10)}px 0`, }}
       onClick={() => {
-
         console.log(item);
-        changeselectHardwareIndex(index)
-        selectHardwareList(item)
-        let devicesInfo = electronStore.get(`${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`)
+        if (item.type === 'add') {
+          changeselectHardwareIndex(index)
+          selectHardwareList(item)
+        } else {
+          changeselectHardwareIndex(index)
+          selectHardwareList(item)
+          let devicesInfo = electronStore.get(`${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`)
 
-        if (!devicesInfo) {
-          devicesInfo = item.devices[0]
-          electronStore.set(`${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`, devicesInfo)
+          if (!devicesInfo && item.devices[0]) {
+            devicesInfo = item.devices[0]
+            electronStore.set(`${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`, devicesInfo)
+          }
+          selectHardwareInfoFun(devicesInfo)
         }
-
-        selectHardwareInfoFun(devicesInfo)
-
       }
       }
     >

@@ -146,15 +146,21 @@ class App extends Component {
         }}
       >
         <Heard />
-        <div className="mainbody-body">
+        <div
+          className="mainbody-body"
+        >
           <HardWareTypeUI
             bodyHeight={bodyHeight}
             devicesTypeList={this.state.showHardWareTypeList}
           />
-          <HardAndPetsUI bodyHeight={bodyHeight} />
-          {/* <TemperaturePage /> */}
-          <div style={{width:'100%'}}>dgdgdf</div>
+          <HardAndPetsUI
+            bodyHeight={bodyHeight}
+          />
+          <div style={{ backgroundColor: 'red', width: '100%', height: '100%' }}>123</div>
         </div>
+
+
+
       </div>
     )
   }
