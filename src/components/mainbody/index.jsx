@@ -6,6 +6,7 @@ import Heard from '../../utils/heard/Heard'
 import { mTop, px, pX, win } from '../../utils/px';
 import HardAndPetsUI from './HardAndPetsUI';
 import HardWareTypeUI from './hardWareTypeUI';
+import TemperaturePage from '../../pages/temperaturePage'
 import { selectHardwareModalShowFun } from '../../store/actions';
 import './mainbody.less'
 
@@ -20,10 +21,8 @@ class App extends Component {
     devicesTypeList: [],
     //展示硬件类型的数组
     showHardWareTypeList: [],
-
-
   }
-  componentDidMount () {
+  componentDidMount() {
     ipcRenderer.send('big', win())
     //获取窗口高度
     this.resize()
@@ -118,7 +117,7 @@ class App extends Component {
     })
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     //组件销毁，取消监听
     window.removeEventListener('resize', this.resize)
   }
@@ -134,7 +133,7 @@ class App extends Component {
     }
   }
 
-  render () {
+  render() {
     let { bodyHeight } = this.state
 
     return (
@@ -147,25 +146,15 @@ class App extends Component {
         }}
       >
         <Heard />
-        <div
-          className="mainbody-body"
-
-        >
+        <div className="mainbody-body">
           <HardWareTypeUI
             bodyHeight={bodyHeight}
             devicesTypeList={this.state.showHardWareTypeList}
           />
-          <HardAndPetsUI
-            bodyHeight={bodyHeight}
-          />
-
-
-
-
-
+          <HardAndPetsUI bodyHeight={bodyHeight} />
+          {/* <TemperaturePage /> */}
+          <div style={{width:'100%'}}>dgdgdf</div>
         </div>
-
-
       </div>
     )
   }

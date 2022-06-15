@@ -14,10 +14,10 @@ const TemperaturePage = () => {
 
     return (
         <Layout className='homeBox'>
-            {/* <div className='chackPatientBox'>
+            <div className='chackPatientBox'>
                 <p className='chackPatientTitle'>Select a patient</p>
-            </div> */}
-                <LinkEquipment/>
+            </div>
+                {/* <LinkEquipment/> */}
                 {/* <Measurement/> */}
                 {/* <MeasuredData/> */}
         </Layout>
