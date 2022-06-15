@@ -14,15 +14,9 @@ import deviceMaeBowl from './../../assets/img/deviceIcon-maeBowl.png'
 import deviceTape from './../../assets/img/deviceIcon-tape.png'
 import deivceAdd from './../../assets/img/hardList-add.png'
 import scales from './../../assets/img/scales.png'
-
-
-
-
 import './mainbody.less'
 
 let storage = window.localStorage;
-
-
 const HardAndPetsUI = ({ selectHardwareInfo, selectHardwareList, selectHardwareInfoFun, selectHardwareModalShowFun }) => {
   //定义数组hardwareList
   const [hardwareList, setHardwareList] = useState([])
