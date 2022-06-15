@@ -149,7 +149,6 @@ class App extends Component {
         <Heard />
         <div
           className="mainbody-body"
-
         >
           <HardWareTypeUI
             bodyHeight={bodyHeight}
@@ -158,12 +157,9 @@ class App extends Component {
           <HardAndPetsUI
             bodyHeight={bodyHeight}
           />
-
-
-
-
-
+          <div style={{ backgroundColor: 'red', width: '100%', height: '100%' }}>123</div>
         </div>
+
 
 
       </div>

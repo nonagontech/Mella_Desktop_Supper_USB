@@ -15,9 +15,6 @@ import xia from './../../assets/img/xia.png'
 import { devicesTitleHeight } from '../../utils/InitDate'
 
 
-
-
-
 import './mainbody.less'
 import { fetchRequest } from '../../utils/FetchUtil1';
 
@@ -216,7 +213,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     })
 
     return (
-      <div className="petList" style={{ marginTop: px(10), height: px(600) }}>
+      <div className="petList" style={{ marginTop: px(10), height: bodyHeight - devicesTitleHeight - px(220) }}>
         <ul>
           {options}
         </ul>
