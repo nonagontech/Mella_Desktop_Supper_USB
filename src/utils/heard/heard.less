@@ -12,76 +12,79 @@
     display: flex;
     align-items: center;
     flex-direction: row;
-    width: 50%;
+    width: 60%;
     height: 100%;
+    // background-color: pink;
     .menuF {
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      width: 15%;
+      // background-color: hotpink;
+      // width: 15%;
+
       height: 100%;
       flex-direction: column;
-    }
-    .menu {
-      -webkit-app-region: no-drag;
-      // margin-left: 7px;
-      // color: #FEFEFE;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      // height: 100%;
-      position: relative;
-
-      .ant-menu-horizontal {
-        background-color: #e1206d;
-        height: 41px;
-      }
-      .icon {
-        font-size: 30px;
-        display: block;
-        height: 38px;
-        color: #fefefe;
-      }
-
-      position: relative;
-      flex-direction: column;
-
-      img {
-        cursor: pointer;
-      }
-      .manuBody {
-        position: absolute;
-        z-index: 999;
+      .menu {
         -webkit-app-region: no-drag;
-        // background-color: pink;
-
-        .triangle {
-          position: absolute;
+        // margin-left: 7px;
+        // color: #FEFEFE;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        // height: 100%;
+        position: relative;
+  
+        .ant-menu-horizontal {
+          background-color: #e1206d;
+          height: 41px;
         }
-        .manuBodyList {
-          background-color: hotpink;
-          background-color: #fff;
-          box-shadow: 0px 3px 6px #979797;
-          position: relative;
-          width: 100%;
-          // width: 100px;
-          ul {
-            margin: 0;
-            padding: 0;
+        .icon {
+          font-size: 30px;
+          display: block;
+          height: 38px;
+          color: #fefefe;
+        }
+  
+        position: relative;
+        flex-direction: column;
+  
+        img {
+          cursor: pointer;
+        }
+        .manuBody {
+          position: absolute;
+          z-index: 999;
+          -webkit-app-region: no-drag;
+          // background-color: pink;
+  
+          .triangle {
+            position: absolute;
+          }
+          .manuBodyList {
+            background-color: hotpink;
+            background-color: #fff;
+            box-shadow: 0px 3px 6px #979797;
+            position: relative;
             width: 100%;
-            li {
+            // width: 100px;
+            ul {
               margin: 0;
               padding: 0;
               width: 100%;
-              cursor: pointer;
-              .item {
+              li {
+                margin: 0;
+                padding: 0;
                 width: 100%;
-                p {
-                  text-align: left;
-                  // background-color: pink;
-                  white-space: nowrap;
-                  margin: 0;
+                cursor: pointer;
+                .item {
+                  width: 100%;
+                  p {
+                    text-align: left;
+                    // background-color: pink;
+                    white-space: nowrap;
+                    margin: 0;
+                  }
                 }
               }
             }
@@ -89,14 +92,15 @@
         }
       }
     }
+    
     .return {
       -webkit-app-region: no-drag;
+      background-color: hotpink;
 
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 15%;
       cursor: pointer;
       img {
         height: 50%;
@@ -110,7 +114,7 @@
       // width: 258px;
       // height: 26px;
       height: 55%;
-      width: 70%;
+      // width: 70%;
       display: flex;
       flex-direction: row;
       position: relative;
@@ -128,6 +132,7 @@
         box-sizing: border-box;
         color: #660a2f;
         font-size: 16px;
+        outline: none;
       }
 
       input::-webkit-input-placeholder {
@@ -276,13 +281,10 @@
     height: 100%;
     // padding-left: 50%;
     // background-color: pink;
-    width: 50%;
-    .kong {
-      width: 40%;
-      height: 100%;
-    }
+    width: 40%;
+  
     .heardCenter {
-      width: 30%;
+      // width: 30%;
       height: 100%;
       display: flex;
       align-items: center;
@@ -306,7 +308,7 @@
     }
 
     .min_close {
-      width: 30%;
+      // width: 30%;
       // display: table;
       display: flex;
       height: 100%;

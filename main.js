@@ -324,17 +324,17 @@ function createWindow () {
         // width:400/factor,       //运行时窗体大小
         // height: 800/factor ,      //运行时窗体大小
         // maxWidth: 600/factor ,    //最大宽度
-        // minWidth: 400/factor ,    //最小宽度
+        // minWidth: 1200,    //最小宽度
         // maxHeight:1200/factor ,  //最大高度
         // minHeight: 800/factor ,   //最小高度
         resizable: true,   //能否改变窗体大小
-        // frame: false,//为false则是无边框窗口
+        frame: false,//为false则是无边框窗口
         webPreferences: {
             nodeIntegration: true, // 是否集成 Nodejs,把之前预加载的js去了，发现也可以运行
             // preload: path.join(__dirname, './public/renderer.js')
         },
         show: false, // newBrowserWindow创建后先隐藏，
-        backgroundColor: '#E1206D'
+        // backgroundColor: '#E1206D'
         // icon:path.join(__dirname,'./logo.png'),//任务栏icon图标
 
     };
@@ -648,7 +648,7 @@ function wind (width1, height1, data) {
     }
 
 
-    mainWindow.setMaximumSize(width, height);
+    // mainWindow.setMaximumSize(width, height);
     mainWindow.setMinimumSize(width, height);
     mainWindow.setSize(width, height);
 }

@@ -3,13 +3,14 @@ import ReactDOM from 'react-dom'
 
 import { Provider } from 'react-redux'
 import store from './store'
+
+
 // import App from './App'
-import App from './mainbody/'
-import TemperaturePage from './pages/temperaturePage/index'
+import App from './components/mainbody/index'
 ReactDOM.render(
   <Provider store={store}>
-    {/* <App /> */}
-    <TemperaturePage/>
+    <App />
+    {/* <TemperaturePage/> */}
   </Provider>
   ,
   document.getElementById('root'))
