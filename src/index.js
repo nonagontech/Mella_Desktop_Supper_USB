@@ -5,9 +5,11 @@ import { Provider } from 'react-redux'
 import store from './store'
 // import App from './App'
 import App from './mainbody/'
+import TemperaturePage from './pages/temperaturePage/index'
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    {/* <App /> */}
+    <TemperaturePage/>
   </Provider>
   ,
   document.getElementById('root'))
