@@ -1,5 +1,7 @@
 //选择的硬件类型的index
 export const SELECT_HARDWARE_INDEX = 'selectselectHardwareIndex'
+//选择的硬件类型
+export const SELECT_HARDWARE_TYPE = 'selectHardwareType'
 //选择硬件类型对应的硬件的列表
 export const SELECT_HARDWARE_LIST = 'selectHardwareList'
 //选择的硬件信息

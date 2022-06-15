@@ -1,5 +1,6 @@
 import {
   SELECT_HARDWARE_INDEX,
+  SELECT_HARDWARE_TYPE,
   SELECT_HARDWARE_LIST,
   SELECT_HARDWARE_INFO,
   SELECT_HARDWARE_MODAL_SHOW,
@@ -15,7 +16,9 @@ import {
 
 const initialState = {
   //选择的硬件类型的index
-  selectHardwareIndex: -1,
+  selectHardwareIndex: 0,
+  //选择的硬件类型
+  selectHardwareType: 'mellaPro',
   //选择硬件类型对应的硬件的列表
   selectHardwareList: {},
   //选择的硬件信息
@@ -33,9 +36,10 @@ const initialState = {
   //mella测量部位
   mellaMeasurePart: '腋温',
 
+
 }
 export default function HardwareReducer(state = initialState, action) {
-  console.log('state', state);
+  // console.log('state', state);
 
   switch (action.type) {
     case SELECT_HARDWARE_INDEX:
@@ -56,6 +60,10 @@ export default function HardwareReducer(state = initialState, action) {
       return { ...state, mellaPredictValue: action.data }
     case MELLA_MEASURE_PART:
       return { ...state, mellaMeasurePart: action.data }
+
+    case SELECT_HARDWARE_TYPE:
+      return { ...state, selectHardwareType: action.data }
+
 
     default:
       return state;

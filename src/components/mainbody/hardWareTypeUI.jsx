@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -10,12 +10,33 @@ import tape from './../../assets/img/hardList-tape.png'
 import add from './../../assets/img/hardList-add.png'
 import maeBowl from './../../assets/img/hardList-maeBowl.png'
 import otterEQ from './../../assets/img/hardList-otterEQ.png'
-import { changeselectHardwareIndex, selectHardwareList, selectHardwareInfoFun } from './../../store/actions'
+import { changeselectHardwareIndex, selectHardwareList, selectHardwareInfoFun, setSelectHardwareType } from './../../store/actions'
 import electronStore from '../../utils/electronStore'
 
 let storage = window.localStorage;
 // class HardWareTypeUI extends Component {
-const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareIndex, changeselectHardwareIndex, selectHardwareList, selectHardwareInfoFun }) => {
+const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareIndex, changeselectHardwareIndex, selectHardwareList, selectHardwareInfoFun, setSelectHardwareType }) => {
+  useEffect(() => {
+    let hard = devicesTypeList[selectHardwareIndex]
+    console.log('-------------------', hard);
+    if (hard) {
+      // electronStore.delete(`${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`)
+      let devicesInfo = electronStore.get(`${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`)
+      console.log('devicesInfo', devicesInfo);
+      if (!devicesInfo) {
+        devicesInfo = hard.devices[0]
+
+        electronStore.set(`${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`, devicesInfo)
+      }
+
+      console.log('保存的折本信息', devicesInfo);;
+
+      selectHardwareInfoFun(devicesInfo)
+
+      selectHardwareList(hard)
+    }
+
+  }, [devicesTypeList])
 
 
 
@@ -58,21 +79,26 @@ const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareIndex, chan
 
     return <li key={`${index}`} style={{ padding: `${px(10)}px 0`, }}
       onClick={() => {
-        console.log(item);
+        console.log(item.type);
         if (item.type === 'add') {
-          changeselectHardwareIndex(index)
-          selectHardwareList(item)
+
+
         } else {
-          changeselectHardwareIndex(index)
-          selectHardwareList(item)
           let devicesInfo = electronStore.get(`${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`)
+          // changeselectHardwareIndex(index)
+          // selectHardwareList(item)
 
           if (!devicesInfo && item.devices[0]) {
             devicesInfo = item.devices[0]
             electronStore.set(`${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`, devicesInfo)
           }
+
+
           selectHardwareInfoFun(devicesInfo)
         }
+        setSelectHardwareType(item.type)
+        changeselectHardwareIndex(index)
+        selectHardwareList(item)
       }
       }
     >
@@ -110,6 +136,8 @@ HardWareTypeUI.defaultProps = {
 }
 
 export default connect(
-  state => ({ selectHardwareIndex: state.hardwareReduce.selectHardwareIndex }),
-  { changeselectHardwareIndex, selectHardwareList, selectHardwareInfoFun }
+  state => ({
+    selectHardwareIndex: state.hardwareReduce.selectHardwareIndex
+  }),
+  { changeselectHardwareIndex, selectHardwareList, selectHardwareInfoFun, setSelectHardwareType }
 )(HardWareTypeUI)
