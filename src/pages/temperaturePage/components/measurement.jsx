@@ -4,8 +4,9 @@ import React, {
 } from 'react';
 import { Button, Progress } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import Animation from './../../../assets/img/Animation.png';
-import caught from './../../../assets/img/caught.png';
+import Animation_1 from './../../../assets/img/Animation_1.png';
+import Animation_2 from './../../../assets/img/Animation_2.png';
+import Animation_3 from './../../../assets/img/Animation_3.png';
 import './measurement.less';
 
 const Measurement = () => {
@@ -22,7 +23,7 @@ const Measurement = () => {
             <Progress type="dashboard" percent={percent} gapDegree={30} width={'260px'} strokeWidth={'8'} format={percent => `${percent} ℉`} />
             <Button onClick={decline} icon={<PlusOutlined />} />
             {
-                percent === 0 ? (<img src={Animation} />) : (<img src={caught} />)
+                percent === 0 ? (<img src={Animation_1} />) : (<img src={Animation_2} />)
             }
 
         </div>
