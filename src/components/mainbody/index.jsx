@@ -6,6 +6,7 @@ import Heard from '../../utils/heard/Heard'
 import { mTop, px, pX, win, timerFun } from '../../utils/px';
 import HardAndPetsUI from './HardAndPetsUI';
 import HardWareTypeUI from './hardWareTypeUI';
+import TemperaturePage from '../../pages/temperaturePage'
 import { selectHardwareModalShowFun } from '../../store/actions';
 import './mainbody.less'
 
@@ -20,8 +21,6 @@ class App extends Component {
     devicesTypeList: [],
     //展示硬件类型的数组
     showHardWareTypeList: [],
-
-
   }
   componentDidMount () {
     ipcRenderer.send('big', win())
