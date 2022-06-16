@@ -13,12 +13,14 @@ import {
   setMellaConnectStatusFun,
   setMellaMeasureValueFun,
   setMellaPredictValueFun,
-  setMellaMeasurePartFun
+  setMellaMeasurePartFun,
+  setMellaDeviceIdFun
 } from '../../store/actions';
 import './mainbody.less'
 import { message } from 'antd';
 import electronStore from '../../utils/electronStore';
 import AddDevice from './AddDevice';
+import BiggiePage from '../../pages/biggiePage';
 
 let ipcRenderer = window.require('electron').ipcRenderer
 let isMeasure = false //是否正在测量,用于判断是否需要发送指定指令给USB,查看硬件是否连接
@@ -121,10 +123,12 @@ class App extends Component {
   }
   //底座与温度计断开连接
   _disconnect_to_mella = () => {
-    let { setMellaConnectStatusFun, mellaConnectStatus } = this.props
+    let { setMellaConnectStatusFun, mellaConnectStatus, setMellaDeviceIdFun } = this.props
     if (mellaConnectStatus !== 'disconnected') {
       setMellaConnectStatusFun('disconnected')
     }
+    setMellaDeviceIdFun('')
+
   }
   //底座与温度计连接
   _connect_to_mella = () => {
@@ -146,9 +150,9 @@ class App extends Component {
     //除了255,其他都是温度计的数据
     let { setMellaConnectStatusFun, setMellaMeasureValueFun, setMellaPredictValueFun, setMellaMeasurePartFun, mellaMeasurePart, mellaConnectStatus } = this.props
 
-    const instruction = [209, 193, 192, 129, 135, 238, 98, 97, 130, 208, 177, 194, 7, 99, 255]
+    const instruction = [209, 193, 192, 129, 135, 238, 98, 97, 130, 208, 177, 194, 7, 99, 255, 182]
 
-    if (newArr[2] !== 7 && newArr[2] !== 255) {
+    if (newArr[2] !== 7 && newArr[2] !== 255 && newArr[2] !== 182) {
 
       initTime = new Date()
       num07 = 0
@@ -277,13 +281,13 @@ class App extends Component {
         let beep = hardSet.isBeep ? '11' : '00'
         let unit = hardSet.isHua ? '00' : '01'
 
-        if (dataArr1[7] === hardSet.autoOff.number && dataArr1[8] === hardSet.backlightTimer.number &&
-          dataArr1[9] === beep && dataArr1[10] === unit) {
-        } else {
-          console.log('不相同，去发送命令');
-          let setArr = ['03', 'ed', '07', 'dd', hardSet.autoOff.number, hardSet.isBacklight ? hardSet.backlightTimer.number : '00', hardSet.isBeep ? '11' : '00', hardSet.isHua ? '00' : '01']
-          ipcRenderer.send('usbdata', { command: '21', arr: setArr })
-        }
+        // if (dataArr1[7] === hardSet.autoOff.number && dataArr1[8] === hardSet.backlightTimer.number &&
+        //   dataArr1[9] === beep && dataArr1[10] === unit) {
+        // } else {
+        //   console.log('不相同，去发送命令');
+        //   let setArr = ['03', 'ed', '07', 'dd', hardSet.autoOff.number, hardSet.isBacklight ? hardSet.backlightTimer.number : '00', hardSet.isBeep ? '11' : '00', hardSet.isHua ? '00' : '01']
+        //   ipcRenderer.send('usbdata', { command: '21', arr: setArr })
+        // }
 
 
       },
@@ -325,11 +329,11 @@ class App extends Component {
 
         }
         console.log(id, dataArr1[7]);
-
-        this.setState({
-          probeID: id,
-          petVitalTypeId: dataArr1[7]
-        })
+        setMellaDeviceIdFun(id)
+        // this.setState({
+        //   probeID: id,
+        //   petVitalTypeId: dataArr1[7]
+        // })
         if (dataArr1[7] === '01') {
           if (mellaMeasurePart !== "腋温") {
             setMellaMeasurePartFun('腋温')
@@ -355,469 +359,473 @@ class App extends Component {
           })
         }
       },
-      255: () => {
-
-      }
       // 255: () => {
 
-      //   let length = newArr.length
-      //   let frameLength = newArr[1]   //帧长
-      //   let itemLength = newArr[3] + 1  //数据位的长度   13
-      //   let dataIndex = 0
-
-      //   let bluName = ''
-      //   let bluData = []
-      //   while (itemLength < length && (itemLength + 3 <= frameLength)) {
-      //     let itemData = []
-      //     for (let i = 0; i < newArr[dataIndex + 3] - 1; i++) {
-      //       itemData.push(dataArr1[i + dataIndex + 5])
-      //     }
-      //     // console.log('--剪切的数据---', itemData);
-      //     switch (newArr[dataIndex + 4]) {
-      //       case 9:
-      //       case 8:
-      //         let str = ''
-      //         for (let i = 0; i < itemData.length; i++) {
-      //           let item = parseInt(itemData[i], 16)
-      //           str += String.fromCharCode(item)
-
-      //         }
-      //         bluName = str
-      //         // console.log('--蓝牙名称:', bluName);
-
-
-      //         break;
-
-      //       case 255:
-      //         bluData = itemData
-      //         break;
-      //       case 7: console.log('---UUID'); break;
-      //       case 239:
-      //         // console.log('---mac地址'); 
-      //         break;
-
-      //       case 3: console.log('----尺子的,不知道什么用'); break;
-
-      //       default: console.log('直接跳出循环'); return;
-      //     }
-      //     dataIndex = itemLength
-      //     itemLength = itemLength + newArr[dataIndex + 3] + 1
-      //   }
-      //   console.log('硬件名称', bluName, '-----硬件数据', bluData);
-
-      //   if (bluName.indexOf('C19') !== -1 && bluData.length > 10) {
-
-      //     let weight = `0x${bluData[10]}${bluData[11]}`
-      //     let impedance = `0x${bluData[12]}${bluData[13]}`
-      //     let sendWeight = null
-      //     try {
-      //       //sendWeight的值单位是kg,weight的值为lb(磅)
-      //       sendWeight = parseInt(weight) / 100
-      //       weight = parseInt(weight) / 100 * 2.2046
-      //       if (impedance) {
-      //         impedance = parseInt(impedance)
-      //       }
-      //       weight = weight.toFixed(1)
-
-      //     } catch (error) {
-      //       console.log(error);
-      //     }
-      //     // console.log('----秤', weight, impedance);
-
-      //     if (weight) {
-      //       // console.log(sameBiggieNum, keyboardBiggieFlog);
-      //       if (weight === this.state.biggieDate && this.state.devicesType === 'biggie') {
-
-      //         sameBiggieNum++
-      //         if (!keyboardBiggieFlog && sameBiggieNum === 6) {
-      //           console.log('键盘写入');
-      //           let { units, sendWeight, biggieDate } = this.state
-
-      //           let weight = units === '℃' ? sendWeight : biggieDate
-      //           ipcRenderer.send('keyboardWriting', weight)
-      //         }
-
-      //       } else {
-      //         sameBiggieNum = 0
-      //         keyboardBiggieFlog = false
-      //       }
-
-      //       this.setState({
-      //         biggieDate: weight,
-      //         impedance,
-      //         sendWeight,
-      //         isHaveBigieDate: true
-      //       })
-      //     }
-      //   } else if (bluName.indexOf('Tape') !== -1) {
-
-      //     let confirmBtn = parseInt(bluData[8], 16)     //十进制数字，值为160代表尺子拉动，值为161代表按了尺子确认按钮
-      //     let rulerUnitNum = parseInt(bluData[13], 16) //十进制数字，值大于等于80代表单位为in，小于80代表单位为cm
-      //     let newVal = null             //为测量数值，和单位匹配对应
-      //     const ITEMINDEX = 7
-      //     let units = rulerUnitNum >= 80 ? 'in' : 'cm'
-
-      //     //num1和num2组成测得的测量值，num的值为测量数值，单位恒为厘米
-      //     let num1 = bluData[9]
-      //     let num2 = bluData[10]
-      //     let num = getVal(num1, num2)
-      //     try {
-      //       newVal = (parseInt(num) / 100)
-      //       if (newVal < 3) {
-      //         newVal = 0
-      //       }
-
-      //       if (rulerUnitNum >= 80) {
-      //         newVal = (newVal * 0.3937).toFixed(2)
-
-      //       } else {
-      //         newVal = newVal.toFixed(1)
-      //       }
-      //     } catch (error) {
-      //       console.log(error);
-      //     }
-
-
-
-      //     function getVal(shi, xiaoshuo) {
-
-      //       if (shi.length < 2) {
-      //         shi = `0${shi}`
-      //       }
-      //       if (xiaoshuo.length < 2) {
-      //         xiaoshuo = `0${xiaoshuo}`
-      //       }
-      //       return `0x${shi}${xiaoshuo}`
-      //     }
-
-      //     //点击了确认按钮
-      //     let { itemIndex, l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference,
-      //       h2tLength, torsoLength
-      //     } = this.state
-      //     if (confirmBtn === 161) {
-      //       if (!nextFlog) {
-      //         nextFlog = true
-
-      //         if (itemIndex === ITEMINDEX) {
-      //           this._updatePetAttributes()
-      //           return
-      //         }
-      //         let newitemIndex = itemIndex >= ITEMINDEX ? 1 : itemIndex + 1
-
-      //         let textValue = ''
-      //         switch (itemIndex) {
-      //           case 1: textValue = l2rarmDistance; break;
-      //           case 2: textValue = h2tLength; break;
-      //           case 3: textValue = torsoLength; break;
-      //           case 4: textValue = neckCircumference; break;
-      //           case 5: textValue = upperTorsoCircumference; break;
-      //           case 6: textValue = lowerTorsoCircumference; break;
-      //           default:
-      //             break;
-      //         }
-
-      //         if (newVal !== textValue && parseInt(newVal) > 0) {
-      //           switch (itemIndex) {
-      //             case 1: this.setState({ l2rarmDistance: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
-      //             case 2: this.setState({ h2tLength: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
-      //             case 3: this.setState({ torsoLength: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
-      //             case 4: this.setState({ neckCircumference: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
-      //             // case 5: this.setState({ bodyWidth: newVal, itemIndex: newitemIndex, units }); break;
-      //             case 5: this.setState({ upperTorsoCircumference: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
-      //             case 6: this.setState({ lowerTorsoCircumference: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
-      //             default: this.setState({
-      //               itemIndex: newitemIndex
-      //               , rulerUnit: units
-      //             })
-      //               break;
-      //           }
-      //         } else {
-      //           this.setState({
-      //             itemIndex: newitemIndex,
-      //             rulerUnit: units
-      //           })
-      //         }
-
-
-
-      //       }
-      //     } else if (confirmBtn === 160) {
-      //       nextFlog = false
-      //       let textValue = ''
-
-
-      //       switch (itemIndex) {
-      //         case 1: textValue = l2rarmDistance; break;
-      //         case 2: textValue = h2tLength; break;
-      //         case 3: textValue = torsoLength; break;
-      //         case 4: textValue = neckCircumference; break;
-      //         case 5: textValue = upperTorsoCircumference; break;
-      //         case 6: textValue = lowerTorsoCircumference; break;
-      //       }
-
-      //       if (newVal !== textValue && parseInt(newVal) > 0) {
-      //         if (!avoidRepetition) {
-      //           avoidRepetition = true
-      //           this.avoidRepetition = setTimeout(() => {
-      //             avoidRepetition = false
-      //             this.avoidRepetition && clearTimeout(this.avoidRepetition)
-      //           }, 100);
-      //           switch (itemIndex) {
-      //             case 1: this.setState({ l2rarmDistance: newVal, rulerUnit: units }); break;
-      //             case 2: this.setState({ h2tLength: newVal, rulerUnit: units }); break;
-      //             case 3: this.setState({ torsoLength: newVal, rulerUnit: units }); break;
-      //             case 4: this.setState({ neckCircumference: newVal, rulerUnit: units }); break;
-      //             case 5: this.setState({ upperTorsoCircumference: newVal, rulerUnit: units }); break;
-      //             case 6: this.setState({ lowerTorsoCircumference: newVal, rulerUnit: units }); break;
-      //             default:
-      //               break;
-      //           }
-      //         }
-      //       }
-      //     }
-
-      //   } else if (bluName.indexOf('Mella Measure') !== -1 && this.state.devicesType === 'biggie') {
-      //     //255
-      //     let { itemIndex, l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference,
-      //       h2tLength, torsoLength
-      //     } = this.state
-      //     // console.log('结束循环蓝牙名称', bluData)
-      //     let confirmBtn = bluData[8]     //十六进制数字，值为01代表尺子拉动，值为x2代表按了尺子确认按钮
-
-      //     let rulerUnitNum = parseInt(bluData[11], 16) //十进制数字，值等于11代表单位为in，00代表单位为cm
-      //     let newVal = null             //为测量数值，和单位匹配对应
-      //     const ITEMINDEX = 6
-      //     let units = rulerUnitNum === 0 ? 'cm' : 'in'
-
-
-      //     if (units !== this.state.rulerUnit) {
-      //       if (units === 'cm') {
-      //         l2rarmDistance = l2rarmDistance ? `${(parseFloat(l2rarmDistance) * 2.54).toFixed(1)}` : ''
-      //         neckCircumference = neckCircumference ? `${(parseFloat(neckCircumference) * 2.54).toFixed(1)}` : ''
-      //         upperTorsoCircumference = upperTorsoCircumference ? `${(parseFloat(upperTorsoCircumference) * 2.54).toFixed(1)}` : ''
-      //         lowerTorsoCircumference = lowerTorsoCircumference ? `${(parseFloat(lowerTorsoCircumference) * 2.54).toFixed(1)}` : ''
-      //         h2tLength = h2tLength ? `${(parseFloat(h2tLength) * 2.54).toFixed(1)}` : ''
-      //         torsoLength = torsoLength ? `${(parseFloat(torsoLength) * 2.54).toFixed(1)}` : ''
-      //       } else {
-      //         l2rarmDistance = l2rarmDistance ? `${(parseFloat(l2rarmDistance) / 2.54).toFixed(2)}` : ''
-      //         neckCircumference = neckCircumference ? `${(parseFloat(neckCircumference) / 2.54).toFixed(2)}` : ''
-      //         upperTorsoCircumference = upperTorsoCircumference ? `${(parseFloat(upperTorsoCircumference) / 2.54).toFixed(2)}` : ''
-      //         lowerTorsoCircumference = lowerTorsoCircumference ? `${(parseFloat(lowerTorsoCircumference) / 2.54).toFixed(2)}` : ''
-      //         h2tLength = h2tLength ? `${(parseFloat(h2tLength) / 2.54).toFixed(2)}` : ''
-      //         torsoLength = torsoLength ? `${(parseFloat(torsoLength) / 2.54).toFixed(2)}` : ''
-      //       }
-
-      //       this.setState({
-      //         l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference,
-      //         h2tLength, torsoLength,
-      //         rulerUnit: units
-      //       })
-
-
-      //     }
-
-      //     //num1和num2组成测得的测量值，num的值为测量数值，单位恒为厘米
-      //     let num1 = bluData[9]
-      //     let num2 = bluData[10]
-      //     let num = getVal(num1, num2)
-      //     try {
-      //       newVal = parseFloat(num)
-      //       if (rulerUnitNum === 17) {
-      //         newVal = newVal.toFixed(2)
-
-      //       } else {
-      //         newVal = newVal.toFixed(1)
-      //       }
-      //     } catch (error) {
-      //       console.log(error);
-      //     }
-
-
-
-      //     function getVal(shi, xiaoshuo) {
-      //       let num1 = parseInt(shi, 16)
-      //       let num2 = parseInt(xiaoshuo, 16)
-
-      //       return `${num1}.${num2}`
-      //     }
-
-      //     //点击了确认按钮
-
-      //     if (confirmBtn[1] === '2' && confirmBtn[0] !== confirmBtnFlog) {
-      //       confirmBtnFlog = confirmBtn[0]
-      //       if (!nextFlog) {
-      //         nextFlog = true
-
-      //         if (itemIndex === ITEMINDEX) {
-      //           this._updatePetAttributes()
-      //           return
-      //         }
-      //         let newitemIndex = itemIndex >= ITEMINDEX ? 1 : itemIndex + 1
-
-      //         let textValue = ''
-      //         try {
-      //           switch (itemIndex) {
-      //             case 1: textValue = l2rarmDistance; this.input2 && this.input2.focus(); break;
-      //             case 2: textValue = h2tLength; this.input3 && this.input3.focus(); break;
-      //             case 3: textValue = torsoLength; this.input4 && this.input4.focus(); break;
-      //             case 4: textValue = neckCircumference; this.input5 && this.input5.focus(); break;
-      //             case 5: textValue = upperTorsoCircumference; this.input6 && this.input6.focus(); break;
-      //             case 6: textValue = lowerTorsoCircumference; this.input7 && this.input7.focus(); break;
-      //             default:
-      //               break;
-      //           }
-      //         } catch (error) {
-      //           console.log(error);
-      //         }
-
-
-
-
-      //         if (newVal !== textValue && parseInt(newVal) >= 0) {
-      //           switch (itemIndex) {
-      //             case 1: this.setState({ l2rarmDistance: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
-      //             case 2: this.setState({ h2tLength: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
-      //             case 3: this.setState({ torsoLength: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
-      //             case 4: this.setState({ neckCircumference: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
-      //             // case 5: this.setState({ bodyWidth: newVal, itemIndex: newitemIndex, units }); break;
-      //             case 5: this.setState({ upperTorsoCircumference: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
-      //             case 6: this.setState({ lowerTorsoCircumference: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
-      //             default: this.setState({
-      //               itemIndex: newitemIndex
-      //               , rulerUnit: units
-      //             })
-      //               break;
-      //           }
-      //         } else {
-      //           this.setState({
-      //             itemIndex: newitemIndex,
-      //             rulerUnit: units
-      //           })
-      //         }
-
-
-
-      //       }
-      //     } else if (confirmBtn === '01') {
-      //       nextFlog = false
-      //       let textValue = ''
-
-
-      //       switch (itemIndex) {
-      //         case 1: textValue = l2rarmDistance; break;
-      //         case 2: textValue = h2tLength; break;
-      //         case 3: textValue = torsoLength; break;
-      //         case 4: textValue = neckCircumference; break;
-      //         case 5: textValue = upperTorsoCircumference; break;
-      //         case 6: textValue = lowerTorsoCircumference; break;
-      //       }
-
-      //       if (newVal !== textValue && parseInt(newVal) >= 0) {
-      //         if (!avoidRepetition) {
-      //           avoidRepetition = true
-      //           this.avoidRepetition = setTimeout(() => {
-      //             avoidRepetition = false
-      //             this.avoidRepetition && clearTimeout(this.avoidRepetition)
-      //           }, 100);
-      //           try {
-      //             switch (itemIndex) {
-      //               case 1: this.setState({ l2rarmDistance: newVal, rulerUnit: units }); this.input1 && this.input1.focus(); break;
-      //               case 2: this.setState({ h2tLength: newVal, rulerUnit: units }); this.input2 && this.input2.focus(); break;
-      //               case 3: this.setState({ torsoLength: newVal, rulerUnit: units }); this.input3 && this.input3.focus(); break;
-      //               case 4: this.setState({ neckCircumference: newVal, rulerUnit: units }); this.input4 && this.input4.focus(); break;
-      //               case 5: this.setState({ upperTorsoCircumference: newVal, rulerUnit: units }); this.input5 && this.input5.focus(); break;
-      //               case 6: this.setState({ lowerTorsoCircumference: newVal, rulerUnit: units }); this.input6 && this.input6.focus(); break;
-      //               default:
-      //                 break;
-      //             }
-      //           } catch (error) {
-      //             console.log(error);
-      //           }
-
-      //         }
-      //       }
-      //     }
-
-      //   }
-
-      //   // if (bluName.indexOf('C19') !== -1 && bluData.length > 10) {
-      //   // console.log(bluData);
-
-      //   else if (bluName.indexOf('Biggie') !== -1 && this.state.devicesType === 'biggie' && bluData.length > 10) {
-      //     function getVal(shi) {
-      //       if (`${shi}`.length < 2) {
-      //         return `0${shi}`
-      //       }
-      //       return `${shi}`
-
-      //     }
-
-      //     let newArr = bluData
-
-      //     let weight = `${getVal(newArr[9].toString(16))}${getVal(newArr[10].toString(16))}`
-      //     weight = parseInt(weight, 16)
-
-
-      //     let impedance = `${getVal(newArr[12].toString(16))}${getVal(newArr[13].toString(16))}`
-      //     impedance = parseInt(impedance, 16)
-
-      //     let arr11 = getVal(newArr[11].toString(16))
-
-      //     weight = weight / Math.pow(10, parseInt(arr11[0]))
-      //     // console.log('重量为', weight);
-      //     let weightUnits = 'kg'
-      //     let sendWeight, biggieDate
-      //     switch (arr11[1]) {
-      //       case '0':
-      //         weightUnits = 'kg';
-      //         sendWeight = weight;
-      //         biggieDate = (weight * 2.2046).toFixed(2)
-      //         break;
-      //       case '1':
-      //         weightUnits = 'lb';
-      //         sendWeight = weight;
-      //         biggieDate = (weight * 2).toFixed(2)
-      //         break;
-      //       default:
-      //         break;
-      //     }
-
-
-      //     if (weight === this.state.biggieDate && this.state.devicesType === 'biggie') {
-
-      //       sameBiggieNum++
-      //       if (!keyboardBiggieFlog && sameBiggieNum === 6) {
-      //         console.log('键盘写入');
-      //         let { units, } = this.state
-
-      //         let weight = units === '℃' ? sendWeight : biggieDate
-      //         ipcRenderer.send('keyboardWriting', weight)
-      //       }
-
-      //     } else {
-      //       sameBiggieNum = 0
-      //       keyboardBiggieFlog = false
-      //     }
-
-
-
-      //     if (weight >= 0) {
-
-      //       this.setState({
-      //         biggieDate,
-      //         impedance,
-      //         sendWeight,
-      //         isHaveBigieDate: true
-      //       })
-      //     }
-
-
-
-
-
-
-      //   }
       // }
+      255: () => {
+
+        let length = newArr.length
+        let frameLength = newArr[1]   //帧长
+        let itemLength = newArr[3] + 1  //数据位的长度   13
+        let dataIndex = 0
+
+        let bluName = ''
+        let bluData = []
+        while (itemLength < length && (itemLength + 3 <= frameLength)) {
+          let itemData = []
+          for (let i = 0; i < newArr[dataIndex + 3] - 1; i++) {
+            itemData.push(dataArr1[i + dataIndex + 5])
+          }
+          // console.log('--剪切的数据---', itemData);
+          switch (newArr[dataIndex + 4]) {
+            case 9:
+            case 8:
+              let str = ''
+              for (let i = 0; i < itemData.length; i++) {
+                let item = parseInt(itemData[i], 16)
+                str += String.fromCharCode(item)
+
+              }
+              bluName = str
+              // console.log('--蓝牙名称:', bluName);
+
+
+              break;
+
+            case 255:
+              bluData = itemData
+              break;
+            case 7: console.log('---UUID'); break;
+            case 239:
+              // console.log('---mac地址'); 
+              break;
+
+            case 3: console.log('----尺子的,不知道什么用'); break;
+
+            default: console.log('直接跳出循环'); return;
+          }
+          dataIndex = itemLength
+          itemLength = itemLength + newArr[dataIndex + 3] + 1
+        }
+        console.log('硬件名称', bluName, '-----硬件数据', bluData);
+
+        // if (bluName.indexOf('C19') !== -1 && bluData.length > 10) {
+
+        //   let weight = `0x${bluData[10]}${bluData[11]}`
+        //   let impedance = `0x${bluData[12]}${bluData[13]}`
+        //   let sendWeight = null
+        //   try {
+        //     //sendWeight的值单位是kg,weight的值为lb(磅)
+        //     sendWeight = parseInt(weight) / 100
+        //     weight = parseInt(weight) / 100 * 2.2046
+        //     if (impedance) {
+        //       impedance = parseInt(impedance)
+        //     }
+        //     weight = weight.toFixed(1)
+
+        //   } catch (error) {
+        //     console.log(error);
+        //   }
+        //   // console.log('----秤', weight, impedance);
+
+        //   if (weight) {
+        //     // console.log(sameBiggieNum, keyboardBiggieFlog);
+        //     if (weight === this.state.biggieDate && this.state.devicesType === 'biggie') {
+
+        //       sameBiggieNum++
+        //       if (!keyboardBiggieFlog && sameBiggieNum === 6) {
+        //         console.log('键盘写入');
+        //         let { units, sendWeight, biggieDate } = this.state
+
+        //         let weight = units === '℃' ? sendWeight : biggieDate
+        //         ipcRenderer.send('keyboardWriting', weight)
+        //       }
+
+        //     } else {
+        //       sameBiggieNum = 0
+        //       keyboardBiggieFlog = false
+        //     }
+
+        //     this.setState({
+        //       biggieDate: weight,
+        //       impedance,
+        //       sendWeight,
+        //       isHaveBigieDate: true
+        //     })
+        //   }
+        // } else if (bluName.indexOf('Tape') !== -1) {
+
+        //   let confirmBtn = parseInt(bluData[8], 16)     //十进制数字，值为160代表尺子拉动，值为161代表按了尺子确认按钮
+        //   let rulerUnitNum = parseInt(bluData[13], 16) //十进制数字，值大于等于80代表单位为in，小于80代表单位为cm
+        //   let newVal = null             //为测量数值，和单位匹配对应
+        //   const ITEMINDEX = 7
+        //   let units = rulerUnitNum >= 80 ? 'in' : 'cm'
+
+        //   //num1和num2组成测得的测量值，num的值为测量数值，单位恒为厘米
+        //   let num1 = bluData[9]
+        //   let num2 = bluData[10]
+        //   let num = getVal(num1, num2)
+        //   try {
+        //     newVal = (parseInt(num) / 100)
+        //     if (newVal < 3) {
+        //       newVal = 0
+        //     }
+
+        //     if (rulerUnitNum >= 80) {
+        //       newVal = (newVal * 0.3937).toFixed(2)
+
+        //     } else {
+        //       newVal = newVal.toFixed(1)
+        //     }
+        //   } catch (error) {
+        //     console.log(error);
+        //   }
+
+
+
+        //   function getVal(shi, xiaoshuo) {
+
+        //     if (shi.length < 2) {
+        //       shi = `0${shi}`
+        //     }
+        //     if (xiaoshuo.length < 2) {
+        //       xiaoshuo = `0${xiaoshuo}`
+        //     }
+        //     return `0x${shi}${xiaoshuo}`
+        //   }
+
+        //   //点击了确认按钮
+        //   let { itemIndex, l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference,
+        //     h2tLength, torsoLength
+        //   } = this.state
+        //   if (confirmBtn === 161) {
+        //     if (!nextFlog) {
+        //       nextFlog = true
+
+        //       if (itemIndex === ITEMINDEX) {
+        //         this._updatePetAttributes()
+        //         return
+        //       }
+        //       let newitemIndex = itemIndex >= ITEMINDEX ? 1 : itemIndex + 1
+
+        //       let textValue = ''
+        //       switch (itemIndex) {
+        //         case 1: textValue = l2rarmDistance; break;
+        //         case 2: textValue = h2tLength; break;
+        //         case 3: textValue = torsoLength; break;
+        //         case 4: textValue = neckCircumference; break;
+        //         case 5: textValue = upperTorsoCircumference; break;
+        //         case 6: textValue = lowerTorsoCircumference; break;
+        //         default:
+        //           break;
+        //       }
+
+        //       if (newVal !== textValue && parseInt(newVal) > 0) {
+        //         switch (itemIndex) {
+        //           case 1: this.setState({ l2rarmDistance: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
+        //           case 2: this.setState({ h2tLength: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
+        //           case 3: this.setState({ torsoLength: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
+        //           case 4: this.setState({ neckCircumference: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
+        //           // case 5: this.setState({ bodyWidth: newVal, itemIndex: newitemIndex, units }); break;
+        //           case 5: this.setState({ upperTorsoCircumference: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
+        //           case 6: this.setState({ lowerTorsoCircumference: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
+        //           default: this.setState({
+        //             itemIndex: newitemIndex
+        //             , rulerUnit: units
+        //           })
+        //             break;
+        //         }
+        //       } else {
+        //         this.setState({
+        //           itemIndex: newitemIndex,
+        //           rulerUnit: units
+        //         })
+        //       }
+
+
+
+        //     }
+        //   } else if (confirmBtn === 160) {
+        //     nextFlog = false
+        //     let textValue = ''
+
+
+        //     switch (itemIndex) {
+        //       case 1: textValue = l2rarmDistance; break;
+        //       case 2: textValue = h2tLength; break;
+        //       case 3: textValue = torsoLength; break;
+        //       case 4: textValue = neckCircumference; break;
+        //       case 5: textValue = upperTorsoCircumference; break;
+        //       case 6: textValue = lowerTorsoCircumference; break;
+        //     }
+
+        //     if (newVal !== textValue && parseInt(newVal) > 0) {
+        //       if (!avoidRepetition) {
+        //         avoidRepetition = true
+        //         this.avoidRepetition = setTimeout(() => {
+        //           avoidRepetition = false
+        //           this.avoidRepetition && clearTimeout(this.avoidRepetition)
+        //         }, 100);
+        //         switch (itemIndex) {
+        //           case 1: this.setState({ l2rarmDistance: newVal, rulerUnit: units }); break;
+        //           case 2: this.setState({ h2tLength: newVal, rulerUnit: units }); break;
+        //           case 3: this.setState({ torsoLength: newVal, rulerUnit: units }); break;
+        //           case 4: this.setState({ neckCircumference: newVal, rulerUnit: units }); break;
+        //           case 5: this.setState({ upperTorsoCircumference: newVal, rulerUnit: units }); break;
+        //           case 6: this.setState({ lowerTorsoCircumference: newVal, rulerUnit: units }); break;
+        //           default:
+        //             break;
+        //         }
+        //       }
+        //     }
+        //   }
+
+        // } else if (bluName.indexOf('Mella Measure') !== -1 && this.state.devicesType === 'biggie') {
+        //   //255
+        //   let { itemIndex, l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference,
+        //     h2tLength, torsoLength
+        //   } = this.state
+        //   // console.log('结束循环蓝牙名称', bluData)
+        //   let confirmBtn = bluData[8]     //十六进制数字，值为01代表尺子拉动，值为x2代表按了尺子确认按钮
+
+        //   let rulerUnitNum = parseInt(bluData[11], 16) //十进制数字，值等于11代表单位为in，00代表单位为cm
+        //   let newVal = null             //为测量数值，和单位匹配对应
+        //   const ITEMINDEX = 6
+        //   let units = rulerUnitNum === 0 ? 'cm' : 'in'
+
+
+        //   if (units !== this.state.rulerUnit) {
+        //     if (units === 'cm') {
+        //       l2rarmDistance = l2rarmDistance ? `${(parseFloat(l2rarmDistance) * 2.54).toFixed(1)}` : ''
+        //       neckCircumference = neckCircumference ? `${(parseFloat(neckCircumference) * 2.54).toFixed(1)}` : ''
+        //       upperTorsoCircumference = upperTorsoCircumference ? `${(parseFloat(upperTorsoCircumference) * 2.54).toFixed(1)}` : ''
+        //       lowerTorsoCircumference = lowerTorsoCircumference ? `${(parseFloat(lowerTorsoCircumference) * 2.54).toFixed(1)}` : ''
+        //       h2tLength = h2tLength ? `${(parseFloat(h2tLength) * 2.54).toFixed(1)}` : ''
+        //       torsoLength = torsoLength ? `${(parseFloat(torsoLength) * 2.54).toFixed(1)}` : ''
+        //     } else {
+        //       l2rarmDistance = l2rarmDistance ? `${(parseFloat(l2rarmDistance) / 2.54).toFixed(2)}` : ''
+        //       neckCircumference = neckCircumference ? `${(parseFloat(neckCircumference) / 2.54).toFixed(2)}` : ''
+        //       upperTorsoCircumference = upperTorsoCircumference ? `${(parseFloat(upperTorsoCircumference) / 2.54).toFixed(2)}` : ''
+        //       lowerTorsoCircumference = lowerTorsoCircumference ? `${(parseFloat(lowerTorsoCircumference) / 2.54).toFixed(2)}` : ''
+        //       h2tLength = h2tLength ? `${(parseFloat(h2tLength) / 2.54).toFixed(2)}` : ''
+        //       torsoLength = torsoLength ? `${(parseFloat(torsoLength) / 2.54).toFixed(2)}` : ''
+        //     }
+
+        //     this.setState({
+        //       l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference,
+        //       h2tLength, torsoLength,
+        //       rulerUnit: units
+        //     })
+
+
+        //   }
+
+        //   //num1和num2组成测得的测量值，num的值为测量数值，单位恒为厘米
+        //   let num1 = bluData[9]
+        //   let num2 = bluData[10]
+        //   let num = getVal(num1, num2)
+        //   try {
+        //     newVal = parseFloat(num)
+        //     if (rulerUnitNum === 17) {
+        //       newVal = newVal.toFixed(2)
+
+        //     } else {
+        //       newVal = newVal.toFixed(1)
+        //     }
+        //   } catch (error) {
+        //     console.log(error);
+        //   }
+
+
+
+        //   function getVal(shi, xiaoshuo) {
+        //     let num1 = parseInt(shi, 16)
+        //     let num2 = parseInt(xiaoshuo, 16)
+
+        //     return `${num1}.${num2}`
+        //   }
+
+        //   //点击了确认按钮
+
+        //   if (confirmBtn[1] === '2' && confirmBtn[0] !== confirmBtnFlog) {
+        //     confirmBtnFlog = confirmBtn[0]
+        //     if (!nextFlog) {
+        //       nextFlog = true
+
+        //       if (itemIndex === ITEMINDEX) {
+        //         this._updatePetAttributes()
+        //         return
+        //       }
+        //       let newitemIndex = itemIndex >= ITEMINDEX ? 1 : itemIndex + 1
+
+        //       let textValue = ''
+        //       try {
+        //         switch (itemIndex) {
+        //           case 1: textValue = l2rarmDistance; this.input2 && this.input2.focus(); break;
+        //           case 2: textValue = h2tLength; this.input3 && this.input3.focus(); break;
+        //           case 3: textValue = torsoLength; this.input4 && this.input4.focus(); break;
+        //           case 4: textValue = neckCircumference; this.input5 && this.input5.focus(); break;
+        //           case 5: textValue = upperTorsoCircumference; this.input6 && this.input6.focus(); break;
+        //           case 6: textValue = lowerTorsoCircumference; this.input7 && this.input7.focus(); break;
+        //           default:
+        //             break;
+        //         }
+        //       } catch (error) {
+        //         console.log(error);
+        //       }
+
+
+
+
+        //       if (newVal !== textValue && parseInt(newVal) >= 0) {
+        //         switch (itemIndex) {
+        //           case 1: this.setState({ l2rarmDistance: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
+        //           case 2: this.setState({ h2tLength: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
+        //           case 3: this.setState({ torsoLength: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
+        //           case 4: this.setState({ neckCircumference: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
+        //           // case 5: this.setState({ bodyWidth: newVal, itemIndex: newitemIndex, units }); break;
+        //           case 5: this.setState({ upperTorsoCircumference: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
+        //           case 6: this.setState({ lowerTorsoCircumference: newVal, itemIndex: newitemIndex, rulerUnit: units }); break;
+        //           default: this.setState({
+        //             itemIndex: newitemIndex
+        //             , rulerUnit: units
+        //           })
+        //             break;
+        //         }
+        //       } else {
+        //         this.setState({
+        //           itemIndex: newitemIndex,
+        //           rulerUnit: units
+        //         })
+        //       }
+
+
+
+        //     }
+        //   } else if (confirmBtn === '01') {
+        //     nextFlog = false
+        //     let textValue = ''
+
+
+        //     switch (itemIndex) {
+        //       case 1: textValue = l2rarmDistance; break;
+        //       case 2: textValue = h2tLength; break;
+        //       case 3: textValue = torsoLength; break;
+        //       case 4: textValue = neckCircumference; break;
+        //       case 5: textValue = upperTorsoCircumference; break;
+        //       case 6: textValue = lowerTorsoCircumference; break;
+        //     }
+
+        //     if (newVal !== textValue && parseInt(newVal) >= 0) {
+        //       if (!avoidRepetition) {
+        //         avoidRepetition = true
+        //         this.avoidRepetition = setTimeout(() => {
+        //           avoidRepetition = false
+        //           this.avoidRepetition && clearTimeout(this.avoidRepetition)
+        //         }, 100);
+        //         try {
+        //           switch (itemIndex) {
+        //             case 1: this.setState({ l2rarmDistance: newVal, rulerUnit: units }); this.input1 && this.input1.focus(); break;
+        //             case 2: this.setState({ h2tLength: newVal, rulerUnit: units }); this.input2 && this.input2.focus(); break;
+        //             case 3: this.setState({ torsoLength: newVal, rulerUnit: units }); this.input3 && this.input3.focus(); break;
+        //             case 4: this.setState({ neckCircumference: newVal, rulerUnit: units }); this.input4 && this.input4.focus(); break;
+        //             case 5: this.setState({ upperTorsoCircumference: newVal, rulerUnit: units }); this.input5 && this.input5.focus(); break;
+        //             case 6: this.setState({ lowerTorsoCircumference: newVal, rulerUnit: units }); this.input6 && this.input6.focus(); break;
+        //             default:
+        //               break;
+        //           }
+        //         } catch (error) {
+        //           console.log(error);
+        //         }
+
+        //       }
+        //     }
+        //   }
+
+        // }
+
+
+
+
+        // else if (bluName.indexOf('Biggie') !== -1 && this.state.devicesType === 'biggie' && bluData.length > 10) {
+        //   function getVal(shi) {
+        //     if (`${shi}`.length < 2) {
+        //       return `0${shi}`
+        //     }
+        //     return `${shi}`
+
+        //   }
+
+        //   let newArr = bluData
+
+        //   let weight = `${getVal(newArr[9].toString(16))}${getVal(newArr[10].toString(16))}`
+        //   weight = parseInt(weight, 16)
+
+
+        //   let impedance = `${getVal(newArr[12].toString(16))}${getVal(newArr[13].toString(16))}`
+        //   impedance = parseInt(impedance, 16)
+
+        //   let arr11 = getVal(newArr[11].toString(16))
+
+        //   weight = weight / Math.pow(10, parseInt(arr11[0]))
+        //   // console.log('重量为', weight);
+        //   let weightUnits = 'kg'
+        //   let sendWeight, biggieDate
+        //   switch (arr11[1]) {
+        //     case '0':
+        //       weightUnits = 'kg';
+        //       sendWeight = weight;
+        //       biggieDate = (weight * 2.2046).toFixed(2)
+        //       break;
+        //     case '1':
+        //       weightUnits = 'lb';
+        //       sendWeight = weight;
+        //       biggieDate = (weight * 2).toFixed(2)
+        //       break;
+        //     default:
+        //       break;
+        //   }
+
+
+        //   if (weight === this.state.biggieDate && this.state.devicesType === 'biggie') {
+
+        //     sameBiggieNum++
+        //     if (!keyboardBiggieFlog && sameBiggieNum === 6) {
+        //       console.log('键盘写入');
+        //       let { units, } = this.state
+
+        //       let weight = units === '℃' ? sendWeight : biggieDate
+        //       ipcRenderer.send('keyboardWriting', weight)
+        //     }
+
+        //   } else {
+        //     sameBiggieNum = 0
+        //     keyboardBiggieFlog = false
+        //   }
+
+
+
+        //   if (weight >= 0) {
+
+        //     this.setState({
+        //       biggieDate,
+        //       impedance,
+        //       sendWeight,
+        //       isHaveBigieDate: true
+        //     })
+        //   }
+
+
+
+
+
+
+        // }
+      }
+      ,
+      182: () => {
+        console.log('打开了底座通信');
+      }
 
 
 
@@ -960,6 +968,7 @@ class App extends Component {
     //   }
     // ]
     let devicesTypeList = electronStore.get(`${storage.lastOrganization}-${storage.userId}-devicesTypeList`) || []
+    console.log('获取的设备列表', devicesTypeList);
     if (devicesTypeList.length === 0) {
       devicesTypeList.push(
         {
@@ -973,6 +982,25 @@ class App extends Component {
             }
           ]
         })
+
+      devicesTypeList.push({
+        type: 'biggie',
+        devices: [
+          {
+            name: 'biggie',
+            mac: '',
+            deviceType: 'biggie',
+            examRoom: '',
+          },
+          {
+            name: 'biggie002',
+            mac: '1253',
+            deviceType: 'biggie',
+            examRoom: '',
+          }
+        ]
+      })
+
     }
 
 
@@ -987,6 +1015,35 @@ class App extends Component {
       devicesTypeList,
       showHardWareTypeList
     })
+  }
+  body = () => {
+
+    let { selectHardwareType } = this.props
+    let { bodyHeight } = this.state
+    let measurePage = null
+    switch (selectHardwareType) {
+      case 'mellaPro':
+        measurePage = <TemperaturePage />
+
+        break;
+      case 'biggie':
+        measurePage = <BiggiePage />
+
+      default:
+        break;
+    }
+    if (selectHardwareType === 'add') {
+      return <AddDevice
+        bodyHeight={bodyHeight}
+      />
+    } else {
+      return (<>
+        <HardAndPetsUI
+          bodyHeight={bodyHeight}
+        />
+        {measurePage}
+      </>)
+    }
   }
 
   render() {
@@ -1010,18 +1067,8 @@ class App extends Component {
             bodyHeight={bodyHeight}
             devicesTypeList={this.state.showHardWareTypeList}
           />
-          {this.props.selectHardwareType === 'add' ?
-            <AddDevice
-              bodyHeight={bodyHeight}
-            /> :
-            <>
-              <HardAndPetsUI
-                bodyHeight={bodyHeight}
-              />
-              <TemperaturePage />
-            </>
+          {this.body()}
 
-          }
 
         </div>
       </div>
@@ -1046,5 +1093,6 @@ export default connect(
     setMellaMeasureValueFun,
     setMellaPredictValueFun,
     setMellaMeasurePartFun,
+    setMellaDeviceIdFun
   }
 )(App)
