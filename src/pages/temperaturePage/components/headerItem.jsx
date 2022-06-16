@@ -1,8 +1,9 @@
 import React, {
     useEffect,
     useState,
+    useRef
 } from 'react';
-import { Image, Layout, Dropdown, Col, Row, Avatar, Space, Card, Menu ,Progress } from 'antd';
+import { Image, Layout, Dropdown, Col, Row, Avatar, Space, Card, Menu, Progress } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import Charlie from './../../../assets/img/Charlie.png';
 import BluetoothNotConnected from './../../../assets/img/BluetoothNotConnected.png';
@@ -11,7 +12,15 @@ import redcat from './../../../assets/images/redcat.png';
 import reddog from './../../../assets/images/reddog.png';
 import redother from './../../../assets/images/redother.png';
 import { connect } from 'react-redux';
-import { selectHardwareModalShowFun, petSortTypeFun, petDetailInfoFun } from '../../../store/actions';
+import {
+    selectHardwareModalShowFun,
+    petSortTypeFun,
+    petDetailInfoFun,
+    setMellaConnectStatusFun,
+    setMellaMeasureValueFun,
+    setMellaPredictValueFun,
+    setMellaMeasurePartFun
+} from '../../../store/actions';
 import moment from 'moment'
 import _ from 'lodash';
 
@@ -19,8 +28,16 @@ import './headerItem.less';
 
 const { Header } = Layout;
 
-const HeaderItem = ({ petMessage }) => {
+const HeaderItem = ({ petMessage, hardwareMessage }) => {
     let { petName, patientId, firstName, lastName, gender, breedName, birthday, weight, url, petSpeciesBreedId } = petMessage;
+    let { mellaConnectStatus } = hardwareMessage;
+    const [value, setValue] = useState(0);
+    const [timers, setTimers] = useState([]);
+    const saveCallBack = useRef();
+    const callBack = () => {
+        const random = (Math.random() * 10) | 0;
+        setValue(value + random);
+    };
     //展示宠物照片方法
     const petPicture = (size) => {
         if (_.isEmpty(url)) {
@@ -97,6 +114,24 @@ const HeaderItem = ({ petMessage }) => {
 
         );
     }
+
+    useEffect(() => {
+        saveCallBack.current = callBack;
+        return () => { };
+    });
+
+    useEffect(() => {
+        const tick = () => {
+            saveCallBack.current();
+        };
+        const timer = setInterval(tick, 1000);
+        timers.push(timer);
+        setTimers(timers);
+
+        return () => {
+            clearInterval(timer);
+        };
+    }, [])
     return (
         <>
             <Header className='headerBox'>
@@ -118,7 +153,15 @@ const HeaderItem = ({ petMessage }) => {
                     {/*头部右侧 */}
                     <Col flex={1}>
                         <div className='linkStateImageBox'>
-                            <Progress width={48} type="circle" percent={100} format={() => (<Avatar size={40} src={AxillaryBluetooth} />)}/>
+                            {
+                                _.isEqual(mellaConnectStatus, 'disconnected') ?
+                                    (
+                                        <Avatar size={40} src={BluetoothNotConnected} />
+                                    ) :
+                                    (
+                                        <Progress width={48} type="circle" percent={value} format={() => (<Avatar size={40} src={AxillaryBluetooth} />)} />
+                                    )
+                            }
                         </div>
                     </Col>
                 </Row>
@@ -128,7 +171,16 @@ const HeaderItem = ({ petMessage }) => {
 };
 export default connect(
     state => ({
-        petMessage: state.petReduce.petDetailInfo
+        petMessage: state.petReduce.petDetailInfo,
+        hardwareMessage: state.hardwareReduce,
     }),
-    { selectHardwareModalShowFun, petSortTypeFun, petDetailInfoFun }
+    {
+        selectHardwareModalShowFun,
+        petSortTypeFun,
+        petDetailInfoFun,
+        setMellaConnectStatusFun,
+        setMellaMeasureValueFun,
+        setMellaPredictValueFun,
+        setMellaMeasurePartFun
+    }
 )(HeaderItem);
