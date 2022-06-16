@@ -239,9 +239,9 @@ class App extends Component {
           let { units } = this.state
           let Temp = this.props.mellaMeasureValue
           let temp = units === '℉' ? parseInt((Temp * 1.8 + 32) * 10) / 10 : Temp.toFixed(1)
-          if (this.state.devicesType === 'mella') {
-            ipcRenderer.send('keyboardWriting', temp)
-          }
+          // if (this.state.devicesType === 'mella') {
+          //   ipcRenderer.send('keyboardWriting', temp)
+          // }
           this.time193 && clearTimeout(this.time193)
 
         }, 1000);

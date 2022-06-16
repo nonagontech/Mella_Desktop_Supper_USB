@@ -38,7 +38,13 @@ const Measurement = ({ petMessage, hardwareMessage }) => {
     //圆滑里面的文字
     const ProgressTitle = (percent) => {
         return (
-            <p className='ProgressTitle'>{percent} ℃</p>
+            <>
+                <p className='ProgressTitle'>{percent}
+                    <span className='symbol'>℃</span>
+                </p>
+                <p className='ProgressTitle'>Measuring</p>
+            </>
+
         );
     }
     //图片切换
