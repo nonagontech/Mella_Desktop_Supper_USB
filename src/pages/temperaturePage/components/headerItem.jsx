@@ -123,6 +123,7 @@ const HeaderItem = ({ petMessage, hardwareMessage }) => {
             sampling_rate: '135ms'
         }
         let url = '/clinical/catv12Predict';
+        console.log('-----调用接口入参', parame);
         fetchRequest(url, 'POST', parame)
             .then((res) => {
                 console.log('res', res);
@@ -144,21 +145,21 @@ const HeaderItem = ({ petMessage, hardwareMessage }) => {
                     const timeID = setTimeout(() => {
                         ipcRenderer.send('usbdata', { command: '42', arr: [intNum, flotNum] })
                         timeID && clearTimeout(timeID)
-                      }, 10)
-                }else{
+                    }, 10)
+                } else {
                     const timeID = setTimeout(() => {
                         // this.sendData('41', [])
                         ipcRenderer.send('usbdata', { command: '41', arr: [] })
-            
+
                         clearTimeout(timeID)
-                      }, 10)
+                    }, 10)
                 }
-                
-            }).catch((err) =>{
-                console.log('err',err);
+
+            }).catch((err) => {
+                console.log('err', err);
             })
 
-            
+
     }
 
     useEffect(() => {
@@ -167,7 +168,7 @@ const HeaderItem = ({ petMessage, hardwareMessage }) => {
             prediction()
         }
         return () => { };
-    });
+    }, [value]);
 
     useEffect(() => {
         console.log('进入定时器');
@@ -186,7 +187,6 @@ const HeaderItem = ({ petMessage, hardwareMessage }) => {
         };
     }, [mellaConnectStatus]);
 
-    console.log('value', value);
 
     return (
         <>

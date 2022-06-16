@@ -11,5 +11,18 @@ export function stopBubble(e) {
         window.event.cancelBubble = true;
     }
 }
+//比较两个对象里的内容是否相同,不使用JSON
+export function compareObject(obj1, obj2) {
+    for (let key in obj1) {
+        if (obj1[key] !== obj2[key]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+
+
 
 // export stopBubble
