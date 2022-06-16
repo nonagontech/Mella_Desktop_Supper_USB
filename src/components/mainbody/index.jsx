@@ -347,9 +347,6 @@ class App extends Component {
             setMellaMeasurePartFun('耳温')
           }
         }
-
-
-
       },
       7: () => {  //发什么收什么，需要去重新插拔底座
         console.log('重新插拔底座');
