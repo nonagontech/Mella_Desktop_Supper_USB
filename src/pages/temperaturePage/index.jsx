@@ -17,6 +17,7 @@ import {
     setMellaMeasurePartFun
 } from '../../store/actions';
 import _ from 'lodash';
+import HeaderItem from './components/headerItem';
 import './index.less';
 
 const { Content, Header } = Layout;
@@ -37,23 +38,22 @@ const TemperaturePage = ({ petMessage, hardwareMessage }) => {
             default:
                 break;
         }
-
     }
-    useEffect(() => {
-
-        return (() => { })
-    }, [mellaConnectStatus])
     return (
-        <Layout className='homeBox'>
-            {
-                _.isEmpty(petMessage) ?
-                    (
-                        <div className='chackPatientBox'>
-                            <p className='chackPatientTitle'>Select a patient</p>
-                        </div>
-                    ) : (changePage())
-            }
-        </Layout>
+        <>
+            
+            <Layout className='homeBox'>
+            <HeaderItem/>
+                {
+                    _.isEmpty(petMessage) ?
+                        (
+                            <div className='chackPatientBox'>
+                                <p className='chackPatientTitle'>Select a patient</p>
+                            </div>
+                        ) : (changePage())
+                }
+            </Layout>
+        </>
     );
 };
 
