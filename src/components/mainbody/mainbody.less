@@ -1,10 +1,10 @@
-.test{
+.test {
   width: 100%;
   background-color: #e1206d;
 }
 
 
-#mainbody{
+#mainbody {
   font-family: Arial;
   display: flex;
   flex-direction: column;
@@ -14,23 +14,26 @@
   height: 100%;
   position: relative;
   background-color: pink;
-  .mainbody-body{
+
+  .mainbody-body {
     width: 100%;
     height: 100%;
     background-color: hotpink;
     display: flex;
     flex-direction: row;
   }
-  .hardwareType{
+
+  .hardwareType {
     background-color: #E7E7E7;
     border-right: 2px solid #979797;
 
-    ul{
+    ul {
       list-style: none;
       padding: 0;
       margin: 0;
       overflow-y: auto;
-      li{
+
+      li {
         padding: 0;
         margin: 0;
         display: flex;
@@ -41,10 +44,12 @@
       }
     }
   }
-  .deviceAndPets{
+
+  .deviceAndPets {
     background-color: #E7E7E7;
     border-right: 2px solid #979797;
-    .deviceAndPets-title{
+
+    .deviceAndPets-title {
       width: 100%;
       // background-color: pink;
       display: flex;
@@ -55,23 +60,26 @@
       cursor: pointer;
       -webkit-app-region: no-drag;
       position: relative;
-      .devicesName{
+
+      .devicesName {
         // width: 70%;
         text-align: right;
-        color:'#141414';
+        color: '#141414';
         font-weight: bold;
         overflow: hidden;
         text-overflow: ellipsis;
         position: relative;
-        
-       
+
+
       }
-      .imgBox{
+
+      .imgBox {
         // width: 30%;
-       
-        
+
+
       }
-      .hardList{
+
+      .hardList {
         position: absolute;
         top: 0;
         left: 0;
@@ -82,12 +90,13 @@
         box-shadow: 2px 4px 10px #979797;
 
 
-        ul{
-          padding:0;
+        ul {
+          padding: 0;
           margin: 0;
           width: 100%;
           list-style: none;
-          li{
+
+          li {
             width: 100%;
             padding: 0;
             margin: 0;
@@ -97,40 +106,44 @@
             cursor: pointer;
             -webkit-app-region: no-drag;
             border-bottom: 1px solid #979797;
-            .hardListInfo{
+
+            .hardListInfo {
               width: 100%;
               display: flex;
               flex-direction: row;
               align-items: center;
               justify-content: space-between;
-              
-              .deviceL{
+
+              .deviceL {
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 flex-direction: row;
-                .hardIcon{
+
+                .hardIcon {
                   display: flex;
                   align-items: center;
                   justify-content: center;
                 }
               }
-              
-              .deviceInfo{
-                .deviceName{
+
+              .deviceInfo {
+                .deviceName {
                   color: #1a1a1a;
-                  font-size:medium;
+                  font-size: medium;
 
                 }
-             
+
               }
-              .deviceR{
+
+              .deviceR {
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 height: 100%;
                 position: relative;
-                .seleIcon{
+
+                .seleIcon {
                   border-radius: 80px;
                   display: flex;
                   align-items: center;
@@ -144,82 +157,94 @@
 
               }
             }
-            
+
           }
         }
+
         .addNewDevice {
           display: flex;
           align-items: center;
-          justify-content:space-between;
+          justify-content: space-between;
           border-bottom: 1px solid #979797;
           cursor: pointer;
           -webkit-app-region: no-drag;
-          .addNewDeviceText{
+
+          .addNewDeviceText {
             color: #1a1a1a;
             font-weight: 700;
           }
         }
       }
-      
+
     }
-    .PetUI{
+
+    .PetUI {
       width: 100%;
       display: flex;
       display: flex;
       align-items: flex-start;
       flex-direction: column;
-      .title{
+
+      .title {
         display: flex;
         flex-direction: row;
         align-items: center;
         // justify-content:center;
         width: 100%;
-        .titleText{
+
+        .titleText {
           font-weight: bold;
           color: #141414;
 
         }
 
       }
-      .sort{
-        .sortBox{
+
+      .sort {
+        .sortBox {
           display: flex;
           flex-direction: row;
           align-items: center;
           color: #141414;
         }
       }
-      .petList{
+
+      .petList {
         width: 100%;
         display: flex;
-        ul{
+
+        ul {
           padding: 0;
           margin: 0;
           width: 100%;
           list-style: none;
           overflow-y: auto;
-          li{
+
+          li {
             width: 100%;
             padding: 0;
             margin: 0;
-            .petItem{
+
+            .petItem {
               width: 100%;
               background-color: #e1206d;
               color: #141414;
 
             }
-            
+
           }
         }
       }
-      .walkBtn{
+
+      .walkBtn {
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
         -webkit-app-region: no-drag;
-        .walkbtnBox{
+
+        .walkbtnBox {
           width: 80%;
           background-color: #e1206d;
           border-radius: 80px;
@@ -232,4 +257,73 @@
     }
 
   }
+
+  .addDevice {
+    display: flex;
+    flex: 1;
+    // background-color: pink;
+    background-color: #fff;
+    flex-direction: column;
+
+    .addDeviceTitle {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      // justify-content: center;
+      border-bottom: 2px solid #979797;
+      position: relative;
+      color: #141414;
+      font-weight: bold;
+      font-size: larger;
+    }
+
+    .addDeviceContent {
+      display: flex;
+      flex: 1;
+      // background-color: hotpink;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      // justify-content: center;
+
+    }
+
+    .openText {
+      text-align: center;
+      color: #141414;
+    }
+
+    .btn {
+      border-radius: 80px;
+      background-color: #e1206d;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .add {
+      font-weight: bold;
+    }
+
+    .item {
+      ul {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        list-style: none;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .searchType-item {
+          cursor: pointer;
+          -webkit-app-region: no-drag;
+        }
+
+      }
+    }
+  }
+
 }

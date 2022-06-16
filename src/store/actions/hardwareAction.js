@@ -10,6 +10,8 @@ import {
   MELLA_MEASURE_VALUE,
   MELLA_PREDICT_VALUE,
   MELLA_MEASURE_PART,
+  SELECT_HARDWARE_TYPE
+
 
 } from './../actionTypes'
 
@@ -23,6 +25,8 @@ const getAction = (data, type) => {
 //点击了导航栏的硬件种类，获取到硬件种类的index和种类下对应的硬件列表
 export const changeselectHardwareIndex = (data) => getAction(data, SELECT_HARDWARE_INDEX)
 export const selectHardwareList = (data = {}) => getAction(data, SELECT_HARDWARE_LIST)
+//设置选择硬件的类型
+export const setSelectHardwareType = (data) => getAction(data, SELECT_HARDWARE_TYPE)
 //点击了硬件列表的硬件，获取到硬件的信息
 export const selectHardwareInfoFun = (data = {}) => getAction(data, SELECT_HARDWARE_INFO)
 //是否显示硬件弹框
@@ -37,6 +41,7 @@ export const setMellaMeasureValueFun = (data = {}) => getAction(data, MELLA_MEAS
 export const setMellaPredictValueFun = (data = {}) => getAction(data, MELLA_PREDICT_VALUE)
 //设置mella测量部位
 export const setMellaMeasurePartFun = (data = {}) => getAction(data, MELLA_MEASURE_PART)
+
 
 
 

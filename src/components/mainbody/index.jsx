@@ -18,6 +18,7 @@ import {
 import './mainbody.less'
 import { message } from 'antd';
 import electronStore from '../../utils/electronStore';
+import AddDevice from './AddDevice';
 
 let ipcRenderer = window.require('electron').ipcRenderer
 let isMeasure = false //是否正在测量,用于判断是否需要发送指定指令给USB,查看硬件是否连接
@@ -29,6 +30,7 @@ let is97Time = null //为了防抖，因为有时候断开连接和连接成功�
 //用于预测的东西
 let clinicalYuce = [], clinicalIndex = 0
 
+let storage = window.localStorage;
 class App extends Component {
   state = {
     //body部分窗口高度
@@ -882,86 +884,104 @@ class App extends Component {
   }
   //获取设备类型
   getDevicesType = () => {
-    let devicesTypeList = [
-      {
-        type: 'mellaPro',
-        devices: [
-          {
-            name: 'mellaPro',
-            mac: '',
-            deviceType: 'mellaPro',
-            examRoom: '',
-          }
-        ]
-      },
-      {
-        type: 'biggie',
-        devices: [
-          {
-            name: 'biggie',
-            mac: '',
-            deviceType: 'biggie',
-            examRoom: '',
-          },
-          {
-            name: 'biggie002',
-            mac: '1253',
-            deviceType: 'biggie',
-            examRoom: '',
-          }
-        ]
-      },
-      {
-        type: 'otterEQ',
-        devices: [
-          {
-            name: 'otterEQ',
-            mac: '',
-            deviceType: 'otterEQ',
-            examRoom: '',
-          }
-        ]
-      },
+    // let devicesTypeList = [
+    //   {
+    //     type: 'mellaPro',
+    //     devices: [
+    //       {
+    //         name: 'mellaPro',
+    //         mac: '',
+    //         deviceType: 'mellaPro',
+    //         examRoom: '',
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     type: 'biggie',
+    //     devices: [
+    //       {
+    //         name: 'biggie',
+    //         mac: '',
+    //         deviceType: 'biggie',
+    //         examRoom: '',
+    //       },
+    //       {
+    //         name: 'biggie002',
+    //         mac: '1253',
+    //         deviceType: 'biggie',
+    //         examRoom: '',
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     type: 'otterEQ',
+    //     devices: [
+    //       {
+    //         name: 'otterEQ',
+    //         mac: '',
+    //         deviceType: 'otterEQ',
+    //         examRoom: '',
+    //       }
+    //     ]
+    //   },
 
-      {
-        type: 'rfid',
-        devices: [
-          {
-            name: 'rfid',
-            mac: '',
-            deviceType: 'rfid',
-            examRoom: '',
-          }
-        ]
-      },
-      {
-        type: 'tape',
-        devices: [
-          {
-            name: 'tape',
-            mac: '',
-            deviceType: 'tape',
-            examRoom: '',
-          }
-        ]
-      },
-      {
-        type: 'maeBowl',
-        devices: [
-          {
-            name: 'maeBowl',
-            mac: '',
-            deviceType: 'maeBowl',
-            examRoom: '',
-          }
-        ]
-      }
-    ]
+    //   {
+    //     type: 'rfid',
+    //     devices: [
+    //       {
+    //         name: 'rfid',
+    //         mac: '',
+    //         deviceType: 'rfid',
+    //         examRoom: '',
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     type: 'tape',
+    //     devices: [
+    //       {
+    //         name: 'tape',
+    //         mac: '',
+    //         deviceType: 'tape',
+    //         examRoom: '',
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     type: 'maeBowl',
+    //     devices: [
+    //       {
+    //         name: 'maeBowl',
+    //         mac: '',
+    //         deviceType: 'maeBowl',
+    //         examRoom: '',
+    //       }
+    //     ]
+    //   }
+    // ]
+    let devicesTypeList = electronStore.get(`${storage.lastOrganization}-${storage.userId}-devicesTypeList`) || []
+    if (devicesTypeList.length === 0) {
+      devicesTypeList.push(
+        {
+          type: 'mellaPro',
+          devices: [
+            {
+              name: 'mellaPro',
+              mac: '',
+              deviceType: 'mellaPro',
+              examRoom: '',
+            }
+          ]
+        })
+    }
+
+
     let showHardWareTypeList = [].concat(devicesTypeList)
     showHardWareTypeList.push({
       type: 'add',
       devices: []
     })
+
 
     this.setState({
       devicesTypeList,
@@ -985,14 +1005,24 @@ class App extends Component {
         <div
           className="mainbody-body"
         >
+
           <HardWareTypeUI
             bodyHeight={bodyHeight}
             devicesTypeList={this.state.showHardWareTypeList}
           />
-          <HardAndPetsUI
-            bodyHeight={bodyHeight}
-          />
-          <TemperaturePage />
+          {this.props.selectHardwareType === 'add' ?
+            <AddDevice
+              bodyHeight={bodyHeight}
+            /> :
+            <>
+              <HardAndPetsUI
+                bodyHeight={bodyHeight}
+              />
+              <TemperaturePage />
+            </>
+
+          }
+
         </div>
       </div>
     )
@@ -1004,6 +1034,8 @@ export default connect(
     mellaConnectStatus: state.hardwareReduce.mellaConnectStatus,
     mellaMeasureValue: state.hardwareReduce.mellaMeasureValue,
     mellaMeasurePart: state.hardwareReduce.mellaMeasurePart,
+    selectHardwareType: state.hardwareReduce.selectHardwareType,
+
 
   }),
   {
