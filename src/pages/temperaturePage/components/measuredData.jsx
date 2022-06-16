@@ -55,7 +55,7 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
             dataIndex: 'temperature',
             with: 150,
             render: (text, record) => (
-                <Badge color="#87d068" text={text} />
+                <Badge color={color()} text={text} />
             ),
         },
         {
@@ -97,6 +97,16 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
             ),
         },
     ]
+    //根据温度判断指示文字颜色
+    const color = () => {
+        if (mellaMeasureValue > 40) {
+            return '#e1206d'
+        } else if (_.inRange(_.round(mellaMeasureValue), 38, 40)) {
+            return '#58bde6'
+        } else {
+            return '#98da86'
+        }
+    }
     //圆滑里面的文字
     const ProgressTitle = (percent) => {
         //根据温度判断指示文字
@@ -109,22 +119,12 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
                 return 'Low'
             }
         }
-        //根据温度判断指示文字颜色
-        const color = () => {
-            if (mellaMeasureValue > 40) {
-                return '#e1206d'
-            } else if (_.inRange(_.round(mellaMeasureValue), 38, 40)) {
-                return '#58bde6'
-            } else {
-                return '#98da86'
-            }
-        }
         return (
             <>
-                <p  style={{color:{color}}} className='ProgressTitle'>{percent}
-                    <span style={{color:{color}}} className='symbol'>℃</span>
+                <p style={{ color: { color } }} className='ProgressTitle'>{percent}
+                    <span style={{ color: { color } }} className='symbol'>℃</span>
                 </p>
-                <p style={{color:{color}}} className='ProgressTitle'>{title()}</p>
+                <p style={{ color: { color } }} className='ProgressTitle'>{title()}</p>
             </>
 
         );
