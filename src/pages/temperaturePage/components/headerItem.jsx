@@ -21,7 +21,8 @@ import {
     setMellaPredictValueFun,
     setMellaMeasurePartFun
 } from '../../../store/actions';
-import moment from 'moment'
+import moment from 'moment';
+import { fetchRequest } from '../../../utils/FetchUtil1'
 import _ from 'lodash';
 
 import './headerItem.less';
@@ -30,12 +31,11 @@ const { Header } = Layout;
 
 const HeaderItem = ({ petMessage, hardwareMessage }) => {
     let { petName, patientId, firstName, lastName, gender, breedName, birthday, weight, url, petSpeciesBreedId } = petMessage;
-    let { mellaConnectStatus } = hardwareMessage;
+    let { mellaConnectStatus, mellaPredictValue } = hardwareMessage;
     const [value, setValue] = useState(0);
-    const [timers, setTimers] = useState([]);
     const saveCallBack = useRef();
     const callBack = () => {
-        const random = (Math.random() * 10) | 0;
+        const random = 7;
         setValue(value + random);
     };
     //展示宠物照片方法
@@ -114,24 +114,80 @@ const HeaderItem = ({ petMessage, hardwareMessage }) => {
 
         );
     }
+    //超过15s后调用接口
+    const prediction = () => {
+        let parame = {
+            ambient_temperature: 17,
+            data: mellaPredictValue,
+            deviceId: '11111',
+            sampling_rate: '135ms'
+        }
+        let url = '/clinical/catv12Predict';
+        fetchRequest(url, 'POST', parame)
+            .then((res) => {
+                console.log('res', res);
+                let ipcRenderer = window.electron.ipcRenderer
+                if (res.message === 'Success') {
+                    let prediction = res.result.prediction.toFixed(2)
+                    console.log(prediction);
+
+
+                    let tempArr = prediction.split('.')
+                    let intNum = tempArr[0]
+                    let flotNum = tempArr[1]
+                    if (intNum.length < 2) {
+                        intNum = '0' + intNum
+                    }
+                    if (flotNum.length < 2) {
+                        flotNum = '0' + flotNum
+                    }
+                    const timeID = setTimeout(() => {
+                        ipcRenderer.send('usbdata', { command: '42', arr: [intNum, flotNum] })
+                        timeID && clearTimeout(timeID)
+                      }, 10)
+                }else{
+                    const timeID = setTimeout(() => {
+                        // this.sendData('41', [])
+                        ipcRenderer.send('usbdata', { command: '41', arr: [] })
+            
+                        clearTimeout(timeID)
+                      }, 10)
+                }
+                
+            }).catch((err) =>{
+                console.log('err',err);
+            })
+
+            
+    }
 
     useEffect(() => {
         saveCallBack.current = callBack;
+        if (value === 105) {
+            prediction()
+        }
         return () => { };
     });
 
     useEffect(() => {
+        console.log('进入定时器');
         const tick = () => {
             saveCallBack.current();
         };
-        const timer = setInterval(tick, 1000);
-        timers.push(timer);
-        setTimers(timers);
-
+        let timer = null;
+        if (mellaConnectStatus === 'isMeasuring') {
+            setValue(0);
+            timer = setInterval(tick, 1000);
+        } else {
+            clearInterval(timer);
+        }
         return () => {
             clearInterval(timer);
         };
-    }, [])
+    }, [mellaConnectStatus]);
+
+    console.log('value', value);
+
     return (
         <>
             <Header className='headerBox'>

@@ -16,7 +16,7 @@ import {
     setMellaMeasurePartFun
 } from '../../../store/actions';
 import _ from 'lodash';
-import HeaderItem from './headerItem';
+// import HeaderItem from './headerItem';
 import './linkEquipment.less';
 
 const { Content, Header } = Layout;
@@ -25,7 +25,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
     let { mellaConnectStatus } = hardwareMessage;
     return (
         <>
-            <HeaderItem />
+            {/* <HeaderItem /> */}
             <Content className={"contentBox"}>
                 {
                     _.isEqual(mellaConnectStatus, 'disconnected') ?

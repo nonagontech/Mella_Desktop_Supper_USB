@@ -19,7 +19,7 @@ import {
     setMellaPredictValueFun,
     setMellaMeasurePartFun
 } from '../../../store/actions';
-import HeaderItem from './headerItem';
+// import HeaderItem from './headerItem';
 import './measuredData.less';
 
 const { Column, ColumnGroup } = Table;
@@ -65,7 +65,7 @@ const MeasuredData = ({ petMessage, hardwareMessage }) => {
     }
     return (
         <>
-            <HeaderItem />
+            {/* <HeaderItem /> */}
             <div className='measurementBox'>
                 <Progress
                     type="dashboard"
