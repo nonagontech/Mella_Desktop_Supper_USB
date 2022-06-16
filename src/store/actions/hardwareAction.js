@@ -11,9 +11,17 @@ import {
   MELLA_PREDICT_VALUE,
   MELLA_MEASURE_PART,
   SELECT_HARDWARE_TYPE,
-  MELLA_DEVICE_ID
-
-
+  MELLA_DEVICE_ID,
+  BIGGIE_CONNECT_STATUS,
+  BIGGIE_BODY_FAT,
+  BIGGIE_BODY_WEIGHT,
+  BIGGIE_UNIT,
+  BIGGIE_SAME_WEIGHT_COUNT,
+  RULER_CONNECT_STATUS,
+  RULER_MEASURE_VALUE,
+  RULER_UNIT,
+  RULER_CONFIRM_COUNT,
+  RECEIVE_BROADCAST_HARDWARE_INFO
 } from './../actionTypes'
 
 //定义一个函数，让他返回一个action函数
@@ -44,6 +52,33 @@ export const setMellaPredictValueFun = (data = {}) => getAction(data, MELLA_PRED
 export const setMellaMeasurePartFun = (data = {}) => getAction(data, MELLA_MEASURE_PART)
 //设置mella设备ID
 export const setMellaDeviceIdFun = (data = {}) => getAction(data, MELLA_DEVICE_ID)
+
+//设置biggie体脂称的连接状态
+export const setBiggieConnectStatusFun = (data = {}) => getAction(data, BIGGIE_CONNECT_STATUS)
+//设置biggie体脂称测量的体脂百分比
+export const setBiggieBodyFatFun = (data = {}) => getAction(data, BIGGIE_BODY_FAT)
+//设置biggie体脂称测量的体重
+export const setBiggieBodyWeightFun = (data = {}) => getAction(data, BIGGIE_BODY_WEIGHT)
+//设置biggie体脂称测量的单位
+export const setBiggieUnitFun = (data = {}) => getAction(data, BIGGIE_UNIT)
+//设置biggie体脂称测量的相同体重次数
+export const setBiggieSameWeightCountFun = (data = {}) => getAction(data, BIGGIE_SAME_WEIGHT_COUNT)
+
+//设置尺子的连接状态
+export const setRulerConnectStatusFun = (data = {}) => getAction(data, RULER_CONNECT_STATUS)
+//设置尺子测量的数值
+export const setRulerMeasureValueFun = (data = {}) => getAction(data, RULER_MEASURE_VALUE)
+//设置尺子测量的单位
+export const setRulerUnitFun = (data = {}) => getAction(data, RULER_UNIT)
+//设置尺子测量的确认次数
+export const setRulerConfirmCountFun = (data = {}) => getAction(data, RULER_CONFIRM_COUNT)
+
+//设置接受广播中蓝牙的信息
+export const setReceiveBroadcastHardwareInfoFun = (data = {}) => getAction(data, RECEIVE_BROADCAST_HARDWARE_INFO)
+
+
+
+
 
 
 

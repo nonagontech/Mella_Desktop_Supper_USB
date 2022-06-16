@@ -23,3 +23,29 @@ export const MELLA_MEASURE_PART = 'mellaMeasurePart'
 //mella设备ID
 export const MELLA_DEVICE_ID = 'mellaDeviceId'
 
+//biggie体脂称的测量状态
+export const BIGGIE_CONNECT_STATUS = 'biggieConnectStatus'
+//biggie体脂称的体脂值
+export const BIGGIE_BODY_FAT = 'biggieBodyFat'
+//biggie体脂称的体重值
+export const BIGGIE_BODY_WEIGHT = 'biggieBodyWeight'
+//biggie体脂称的测量单位
+export const BIGGIE_UNIT = 'biggieUnit'
+//体脂称重量相同的次数
+export const BIGGIE_SAME_WEIGHT_COUNT = 'biggieSameWeightCount'
+
+//蓝牙尺子的测量状态
+export const RULER_CONNECT_STATUS = 'rulerConnectStatus'
+//尺子的测量值
+export const RULER_MEASURE_VALUE = 'rulerMeasureValue'
+//尺子的测量单位
+export const RULER_UNIT = 'rulerUnit'
+//尺子点击确认按钮的次数
+export const RULER_CONFIRM_COUNT = 'rulerConfirmCount'
+
+//接收到的广播中硬件信息
+export const RECEIVE_BROADCAST_HARDWARE_INFO = 'receiveBroadcastHardwareInfo'
+
+
+
+

@@ -122,6 +122,7 @@ const HeaderItem = ({ petMessage, hardwareMessage }) => {
             sampling_rate: '135ms'
         }
         let url = '/clinical/catv12Predict';
+        console.log('-----调用接口入参', parame);
         fetchRequest(url, 'POST', parame)
             .then((res) => {
                 console.log('res', res);

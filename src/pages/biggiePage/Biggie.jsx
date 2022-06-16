@@ -37,7 +37,7 @@ const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnP
       <div className="top">
 
         <div style={{ marginTop: px(150), height: px(160), borderRadius: px(150) }} className='biggiel'>
-          <div style={{ backgroundColor: lTColor, borderRadius: px(75) }} className='lT'>
+          <div style={{ backgroundColor: lTColor, borderRadius: px(75), }} className='lT'>
             <div className='lTText' style={{ fontSize: lTtextSize }}>{lTtext}</div>
           </div>
           <div style={{ fontSize: px(14) }}>{`Body Fat\nPercent`}</div>
@@ -116,7 +116,7 @@ const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnP
 }
 
 Biggie.propTypes = {
-  weight: PropTypes.string,
+  weight: PropTypes.string || PropTypes.number,
   bodyFat: PropTypes.number || PropTypes.string,
   score: PropTypes.number || PropTypes.string,
   impedance: PropTypes.number || PropTypes.string,

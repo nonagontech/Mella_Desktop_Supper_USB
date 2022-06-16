@@ -9,7 +9,22 @@ import {
   MELLA_MEASURE_VALUE,
   MELLA_PREDICT_VALUE,
   MELLA_MEASURE_PART,
-  MELLA_DEVICE_ID
+  MELLA_DEVICE_ID,
+
+  BIGGIE_CONNECT_STATUS,
+  BIGGIE_BODY_FAT,
+  BIGGIE_BODY_WEIGHT,
+  BIGGIE_UNIT,
+  BIGGIE_SAME_WEIGHT_COUNT,
+
+  RULER_CONNECT_STATUS,
+  RULER_MEASURE_VALUE,
+  RULER_UNIT,
+  RULER_CONFIRM_COUNT,
+
+  RECEIVE_BROADCAST_HARDWARE_INFO
+
+
 } from '../actionTypes/hardwareType'
 
 //这里面是硬件的一些信息存储
@@ -38,6 +53,34 @@ const initialState = {
   mellaMeasurePart: '腋温',
   //mella设备ID
   mellaDeviceId: '',
+
+  //biggie体脂称的连接状态
+  biggieConnectStatus: 'disconnected',
+  //biggie体脂称的体脂值
+  biggieBodyFat: 0,
+  //biggie体脂称的体重值,这里的数值是kg单位下的值,lb要自行转换
+  biggieBodyWeight: 0,
+  //biggie体脂称的测量单位
+  biggieUnit: 'kg',
+  //体脂称重量相同的次数
+  biggieSameWeightCount: 0,
+
+  //尺子的连接状态
+  rulerConnectStatus: 'disconnected',
+  //尺子的测量值
+  rulerMeasureValue: 0,
+  //尺子的单位
+  rulerUnit: 'cm',
+  //尺子的确认次数
+  rulerConfirmCount: -1,
+
+  //广播的硬件信息
+  receiveBroadcastHardwareInfo: {
+    deviceType: '',
+    macId: '',
+    name: ''
+  }
+
 
 
 }
@@ -68,6 +111,31 @@ export default function HardwareReducer(state = initialState, action) {
       return { ...state, selectHardwareType: action.data }
     case MELLA_DEVICE_ID:
       return { ...state, mellaDeviceId: action.data }
+
+    case BIGGIE_CONNECT_STATUS:
+      return { ...state, biggieConnectStatus: action.data }
+    case BIGGIE_BODY_FAT:
+      return { ...state, biggieBodyFat: action.data }
+    case BIGGIE_BODY_WEIGHT:
+      return { ...state, biggieBodyWeight: action.data }
+    case BIGGIE_UNIT:
+      return { ...state, biggieUnit: action.data }
+    case BIGGIE_SAME_WEIGHT_COUNT:
+      return { ...state, biggieSameWeightCount: action.data }
+
+    case RULER_CONNECT_STATUS:
+      return { ...state, rulerConnectStatus: action.data }
+    case RULER_MEASURE_VALUE:
+      return { ...state, rulerMeasureValue: action.data }
+    case RULER_UNIT:
+      return { ...state, rulerUnit: action.data }
+    case RULER_CONFIRM_COUNT:
+      return { ...state, rulerConfirmCount: action.data }
+
+    case RECEIVE_BROADCAST_HARDWARE_INFO:
+      return { ...state, receiveBroadcastHardwareInfo: action.data }
+
+
 
 
     default:
