@@ -10,7 +10,8 @@ import {
   MELLA_MEASURE_VALUE,
   MELLA_PREDICT_VALUE,
   MELLA_MEASURE_PART,
-  SELECT_HARDWARE_TYPE
+  SELECT_HARDWARE_TYPE,
+  MELLA_DEVICE_ID
 
 
 } from './../actionTypes'
@@ -41,6 +42,8 @@ export const setMellaMeasureValueFun = (data = {}) => getAction(data, MELLA_MEAS
 export const setMellaPredictValueFun = (data = {}) => getAction(data, MELLA_PREDICT_VALUE)
 //设置mella测量部位
 export const setMellaMeasurePartFun = (data = {}) => getAction(data, MELLA_MEASURE_PART)
+//设置mella设备ID
+export const setMellaDeviceIdFun = (data = {}) => getAction(data, MELLA_DEVICE_ID)
 
 
 

@@ -9,6 +9,7 @@ import {
   MELLA_MEASURE_VALUE,
   MELLA_PREDICT_VALUE,
   MELLA_MEASURE_PART,
+  MELLA_DEVICE_ID
 } from '../actionTypes/hardwareType'
 
 //这里面是硬件的一些信息存储
@@ -35,6 +36,8 @@ const initialState = {
   mellaPredictValue: [],
   //mella测量部位
   mellaMeasurePart: '腋温',
+  //mella设备ID
+  mellaDeviceId: '',
 
 
 }
@@ -63,6 +66,8 @@ export default function HardwareReducer(state = initialState, action) {
 
     case SELECT_HARDWARE_TYPE:
       return { ...state, selectHardwareType: action.data }
+    case MELLA_DEVICE_ID:
+      return { ...state, mellaDeviceId: action.data }
 
 
     default:
