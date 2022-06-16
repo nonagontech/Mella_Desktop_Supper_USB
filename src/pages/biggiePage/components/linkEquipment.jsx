@@ -27,11 +27,8 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
             {/* <HeaderItem /> */}
             <Content className={"contentBox"}>
                 <div className='startBox'>
-                    <p className='startTitle'>Ready, place under foreleg</p>
                     <img src={biggieonscale}></img>
-                    <div className='bottomTip'>
-                        <p className='tipTitle'>Need Help With Accurate Placement On Pet?</p>
-                    </div>
+                    <p className='startTitle'>Ready, place under foreleg</p>
                 </div>
             </Content>
         </>
