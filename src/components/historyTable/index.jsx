@@ -3,11 +3,11 @@ import React, {
     useState,
 } from 'react';
 import { Button, Progress, Space, Table, Tag, Badge, Modal, Popconfirm, message } from 'antd';
-import measuredTable_1 from './../../../assets/img/measuredTable_1.png';
-import measuredTable_2 from './../../../assets/img/measuredTable_2.png';
-import measuredTable_3 from './../../../assets/img/measuredTable_3.png';
-import EditCircle from './../../../assets/img/EditCircle.png';
-import Delete from './../../../assets/img/Delete.png';
+import measuredTable_1 from './../../assets/img/measuredTable_1.png';
+import measuredTable_2 from './../../assets/img/measuredTable_2.png';
+import measuredTable_3 from './../../assets/img/measuredTable_3.png';
+import EditCircle from './../../assets/img/EditCircle.png';
+import Delete from './../../assets/img/Delete.png';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import {
@@ -18,13 +18,13 @@ import {
     setMellaMeasureValueFun,
     setMellaPredictValueFun,
     setMellaMeasurePartFun
-} from '../../../store/actions';
+} from '../../store/actions';
 import Draggable from "react-draggable";
-import { fetchRequest } from '../../../utils/FetchUtil1';
+import { fetchRequest } from '../../utils/FetchUtil1';
 import moment from 'moment';
-import './measuredData.less';
+import './index.less';
 
-const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun }) => {
+const HistoryTable = ({ petMessage, hardwareMessage, setMellaConnectStatusFun }) => {
     let { mellaMeasureValue, mellaConnectStatus, mellaMeasurePart } = hardwareMessage;
     let { petId, memo } = petMessage;
     let storage = window.localStorage;
@@ -229,39 +229,14 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
 
     return (
         <>
-            <div className='measurementBox'>
-                <Progress
-                    type="dashboard"
-                    percent={_.round(mellaMeasureValue, 1)}
-                    gapDegree={30}
-                    width={'260px'}
-                    strokeWidth={'8'}
-                    format={percent => ProgressTitle(percent)}
-                    strokeColor={{
-                        '0%': '#7bd163',
-                        '100%': '#19ade4',
-                    }}
-                />
-                {
-                    !saveType && (
-                        <div className='buttonBox'>
-                            <Button type="danger" shape="round" color='#e1206d' onClick={() => backConnectedPage()}>Discard</Button>
-                            <Button type="danger" shape="round" color='#e1206d' onClick={() => saveData()}>Save</Button>
-                        </div>
-                    )
-                }
-                <div className='listTitleBox'>
-                    <p className='listTitle'>History</p>
-                </div>
-                <Table
-                    rowKey={'examId'}
-                    columns={columns}
-                    dataSource={petTemperatureData}
-                    className='measuredTable'
-                    pagination={false}
-                >
-                </Table>
-            </div>
+            <Table
+                rowKey={'examId'}
+                columns={columns}
+                dataSource={petTemperatureData}
+                className='measuredTable'
+                pagination={false}
+            >
+            </Table>
             {/*修改note弹窗 */}
             <Modal
                 title={
@@ -337,4 +312,4 @@ export default connect(
         setMellaPredictValueFun,
         setMellaMeasurePartFun
     }
-)(MeasuredData);
+)(HistoryTable);

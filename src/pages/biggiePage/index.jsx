@@ -7,16 +7,19 @@ import Biggie from './Biggie'
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import {
-
+    setBiggieConnectStatusFun
 } from '../../store/actions';
 import HeaderItem from './../temperaturePage/components/headerItem';
+import HistoryTable from '../../components/historyTable';
+import LinkEquipment from './components/linkEquipment';
 import './biggiePage.less';
 import { px } from '../../utils/px';
 let storage = window.localStorage;
 
 
 
-const BiggirPage = ({ hardwareReduce }) => {
+const BiggirPage = ({ hardwareReduce, setBiggieConnectStatusFun }) => {
+    console.log('hardwareReduce', hardwareReduce);
     //定义体重值 体脂值 体重单位 连接状态
     const [weight, setWeight] = useState(0);
     const [fat, setFat] = useState(0);
@@ -48,18 +51,29 @@ const BiggirPage = ({ hardwareReduce }) => {
         <div id='biggiePage'>
             <HeaderItem />
             <div className='measurementBox'>
-                <div className="biggie" style={{ width: px(400), }}>
-                    <Biggie
-                        weight={weight}
-                        bodyFat={fat}
-                        score={5}
-                        impedance={fat}
-                        isIbs={unit === 'lb'}
-                        onPress={() => { console.log('点击了保存') }}
-                        discardOnPress={() => { console.log('点击了取消') }}
-                        issave={isSavePMS}
-                    />
-                </div>
+                {
+                    connectStatus === 'isMeasuring' ?
+                        (
+                            <>
+                                <div className="biggie" style={{ width: px(400), }}>
+                                    <Biggie
+                                        weight={weight}
+                                        bodyFat={fat}
+                                        score={5}
+                                        impedance={fat}
+                                        isIbs={unit === 'lb'}
+                                        onPress={() => { console.log('点击了保存') }}
+                                        discardOnPress={() => setBiggieConnectStatusFun('disconnected')}
+                                        issave={isSavePMS}
+                                    />
+                                </div>
+                                <HistoryTable />
+                            </>
+                        )
+                        : (
+                            <LinkEquipment />
+                        )
+                }
             </div>
         </div>
     );
@@ -70,6 +84,6 @@ export default connect(
         hardwareReduce: state.hardwareReduce,
     }),
     {
-
+        setBiggieConnectStatusFun
     }
 )(BiggirPage);
