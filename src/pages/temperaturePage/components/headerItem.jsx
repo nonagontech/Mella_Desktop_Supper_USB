@@ -22,16 +22,15 @@ import {
     setMellaMeasurePartFun
 } from '../../../store/actions';
 import moment from 'moment';
-import { fetchRequest } from '../../../utils/FetchUtil1'
+import { fetchRequest } from '../../../utils/FetchUtil1';
 import _ from 'lodash';
-
 import './headerItem.less';
 
 const { Header } = Layout;
 
 const HeaderItem = ({ petMessage, hardwareMessage }) => {
     let { petName, patientId, firstName, lastName, gender, breedName, birthday, weight, url, petSpeciesBreedId } = petMessage;
-    let { mellaConnectStatus, mellaPredictValue } = hardwareMessage;
+    let { mellaConnectStatus, mellaPredictValue, mellaMeasureValue } = hardwareMessage;
     const [value, setValue] = useState(0);
     const saveCallBack = useRef();
     const callBack = () => {
@@ -171,7 +170,6 @@ const HeaderItem = ({ petMessage, hardwareMessage }) => {
     }, [value]);
 
     useEffect(() => {
-        console.log('进入定时器');
         const tick = () => {
             saveCallBack.current();
         };
@@ -179,14 +177,18 @@ const HeaderItem = ({ petMessage, hardwareMessage }) => {
         if (mellaConnectStatus === 'isMeasuring') {
             setValue(0);
             timer = setInterval(tick, 1000);
-        } else {
+        } else if (value > 100 || mellaConnectStatus === 'complete') {
             clearInterval(timer);
+        }
+        if (mellaConnectStatus === 'complete') {
+            let ipcRenderer = window.electron.ipcRenderer;
+            ipcRenderer.send('keyboardWriting', mellaMeasureValue);
         }
         return () => {
             clearInterval(timer);
         };
-    }, [mellaConnectStatus]);
 
+    }, [mellaConnectStatus]);
 
     return (
         <>

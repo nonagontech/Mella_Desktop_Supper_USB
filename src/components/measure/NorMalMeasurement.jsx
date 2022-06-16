@@ -3682,7 +3682,7 @@ export default class NorMalMeasurement extends Component {
               style={{ width: px(120), height: mTop(35) }}
               onClick={() => {
                 console.log('点击了Discard');
-                let hardSet = electronStore.get('hardwareConfiguration')
+                let hardSet = electronStore.get('hardwareConfiguration') ||{}
                 let countdown = hardSet.is15 ? 15 : 30
                 this.setState({
                   endMeasure: false,
