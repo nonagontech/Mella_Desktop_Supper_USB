@@ -89,15 +89,29 @@ class App extends Component {
     ipcRenderer.removeListener('noUSB', this._noUSB)
   }
   //检测到props里的hardwareList更新
-  componentDidUpdate(prevProps, prevState) {
+  UNSAFE_componentWillReceiveProps(prevProps) {
+    //对比props里的hardwareList和state里的hardwareList是否相同
 
-    //检测是否有USB设备
-    // if (this.props.hardwareList !== prevProps.isHaveUsbDevice) {
-    //   this.setState({
-    //     isHaveUsbDevice: this.props.isHaveUsbDevice
-    //   })
-    // }
-    //检测mella温度计测量状态
+    // console.log('UNSAFE_componentWillReceiveProps', prevProps.hardwareList, this.state.devicesTypeList);
+    if (compareArray(prevProps.hardwareList, this.state.devicesTypeList)) {
+      //如果相同,则不做任何操作
+    } else {
+      //如果不相同,则更新state里的hardwareList
+
+      let showHardWareTypeList = [].concat(prevProps.hardwareList)
+      showHardWareTypeList.push({
+        type: 'add',
+        devices: []
+      })
+      // console.log('hardwareList更新了', {
+      //   devicesTypeList:prevProps.hardwareList,
+      //   showHardWareTypeList
+      // })
+      this.setState({
+        devicesTypeList: prevProps.hardwareList,
+        showHardWareTypeList
+      })
+    }
 
   }
 
@@ -783,7 +797,6 @@ class App extends Component {
             }
           ]
         })
-
       devicesTypeList.push({
         type: 'biggie',
         devices: [
@@ -802,28 +815,22 @@ class App extends Component {
         ]
       })
       devicesTypeList.push({
-        type: 'biggie',
+        type: 'tape',
         devices: [
-
           {
-            type: 'tape',
-            devices: [
-              {
-                name: 'tape',
-                mac: '',
-                deviceType: 'tape',
-                examRoom: '',
-              }
-            ]
-          },
+            name: 'tape',
+            mac: '45264',
+            deviceType: 'tape',
+            examRoom: '',
+          }
         ]
       })
-
-
-
     }
 
 
+
+    let hardList = [].concat(devicesTypeList)
+    this.props.setHardwareList(hardList)
     let showHardWareTypeList = [].concat(devicesTypeList)
     showHardWareTypeList.push({
       type: 'add',
@@ -839,6 +846,7 @@ class App extends Component {
   body = () => {
 
     let { selectHardwareType } = this.props
+
     let { bodyHeight } = this.state
     let measurePage = null
     switch (selectHardwareType) {
@@ -908,6 +916,7 @@ export default connect(
 
   }),
   {
+    setHardwareList,
     selectHardwareModalShowFun,
     setIsHaveUsbDeviceFun,
 

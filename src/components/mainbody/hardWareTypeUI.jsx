@@ -10,33 +10,61 @@ import tape from './../../assets/img/hardList-tape.png'
 import add from './../../assets/img/hardList-add.png'
 import maeBowl from './../../assets/img/hardList-maeBowl.png'
 import otterEQ from './../../assets/img/hardList-otterEQ.png'
-import { changeselectHardwareIndex, selectHardwareList, selectHardwareInfoFun, setSelectHardwareType } from './../../store/actions'
+import { selectHardwareInfoFun, setSelectHardwareType } from './../../store/actions'
 import electronStore from '../../utils/electronStore'
 
 let storage = window.localStorage;
-// class HardWareTypeUI extends Component {
-const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareIndex, changeselectHardwareIndex, selectHardwareList, selectHardwareInfoFun, setSelectHardwareType }) => {
-  useEffect(() => {
-    let hard = devicesTypeList[selectHardwareIndex]
-    console.log('-------------------', hard);
-    if (hard) {
-      // electronStore.delete(`${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`)
-      let devicesInfo = electronStore.get(`${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`)
-      console.log('devicesInfo', devicesInfo);
-      if (!devicesInfo) {
-        devicesInfo = hard.devices[0]
+//devicesTypeList是index传过来的硬件种类以及种类下的所有硬件
+const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareInfoFun, setSelectHardwareType, selectHardwareType }) => {
+  //根据左侧列表的设备类型，获取当前选中的设备类型下选中的硬件,先看本地有没有存,没存就拿第一个展示
+  // useEffect(() => {
+  //   let Index = null
+  //   for (let i = 0; i < devicesTypeList.length; i++) {
+  //     const element = devicesTypeList[i];
+  //     if (element.type === selectHardwareType) {
+  //       Index = i
+  //       break
+  //     }
+  //   }
+  //   if (Index === null) {
+  //     return
+  //   }
 
-        electronStore.set(`${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`, devicesInfo)
-      }
+  //   let hard = devicesTypeList[Index]
+  //   if (hard && hard.type !== 'add') {
+  //     let devicesInfo = electronStore.get(`${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`)
 
-      console.log('保存的折本信息', devicesInfo);;
 
-      selectHardwareInfoFun(devicesInfo)
 
-      selectHardwareList(hard)
-    }
 
-  }, [devicesTypeList])
+  //     if (!devicesInfo) {
+  //       devicesInfo = hard.devices[0]
+  //       electronStore.set(`${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`, devicesInfo)
+  //     } else {
+
+  //       let sameFlag = false
+  //       console.log('============', hard.devices, devicesInfo);
+  //       for (let i = 0; i < hard.devices.length; i++) {
+  //         const element = hard.devices[i];
+  //         if (element.mac === devicesInfo.mac && element.name === devicesInfo.name) {
+  //           sameFlag = true
+  //           break
+  //         }
+  //       }
+  //       if (!sameFlag) {
+  //         devicesInfo = hard.devices[0]
+  //         electronStore.set(`${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`, devicesInfo)
+  //       }
+  //     }
+
+  //     console.log('保存的折本信息', devicesInfo);;
+
+  //     selectHardwareInfoFun(devicesInfo)
+
+  //     selectHardwareList(hard)
+  //   }
+
+  // }, [devicesTypeList])
 
 
 
@@ -73,7 +101,7 @@ const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareIndex, chan
         break;
     }
     let borderStyle = ``
-    if (index === selectHardwareIndex) {
+    if (item.type === selectHardwareType) {
       borderStyle = ` 2px solid #3B3A3A`
     }
 
@@ -85,8 +113,9 @@ const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareIndex, chan
 
         } else {
           let devicesInfo = electronStore.get(`${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`)
-          // changeselectHardwareIndex(index)
-          // selectHardwareList(item)
+
+          //要做个处理,看保存的数据是否和当前的一致，如果不一致，就把当前的保存下来
+
 
           if (!devicesInfo && item.devices[0]) {
             devicesInfo = item.devices[0]
@@ -97,8 +126,6 @@ const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareIndex, chan
           selectHardwareInfoFun(devicesInfo)
         }
         setSelectHardwareType(item.type)
-        changeselectHardwareIndex(index)
-        selectHardwareList(item)
       }
       }
     >
@@ -137,7 +164,7 @@ HardWareTypeUI.defaultProps = {
 
 export default connect(
   state => ({
-    selectHardwareIndex: state.hardwareReduce.selectHardwareIndex
+    selectHardwareType: state.hardwareReduce.selectHardwareType,
   }),
-  { changeselectHardwareIndex, selectHardwareList, selectHardwareInfoFun, setSelectHardwareType }
+  { selectHardwareInfoFun, setSelectHardwareType }
 )(HardWareTypeUI)
