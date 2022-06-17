@@ -1,6 +1,7 @@
 import React, {
     useEffect,
     useState,
+    useRef
 } from 'react';
 import { connect } from 'react-redux';
 import { Layout, Menu, PageHeader, Radio, Input, Space, Button } from 'antd';
@@ -15,27 +16,97 @@ import {
 } from '../../../store/actions';
 import _ from 'lodash';
 import HeaderItem from '../../temperaturePage/components/headerItem';
+import NumericInput from './numericInput';
 import head from './../../../assets/img/head.png';
+import neck from './../../../assets/img/neck.png';
+import upper from './../../../assets/img/upper.png';
+import lower from './../../../assets/img/lower.png';
+import Full from './../../../assets/img/Full.png';
+import body from './../../../assets/img/body.png';
+import catHead from './../../../assets/img/catHead.png';
+import catNeck from './../../../assets/img/catNeck.png';
+import catUpper from './../../../assets/img/catUpper.png';
+import catLower from './../../../assets/img/catLower.png';
+import catFull from './../../../assets/img/catFull.png';
+import catBody from './../../../assets/img/catBody.png';
 import './scanPet.less';
 
 const { Content, Header } = Layout;
 const ScanPet = ({ petMessage, hardwareMessage }) => {
+    const [inputGroup, setInputGroup] = useState([]);
+    const [inputIndex, setInputIndex] = useState(0);
+    const [value, setValue] = useState('');//接收输入框的值
+    const [value1, setValue1] = useState('');//接收输入框的值
+    let newData = [];
     let { mellaConnectStatus } = hardwareMessage;
+    let { petSpeciesBreedId, patientId } = petMessage;
 
-    //输入框输入
-    const onChange = (e) => {
-        const { value } = e.target;
-        const reg = /^-?[0-9]*(\.[0-9]*)?$/;
-        if ((!isNaN(value) && reg.test(value)) || value === '' || value === '-') {
-            onChange(value);
+    //保存input组
+    const inputEl = (data) => {
+        newData.push(data);
+        console.log('newData', newData);
+    }
+
+    //切换聚焦事件
+    const switchFocus = () => {
+        let num = inputIndex;
+        if (num < 5) {
+            setInputIndex(num + 1);
         }
     }
+
+    //结束事件
+    const finishScan = () => {
+        console.log('结束测量');
+    }
+
+    //判断是猫还是狗还是其他
+    const checkPetType = () => {
+        //0是猫，1是狗，或者petSpeciesBreedId为空判断图片为狗
+        if (petSpeciesBreedId === 11001 || _.inRange(petSpeciesBreedId, 1, 136)) {
+            return 0
+        } else if (petSpeciesBreedId === 12001 || _.inRange(petSpeciesBreedId, 136, 456)) {
+            return 1
+        } else {
+            return 1
+        }
+    }
+
+    //切换图片
+    const changeImage = () => {
+        switch (inputIndex) {
+            case 0:
+                return checkPetType() === 1 ? <img src={head} /> : <img src={catHead} />
+            case 1:
+                return checkPetType() === 1 ? <img src={neck} /> : <img src={catNeck} />
+            case 2:
+                return checkPetType() === 1 ? <img src={upper} /> : <img src={catUpper} />
+            case 3:
+                return checkPetType() === 1 ? <img src={lower} /> : <img src={catLower} />
+            case 4:
+                return checkPetType() === 1 ? <img src={Full} /> : <img src={catFull} />
+            case 5:
+                return checkPetType() === 1 ? <img src={body} /> : <img src={catBody} />
+            default:
+                break;
+        }
+    }
+
+    useEffect(() => {
+        newData[inputIndex].focus();
+        return (() => { });
+    }, [inputIndex, patientId]);
+
+    useEffect(() => {
+        setInputIndex(0);
+        return (() => { });
+    }, [patientId])
 
     return (
         <>
             <Content className='contentBox'>
                 <div className='scanImageBox'>
-                    <img src={head} />
+                    {changeImage()}
                 </div>
                 {/*选择单位框*/}
                 <Radio.Group defaultValue="a" buttonStyle="solid" className='selectLengthUnit'>
@@ -47,22 +118,39 @@ const ScanPet = ({ petMessage, hardwareMessage }) => {
                     <Space className='inputItemBox'>
                         <div className='inputItem'>
                             <p className='inputTitle'>Head Circumference</p>
-                            <Input
-                                className='inputNum'
-                                onChange={() => onChange()}
+                            <NumericInput
+                                value={value}
+                                onChange={setValue}
+                                getInput={inputEl}
+                                key={0}
                             />
                         </div>
                         <div className='inputItem'>
                             <p className='inputTitle'>Neck Circumference</p>
-                            <Input className='inputNum' />
+                            <NumericInput
+                                value={value}
+                                onChange={setValue}
+                                getInput={inputEl}
+                                key={1}
+                            />
                         </div>
                         <div className='inputItem'>
                             <p className='inputTitle'>Upper Torso Circumference</p>
-                            <Input className='inputNum' />
+                            <NumericInput
+                                value={value}
+                                onChange={setValue}
+                                getInput={inputEl}
+                                key={2}
+                            />
                         </div>
                         <div className='inputItem'>
                             <p className='inputTitle'>Lower Torso Circumference</p>
-                            <Input className='inputNum' />
+                            <NumericInput
+                                value={value}
+                                onChange={setValue}
+                                getInput={inputEl}
+                                key={3}
+                            />
                         </div>
                     </Space>
                 </Input.Group>
@@ -71,11 +159,21 @@ const ScanPet = ({ petMessage, hardwareMessage }) => {
                     <Space className='inputItemBox'>
                         <div className='inputItem'>
                             <p className='inputTitle'>Full Torso Length</p>
-                            <Input className='inputNum' />
+                            <NumericInput
+                                value={value}
+                                onChange={setValue}
+                                getInput={inputEl}
+                                key={4}
+                            />
                         </div>
                         <div className='inputItem'>
                             <p className='inputTitle'>Full Body Length</p>
-                            <Input className='inputNum' />
+                            <NumericInput
+                                value={value}
+                                onChange={setValue}
+                                getInput={inputEl}
+                                key={5}
+                            />
                         </div>
                     </Space>
                 </Input.Group>
@@ -92,7 +190,17 @@ const ScanPet = ({ petMessage, hardwareMessage }) => {
                 </div>
                 {/*下一步 */}
                 <div className='nextBtn'>
-                    <Button type="primary" shape="round" size='large' className='btn'>Next</Button>
+                    <Button
+                        type="primary"
+                        shape="round"
+                        size='large'
+                        className='btn'
+                        onClick={inputIndex === 5 ? finishScan : switchFocus}
+                    >
+                        {
+                            inputIndex === 5 ? 'Finish' : 'Next'
+                        }
+                    </Button>
                 </div>
             </Content>
         </>
