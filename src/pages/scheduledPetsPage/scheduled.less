@@ -1,0 +1,120 @@
+#scheduled {
+    display: flex;
+    flex: 1;
+    // background-color: pink;
+    background-color: #fff;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    -webkit-app-region: drag;
+    -webkit-user-select: none;
+    // font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #fff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    .allPetHeard {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        // justify-content: center;
+        justify-content: space-between;
+        border-bottom: 2px solid #979797;
+        position: relative;
+
+        .addDeviceTitle {
+
+            color: #141414;
+            font-weight: bold;
+            font-size: larger;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            .refresh {
+                -webkit-app-region: no-drag;
+            }
+
+        }
+
+        .walkBtn1 {
+            // width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            -webkit-app-region: no-drag;
+            // background-color: pink;
+
+            .walkbtnBox {
+                width: 80%;
+                background-color: #e1206d;
+                border-radius: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #fff;
+            }
+        }
+    }
+
+    .hread {
+        // background-color: pink;
+        width: 100%;
+        flex-direction: column;
+
+        .hread1 {
+            width: 90%;
+
+            flex-direction: row;
+            justify-content: space-between;
+
+            .heard1L {
+                flex-direction: row;
+            }
+
+            .walkin {
+                color: #fff;
+                background-color: #e1206d;
+
+                width: 35%;
+                cursor: pointer;
+                -webkit-app-region: no-drag;
+            }
+        }
+
+        .heard2 {
+            flex-direction: row;
+            // align-items: flex-start;
+            justify-content: flex-start;
+            // background-color: pink;
+            width: 90%;
+
+            .sort {
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                // justify-content: space-between;
+                width: 40%;
+
+                // background-color: hotpink;
+                p {
+                    margin: 0;
+                }
+
+
+            }
+        }
+    }
+
+
+
+}

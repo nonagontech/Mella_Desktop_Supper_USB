@@ -15,7 +15,7 @@ import {
 } from '../../store/actions';
 import _ from 'lodash';
 import HeaderItem from '../temperaturePage/components/headerItem';
-import LinkEquipment from './components/linkEquipment';
+import LinkEquipment from './components/LinkEquipment';
 import ScanPet from './components/scanPet';
 import './index.less';
 

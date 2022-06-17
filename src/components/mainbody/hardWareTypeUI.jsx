@@ -10,12 +10,12 @@ import tape from './../../assets/img/hardList-tape.png'
 import add from './../../assets/img/hardList-add.png'
 import maeBowl from './../../assets/img/hardList-maeBowl.png'
 import otterEQ from './../../assets/img/hardList-otterEQ.png'
-import { selectHardwareInfoFun, setSelectHardwareType } from './../../store/actions'
+import { selectHardwareInfoFun, setSelectHardwareType, setMenuNum } from './../../store/actions'
 import electronStore from '../../utils/electronStore'
 
 let storage = window.localStorage;
 //devicesTypeList是index传过来的硬件种类以及种类下的所有硬件
-const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareInfoFun, setSelectHardwareType, selectHardwareType }) => {
+const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareInfoFun, setSelectHardwareType, selectHardwareType, setMenuNum }) => {
   //根据左侧列表的设备类型，获取当前选中的设备类型下选中的硬件,先看本地有没有存,没存就拿第一个展示
   // useEffect(() => {
   //   let Index = null
@@ -108,6 +108,7 @@ const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareInfoFun, se
     return <li key={`${index}`} style={{ padding: `${px(10)}px 0`, }}
       onClick={() => {
         console.log(item.type);
+
         if (item.type === 'add') {
 
 
@@ -126,6 +127,8 @@ const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareInfoFun, se
           selectHardwareInfoFun(devicesInfo)
         }
         setSelectHardwareType(item.type)
+        setMenuNum('1')
+
       }
       }
     >
@@ -166,5 +169,5 @@ export default connect(
   state => ({
     selectHardwareType: state.hardwareReduce.selectHardwareType,
   }),
-  { selectHardwareInfoFun, setSelectHardwareType }
+  { selectHardwareInfoFun, setSelectHardwareType, setMenuNum }
 )(HardWareTypeUI)

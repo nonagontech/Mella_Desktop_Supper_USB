@@ -18,7 +18,7 @@ import './mainbody.less'
 import { compareObject } from '../../utils/current'
 
 let storage = window.localStorage;
-const HardAndPetsUI = ({ selectHardwareInfo, selectHardwareList, hardwareList, selectHardwareType, selectHardwareInfoFun, selectHardwareModalShowFun }) => {
+const HardAndPetsUI = ({ hardwareList, selectHardwareType, selectHardwareInfoFun, selectHardwareModalShowFun, setInfo }) => {
   //定义数组hardwareList
   const [hardwareListArr, setHardwareList] = useState([])
   //定义选择的硬件详细信息
@@ -102,6 +102,8 @@ const HardAndPetsUI = ({ selectHardwareInfo, selectHardwareList, hardwareList, s
         setSelectHardwareDetail(item)
         electronStore.set(`${storage.lastOrganization}-${storage.userId}-${deviceType}-selectDeviceInfo`, item)
         selectHardwareInfoFun(item)
+        setInfo && setInfo(item)
+
       }}>
       <div className="hardListInfo" style={{ paddingTop: px(15), paddingBottom: px(15) }}>
         <div className="deviceL" >
@@ -197,16 +199,14 @@ const HardAndPetsUI = ({ selectHardwareInfo, selectHardwareList, hardwareList, s
 
 
 HardAndPetsUI.propTypes = {
-  selectHardwareList: PropTypes.any
+  setInfo: PropTypes.func,
 }
 //默认值
 HardAndPetsUI.defaultProps = {
-  selectHardwareList: {}
+  setInfo: () => { },
 }
 export default connect(
   state => ({
-    selectHardwareInfo: state.hardwareReduce.selectHardwareInfo,
-    selectHardwareList: state.hardwareReduce.selectHardwareList,
     selectHardwareType: state.hardwareReduce.selectHardwareType,
     hardwareList: state.hardwareReduce.hardwareList
   }),

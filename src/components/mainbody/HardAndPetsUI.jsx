@@ -55,7 +55,8 @@ const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow
         break
       }
     }
-  }, [selectHardwareType, hardwareList, selectDevice])
+  }, [selectHardwareType, hardwareList,])
+
 
 
   return (
@@ -73,7 +74,9 @@ const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow
         <div className="imgBox" style={{ marginLeft: px(7) }}>
           <img src={xia} alt="" width={px(32)} />
         </div>
-        {selectHardwareModalShow && <HardListModal />}
+        {selectHardwareModalShow && <HardListModal setInfo={(item) => {
+          setSelectHardwareDetail(item)
+        }} />}
       </div>
       <PetsUI
         bodyHeight={bodyHeight}

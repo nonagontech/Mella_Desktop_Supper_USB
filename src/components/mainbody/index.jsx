@@ -38,6 +38,9 @@ import BiggiePage from '../../pages/biggiePage';
 import ScanPage from '../../pages/scanPage'
 import { compareObject } from '../../utils/current';
 import { compareArray } from '../../utils/current';
+import AllPets from '../../pages/allPetsPage';
+import ScheduledPetPage from '../../pages/scheduledPetsPage';
+import AddScheduledPet from '../../pages/addScheduledPet';
 
 let ipcRenderer = window.require('electron').ipcRenderer
 let isMeasure = false //是否正在测量,用于判断是否需要发送指定指令给USB,查看硬件是否连接
@@ -62,6 +65,9 @@ class App extends Component {
     isHaveUsbDevice: false,
     //mella温度计测量状态
     mellaMeasureStatus: 'disconnected', //connected,disconnected,isMeasuring,complete
+
+    //点击菜单的序号
+    clickMenuIndex: "1",
   }
   componentDidMount() {
     ipcRenderer.send('big', win())
@@ -93,24 +99,20 @@ class App extends Component {
   UNSAFE_componentWillReceiveProps(prevProps) {
     //对比props里的hardwareList和state里的hardwareList是否相同
 
-    // console.log('UNSAFE_componentWillReceiveProps', prevProps.hardwareList, this.state.devicesTypeList);
-    if (compareArray(prevProps.hardwareList, this.state.devicesTypeList)) {
-      //如果相同,则不做任何操作
-    } else {
-      //如果不相同,则更新state里的hardwareList
-
+    if (!compareArray(prevProps.hardwareList, this.state.devicesTypeList)) {
       let showHardWareTypeList = [].concat(prevProps.hardwareList)
       showHardWareTypeList.push({
         type: 'add',
         devices: []
       })
-      // console.log('hardwareList更新了', {
-      //   devicesTypeList:prevProps.hardwareList,
-      //   showHardWareTypeList
-      // })
       this.setState({
         devicesTypeList: prevProps.hardwareList,
         showHardWareTypeList
+      })
+    }
+    if (!compareObject(prevProps.menuNum, this.state.clickMenuIndex)) {
+      this.setState({
+        clickMenuIndex: prevProps.menuNum
       })
     }
 
@@ -848,34 +850,51 @@ class App extends Component {
 
     let { selectHardwareType } = this.props
 
-    let { bodyHeight } = this.state
+    let { bodyHeight, clickMenuIndex } = this.state
     let measurePage = null
-    switch (selectHardwareType) {
-      case 'mellaPro':
-        measurePage = <TemperaturePage />
+    switch (clickMenuIndex) {
+      case "1":
+        switch (selectHardwareType) {
+          case 'mellaPro':
+            measurePage = <TemperaturePage />
 
+            break;
+          case 'biggie':
+            measurePage = <BiggiePage />
+
+          case 'tape':
+            measurePage = <ScanPage />
+
+          default:
+            break;
+        }
+        if (selectHardwareType === 'add') {
+          return <AddDevice
+            bodyHeight={bodyHeight}
+          />
+        } else {
+          return (<>
+            <HardAndPetsUI
+              bodyHeight={bodyHeight}
+            />
+            {measurePage}
+          </>)
+        }
         break;
-      case 'biggie':
-        measurePage = <BiggiePage />
-      
-      case 'tape':
-        measurePage = <ScanPage/>
 
+      case "2":
+        return <AllPets bodyHeight={bodyHeight} />
+
+      case "3":
+        return <ScheduledPetPage bodyHeight={bodyHeight} />
+
+      case "AddScheduledPet":
+        return <AddScheduledPet bodyHeight={bodyHeight} />
       default:
         break;
     }
-    if (selectHardwareType === 'add') {
-      return <AddDevice
-        bodyHeight={bodyHeight}
-      />
-    } else {
-      return (<>
-        <HardAndPetsUI
-          bodyHeight={bodyHeight}
-        />
-        {measurePage}
-      </>)
-    }
+
+
   }
 
   render() {
@@ -916,6 +935,7 @@ export default connect(
     selectHardwareType: state.hardwareReduce.selectHardwareType,
     hardwareReduce: state.hardwareReduce,
     hardwareList: state.hardwareReduce.hardwareList,
+    menuNum: state.userReduce.menuNum,
 
 
   }),

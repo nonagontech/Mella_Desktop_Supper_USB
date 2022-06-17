@@ -19,38 +19,28 @@ import moment from 'moment'
 import Heard from '../../utils/heard/Heard'
 import { SyncOutlined, createFromIconfontCN } from '@ant-design/icons';
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
+import MYButton from './../../utils/button/Button'
 import './doctorSelectExam.less'
 
-import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
-import { FetchEszVet } from '../../utils/FetchEszVet'
+
 import { fetchRequest } from '../../utils/FetchUtil1'
-import gender from '../../utils/gender'
-import temporaryStorage from '../../utils/temporaryStorage';
 import { MTop, mTop, pX, px, win } from '../../utils/px';
-import { stopBubble } from './../../utils/current'
-import { fetchRequest4 } from '../../utils/FetchUtil4';
-import { fetchRhapsody } from '../../utils/FetchUtil5';
-import jinggao from './../../assets/img/jinggao.png'
-import redclose from './../../assets/img/redclose.png'
-import blackTriangle from './../../assets/img/blackTriangle.png'
-import refresh from './../../assets/img/Refresh.png'
-import SelectionBox from './../../utils/selectionBox/SelectionBox'
+
 import dog from './../../assets/images/pinkdog.png'
 import cat from './../../assets/images/pinkcat.png'
 import redDog from './../../assets/images/reddog.png'
 import redCat from './../../assets/images/redcat.png'
 import redother from './../../assets/images/redother.png'
 import other from './../../assets/images/other.png'
+import redJinggao from './../../assets/img/redjinggao.png'
 
-import electronStore from '../../utils/electronStore';
-import { options } from 'less';
 import MyModal from '../../utils/myModal/MyModal';
 
 const { SubMenu } = Menu;
 const MyIcon = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2326495_7b2bscbhvvt.js'
 })
+
 let storage = window.localStorage;
 
 let defaultData = {
@@ -63,18 +53,17 @@ let defaultData = {
 
 export default class DoctorSelectExam extends Component {
   state = {
-    addPetist: [
-
-    ],
+    addPetist: [],
     petName: '',
     wuzhong: 'dog',
     patientId: '',
     miaoshu: '',
-    loading: false
+    loading: false,
+    isSave: false
   }
 
 
-  componentDidMount () {
+  componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     let { height, width } = window.screen
     let windowsHeight = height > width ? width : height
@@ -92,7 +81,7 @@ export default class DoctorSelectExam extends Component {
 
 
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     message.destroy()
     let ipcRenderer = window.electron.ipcRenderer
 
@@ -149,9 +138,13 @@ export default class DoctorSelectExam extends Component {
     if (storage.lastOrganization) {
       params.organizationId = storage.lastOrganization
     }
+    if (storage.lastWorkplaceId) {
+      params.workplaceId = storage.lastWorkplaceId
+    }
     console.log('入参', params);
     fetchRequest('/new/petall/subscribe', "POST", params)
       .then(res => {
+        console.log(res);
         if (res.flag) {
           let json = {
             patientId,
@@ -184,30 +177,8 @@ export default class DoctorSelectExam extends Component {
         message.error('add failed')
       })
 
-
-    // const timer = setTimeout(() => {
-
-    //   let json = {
-    //     patientId,
-    //     wuzhong,
-    //     petName,
-    //     miaoshu
-    //   }
-    //   let list = [].concat(addPetist)
-    //   list.push(json)
-    //   this.setState({
-    //     loading: false,
-    //     patientId: '',
-    //     wuzhong: 'dog',
-    //     petName: '',
-    //     miaoshu: '',
-    //     addPetist: list
-    //   })
-    //   clearTimeout(timer)
-
-    // }, 100);
   }
-  render () {
+  render() {
     let addPetist = [].concat(this.state.addPetist)
     addPetist.push(defaultData)
 
@@ -265,7 +236,7 @@ export default class DoctorSelectExam extends Component {
 
 
             </div>
-            <div className='tableHeard' style={{ borderTopWidth: '0px' }}>
+            <div className='tableHeard' style={{ borderTopWidth: '0px', width: '30%' }}>
               <input type="text" className='tableInput'
                 value={miaoshu}
                 onChange={value => {
@@ -276,14 +247,28 @@ export default class DoctorSelectExam extends Component {
 
               />
             </div>
-            <div className='tableHeard' style={{ borderRight: '#5a5a5a solid 1px', borderTopWidth: '0px' }}>
+            <div className='tableHeard' style={{ borderRight: '#5a5a5a solid 1px', borderTopWidth: '0px', width: '10%' }}>
+
+
+
               <div
-                className='add'
+                className='flex'
+                style={{ width: px(30), height: px(30), borderRadius: px(30), backgroundColor: '#e1206d', cursor: 'pointer' }}
                 onClick={this.add}
+
               >
-                add
+
+                <MyIcon type={'icon-baocun-copy'} className="icon " style={{ color: '#fff', fontSize: px(16) }} />
               </div>
+
+
+
+
+
+
+
             </div>
+
           </div>
         </li>
       } else {
@@ -303,10 +288,10 @@ export default class DoctorSelectExam extends Component {
               <img src={wuzhong === 'cat' ? redCat : cat} alt="" width={px(40)} />
               <img src={wuzhong === 'other' ? redother : other} alt="" width={px(40)} />
             </div>
-            <div className='tableHeard' style={{ borderTopWidth: '0px' }}>
+            <div className='tableHeard' style={{ borderTopWidth: '0px', width: '30%' }}>
               <div className='tableText'>{miaoshu}</div>
             </div>
-            <div className='tableHeard' style={{ borderRight: '#5a5a5a solid 1px', borderTopWidth: '0px' }}>
+            <div className='tableHeard' style={{ borderRight: '#5a5a5a solid 1px', borderTopWidth: '0px', width: '10%' }}>
 
             </div>
           </div>
@@ -334,7 +319,14 @@ export default class DoctorSelectExam extends Component {
         {/* 关闭缩小 */}
         <Heard
           onReturn={() => {
-            this.props.history.goBack()
+            let { patientId } = this.state
+            if (!patientId) {
+              this.props.history.goBack()
+            } else {
+              this.setState({
+                isSave: true
+              })
+            }
 
           }}
           onSearch={(data) => {
@@ -350,18 +342,21 @@ export default class DoctorSelectExam extends Component {
           }}
           blueSearch={true}
         />
-        <div style={{ width: '100%', marginTop: px(80), height: px(600), paddingLeft: '5%', paddingRight: '5%' }}>
+        <div style={{ width: '100%', marginTop: px(80), height: px(650), overflowY: 'auto', paddingLeft: '5%', paddingRight: '5%' }}>
           <div style={{ width: '100%', display: 'flex', flexDirection: 'row', }}>
             <div className='tableHeard'>Patient Id</div>
             <div className='tableHeard'>Pet Name</div>
             <div className='tableHeard'>species</div>
-            <div className='tableHeard'>description</div>
-            <div className='tableHeard' style={{ borderRight: '#5a5a5a solid 1px' }}>operate</div>
+            <div className='tableHeard' style={{ width: '30%' }}>description</div>
+            <div className='tableHeard' style={{ borderRight: '#5a5a5a solid 1px', width: '10%' }}></div>
 
           </div>
-          <ul style={{ width: '100%' }}>
+
+          <ul >
             {options}
           </ul>
+
+
         </div>
 
 
@@ -370,16 +365,60 @@ export default class DoctorSelectExam extends Component {
           <div className='continueBtn'
             style={{ borderRadius: px(50), height: px(45), fontSize: px(20), }}
             onClick={() => {
-              this.props.history.goBack()
-
+              let { patientId } = this.state
+              if (!patientId) {
+                this.props.history.goBack()
+              } else {
+                this.setState({
+                  isSave: true
+                })
+              }
             }}
           >Continue</div>
         </div>
 
         <MyModal
-
           visible={this.state.loading}
         />
+        <MyModal
+          visible={this.state.isSave}
+          element={
+            <div className='isSave'
+            //  style={{ borderRadius: `${px(20)}px`, backgroundColor: '#fff' }}
+            >
+              <img src={redJinggao} alt="" style={{ width: px(50), margin: `${px(25)}px 0` }} />
+              <p style={{ textAlign: 'center' }}>There are unsaved patient appointments, <br />are you sure you want to exit?</p>
+              <div className="btn" style={{ margin: `${px(30)}px 0` }} >
+                <MYButton
+                  text={'Cancel'}
+                  onClick={() => {
+                    this.setState({
+                      isSave: false
+                    })
+                  }}
+                  textBoxStyle={{
+                    width: '40%',
+                    height: px(40)
+                  }}
+                />
+                <MYButton
+                  text={'Exit'}
+                  onClick={() => {
+                    this.setState({
+                      isSave: false
+                    })
+                    this.props.history.goBack()
+                  }}
+                  textBoxStyle={{
+                    width: '40%',
+                    height: px(40)
+                  }}
+                />
+              </div>
+            </div>
+          }
+        />
+
 
 
 

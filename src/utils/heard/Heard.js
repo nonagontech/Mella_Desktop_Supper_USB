@@ -11,6 +11,8 @@ import { SyncOutlined, createFromIconfontCN, LoadingOutlined } from '@ant-design
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment'
 import MyModal from './../myModal/MyModal'
+import { connect } from 'react-redux'
+import { setMenuNum } from '../../store/actions';
 
 //import 'antd/dist/antd.css';
 import './heard.less'
@@ -73,6 +75,7 @@ const Heard = ({
   menu8Click,
   menu9Click,
   blueSearch,
+  setMenuNum
 }) => {
   const [minbgc, setMinbgc] = useState('')        //最小化的背景颜色
   const [closebgc, setClosebgc] = useState('')    //关闭按钮的背景色
@@ -450,7 +453,7 @@ const Heard = ({
 
   const inputChange = (text) => {
 
-    function isNumber (val) {
+    function isNumber(val) {
       var regPos = /^\d+(\.\d+)?$/; //非负浮点数
       var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
       if (regPos.test(val) || regNeg.test(val)) {
@@ -617,14 +620,14 @@ const Heard = ({
   const menuList = () => {
     let menulistArr = [
       { name: 'Home', index: '1' },
-      { name: 'Patients', index: '8' },
-      { name: 'Workplace', index: '9' },
-      { name: 'Devices', index: '2' },
-      { name: 'Settings', index: '3' },
-      { name: `Billing & Subscriptions`, index: '4' },
-      { name: 'Help', index: '5' },
-      { name: 'About Mella', index: '6' },
-      { name: 'Log Out', index: '7' },
+      { name: 'All Patients', index: '2' },
+      { name: 'Scheduled Patients', index: '3' },
+      { name: 'My Account', index: '4' },
+      { name: 'Settings', index: '5' },
+      { name: 'Enter Clinical Study Mode', index: '6' },
+      { name: `Billing & Subscriptions`, index: '7' },
+      { name: 'About Mella', index: '8' },
+      { name: 'Log Out', index: '9' },
 
     ]
     let menuOption = menulistArr.map((item, index) => {
@@ -636,6 +639,7 @@ const Heard = ({
           style={{ padding: `${px(15)}px ${px(20)}px` }}
           onClick={() => {
             menulistClick(item)
+
           }}
           onMouseOver={(e) => {
             setMenuMouseOverIndex(item.index)
@@ -671,44 +675,97 @@ const Heard = ({
     setMenuVisible(false)
     setMenuMouseOverIndex('')
     console.log('click ', e);
+    // switch (e.index) {
+    //   case "1":
+    //     history.push('/MainBody')
+    //     break;
+    //   case "2":
+    //     console.log('跳转到设备界面');
+    //     let selectDevice = electronStore.get(`${storage.userId}-selectDevice`)
+    //     // console.log('[[[[[[[', selectDevice);
+    //     selectDevice = selectDevice ? selectDevice : ''
+    //     setSelectDeviceMac(selectDevice)
+
+    //     setDeviceModel(true)
+    //     // history.push('/')
+    //     break;
+    //   case "3":
+    //     //跳转到设置
+    //     menu3Click()
+    //     history.push('/menuOptions/settings');
+    //     break;
+    //   case "4":
+    //     console.log('billing');
+    //     break;
+    //   case "5":
+    //     console.log('帮助');
+    //     history.push('/menuOptions/help')
+    //     break;
+    //   case "6":
+    //     setModalVisible(true)
+    //     console.log('关于');
+    //     break;
+    //   case "7":
+    //     console.log('退出登录');
+    //     storage.userId = ''
+    //     storage.roleId = ''
+    //     storage.userWorkplace = ''
+    //     storage.lastOrganization = ''
+    //     storage.lastWorkplaceId = ''
+    //     storage.connectionKey = ''
+    //     storage.isClinical = 'false'
+    //     history.push('/')
+    //     break;
+    //   case "8":
+    //     menu8Click()
+    //     console.log('宠物列表');
+    //     break;
+    //   case "9":
+    //     menu9Click()
+    //     history.push('/page12');
+    //     console.log('工作场所');
+
+    //     break;
+
+    //   default:
+    //     break;
+    // }
+
     switch (e.index) {
       case "1":
-
-        switch (storage.identity) {
-          case '2': history.push('/EzyVetSelectExam'); break;
-          case '1': history.push('/VetSpireSelectExam'); break;
-
-          default: history.push('/page10')
-            break;
-        }
+        history.push('/MainBody')
+        setMenuNum(e.index)
         break;
       case "2":
-        console.log('跳转到设备界面');
-        let selectDevice = electronStore.get(`${storage.userId}-selectDevice`)
-        // console.log('[[[[[[[', selectDevice);
-        selectDevice = selectDevice ? selectDevice : ''
-        setSelectDeviceMac(selectDevice)
-
-        setDeviceModel(true)
-        // history.push('/')
+        console.log('全部的宠物');
+        setMenuNum(e.index)
         break;
       case "3":
-        //跳转到设置
-        menu3Click()
-        history.push('/menuOptions/settings');
+        console.log('预约宠物');
+        setMenuNum(e.index)
         break;
       case "4":
-        console.log('billing');
+        console.log('我的账号');
         break;
       case "5":
-        console.log('帮助');
-        history.push('/menuOptions/help')
+        //跳转到设置
+        // menu5Click()
+        history.push('/menuOptions/settings');
+        setMenuNum(e.index)
         break;
       case "6":
+        console.log('临床测试');
+        setMenuNum(e.index)
+        break;
+      case "7":
+        console.log('billing');
+        break;
+
+      case "8":
         setModalVisible(true)
         console.log('关于');
         break;
-      case "7":
+      case "9":
         console.log('退出登录');
         storage.userId = ''
         storage.roleId = ''
@@ -717,26 +774,14 @@ const Heard = ({
         storage.lastWorkplaceId = ''
         storage.connectionKey = ''
         storage.isClinical = 'false'
+        setMenuNum('1')
         history.push('/')
         break;
-      case "8":
-        menu8Click()
-        console.log('宠物列表');
-        break;
-      case "9":
-        menu9Click()
-        history.push('/page12');
-        console.log('工作场所');
 
-        break;
 
       default:
         break;
     }
-
-    // if (e.key === '3') {
-    //   this.props.history.push('/page8')
-    // }
   }
   const menuMouseOut = () => {
     mouseoutTimer && clearTimeout(mouseoutTimer)
@@ -903,7 +948,7 @@ const Heard = ({
     }
 
 
-    function getRamNumber () {
+    function getRamNumber() {
       var result = '';
       for (var i = 0; i < 2; i++) {
         result += Math.floor(Math.random() * 16).toString(16);//获取0-15并通过toString转16进制
@@ -1518,4 +1563,10 @@ Heard.defaultProps = {
   blueSearch: false,
 }
 
-export default Heard
+
+export default connect(
+  state => ({
+
+  }),
+  { setMenuNum }
+)(Heard)

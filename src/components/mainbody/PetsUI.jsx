@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import { px } from '../../utils/px'
-import { petSortTypeFun, petDetailInfoFun } from '../../store/actions'
+import { petSortTypeFun, petDetailInfoFun, setPetListArrFun } from '../../store/actions'
 import electronStore from '../../utils/electronStore'
 import petIcon from './../../assets/img/petIcon.png'
 import xia from './../../assets/img/xia.png'
@@ -21,21 +21,26 @@ import { fetchRequest } from '../../utils/FetchUtil1';
 let storage = window.localStorage;
 
 
-const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, petDetailInfo }) => {
+const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, petDetailInfo, setPetListArrFun, petListArr }) => {
   //定义宠物列表数组
   const [petList, setPetList] = useState([])
+
+  useEffect(() => {
+    //设置宠物列表数据
+    setPetList(petListArr)
+  }, [petListArr])
 
   useEffect(() => {
     //从本地获取宠物列表数据
     let petList = electronStore.get('petList') || [];
     _getExam()
   }, [])
+
   //获取宠物列表数据
   const _getExam = () => {
-    //现在就只是获取数据库里面的数据
+
     let params = {
-      // doctorId: storage.userId,
-      doctorId: 23,
+      doctorId: storage.userId,
       offset: 0,
       size: 100,
     }
@@ -46,80 +51,16 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
       params.organizationId = storage.lastOrganization
     }
     console.log('查询宠物的入参', params);
-    const isUnKnow = (val) => {
-      if (val) {
-        return val
-      } else {
-        return 'unknown'
-      }
-    }
+
 
     fetchRequest('/user/listAllPetInfo', 'GET', params)
       .then(res => {
         console.log('查询所有宠物', res);
-        if (res.flag === true) {
-          let data = []
+        if (res.flag === true && res.data) {
           let oldList = res.data
-          // for (let i = 0; i < oldList.length; i++) {
-          //   let { age, url, createTime, patientId, speciesId, petName, firstName, birthday, lastName, breedName, gender, petId, weight, rfid, l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference, pethubId, macId,
-          //     h2tLength, torsoLength } = oldList[i]
-          //   let owner = ''
-          //   patientId = isUnKnow(patientId)
-          //   petName = isUnKnow(petName)
-          //   breedName = isUnKnow(breedName)
-          //   age = isUnKnow(age)
-          //   weight = isUnKnow(weight)
-          //   if (!firstName) {
-          //     firstName = ''
-          //   }
-          //   if (!lastName) {
-          //     lastName = ''
-          //   }
-          //   if (lastName === '' && firstName === '') {
-          //     owner = 'unknown'
-          //   } else {
-          //     owner = `${lastName} ${firstName}`
-          //   }
-          //   createTime = moment(createTime).format('X')
-          //   let petGender = ''
-          //   switch (`${gender}`) {
-          //     case '1': petGender = 'F'
-
-          //       break;
-          //     case '0': petGender = "M"
-          //       break;
-          //     default: petGender = 'unknown'
-          //       break;
-          //   }
-          //   let petAge = 'unknown'
-          //   if (birthday) {
-          //     petAge = moment(new Date()).diff(moment(birthday), 'years')
-          //   }
-
-          //   let json = {
-          //     insertedAt: createTime,
-          //     patientId,
-          //     petName,
-          //     owner,
-          //     breed: breedName,
-          //     gender: petGender,
-          //     age: petAge,
-          //     petId,
-          //     id: i,
-          //     weight,
-          //     rfid,
-          //     url,
-          //     speciesId,
-          //     l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference,
-          //     h2tLength, torsoLength,
-          //     pethubId, macId,
-
-          //   }
-          //   data.push(json)
-
-          // }
           let petArr = dataSort(oldList)
           setPetList(petArr)
+          setPetListArrFun(petArr)
         } else {
 
         }
@@ -275,6 +216,7 @@ export default connect(
   state => ({
     petSortType: state.petReduce.petSortType,
     petDetailInfo: state.petReduce.petDetailInfo,
+    petListArr: state.petReduce.petListArr,
   }),
-  { petSortTypeFun, petDetailInfoFun }
+  { petSortTypeFun, petDetailInfoFun, setPetListArrFun }
 )(PetsUI)
