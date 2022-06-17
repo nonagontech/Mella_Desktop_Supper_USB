@@ -2,8 +2,8 @@ import React, {
     useEffect,
     useState,
 } from 'react';
+import { Image, Layout } from 'antd';
 import { connect } from 'react-redux';
-import { Layout, Menu, PageHeader } from 'antd';
 import {
     selectHardwareModalShowFun,
     petSortTypeFun,
@@ -12,27 +12,24 @@ import {
     setMellaMeasureValueFun,
     setMellaPredictValueFun,
     setMellaMeasurePartFun
-} from '../../store/actions';
+} from '../../../store/actions';
 import _ from 'lodash';
-import HeaderItem from '../temperaturePage/components/headerItem';
-import LinkEquipment from './components/linkEquipment';
-import ScanPet from './components/scanPet';
-import './index.less';
+import './linkEquipment.less';
 
-const ScanPage = ({ petMessage, hardwareMessage }) => {
-    console.log('petMessage', petMessage);
+const { Content, Header } = Layout;
+
+const LinkEquipment = ({ petMessage, hardwareMessage }) => {
     let { mellaConnectStatus } = hardwareMessage;
     return (
         <>
-            <Layout className='homeBox'>
-                <HeaderItem />
-                {/* <LinkEquipment/> */}
-                <ScanPet />
-            </Layout>
+            <Content className={"contentBox"}>
+                <div className='chackPatientBox'>
+                    <p className='chackPatientTitle'>Select a patient</p>
+                </div>
+            </Content>
         </>
     );
-};
-
+}
 export default connect(
     state => ({
         petMessage: state.petReduce.petDetailInfo,
@@ -47,4 +44,4 @@ export default connect(
         setMellaPredictValueFun,
         setMellaMeasurePartFun
     }
-)(ScanPage);
+)(LinkEquipment);

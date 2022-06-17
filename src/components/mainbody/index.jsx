@@ -35,6 +35,7 @@ import { message } from 'antd';
 import electronStore from '../../utils/electronStore';
 import AddDevice from './AddDevice';
 import BiggiePage from '../../pages/biggiePage';
+import ScanPage from '../../pages/scanPage'
 import { compareObject } from '../../utils/current';
 import { compareArray } from '../../utils/current';
 
@@ -856,6 +857,9 @@ class App extends Component {
         break;
       case 'biggie':
         measurePage = <BiggiePage />
+      
+      case 'tape':
+        measurePage = <ScanPage/>
 
       default:
         break;
