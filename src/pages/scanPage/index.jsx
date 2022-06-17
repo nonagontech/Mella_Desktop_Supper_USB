@@ -14,5 +14,22 @@ import {
     setMellaMeasurePartFun
 } from '../../store/actions';
 import _ from 'lodash';
-import HeaderItem from './components/headerItem';
+import HeaderItem from '../temperaturePage/components/headerItem';
+import LinkEquipment from './components/LinkEquipment';
 import './index.less';
+
+const ScanPage = () => {
+
+    return (
+        <>
+            <Layout className='homeBox'>
+                <HeaderItem />
+                <LinkEquipment/>
+            </Layout>
+
+        </>
+    );
+
+};
+
+export default ScanPage;
