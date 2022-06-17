@@ -36,6 +36,8 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
     const [reName, setReName] = useState('')
     //已经保存过的设备的macid
     const [saveDeviceMac, setSaveDeviceMac] = useState([])
+    //顶部文本
+    const [topText, setTopText] = useState(' Pair Device')
 
     useEffect(() => {
         //获取设备列表
@@ -52,6 +54,14 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
             setSaveDeviceMac(saveDeviceMac)
         }
     }, [])
+    useEffect(() => {
+        if (!selectDevice) {
+            setTopText(' Pair Device')
+        } else {
+            setTopText('Device Connected')
+        }
+
+    }, [selectDevice])
     useEffect(() => {
         setNoUSB(!isHaveUsbDevice)
     }, [isHaveUsbDevice])
@@ -70,52 +80,70 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
 
     }, [receiveBroadcastHardwareInfo])
 
+    const addDevice = () => {
+        //拿到列表中的所有硬件设备
 
+    }
 
     const body = () => {
 
         if (selectDevice) {
-            return <div className="addDevice flex">
+            return <div className="addDevice1 flex">
                 <div className="addDeviceTop flex">
-                    <div className="title" style={{ fontSize: px(30), marginBottom: px(40) }}>Would you like to name<br />
-                        this Mella device?</div>
+                    <div className="title" style={{ fontSize: px(28), marginBottom: px(20), marginTop: px(20) }}>Would you like to name<br />
+                        {`this ${selectDevice.name} device?`}</div>
 
-                    <div className="input flex" style={{ marginBottom: px(60) }}>
+                    <div className="title" style={{ fontSize: px(24), marginBottom: px(40), }}>
+                        {`SN: ${selectDevice.macId}`}</div>
+
+
+                    <div className="input flex" style={{ marginBottom: px(20), width: px(400) }}>
                         <input type="text" style={{ height: px(45) }}
                             value={reName}
                             onChange={(value) => {
                                 setReName(value.target.value)
 
                             }}
+                            placeholder={`${selectDevice.name} Device Name`}
+                        />
+                    </div>
+                    <div className="input flex" style={{ marginBottom: px(60), width: px(400) }}>
+                        <input type="text" style={{ height: px(45) }}
+                            value={reName}
+                            onChange={(value) => {
+                                setReName(value.target.value)
+
+                            }}
+                            placeholder={`Exam Room Name`}
                         />
                     </div>
                     <div className="text" style={{ fontSize: px(18) }}>* We recommend naming based
-                        on the Exam Room. Write the name
+                        on the Exam Room. Write<br /> the name
                         on the sticker provided so it is easy
-                        to select your device in the future.</div>
+                        to select<br /> your device in the future.</div>
                 </div>
                 <div className="addDeviceFoot flex">
                     <div className="btn"
                         onClick={() => {
 
-                            console.log(reName, selectDevice);
-                            if (reName) {
-                                selectDevice.name = reName
-                            }
-                            let deviceList = electronStore.get(`${storage.userId}-deviceList`)
-                            console.log('---', deviceList);
-                            deviceList.push(selectDevice)
-                            electronStore.set(`${storage.userId}-deviceList`, deviceList)
+                            // console.log(reName, selectDevice);
+                            // if (reName) {
+                            //     selectDevice.name = reName
+                            // }
+                            // let deviceList = electronStore.get(`${storage.userId}-deviceList`)
+                            // console.log('---', deviceList);
+                            // deviceList.push(selectDevice)
+                            // electronStore.set(`${storage.userId}-deviceList`, deviceList)
 
-                            saveDeviceMac.push(selectDevice.macId)
-                            setSaveDeviceMac(saveDeviceMac)
-                            setSelectDevice({})
-                            setReName('')
+                            // saveDeviceMac.push(selectDevice.macId)
+                            // setSaveDeviceMac(saveDeviceMac)
+                            // setSelectDevice({})
+                            // setReName('')
 
 
                         }}
                     >
-                        <p className='btnText'>Add Another</p>
+                        <p className='btnText'>Add Another Device</p>
                     </div>
                     <div className="btn"
                         onClick={() => {
@@ -234,7 +262,7 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
 
                         </li>
                     })
-                    return <div className='deviceList'>
+                    return <div className='deviceList ' >
                         <ul>
                             {options}
                         </ul>
@@ -248,7 +276,7 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
     return (
         <div className='addDevice' style={{ height: bodyHeight }}>
             <div className="addDeviceTitle" style={{ height: devicesTitleHeight, fontSize: 26, paddingLeft: px(20) }}>
-                Pair Device
+                {topText}
             </div>
 
             {body()}

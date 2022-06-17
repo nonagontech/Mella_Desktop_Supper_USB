@@ -1,4 +1,5 @@
 import {
+  HARDWARE_LIST,
   SELECT_HARDWARE_INDEX,
   SELECT_HARDWARE_TYPE,
   SELECT_HARDWARE_LIST,
@@ -31,6 +32,8 @@ import {
 
 
 const initialState = {
+  //硬件列表,不包括add类型
+  hardwareList: [],
   //选择的硬件类型的index
   selectHardwareIndex: 0,
   //选择的硬件类型
@@ -88,6 +91,8 @@ export default function HardwareReducer(state = initialState, action) {
   // console.log('state', state);
 
   switch (action.type) {
+    case HARDWARE_LIST:
+      return { ...state, hardwareList: action.data }
     case SELECT_HARDWARE_INDEX:
       return { ...state, selectHardwareIndex: action.data }
     case SELECT_HARDWARE_LIST:
