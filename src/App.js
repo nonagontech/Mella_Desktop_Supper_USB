@@ -10,13 +10,14 @@ import SelectMella from './components/selectMella/SelectMella'
 import APIkey from './components/apiKey/APIKey'
 import VerifyOrganizationInformation from './components/selectLocation/VerifyOrganizationInformation'
 import EzyVetSelectExam from './components/ezyVetSelectExam/EzyVetSelectExam'
-import DoctorSelectExam from './components/doctorSelectExam/DoctorSelectExam'
+import DoctorSelectExam from './components/doctorSelectExam/DoctorSelectScheduledExam'
+
+import DoctorSelectAllExam from './components/doctorSelectExam/DoctorSelectAllExam'
 import Praviders from './components/praviders/Praviders'
 import SelectExam from "./components/selectExam/SelectExam";
 
 import Mesasure from "./components/measure/Mesasure";
 import NorMalMeasurement from "./components/measure/NorMalMeasurement";
-import WalkInMesasure from "./components/measure/WalkInMesasure";
 
 import MaxMinReturn from './utils/maxminreturn/MaxMinReturn'
 import EditPetInfo from './components/editPetInfo/EditPetInfo'
@@ -58,11 +59,13 @@ import ConnectWorkplace from './components/menuOptions/orgAndPractice/ConnectWor
 import NewOrg from './components/menuOptions/orgAndPractice/NewOrganization'
 import Team from './components/menuOptions/orgAndPractice/InviteTeam'
 
+import MainBody from './components/mainbody'
+
 
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 class App extends Component {
-  render () {
+  render() {
     return (
       <HashRouter>
         <Switch>
@@ -82,7 +85,8 @@ class App extends Component {
           <Route exact path="/page8" component={Mesasure} />
           <Route exact path="/page9" component={EditPetInfo} />
           <Route exact path="/page10" component={NorMalMeasurement} />
-          {/* <Route exact path="/walkInMesasure" component={WalkInMesasure} /> */}
+          {/* <Route exact path="/page10" component={MainBody} /> */}
+          <Route exact path="/MainBody" component={MainBody} />
 
 
 
@@ -110,6 +114,9 @@ class App extends Component {
 
 
           <Route exact path="/uesr/selectExam" component={DoctorSelectExam} />
+          <Route exact path="/uesr/DoctorSelectAllExam" component={DoctorSelectAllExam} />
+
+
 
 
 

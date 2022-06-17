@@ -1,6 +1,7 @@
 import {
   PET_SORT_TYPE,
-  PET_DETAIL_INFO
+  PET_DETAIL_INFO,
+  PET_LIST_ARR,
 } from './../actionTypes'
 
 //定义一个函数，让他返回一个action函数
@@ -15,3 +16,5 @@ const getAction = (data, type) => {
 export const petSortTypeFun = (data) => getAction(data, PET_SORT_TYPE)
 //改变宠物的详细信息
 export const petDetailInfoFun = (data) => getAction(data, PET_DETAIL_INFO)
+//改变宠物列表
+export const setPetListArrFun = (data) => getAction(data, PET_LIST_ARR)

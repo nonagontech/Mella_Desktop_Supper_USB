@@ -282,31 +282,6 @@ export default class SignIn extends Component {
           if (userWorkplace) {
             storage.userWorkplace = JSON.stringify(userWorkplace)
             let connectionKey = ''
-
-
-            // const element = userWorkplace[0];
-            // storage.lastOrganization = element.organizationEntity.organizationId
-            // storage.lastWorkplaceId = element.workplaceEntity.workplaceId
-
-
-            // if (element.organizationEntity.connectionKey) {
-            //   connectionKey = element.organizationEntity.connectionKey
-            // }
-            // if (element.roleId) {
-            //   console.log(element.roleId);
-            //   storage.roleId = element.roleId
-            // }
-
-            // if (userWorkplace.length === 1) {
-            //   this.props.history.push('/uesr/selectExam')
-
-            // } else {
-            //   this.props.history.push('/page12')
-
-            // }
-
-
-
             for (let i = 0; i < userWorkplace.length; i++) {
               const element = userWorkplace[i];
               if (element.organizationEntity) {
@@ -331,7 +306,7 @@ export default class SignIn extends Component {
           } else {
             storage.userWorkplace = ''
             storage.connectionKey = ''
-            this.props.history.push('/uesr/selectExam')
+
           }
 
 
@@ -340,7 +315,7 @@ export default class SignIn extends Component {
 
 
 
-          this.props.history.push('/uesr/selectExam')
+          this.props.history.push('/MainBody')
         }
 
 

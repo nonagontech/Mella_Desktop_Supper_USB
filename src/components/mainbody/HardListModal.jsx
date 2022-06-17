@@ -15,20 +15,55 @@ import deviceTape from './../../assets/img/deviceIcon-tape.png'
 import deivceAdd from './../../assets/img/hardList-add.png'
 import scales from './../../assets/img/scales.png'
 import './mainbody.less'
+import { compareObject } from '../../utils/current'
 
 let storage = window.localStorage;
-const HardAndPetsUI = ({ selectHardwareInfo, selectHardwareList, selectHardwareInfoFun, selectHardwareModalShowFun }) => {
+const HardAndPetsUI = ({ hardwareList, selectHardwareType, selectHardwareInfoFun, selectHardwareModalShowFun, setInfo }) => {
   //定义数组hardwareList
-  const [hardwareList, setHardwareList] = useState([])
+  const [hardwareListArr, setHardwareList] = useState([])
   //定义选择的硬件详细信息
   const [selectHardwareDetail, setSelectHardwareDetail] = useState({})
   useEffect(() => {
-    let list = selectHardwareList.devices || []
-    setHardwareList(list)
-    setSelectHardwareDetail(selectHardwareInfo)
-  }, [selectHardwareList])
+    //根据设备类型获取到此类型下的所有硬件,并用来展示
+    for (let i = 0; i < hardwareList.length; i++) {
+      const element = hardwareList[i];
+      if (element.type === selectHardwareType) {
+        let list = element.devices || []
+        setHardwareList(list)
+        //获取被选中的硬件的详细信息
+        let selectHardwareInfo = electronStore.get(`${storage.lastOrganization}-${storage.userId}-${selectHardwareType}-selectDeviceInfo`) || {}
+        console.log('------=========--------', selectHardwareInfo);
+        if (selectHardwareInfo === {}) {
+          let selectHardwareInfo = list[0] || {}
+          setSelectHardwareDetail(selectHardwareInfo)
+        } else {
+          let sameFlag = false
+          for (let i = 0; i < list.length; i++) {
+            const element = list[i];
+            if (element.name === selectHardwareInfo.name && element.mac === selectHardwareInfo.mac) {
+              setSelectHardwareDetail(selectHardwareInfo)
+              sameFlag = true
+              break
+            }
+          }
+          console.log('sameFlag', sameFlag);
+          if (!sameFlag) {
+            console.log('设置了默认值');
+            let selectHardwareInfo = list[0] || {}
+            setSelectHardwareDetail(selectHardwareInfo)
+          }
+        }
+        break
+      }
+    }
 
-  let options = hardwareList.map((item, index) => {
+
+
+
+  }, [selectHardwareType])
+
+
+  let options = hardwareListArr.map((item, index) => {
 
     let { name, mac, deviceType } = item
     let deviceTypeStr = '', img = null
@@ -59,13 +94,16 @@ const HardAndPetsUI = ({ selectHardwareInfo, selectHardwareList, selectHardwareI
         break;
     }
     //判断对象是否相等
-    let isEqual = JSON.stringify(item) === JSON.stringify(selectHardwareDetail)
 
+    let isEqual = compareObject(item, selectHardwareDetail)
+    console.log('判断两个对象是否相同', isEqual, item, selectHardwareDetail);
     return <li key={`${index}`}
       onClick={() => {
         setSelectHardwareDetail(item)
         electronStore.set(`${storage.lastOrganization}-${storage.userId}-${deviceType}-selectDeviceInfo`, item)
         selectHardwareInfoFun(item)
+        setInfo && setInfo(item)
+
       }}>
       <div className="hardListInfo" style={{ paddingTop: px(15), paddingBottom: px(15) }}>
         <div className="deviceL" >
@@ -114,6 +152,7 @@ const HardAndPetsUI = ({ selectHardwareInfo, selectHardwareList, selectHardwareI
       default:
         break;
     }
+    console.log('selectHardwareDetail', selectHardwareDetail);
     return (
       <div>
         {isBiggie &&
@@ -160,16 +199,16 @@ const HardAndPetsUI = ({ selectHardwareInfo, selectHardwareList, selectHardwareI
 
 
 HardAndPetsUI.propTypes = {
-  selectHardwareList: PropTypes.any
+  setInfo: PropTypes.func,
 }
 //默认值
 HardAndPetsUI.defaultProps = {
-  selectHardwareList: {}
+  setInfo: () => { },
 }
 export default connect(
   state => ({
-    selectHardwareInfo: state.hardwareReduce.selectHardwareInfo,
-    selectHardwareList: state.hardwareReduce.selectHardwareList,
+    selectHardwareType: state.hardwareReduce.selectHardwareType,
+    hardwareList: state.hardwareReduce.hardwareList
   }),
   { selectHardwareInfoFun, selectHardwareModalShowFun }
 )(HardAndPetsUI)

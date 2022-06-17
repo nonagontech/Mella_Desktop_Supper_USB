@@ -28,14 +28,14 @@ import { fetchRequest } from '../../utils/FetchUtil1'
 import gender from '../../utils/gender'
 import temporaryStorage from '../../utils/temporaryStorage';
 import { MTop, mTop, pX, px, win } from '../../utils/px';
-import { stopBubble } from './../../utils/current'
+import { stopBubble } from '../../utils/current'
 import { fetchRequest4 } from '../../utils/FetchUtil4';
 import { fetchRhapsody } from '../../utils/FetchUtil5';
 import jinggao from './../../assets/img/jinggao.png'
 import redclose from './../../assets/img/redclose.png'
 import blackTriangle from './../../assets/img/blackTriangle.png'
 import refresh from './../../assets/img/Refresh.png'
-import SelectionBox from './../../utils/selectionBox/SelectionBox'
+import SelectionBox from '../../utils/selectionBox/SelectionBox'
 
 import electronStore from '../../utils/electronStore';
 
@@ -47,7 +47,7 @@ let storage = window.localStorage;
 
 
 
-export default class DoctorSelectExam extends Component {
+export default class DoctorSelectAllExam extends Component {
   state = {
     loading: false,
     api: '',
@@ -402,7 +402,7 @@ export default class DoctorSelectExam extends Component {
       .then(res => {
         console.log('查询到的宠物列表,/user/listAllPetInfo', res);
 
-        if (res.flag === true) {
+        if (res.flag === true && res.data) {
           let data = []
           let oldList = res.data
           // let oldList = res.data.list
@@ -1009,6 +1009,7 @@ export default class DoctorSelectExam extends Component {
               }
               // /pet/doctorAddPet
               this.props.history.push({ pathname: '/pet/doctorAddPet' })
+
               e.preventDefault();
 
             }}
@@ -1034,7 +1035,6 @@ export default class DoctorSelectExam extends Component {
         <Heard
           onReturn={() => {
             this.props.history.push('/page11')
-
           }}
           onSearch={(data) => {
 
@@ -1047,38 +1047,17 @@ export default class DoctorSelectExam extends Component {
               this.props.history.push({ pathname: '/page10', })
             }
           }}
+          menu8Click={() => {
+            this.props.history.push({ pathname: '/uesr/selectExam', })
+          }}
           blueSearch={true}
         />
 
-        {/* <div className="textfa1">
-          <div className="textfa">
-            <div className="text"
-              style={{ fontSize: px(32) }}
-            >Patients</div>
-            <div className="text3"
-              style={{ fontSize: px(25), marginLeft: px(10), marginTop: mTop(9) }}
 
-            ><SyncOutlined onClick={this._refresh} spin={spin} />   </div>
-          </div>
-          <div className="r"
-            style={{ width: px(40), fontSize: px(40), }}
-            onClick={() => {
-              console.log('我要去添加宠物');
-              try {
-                let selectNum = document.getElementsByClassName('ant-pagination-item-active')
-                storage.doctorList = JSON.stringify(this.state.data)
-              } catch (error) {
-                console.log('错误信息', error);
-              }
-              // /pet/doctorAddPet
-              this.props.history.push({ pathname: '/pet/doctorAddPet' })
-            }}
-          >+</div>
-        </div> */}
         <div className="hread flex">
           <div className="hread1 flex" style={{ marginTop: px(30) }}>
             <div className="heard1L flex">
-              <div className="title" style={{ fontSize: px(25) }}>Scheduled Patients</div>
+              <div className="title" style={{ fontSize: px(25) }}>Client Results</div>
               <div className="refresh flex"
                 style={{ fontSize: px(25), marginLeft: px(10) }}
               >
@@ -1194,18 +1173,7 @@ export default class DoctorSelectExam extends Component {
             />
           </ConfigProvider>
         </div>
-        <div className="hread flex" style={{ alignItem: 'center' }}>
-          <div className="hread1" style={{ marginTop: px(10), justifyContent: 'flex-end', display: 'flex', }}>
-            <div className="walkin flex"
-              style={{ borderRadius: px(50), height: px(45), fontSize: px(20), marginRight: px(10) }}
-              onClick={() => {
-                this.props.history.push({ pathname: '/AddYuding', })
 
-              }}
-            >Add Scheduled</div>
-
-          </div>
-        </div>
 
 
 

@@ -23,9 +23,11 @@ import redclose from '../../assets/img/redclose.png'
 import MyModal from './../../utils/myModal/MyModal'
 import { mTop, px, MTop, pX } from '../../utils/px';
 import './mainbody.less'
+import { setReceiveBroadcastHardwareInfoFun, setHardwareList, changeselectHardwareIndex, setSelectHardwareType, selectHardwareList } from '../../store/actions';
+
 
 let storage = window.localStorage;
-const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadcastHardwareInfo }) => {
+const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadcastHardwareInfo, hardwareList, setReceiveBroadcastHardwareInfoFun, setHardwareList, changeselectHardwareIndex, setSelectHardwareType, selectHardwareList }) => {
     //是否有底座设备
     const [noUSB, setNoUSB] = useState(false)
     //设备列表
@@ -34,26 +36,44 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
     const [selectDevice, setSelectDevice] = useState(null)
     //重命名
     const [reName, setReName] = useState('')
+    //房间号
+    const [examRoom, setExamRoom] = useState('')
     //已经保存过的设备的macid
     const [saveDeviceMac, setSaveDeviceMac] = useState([])
     //顶部文本
     const [topText, setTopText] = useState(' Pair Device')
 
+    //初始化
     useEffect(() => {
-        //获取设备列表
-        let devicesList = electronStore.get(`${storage.lastOrganization}-${storage.userId}-devicesTypeList`) || []
-        if (devicesList.length > 0) {
+        setNoUSB(false)
+        setDevicesList([])
+        setSelectDevice(null)
+        setReName('')
+        setSaveDeviceMac([])
+        setTopText(' Pair Device')
+        //组件渲染完毕后要先清空广播的硬件信息
+        setReceiveBroadcastHardwareInfoFun({
+            deviceType: '',
+            macId: '',
+            name: ''
+        })
+    }, [])
+
+    useEffect(() => {
+
+        if (hardwareList.length > 0) {
             let saveDeviceMac = []
-            for (let i = 0; i < devicesList.length; i++) {
-                const element = devicesList[i];
+            for (let i = 0; i < hardwareList.length; i++) {
+                const element = hardwareList[i];
                 for (let j = 0; j < element.devices.length; j++) {
                     const device = element.devices[j];
-                    saveDeviceMac.push(element.mac)
+                    saveDeviceMac.push(device.mac)
                 }
             }
             setSaveDeviceMac(saveDeviceMac)
+
         }
-    }, [])
+    }, [hardwareList])
     useEffect(() => {
         if (!selectDevice) {
             setTopText(' Pair Device')
@@ -72,6 +92,7 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
         if (sameFlog || !receiveBroadcastHardwareInfo.macId) {   //重复直接退出
             return
         }
+        console.log('receiveBroadcastHardwareInfo', devicesList, receiveBroadcastHardwareInfo);
         let deviceArr = [].concat(devicesList)
         deviceArr.push(receiveBroadcastHardwareInfo)
         setDevicesList(deviceArr)
@@ -81,7 +102,46 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
     }, [receiveBroadcastHardwareInfo])
 
     const addDevice = () => {
-        //拿到列表中的所有硬件设备
+        //从redux拿到列表中的所有硬件设备 hardwareList
+        console.log('hardwareList', hardwareList);
+        //拿到硬件的macid 类型 名称 房间号
+        console.log('selectDevice', selectDevice);
+        let sameFlog = hardwareList.some((item, index) => {
+            return item.type === selectDevice.deviceType
+        })
+        let hardwareArr = [].concat(hardwareList)
+        let { deviceType, macId, name } = selectDevice
+        let newDevice = {
+            name: reName || name,
+            mac: macId,
+            deviceType,
+            examRoom: examRoom || '',
+        }
+        console.log('newDevice', newDevice);
+        if (sameFlog) {
+            //相同就代表有这个硬件类型,可以直接去push
+
+            for (let i = 0; i < hardwareArr.length; i++) {
+                if (hardwareArr[i].type === selectDevice.deviceType) {
+                    hardwareArr[i].devices.push(newDevice)
+                    break
+                }
+            }
+
+        } else {
+            //没有就要新建一个硬件类型
+            let json = {
+                type: selectDevice.deviceType,
+                devices: [newDevice]
+            }
+            hardwareArr.push(json)
+        }
+        setReName('')
+        setExamRoom('')
+        setHardwareList(hardwareArr)
+
+        return newDevice
+
 
     }
 
@@ -109,9 +169,9 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
                     </div>
                     <div className="input flex" style={{ marginBottom: px(60), width: px(400) }}>
                         <input type="text" style={{ height: px(45) }}
-                            value={reName}
+                            value={examRoom}
                             onChange={(value) => {
-                                setReName(value.target.value)
+                                setExamRoom(value.target.value)
 
                             }}
                             placeholder={`Exam Room Name`}
@@ -125,21 +185,9 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
                 <div className="addDeviceFoot flex">
                     <div className="btn"
                         onClick={() => {
-
-                            // console.log(reName, selectDevice);
-                            // if (reName) {
-                            //     selectDevice.name = reName
-                            // }
-                            // let deviceList = electronStore.get(`${storage.userId}-deviceList`)
-                            // console.log('---', deviceList);
-                            // deviceList.push(selectDevice)
-                            // electronStore.set(`${storage.userId}-deviceList`, deviceList)
-
-                            // saveDeviceMac.push(selectDevice.macId)
-                            // setSaveDeviceMac(saveDeviceMac)
-                            // setSelectDevice({})
-                            // setReName('')
-
+                            addDevice()
+                            setSelectDevice(null)
+                            setSelectHardwareType('add')
 
                         }}
                     >
@@ -147,13 +195,12 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
                     </div>
                     <div className="btn"
                         onClick={() => {
-                            console.log(reName, selectDevice);
-                            if (reName) {
-                                selectDevice.name = reName
-                            }
-                            let deviceList = electronStore.get(`${storage.userId}-deviceList`)
-                            deviceList.push(selectDevice)
-                            electronStore.set(`${storage.userId}-deviceList`, deviceList)
+                            let newDevice = addDevice()
+                            setSelectHardwareType(selectDevice.deviceType)
+
+
+                            electronStore.set(`${storage.lastOrganization}-${storage.userId}-${selectDevice.deviceType}-selectDeviceInfo`, newDevice)
+                            setSelectDevice(null)
                         }}
                     >
                         <p className='btnText'>Finish</p>
@@ -181,7 +228,7 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
                         let option = arr.map((item, index) => {
                             let imgWidth = px(80)
                             imgWidth = index === 2 ? px(65) : imgWidth
-                            return (<li style={{ margin: `${px(20)}px` }}>
+                            return (<li key={index.toString()} style={{ margin: `${px(20)}px` }}>
                                 <div className="searchType-item" key={index} >
                                     <img src={item} alt="" width={imgWidth} />
                                 </div>
@@ -306,6 +353,7 @@ export default connect(
         hardwareReducer: state.hardwareReduce,
         isHaveUsbDevice: state.hardwareReduce.isHaveUsbDevice,
         receiveBroadcastHardwareInfo: state.hardwareReduce.receiveBroadcastHardwareInfo,
+        hardwareList: state.hardwareReduce.hardwareList,
     }),
-    {}
+    { setReceiveBroadcastHardwareInfoFun, setHardwareList, changeselectHardwareIndex, setSelectHardwareType, selectHardwareList }
 )(AddDevice)

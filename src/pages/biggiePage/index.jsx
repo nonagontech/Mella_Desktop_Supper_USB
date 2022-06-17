@@ -19,7 +19,6 @@ let storage = window.localStorage;
 
 
 const BiggirPage = ({ hardwareReduce, setBiggieConnectStatusFun }) => {
-    console.log('hardwareReduce', hardwareReduce);
     //定义体重值 体脂值 体重单位 连接状态
     const [weight, setWeight] = useState(0);
     const [fat, setFat] = useState(0);

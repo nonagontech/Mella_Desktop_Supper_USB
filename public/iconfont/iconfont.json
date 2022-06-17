@@ -6,6 +6,55 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "30123780",
+      "name": "保存",
+      "font_class": "baocun-copy",
+      "unicode": "eb17",
+      "unicode_decimal": 60183
+    },
+    {
+      "icon_id": "1305399",
+      "name": "保存",
+      "font_class": "baocun",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "1621105",
+      "name": "保存",
+      "font_class": "hold",
+      "unicode": "e700",
+      "unicode_decimal": 59136
+    },
+    {
+      "icon_id": "5399558",
+      "name": "保存",
+      "font_class": "baocun1",
+      "unicode": "e936",
+      "unicode_decimal": 59702
+    },
+    {
+      "icon_id": "7556178",
+      "name": "保存",
+      "font_class": "baocun2",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    },
+    {
+      "icon_id": "10352313",
+      "name": "保存",
+      "font_class": "baocun3",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "12550359",
+      "name": "保存",
+      "font_class": "baocun4",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
       "icon_id": "15222125",
       "name": "密码小眼睛",
       "font_class": "mimaxiaoyanjing",
