@@ -4,7 +4,6 @@ import React, {
 } from 'react';
 import { Image, Layout } from 'antd';
 import { connect } from 'react-redux';
-import ScanChip from './../../../assets/img/ScanChip.png';
 import {
     selectHardwareModalShowFun,
     petSortTypeFun,
@@ -24,9 +23,8 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
     return (
         <>
             <Content className={"contentBox"}>
-                <div className='startBox'>
-                    <p className='startTitle'>Scan Pet's Microchip</p>
-                    <img src={ScanChip}></img>
+                <div className='chackPatientBox'>
+                    <p className='chackPatientTitle'>Select a patient</p>
                 </div>
             </Content>
         </>

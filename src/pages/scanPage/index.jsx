@@ -15,21 +15,36 @@ import {
 } from '../../store/actions';
 import _ from 'lodash';
 import HeaderItem from '../temperaturePage/components/headerItem';
-import LinkEquipment from './components/LinkEquipment';
+import LinkEquipment from './components/linkEquipment';
+import ScanPet from './components/scanPet';
 import './index.less';
 
-const ScanPage = () => {
-
+const ScanPage = ({ petMessage, hardwareMessage }) => {
+    console.log('petMessage', petMessage);
+    let { mellaConnectStatus } = hardwareMessage;
     return (
         <>
             <Layout className='homeBox'>
                 <HeaderItem />
-                <LinkEquipment/>
+                {/* <LinkEquipment/> */}
+                <ScanPet />
             </Layout>
-
         </>
     );
-
 };
 
-export default ScanPage;
+export default connect(
+    state => ({
+        petMessage: state.petReduce.petDetailInfo,
+        hardwareMessage: state.hardwareReduce,
+    }),
+    {
+        selectHardwareModalShowFun,
+        petSortTypeFun,
+        petDetailInfoFun,
+        setMellaConnectStatusFun,
+        setMellaMeasureValueFun,
+        setMellaPredictValueFun,
+        setMellaMeasurePartFun
+    }
+)(ScanPage);

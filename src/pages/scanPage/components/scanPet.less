@@ -1,0 +1,85 @@
+.contentBox {
+    .scanImageBox {
+        width: 50%;
+    }
+
+    .selectLengthUnit {
+        margin-top: 30px;
+    }
+
+    .inputGroupItem {
+        padding: 10px;
+        margin-top: 30px;
+        .inputItemBox {
+            display: flex;
+            align-items: flex-end;
+            justify-content:center;
+
+            .inputItem{
+                width: 100px;
+            }
+
+            .inputTitle {
+                text-align: center;
+                color: #a0a0a0;
+                line-height: 20px;
+            }
+
+            .inputNum {
+                border: none;
+                border-bottom: 2px solid #d9d9d9;
+            }
+
+            .inputNum:focus {
+                border: none;
+                border-bottom: 2px solid #e1206d !important;
+                box-shadow: none;
+            }
+        }
+    }
+
+    .dotBox {
+        width: 100%;
+        position: relative;
+        .dotList {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+
+            li {
+                position: relative;
+                display: inline-block;
+                margin: 0 2px;
+                padding: 0;
+                text-align: center;
+                vertical-align: top;
+                margin-right: 10px;
+            }
+
+            .dotItem {
+                display: block;
+                width: 10px;
+                height: 10px;
+                padding: 0;
+                font-size: 0;
+                background: #4e4e4e;
+                border: 0;
+                border-radius: 20px;
+                outline: none;
+                // opacity: .3;
+                transition: all .5s;
+            }
+        }
+    }
+
+    .nextBtn {
+        width: 330px;
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+
+        .btn {
+            width: 100%;
+        }
+    }
+}
