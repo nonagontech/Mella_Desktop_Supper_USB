@@ -1,6 +1,7 @@
 
 
 import {
+  HARDWARE_LIST,
   SELECT_HARDWARE_INDEX,
   SELECT_HARDWARE_LIST,
   SELECT_HARDWARE_INFO,
@@ -31,6 +32,8 @@ const getAction = (data, type) => {
     data
   }
 }
+//应用初始化获取的全部硬件集合
+export const setHardwareList = (data) => getAction(data, HARDWARE_LIST)
 //点击了导航栏的硬件种类，获取到硬件种类的index和种类下对应的硬件列表
 export const changeselectHardwareIndex = (data) => getAction(data, SELECT_HARDWARE_INDEX)
 export const selectHardwareList = (data = {}) => getAction(data, SELECT_HARDWARE_LIST)

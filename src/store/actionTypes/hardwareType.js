@@ -1,3 +1,6 @@
+//应用初始化获取的全部硬件集合
+export const HARDWARE_LIST = 'HardwareList';
+
 //选择的硬件类型的index
 export const SELECT_HARDWARE_INDEX = 'selectselectHardwareIndex'
 //选择的硬件类型

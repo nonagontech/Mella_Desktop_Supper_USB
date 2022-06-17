@@ -21,6 +21,24 @@ export function compareObject(obj1, obj2) {
     return true;
 }
 
+//比较数组是否相同,数组中可能包含对象
+export function compareArray(arr1, arr2) {
+    if (arr1.length !== arr2.length) {
+        return false;
+    }
+    for (let i = 0; i < arr1.length; i++) {
+        if (typeof arr1[i] === 'object') {
+            if (!compareObject(arr1[i], arr2[i])) {
+                return false;
+            }
+        } else {
+            if (arr1[i] !== arr2[i]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
 
 
 

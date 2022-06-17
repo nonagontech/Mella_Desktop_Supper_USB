@@ -8,6 +8,7 @@ import HardAndPetsUI from './HardAndPetsUI';
 import HardWareTypeUI from './hardWareTypeUI';
 import TemperaturePage from '../../pages/temperaturePage'
 import {
+  setHardwareList,
   selectHardwareModalShowFun,
   setIsHaveUsbDeviceFun,
   setMellaConnectStatusFun,
@@ -26,9 +27,7 @@ import {
   setRulerMeasureValueFun,
   setRulerUnitFun,
   setRulerConfirmCountFun,
-
   setReceiveBroadcastHardwareInfoFun,
-
 
 } from '../../store/actions';
 import './mainbody.less'
@@ -37,6 +36,7 @@ import electronStore from '../../utils/electronStore';
 import AddDevice from './AddDevice';
 import BiggiePage from '../../pages/biggiePage';
 import { compareObject } from '../../utils/current';
+import { compareArray } from '../../utils/current';
 
 let ipcRenderer = window.require('electron').ipcRenderer
 let isMeasure = false //是否正在测量,用于判断是否需要发送指定指令给USB,查看硬件是否连接
@@ -53,7 +53,7 @@ class App extends Component {
   state = {
     //body部分窗口高度
     bodyHeight: 0,
-    //本地保存的硬件类型数组
+    //本地保存的硬件类型数组,不包括Add这个类型
     devicesTypeList: [],
     //展示硬件类型的数组
     showHardWareTypeList: [],
@@ -88,6 +88,19 @@ class App extends Component {
     ipcRenderer.removeListener('sned', this._send)
     ipcRenderer.removeListener('noUSB', this._noUSB)
   }
+  //检测到props里的hardwareList更新
+  componentDidUpdate(prevProps, prevState) {
+
+    //检测是否有USB设备
+    // if (this.props.hardwareList !== prevProps.isHaveUsbDevice) {
+    //   this.setState({
+    //     isHaveUsbDevice: this.props.isHaveUsbDevice
+    //   })
+    // }
+    //检测mella温度计测量状态
+
+  }
+
   changeFenBianLv = (e) => {
 
     let ipcRenderer = window.electron.ipcRenderer
@@ -754,8 +767,9 @@ class App extends Component {
     //     ]
     //   }
     // ]
+
     let devicesTypeList = electronStore.get(`${storage.lastOrganization}-${storage.userId}-devicesTypeList`) || []
-    console.log('获取的设备列表', devicesTypeList);
+    console.log('获取的设22222备列表', devicesTypeList);
     if (devicesTypeList.length === 0) {
       devicesTypeList.push(
         {
@@ -787,6 +801,25 @@ class App extends Component {
           }
         ]
       })
+      devicesTypeList.push({
+        type: 'biggie',
+        devices: [
+
+          {
+            type: 'tape',
+            devices: [
+              {
+                name: 'tape',
+                mac: '',
+                deviceType: 'tape',
+                examRoom: '',
+              }
+            ]
+          },
+        ]
+      })
+
+
 
     }
 
@@ -870,6 +903,7 @@ export default connect(
     mellaMeasurePart: state.hardwareReduce.mellaMeasurePart,
     selectHardwareType: state.hardwareReduce.selectHardwareType,
     hardwareReduce: state.hardwareReduce,
+    hardwareList: state.hardwareReduce.hardwareList,
 
 
   }),
