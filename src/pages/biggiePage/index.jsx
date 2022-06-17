@@ -18,7 +18,8 @@ let storage = window.localStorage;
 
 
 
-const BiggirPage = ({ hardwareReduce, setBiggieConnectStatusFun }) => {
+const BiggirPage = ({ hardwareReduce, setBiggieConnectStatusFun, petReduce }) => {
+    let { petDetailInfo } = petReduce
     //定义体重值 体脂值 体重单位 连接状态
     const [weight, setWeight] = useState(0);
     const [fat, setFat] = useState(0);
@@ -32,6 +33,7 @@ const BiggirPage = ({ hardwareReduce, setBiggieConnectStatusFun }) => {
     useEffect(() => {
 
         let { biggieConnectStatus, biggieBodyFat, biggieBodyWeight, biggieUnit, biggieSameWeightCount } = hardwareReduce;
+
         setConnectStatus(biggieConnectStatus);
 
         setFat(biggieBodyFat);
@@ -51,28 +53,36 @@ const BiggirPage = ({ hardwareReduce, setBiggieConnectStatusFun }) => {
             <HeaderItem />
             <div className='measurementBox'>
                 {
-                    connectStatus === 'isMeasuring' ?
-                        (
-                            <>
-                                <div className="biggie" style={{ width: px(400), }}>
-                                    <Biggie
-                                        weight={weight}
-                                        bodyFat={fat}
-                                        score={5}
-                                        impedance={fat}
-                                        isIbs={unit === 'lb'}
-                                        onPress={() => { console.log('点击了保存') }}
-                                        discardOnPress={() => setBiggieConnectStatusFun('disconnected')}
-                                        issave={isSavePMS}
-                                    />
-                                </div>
-                                <HistoryTable />
-                            </>
-                        )
-                        : (
-                            <LinkEquipment />
-                        )
+                    _.isEmpty(petDetailInfo) ? (
+                        <div className='chackPatientBox'>
+                            <p className='chackPatientTitle'>Select a patient</p>
+                        </div>
+                    ) : (
+                        connectStatus === 'isMeasuring' ?
+                            (
+                                <>
+                                    <div className="biggie" style={{ width: px(400), }}>
+                                        <Biggie
+                                            weight={weight}
+                                            bodyFat={fat}
+                                            score={5}
+                                            impedance={fat}
+                                            isIbs={unit === 'lb'}
+                                            onPress={() => { console.log('点击了保存') }}
+                                            discardOnPress={() => setBiggieConnectStatusFun('disconnected')}
+                                            issave={isSavePMS}
+                                        />
+                                    </div>
+                                    <HistoryTable />
+                                </>
+                            )
+                            : (
+
+                                <LinkEquipment />
+                            )
+                    )
                 }
+
             </div>
         </div>
     );
@@ -81,6 +91,7 @@ const BiggirPage = ({ hardwareReduce, setBiggieConnectStatusFun }) => {
 export default connect(
     state => ({
         hardwareReduce: state.hardwareReduce,
+        petReduce: state.petReduce
     }),
     {
         setBiggieConnectStatusFun
