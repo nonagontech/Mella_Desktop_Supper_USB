@@ -861,9 +861,11 @@ class App extends Component {
             break;
           case 'biggie':
             measurePage = <BiggiePage />
+            break;
 
           case 'tape':
             measurePage = <ScanPage />
+            break;
 
           default:
             break;
