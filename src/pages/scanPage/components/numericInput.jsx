@@ -3,9 +3,11 @@ import React, {
 import { Input } from 'antd';
 import _ from 'lodash';
 import './numericInput.less'
+import { useEffect } from 'react';
 
 const NumericInput = (props) => {
-    const { value, onChange, getInput ,key} = props;
+    const { value, onChange, getInput, onClick,onKey,index } = props;
+
     //输入框输入
     const handleChange = (e) => {
         const { value: inputValue } = e.target;
@@ -15,7 +17,7 @@ const NumericInput = (props) => {
             onChange(inputValue);
         }
     }
-
+    //失去焦点
     const handleBlur = () => {
         let valueTemp = value;
         if (`${value}`.charAt(`${value}`.length - 1) === '.' || value === '-') {
@@ -23,6 +25,13 @@ const NumericInput = (props) => {
         }
         onChange(`${valueTemp}`.replace(/0*(\d+)/, '$1'));
     };
+    //输入框点击事件
+    const handleClick = () => {
+        onClick();
+    }
+    //修改样式
+    let bordercolor = onKey ===index ?'#e1206d':'#d9d9d9';
+
 
     return (
         <Input
@@ -32,8 +41,8 @@ const NumericInput = (props) => {
             onBlur={handleBlur}
             maxLength={25}
             ref={getInput}
-            onClick={console.log('点击了输入框')}
-            key={key}
+            onClick={handleClick}
+            style={{borderColor:bordercolor}}
         />
     );
 
