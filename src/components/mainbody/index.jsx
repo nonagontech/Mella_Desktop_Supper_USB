@@ -492,8 +492,6 @@ class App extends Component {
 
         let { receiveBroadcastHardwareInfo } = hardwareReduce
 
-        let { receiveBroadcastHardwareInfo } = hardwareReduce;
-
         if (bluName.indexOf("C19") !== -1 && bluData.length > 10) {
           let json = {
             deviceType: "biggie",
