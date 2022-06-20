@@ -139,7 +139,15 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
             .then(res => {
                 console.log('历史温度记录', res);
                 if (res.flag === true) {
-                    setPetTemperatureData(res.data);
+                    let arr = []
+                    for (let i = 0; i < res.data.length; i++) {
+                        const element = res.data[i];
+                        if (element.temperature) {
+                            arr.push(element)
+                        }
+
+                    }
+                    setPetTemperatureData(arr);
                 }
             }).catch((err) => {
                 console.log(err);

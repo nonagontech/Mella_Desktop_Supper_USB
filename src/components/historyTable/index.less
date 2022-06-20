@@ -1,159 +1,146 @@
+.historyTable {
+    // .measuredTable {
+    //     width: 100%;
 
-    .ProgressTitle {
-        color: #7bd163;
-        font-size: 44px;
-        line-height: 40px;
-        text-align: center;
-        margin: 0;
-        position: relative;
-        .symbol{
-            position: absolute;
-            color: #7bd163;
-            font-size: 13px;
-            font-weight: 400;
-            line-height: 17px;
-        }
-    }
-
-    .ProgressTitle:nth-child(2) {
-        font-size: 18px;
-    }
-
-    .buttonBox {
-        width: 100%;
-        display: flex;
-        justify-content: space-evenly;
-        margin-top: 40px;
-
-        .qwe {
-            -webkit-app-region: no-drag;
-        }
-    }
-
-    .listTitleBox {
-        width: 100%;
-        height: 30px;
-        background-color: #19ade4;
-        margin-top: 70px;
-
-        .listTitle {
-            font-size: 13px;
-            line-height: 15px;
-            color: #FFFFFF;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    }
-
-    .measuredTable {
-        width: 100%;
-
-        .operationIcon {
-            padding: 10px;
-        }
-    }
-
-
-.noteModal {
+    //     .operationIcon {
+    //         padding: 10px;
+    //     }
+    // }
+    width: 100%;
+    height: 100%;
     display: flex;
-    align-items: center;
-    flex-direction: column;
+    flex: 1;
+    // background-color: pink;
+    // align-items: center;
+    justify-content: center;
 
-    .noteModalText {
+    .table112 {
+        // display: flex;
+        // flex: 1;
         width: 100%;
-        padding-left: 30px;
-        flex-direction: row;
-        display: flex;
-        align-items: center;
-        margin-top: 18px;
+        // height: 100%;
 
-        p {
-            margin: 0;
+        .ant-table-cell {
             padding: 0;
-            margin-left: 30px;
-        }
 
-        Input {
-            width: 150px;
-            height: 33px;
-            background-color: rgba(118, 118, 128, 0.12);
-            border-width: 0;
-            outline: none;
-            border-radius: 40px;
-            text-align: center;
-            margin-left: 25px;
-            margin-right: 6px;
-        }
-    }
-
-    .bodyType11 {
-        // background-color: pink;
-        width: 100%;
-        padding-left: 30px;
-        flex-direction: row;
-        // background-color: aqua;
-        display: flex;
-        // justify-content: center;
-        align-items: center;
-        margin-top: 18px;
-
-        p {
-            margin: 0;
-            padding: 0;
-            margin-left: 30px;
-        }
-
-        .ant-select-selector {
-            cursor: text;
-            // outline:none;
-            // border-width: 0;
-            border: none;
-            outline: medium;
-
-            width: 150px;
-            height: 33px;
-            background-color: rgba(118, 118, 128, 0.12);
-            border-width: 0;
-            outline: none;
-            border-radius: 40px;
-            text-align: center;
-            margin-left: 25px;
-            margin-right: 6px;
-
-            .ant-select-selection-search-input {
-                border: none;
-                outline: medium;
+            p {
+                padding: 0;
+                margin: 0;
             }
         }
 
-        Input {
-            border: none;
-            outline: medium;
+        .ant-table-cell {
+            text-align: center;
+            padding-top: 8px;
+            padding-bottom: 8px;
         }
 
-        .ant-select-selection-item {
-            // padding-right: 0;
-            text-align: center;
-            font-weight: 400;
+        .ant-table-tbody>tr>td {
+            padding: 5px 16px;
+            word-break: break-word;
         }
     }
 
-    .btn {
-        width: 150px;
-        height: 40px;
-        border-radius: 40px;
-        background-color: #e1206d;
-        color: #fff;
+
+    .noteModal {
         display: flex;
         align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        margin-top: 50px;
-    }
+        flex-direction: column;
 
-    .btn:active {
-        opacity: 0.5;
+        .noteModalText {
+            width: 100%;
+            padding-left: 30px;
+            flex-direction: row;
+            display: flex;
+            align-items: center;
+            margin-top: 18px;
+
+            p {
+                margin: 0;
+                padding: 0;
+                margin-left: 30px;
+            }
+
+            Input {
+                width: 150px;
+                height: 33px;
+                background-color: rgba(118, 118, 128, 0.12);
+                border-width: 0;
+                outline: none;
+                border-radius: 40px;
+                text-align: center;
+                margin-left: 25px;
+                margin-right: 6px;
+            }
+        }
+
+        .bodyType11 {
+            // background-color: pink;
+            width: 100%;
+            padding-left: 30px;
+            flex-direction: row;
+            // background-color: aqua;
+            display: flex;
+            // justify-content: center;
+            align-items: center;
+            margin-top: 18px;
+
+            p {
+                margin: 0;
+                padding: 0;
+                margin-left: 30px;
+            }
+
+            .ant-select-selector {
+                cursor: text;
+                // outline:none;
+                // border-width: 0;
+                border: none;
+                outline: medium;
+
+                width: 150px;
+                height: 33px;
+                background-color: rgba(118, 118, 128, 0.12);
+                border-width: 0;
+                outline: none;
+                border-radius: 40px;
+                text-align: center;
+                margin-left: 25px;
+                margin-right: 6px;
+
+                .ant-select-selection-search-input {
+                    border: none;
+                    outline: medium;
+                }
+            }
+
+            Input {
+                border: none;
+                outline: medium;
+            }
+
+            .ant-select-selection-item {
+                // padding-right: 0;
+                text-align: center;
+                font-weight: 400;
+            }
+        }
+
+        .btn {
+            width: 150px;
+            height: 40px;
+            border-radius: 40px;
+            background-color: #e1206d;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-top: 50px;
+        }
+
+        .btn:active {
+            opacity: 0.5;
+        }
     }
 }

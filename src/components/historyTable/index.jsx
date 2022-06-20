@@ -2,7 +2,7 @@ import React, {
     useEffect,
     useState,
 } from 'react';
-import { Button, Progress, Space, Table, Tag, Badge, Modal, Popconfirm, message } from 'antd';
+import { Button, Progress, Space, Table, Tag, Badge, Modal, Popconfirm, message, } from 'antd';
 import measuredTable_1 from './../../assets/img/measuredTable_1.png';
 import measuredTable_2 from './../../assets/img/measuredTable_2.png';
 import measuredTable_3 from './../../assets/img/measuredTable_3.png';
@@ -21,10 +21,11 @@ import {
 } from '../../store/actions';
 import Draggable from "react-draggable";
 import { fetchRequest } from '../../utils/FetchUtil1';
+import { px, mTop } from '../../utils/px';
 import moment from 'moment';
 import './index.less';
 
-const HistoryTable = ({ petMessage, hardwareMessage, setMellaConnectStatusFun }) => {
+const HistoryTable = ({ petMessage, hardwareMessage, setMellaConnectStatusFun, saveNum = 0 }) => {
     let { mellaMeasureValue, mellaConnectStatus, mellaMeasurePart } = hardwareMessage;
     let { petId, memo } = petMessage;
     let storage = window.localStorage;
@@ -35,53 +36,71 @@ const HistoryTable = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
     const [petMessages, setPetMessages] = useState({});//接收点击了那个的值
     const [saveType, setSaveType] = useState(false);//是否隐藏按钮
     const [bounds, setBounds] = useState({ left: 0, top: 0, bottom: 0, right: 0 });
+    const [reRender, setReRender] = useState(0);
+
     //表格渲染
     const columns = [
         {
             title: 'Dat',
             dataIndex: 'createTime',
-            with: 200,
+            width: '15%',
             render: (text, record) => (moment(text).format('MMM D')),
 
         },
         {
             title: 'Tim',
             dataIndex: 'createTime',
-            with: 150,
+            width: '20%',
             render: (text, record) => (moment(text).format('hh:mm A')),
         },
         {
-            title: 'Temp',
-            dataIndex: 'temperature',
-            with: 150,
+            title: 'Weight',
+            dataIndex: 'weight',
+            width: '15%',
             render: (text, record) => (
-                <Badge color={color()} text={text} />
+                <Badge color={color()} text={text.toFixed(1)} />
             ),
         },
+
         {
-            title: 'Placeme',
-            dataIndex: 'petVitalTypeId',
-            render: (text, record) => {
-                if (text === 1) {
-                    return <img src={measuredTable_2} />
-                } else if (text === 3) {
-                    return <img src={measuredTable_1} />
-                } else if (text === 4) {
-                    return <img src={measuredTable_3} />
-                } else {
-                    return <img src={measuredTable_2} />
-                }
-            },
+            title: 'BF%',
+            dataIndex: 'fat',
+            key: 'fat',
+            align: 'center',
+            width: '10%',
+            render: (text, record, index) => {
+
+                return (
+                    <p style={{ textAlign: 'center', color: '#58BDE6' }}>{text}</p>
+                )
+
+            }
+        },
+        {
+            title: 'BCS',
+            dataIndex: 'bodyConditionScore',
+            key: 'bodyConditionScore',
+            align: 'center',
+            width: '10%',
+            render: (text, record, index) => {
+
+                return (
+                    <p style={{ textAlign: 'center', color: '#58BDE6' }}>{text}</p>
+                )
+
+            }
         },
         {
             title: 'Note',
             dataIndex: 'memo',
+            width: '15%',
             render: (text, record) => (text)
         },
         {
             key: 'action',
+            width: '15%',
             render: (text, record) => (
-                <>
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
                     <img
                         className='operationIcon'
                         src={EditCircle}
@@ -93,7 +112,7 @@ const HistoryTable = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
                     <Popconfirm title="Sure to delete?" onConfirm={() => deletePetMessage(record.examId)}>
                         <img src={Delete} />
                     </Popconfirm>
-                </>
+                </div>
             ),
         },
     ]
@@ -107,76 +126,30 @@ const HistoryTable = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
             return '#98da86'
         }
     }
-    //圆滑里面的文字
-    const ProgressTitle = (percent) => {
-        //根据温度判断指示文字
-        const title = () => {
-            if (mellaMeasureValue > 40) {
-                return 'Danger'
-            } else if (_.inRange(_.round(mellaMeasureValue), 38, 40)) {
-                return 'Normal'
-            } else {
-                return 'Low'
-            }
-        }
-        return (
-            <>
-                <p style={{ color: { color } }} className='ProgressTitle'>{percent}
-                    <span style={{ color: { color } }} className='symbol'>℃</span>
-                </p>
-                <p style={{ color: { color } }} className='ProgressTitle'>{title()}</p>
-            </>
 
-        );
-    }
     //获取历史宠物温度数据
     const getPetTemperatureData = () => {
         fetchRequest(`/pet/getPetExamByPetId/${petId}`, 'GET', '')
             .then(res => {
                 console.log('历史温度记录', res);
                 if (res.flag === true) {
-                    setPetTemperatureData(res.data);
+                    let arr = []
+                    for (let i = 0; i < res.data.length; i++) {
+                        const element = res.data[i];
+                        if (element.weight) {
+                            arr.push(element)
+                        }
+
+                    }
+                    setPetTemperatureData(arr);
                 }
             }).catch((err) => {
                 console.log(err);
             })
 
     }
-    //返回准备测量界面
-    const backConnectedPage = () => {
-        if (mellaConnectStatus != 'connected') {
-            setMellaConnectStatusFun('connected');
-        } else {
-            setMellaConnectStatusFun('disconnected');
-        }
-    }
-    //保存数据
-    const saveData = () => {
-        let petVitalId = null;
-        switch (mellaMeasurePart) {
-            case '腋温': petVitalId = 1; break;
-            case '肛温': petVitalId = 3; break;
-            case '耳温': petVitalId = 4; break;
-            default: petVitalId = 1; break;
-        }
-        let params = {
-            petId: petId,
-            doctorId: storage.userId,
-            temperature: mellaMeasureValue,
-            petVitalTypeId: petVitalId,
-            memo: ''
-        }
-        fetchRequest('/exam/addClamantPetExam', 'POST', params)
-            .then(res => {
-                if (res.flag === true) {
-                    getPetTemperatureData();
-                    setSaveType(true);
-                    message.success('save successfully');
-                }
-            }).catch((err) => {
-                console.log(err);
-            })
-    }
+
+
     //保存note
     const save = () => {
         let datas = {
@@ -225,20 +198,41 @@ const HistoryTable = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
     useEffect(() => {
         getPetTemperatureData();
         return (() => { });
-    }, [])
+    }, [petMessage])
+    useEffect(() => {
+        if (reRender !== saveNum) {
+            setReRender(saveNum);
+            getPetTemperatureData();
+        }
+        return (() => { });
+    }, [saveNum])
+
+    let hisHe = mTop(200)
+    try {
+        let historyElement = document.querySelectorAll('.historyTable')
+        hisHe = historyElement[0].clientHeight - mTop(60)
+    } catch (error) {
+
+    }
 
     return (
-        <>
-            <Table
-                rowKey={'examId'}
-                columns={columns}
-                dataSource={petTemperatureData}
-                className='measuredTable'
-                pagination={false}
-            >
-            </Table>
+        <div className="historyTable">
+            <div className="table112">
+                <Table
+                    rowKey={'examId'}
+                    columns={columns}
+                    dataSource={petTemperatureData}
+                    className='measuredTable'
+                    pagination={false}
+                    scroll={{
+                        y: hisHe
+                    }}
+                >
+                </Table>
+            </div>
+
             {/*修改note弹窗 */}
-            <Modal
+            {/* <Modal
                 title={
                     <div
                         style={{
@@ -293,8 +287,8 @@ const HistoryTable = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
                     </div>
                     <div className="btn" style={{ width: '60%' }} onClick={() => save()}>Save Changes</div>
                 </div>
-            </Modal>
-        </>
+            </Modal> */}
+        </div>
     );
 };
 
