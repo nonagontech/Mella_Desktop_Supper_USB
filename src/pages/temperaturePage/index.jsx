@@ -26,6 +26,7 @@ const TemperaturePage = ({ petMessage, hardwareMessage }) => {
     let { mellaConnectStatus } = hardwareMessage;
     //测量温度中的页面变化
     const changePage = () => {
+        // return <MeasuredData />
         switch (mellaConnectStatus) {
             case 'isMeasuring':
                 return <Measurement />
@@ -41,9 +42,9 @@ const TemperaturePage = ({ petMessage, hardwareMessage }) => {
     }
     return (
         <>
-            
+
             <Layout className='homeBox'>
-            <HeaderItem/>
+                <HeaderItem />
                 {
                     _.isEmpty(petMessage) ?
                         (

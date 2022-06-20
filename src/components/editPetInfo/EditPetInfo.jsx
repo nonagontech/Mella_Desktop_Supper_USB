@@ -26,6 +26,8 @@ import MyModal from '../../utils/myModal/MyModal';
 import electronStore from '../../utils/electronStore';
 import PhoneBook from '../../utils/phoneBook/PhoneBook';
 import Button from './../../utils/button/Button'
+import { connect } from 'react-redux';
+import { petDetailInfoFun } from '../../store/actions';
 const { SubMenu } = Menu;
 const { Option } = Select;
 const MyIcon = createFromIconfontCN({
@@ -35,7 +37,7 @@ let storage = window.localStorage;
 let errPatientId = ''
 let url = 'https://www.mellaserver.com/api/mellaserver'
 // let url = 'http://192.168.0.36:8080/mellaserver'
-export default class EditPetInfo extends Component {
+class EditPetInfo extends Component {
   state = {
     dogImg: dog,
     catImg: cat,
@@ -94,26 +96,40 @@ export default class EditPetInfo extends Component {
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('big', win())
 
-    let path = this.props.history.location.pathname
-
-    console.log('444444444', path);
 
 
-    if (this.props.location.participate) {
-      let props = this.props.location.participate
-      console.log(props);
+
+    // if (this.props.location.participate) {
+    //   let props = this.props.location.participate
+    //   console.log(props);
+    //   this.setState({
+    //     patientId: props.patientId,
+    //     petId: props.petId,
+    //     oldPatientId: props.patientId,
+
+    //   }, () => {
+    //     this._getPetInfo()
+    //   })
+    //   console.log(props);
+    // } else {
+    //   this._getPetInfo()
+    // }
+    let { petDetailInfo } = this.props
+    let { petId, patientId, petName, lastName, firstName, breedName, isWalkIn } = petDetailInfo
+    if (!isWalkIn) {
+      if (!patientId || patientId === 'unknown') {
+        patientId = null
+      }
       this.setState({
-        patientId: props.patientId,
-        petId: props.petId,
-        oldPatientId: props.patientId,
+        patientId,
+        petId,
+        oldPatientId: patientId,
 
       }, () => {
         this._getPetInfo()
       })
-      console.log(props);
-    } else {
-      this._getPetInfo()
     }
+
 
     let dogBreed = electronStore.get('dogBreed') || []
     let catBreed = electronStore.get('catBreed') || []
@@ -997,11 +1013,12 @@ export default class EditPetInfo extends Component {
           <div className="menu">
 
             <MyIcon type='icon-fanhui4' className="icon" onClick={() => {
-              if (storage.goEditPet === "mesasure") {
-                this.props.history.push({ pathname: 'page8', participate: { patientId: this.state.patientId } })
-              } else {
-                this.props.history.goBack()
-              }
+              // if (storage.goEditPet === "mesasure") {
+              //   this.props.history.push({ pathname: 'page8', participate: { patientId: this.state.patientId } })
+              // } else {
+              //   this.props.history.goBack()
+              // }
+              this.props.history.goBack()
             }} />
           </div>
           <div className="text">mella</div>
@@ -1097,18 +1114,19 @@ export default class EditPetInfo extends Component {
                         }
 
                         storage.doctorExam = JSON.stringify(data)
-
-
                       }
                     } catch (error) {
 
                     }
                     console.log('从哪来', storage.goEditPet);
-                    if (storage.goEditPet === "mesasure") {
-                      this.props.history.replace({ pathname: 'page8', participate: { patientId: this.state.patientId } })
-                    } else {
-                      this.props.history.goBack()
-                    }
+                    // if (storage.goEditPet === "mesasure") {
+                    //   this.props.history.replace({ pathname: 'page8', participate: { patientId: this.state.patientId } })
+                    // } else {
+                    //   this.props.history.goBack()
+                    // }
+
+                    this.props.petDetailInfoFun({ ...this.props.petDetailInfo, petName, birthday, patientId: this.state.patientId })
+                    this.props.history.goBack()
 
 
 
@@ -1208,7 +1226,6 @@ export default class EditPetInfo extends Component {
         />
 
         <MyModal
-          visible={true}
           visible={this.state.selectUser}
           element={
             <div className='myfindOrg' >
@@ -1288,3 +1305,9 @@ export default class EditPetInfo extends Component {
     )
   }
 }
+export default connect(
+  state => ({
+    petDetailInfo: state.petReduce.petDetailInfo
+  }),
+  { petDetailInfoFun }
+)(EditPetInfo)

@@ -1,8 +1,9 @@
 import React, {
     useEffect,
     useState,
-    useRef
+    useRef,
 } from 'react';
+import { useHistory } from 'react-router-dom'
 import { Image, Layout, Dropdown, Col, Row, Avatar, Space, Card, Menu, Progress } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import Charlie from './../../../assets/img/Charlie.png';
@@ -12,6 +13,7 @@ import redcat from './../../../assets/images/redcat.png';
 import reddog from './../../../assets/images/reddog.png';
 import redother from './../../../assets/images/redother.png';
 import { connect } from 'react-redux';
+import { devicesTitleHeight } from '../../../utils/InitDate';
 import {
     selectHardwareModalShowFun,
     petSortTypeFun,
@@ -29,6 +31,7 @@ import './headerItem.less';
 const { Header } = Layout;
 
 const HeaderItem = ({ petMessage, hardwareMessage }) => {
+    let history = useHistory();
     let { petName, patientId, firstName, lastName, gender, breedName, birthday, weight, url, petSpeciesBreedId } = petMessage;
     let { mellaConnectStatus, mellaPredictValue, mellaMeasureValue } = hardwareMessage;
     const [value, setValue] = useState(0);
@@ -90,7 +93,7 @@ const HeaderItem = ({ petMessage, hardwareMessage }) => {
     //头部弹出卡片
     const cardItem = () => {
         return (
-            <Menu>
+            <Menu onClick={(item) => clilkMenu(item)}>
                 <Menu.Item className='topItem'>
                     <div className='cardTopBox'>
                         <div className='topLeftBox'>
@@ -106,12 +109,19 @@ const HeaderItem = ({ petMessage, hardwareMessage }) => {
                         </div>
                     </div>
                 </Menu.Item>
-                <Menu.Item><p className='itemList'>Edit Pet Profile</p></Menu.Item>
+                <Menu.Item key={'editPetInfo'}><p className='itemList'>Edit Pet Profile</p></Menu.Item>
                 <Menu.Item><p className='itemList'>Export Temperature History</p></Menu.Item>
                 <Menu.Item><p className='itemList'>Export All Vitals History</p></Menu.Item>
             </Menu>
 
         );
+    }
+    const clilkMenu = (item) => {
+        console.log('---item', item);
+        if (item.key === 'editPetInfo' && !petMessage.isWalkIn) {
+            //跳转到编辑宠物信息页面
+            history.push('/page9')
+        }
     }
     //超过15s后调用接口
     const prediction = () => {
@@ -192,8 +202,8 @@ const HeaderItem = ({ petMessage, hardwareMessage }) => {
 
     return (
         <>
-            <Header className='headerBox'>
-                <Row>
+            <Header className='headerBox' style={{ height: devicesTitleHeight }}>
+                <Row className='heardRow'>
                     {/*头部左侧 */}
                     <Col flex={10}>
                         <Dropdown overlay={cardItem} trigger={['click']}>

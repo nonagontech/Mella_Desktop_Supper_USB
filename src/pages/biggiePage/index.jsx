@@ -58,28 +58,43 @@ const BiggirPage = ({ hardwareReduce, setBiggieConnectStatusFun, petReduce }) =>
                             <p className='chackPatientTitle'>Select a patient</p>
                         </div>
                     ) : (
-                        connectStatus === 'isMeasuring' ?
-                            (
-                                <>
-                                    <div className="biggie" style={{ width: px(400), }}>
-                                        <Biggie
-                                            weight={weight}
-                                            bodyFat={fat}
-                                            score={5}
-                                            impedance={fat}
-                                            isIbs={unit === 'lb'}
-                                            onPress={() => { console.log('点击了保存') }}
-                                            discardOnPress={() => setBiggieConnectStatusFun('disconnected')}
-                                            issave={isSavePMS}
-                                        />
-                                    </div>
-                                    <HistoryTable />
-                                </>
-                            )
-                            : (
+                        // connectStatus === 'isMeasuring' ?
+                        //     (
+                        //         <>
+                        //             <div className="biggie" style={{ width: px(400), }}>
+                        //                 <Biggie
+                        //                     weight={weight}
+                        //                     bodyFat={fat}
+                        //                     score={5}
+                        //                     impedance={fat}
+                        //                     isIbs={unit === 'lb'}
+                        //                     onPress={() => { console.log('点击了保存') }}
+                        //                     discardOnPress={() => setBiggieConnectStatusFun('disconnected')}
+                        //                     issave={isSavePMS}
+                        //                 />
+                        //             </div>
+                        //             <HistoryTable />
+                        //         </>
+                        //     )
+                        //     : (
 
-                                <LinkEquipment />
-                            )
+                        //     <LinkEquipment />
+                        // )
+                        <>
+                            <div className="biggie" style={{ width: px(400), }}>
+                                <Biggie
+                                    weight={weight}
+                                    bodyFat={fat}
+                                    score={5}
+                                    impedance={fat}
+                                    isIbs={unit === 'lb'}
+                                    onPress={() => { console.log('点击了保存') }}
+                                    discardOnPress={() => setBiggieConnectStatusFun('disconnected')}
+                                    issave={isSavePMS}
+                                />
+                            </div>
+                            <HistoryTable />
+                        </>
                     )
                 }
 
