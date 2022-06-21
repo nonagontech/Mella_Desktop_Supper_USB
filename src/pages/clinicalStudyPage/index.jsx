@@ -1411,7 +1411,7 @@ const ClinicalStudy = ({ bodyHeight, mellaConnectStatus, mellaMeasureValue, mell
         <div id="clinical" style={{ height: bodyHeight, minWidth: px(200), minHeight: bodyHeight, overflow: 'hidden' }} ref={clinicalRef}>
             <div className="clinicalTitle">
                 <Layout>
-                    <HeaderItem />
+                    <HeaderItem timeNum={60} />
                 </Layout>
             </div>
             <div className='clinicalBody' style={{ width: '100%', height: bodyHeight - devicesTitleHeight }}>
