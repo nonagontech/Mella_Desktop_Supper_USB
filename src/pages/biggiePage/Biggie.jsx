@@ -21,7 +21,7 @@ import './biggie.less'
  * @returns 
  */
 
-const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnPress, isIbs }) => {
+const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnPress, isIbs, isHaveSaveBtn = true }) => {
 
   // let { weight, bodyFat, score } = this.props
 
@@ -82,30 +82,32 @@ const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnP
 
 
       <div className='biggiefoot' style={{ marginTop: px(10), }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
-          <div
-            className='biggiefootbtn'
-            style={{ height: px(36), }}
-            onClick={() => {
-              discardOnPress()
-            }}
-          >
-            <div style={{ color: '#fff', fontSize: px(16) }}>{`Discard`}</div>
+        {isHaveSaveBtn &&
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
+            <div
+              className='biggiefootbtn'
+              style={{ height: px(36), }}
+              onClick={() => {
+                discardOnPress()
+              }}
+            >
+              <div style={{ color: '#fff', fontSize: px(16) }}>{`Discard`}</div>
+            </div>
+
+
+            <div
+              className='biggiefootbtn'
+              style={{ height: px(36), }}
+              onClick={() => {
+                onPress()
+              }}
+            >
+              <div style={{ color: '#fff', fontSize: px(16) }}>{issave ? `Save` : `Send to PMS`}</div>
+            </div>
+
+
           </div>
-
-
-          <div
-            className='biggiefootbtn'
-            style={{ height: px(36), }}
-            onClick={() => {
-              onPress()
-            }}
-          >
-            <div style={{ color: '#fff', fontSize: px(16) }}>{issave ? `Save` : `Send to PMS`}</div>
-          </div>
-
-
-        </div>
+        }
 
 
         {(impedance && impedance > 0) ? <div style={{ color: '#000', fontSize: px(18), marginTop: mTop(10) }}>{`Impedance ${impedance} Ohms`}</div> : null}

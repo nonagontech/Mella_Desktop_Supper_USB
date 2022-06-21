@@ -7,6 +7,7 @@ import {
   SELECT_HARDWARE_INFO,
   SELECT_HARDWARE_MODAL_SHOW,
   ISHAVE_USB_DEVICE,
+  MELLA_MEASURE_NUM,
   MELLA_CONNECT_STATUS,
   MELLA_MEASURE_VALUE,
   MELLA_PREDICT_VALUE,
@@ -45,8 +46,11 @@ export const selectHardwareInfoFun = (data = {}) => getAction(data, SELECT_HARDW
 export const selectHardwareModalShowFun = (data = {}) => getAction(data, SELECT_HARDWARE_MODAL_SHOW)
 //是否存在USB设备
 export const setIsHaveUsbDeviceFun = (data = {}) => getAction(data, ISHAVE_USB_DEVICE)
+
 //设置mella的连接状态
 export const setMellaConnectStatusFun = (data = {}) => getAction(data, MELLA_CONNECT_STATUS)
+//设置mella测量序号
+export const setMellaMeasureNumFun = (data = {}) => getAction(data, MELLA_MEASURE_NUM)
 //设置mella测量数值
 export const setMellaMeasureValueFun = (data = {}) => getAction(data, MELLA_MEASURE_VALUE)
 //设置mella预测数组数据

@@ -21,6 +21,7 @@ import {
 } from '../../../store/actions';
 import Draggable from "react-draggable";
 import { fetchRequest } from '../../../utils/FetchUtil1';
+import { px, mTop } from '../../../utils/px.js';
 import moment from 'moment';
 import './measuredData.less';
 
@@ -40,27 +41,28 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
         {
             title: 'Dat',
             dataIndex: 'createTime',
-            with: 200,
+            width: '14%',
             render: (text, record) => (moment(text).format('MMM D')),
 
         },
         {
             title: 'Tim',
             dataIndex: 'createTime',
-            with: 150,
+            width: '20%',
             render: (text, record) => (moment(text).format('hh:mm A')),
         },
         {
-            title: 'Temp',
+            title: 'Temp(℃)',
             dataIndex: 'temperature',
-            with: 150,
+            width: '16%',
             render: (text, record) => (
-                <Badge color={color()} text={text} />
+                <Badge color={color()} text={text.toFixed(1)} />
             ),
         },
         {
             title: 'Placeme',
             dataIndex: 'petVitalTypeId',
+            width: '15%',
             render: (text, record) => {
                 if (text === 1) {
                     return <img src={measuredTable_2} />
@@ -76,12 +78,14 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
         {
             title: 'Note',
             dataIndex: 'memo',
+            width: '20%',
             render: (text, record) => (text)
         },
         {
             key: 'action',
+            width: '15%',
             render: (text, record) => (
-                <>
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
                     <img
                         className='operationIcon'
                         src={EditCircle}
@@ -93,7 +97,7 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
                     <Popconfirm title="Sure to delete?" onConfirm={() => deletePetMessage(record.examId)}>
                         <img src={Delete} />
                     </Popconfirm>
-                </>
+                </div>
             ),
         },
     ]
@@ -135,7 +139,15 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
             .then(res => {
                 console.log('历史温度记录', res);
                 if (res.flag === true) {
-                    setPetTemperatureData(res.data);
+                    let arr = []
+                    for (let i = 0; i < res.data.length; i++) {
+                        const element = res.data[i];
+                        if (element.temperature) {
+                            arr.push(element)
+                        }
+
+                    }
+                    setPetTemperatureData(arr);
                 }
             }).catch((err) => {
                 console.log(err);
@@ -225,42 +237,59 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
     useEffect(() => {
         getPetTemperatureData();
         return (() => { });
-    }, [])
+    }, [petMessage])
+    let hisHe = mTop(200)
+    try {
+        let historyElement = document.querySelectorAll('.measurementBox .table')
+        hisHe = historyElement[0].clientHeight - mTop(60)
+    } catch (error) {
+
+    }
+
 
     return (
         <>
             <div className='measurementBox'>
-                <Progress
-                    type="dashboard"
-                    percent={_.round(mellaMeasureValue, 1)}
-                    gapDegree={30}
-                    width={'260px'}
-                    strokeWidth={'8'}
-                    format={percent => ProgressTitle(percent)}
-                    strokeColor={{
-                        '0%': '#7bd163',
-                        '100%': '#19ade4',
-                    }}
-                />
-                {
-                    !saveType && (
-                        <div className='buttonBox'>
-                            <Button type="danger" shape="round" color='#e1206d' onClick={() => backConnectedPage()}>Discard</Button>
-                            <Button type="danger" shape="round" color='#e1206d' onClick={() => saveData()}>Save</Button>
-                        </div>
-                    )
-                }
-                <div className='listTitleBox'>
+                <div className="progress" style={{ height: px(400) }}>
+                    <Progress
+                        type="dashboard"
+                        percent={_.round(mellaMeasureValue, 1)}
+                        gapDegree={30}
+                        width={'260px'}
+                        strokeWidth={'8'}
+                        format={percent => ProgressTitle(percent)}
+                        strokeColor={{
+                            '0%': '#7bd163',
+                            '100%': '#19ade4',
+                        }}
+                    />
+                    {
+                        !saveType && (
+                            <div className='buttonBox'>
+                                <Button style={{ backgroundColor: '#e1206d' }} type="danger" shape="round" onClick={() => backConnectedPage()}>Discard</Button>
+                                <Button style={{ backgroundColor: '#e1206d' }} type="danger" shape="round" color='#e1206d' onClick={() => saveData()}>Save</Button>
+                            </div>
+                        )
+                    }
+                </div>
+
+                <div className='listTitleBox1'>
                     <p className='listTitle'>History</p>
                 </div>
-                <Table
-                    rowKey={'examId'}
-                    columns={columns}
-                    dataSource={petTemperatureData}
-                    className='measuredTable'
-                    pagination={false}
-                >
-                </Table>
+                <div className="table" style={{ height: mTop(300) }}>
+                    <Table
+                        rowKey={'examId'}
+                        columns={columns}
+                        dataSource={petTemperatureData}
+                        className='measuredTable'
+                        pagination={false}
+                        scroll={{
+                            y: hisHe
+                        }}
+                    >
+                    </Table>
+                </div>
+
             </div>
             {/*修改note弹窗 */}
             <Modal
@@ -327,6 +356,7 @@ export default connect(
     state => ({
         petMessage: state.petReduce.petDetailInfo,
         hardwareMessage: state.hardwareReduce,
+
     }),
     {
         selectHardwareModalShowFun,

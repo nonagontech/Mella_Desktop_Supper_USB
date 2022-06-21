@@ -17,6 +17,8 @@ export const ISHAVE_USB_DEVICE = 'isHaveUsbDevice'
 //mella的测量状态
 export const MELLA_CONNECT_STATUS = 'mellaConnectStatus'
 
+//mella测量序号
+export const MELLA_MEASURE_NUM = 'mellaMeasureNum'
 //mella测量数值
 export const MELLA_MEASURE_VALUE = 'mellaMeasureValue'
 //mella预测数组数据 

@@ -675,61 +675,6 @@ const Heard = ({
     setMenuVisible(false)
     setMenuMouseOverIndex('')
     console.log('click ', e);
-    // switch (e.index) {
-    //   case "1":
-    //     history.push('/MainBody')
-    //     break;
-    //   case "2":
-    //     console.log('跳转到设备界面');
-    //     let selectDevice = electronStore.get(`${storage.userId}-selectDevice`)
-    //     // console.log('[[[[[[[', selectDevice);
-    //     selectDevice = selectDevice ? selectDevice : ''
-    //     setSelectDeviceMac(selectDevice)
-
-    //     setDeviceModel(true)
-    //     // history.push('/')
-    //     break;
-    //   case "3":
-    //     //跳转到设置
-    //     menu3Click()
-    //     history.push('/menuOptions/settings');
-    //     break;
-    //   case "4":
-    //     console.log('billing');
-    //     break;
-    //   case "5":
-    //     console.log('帮助');
-    //     history.push('/menuOptions/help')
-    //     break;
-    //   case "6":
-    //     setModalVisible(true)
-    //     console.log('关于');
-    //     break;
-    //   case "7":
-    //     console.log('退出登录');
-    //     storage.userId = ''
-    //     storage.roleId = ''
-    //     storage.userWorkplace = ''
-    //     storage.lastOrganization = ''
-    //     storage.lastWorkplaceId = ''
-    //     storage.connectionKey = ''
-    //     storage.isClinical = 'false'
-    //     history.push('/')
-    //     break;
-    //   case "8":
-    //     menu8Click()
-    //     console.log('宠物列表');
-    //     break;
-    //   case "9":
-    //     menu9Click()
-    //     history.push('/page12');
-    //     console.log('工作场所');
-
-    //     break;
-
-    //   default:
-    //     break;
-    // }
 
     switch (e.index) {
       case "1":
@@ -737,10 +682,12 @@ const Heard = ({
         setMenuNum(e.index)
         break;
       case "2":
+        history.push('/MainBody')
         console.log('全部的宠物');
         setMenuNum(e.index)
         break;
       case "3":
+        history.push('/MainBody')
         console.log('预约宠物');
         setMenuNum(e.index)
         break;
@@ -754,6 +701,7 @@ const Heard = ({
         setMenuNum(e.index)
         break;
       case "6":
+        history.push('/MainBody')
         console.log('临床测试');
         setMenuNum(e.index)
         break;

@@ -6,6 +6,7 @@ import {
   SELECT_HARDWARE_INFO,
   SELECT_HARDWARE_MODAL_SHOW,
   ISHAVE_USB_DEVICE,
+  MELLA_MEASURE_NUM,
   MELLA_CONNECT_STATUS,
   MELLA_MEASURE_VALUE,
   MELLA_PREDICT_VALUE,
@@ -47,9 +48,11 @@ const initialState = {
   //是否存在USB设备
   isHaveUsbDevice: true,
   //mella的连接状态
-  mellaConnectStatus: 'disconnected',
+  mellaConnectStatus: 'disconnected', //connected,disconnected,isMeasuring,complete
   //mella测量数值
   mellaMeasureValue: 0,
+  //mella测量序号
+  mellaMeasureNum: 0,
   //mella预测数组数据
   mellaPredictValue: [],
   //mella测量部位
@@ -111,6 +114,8 @@ export default function HardwareReducer(state = initialState, action) {
       return { ...state, mellaPredictValue: action.data }
     case MELLA_MEASURE_PART:
       return { ...state, mellaMeasurePart: action.data }
+    case MELLA_MEASURE_NUM:
+      return { ...state, mellaMeasureNum: action.data }
 
     case SELECT_HARDWARE_TYPE:
       return { ...state, selectHardwareType: action.data }

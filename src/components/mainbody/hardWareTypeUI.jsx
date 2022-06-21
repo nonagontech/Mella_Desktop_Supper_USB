@@ -15,7 +15,7 @@ import electronStore from '../../utils/electronStore'
 
 let storage = window.localStorage;
 //devicesTypeList是index传过来的硬件种类以及种类下的所有硬件
-const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareInfoFun, setSelectHardwareType, selectHardwareType, setMenuNum }) => {
+const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareInfoFun, setSelectHardwareType, selectHardwareType, setMenuNum, menuNum }) => {
   //根据左侧列表的设备类型，获取当前选中的设备类型下选中的硬件,先看本地有没有存,没存就拿第一个展示
   // useEffect(() => {
   //   let Index = null
@@ -109,25 +109,32 @@ const HardWareTypeUI = ({ bodyHeight, devicesTypeList, selectHardwareInfoFun, se
       onClick={() => {
         console.log(item.type);
 
-        if (item.type === 'add') {
 
 
-        } else {
-          let devicesInfo = electronStore.get(`${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`)
+        if (menuNum !== '6') {
+          setMenuNum('1')
+          setSelectHardwareType(item.type)
+          if (item.type === 'add') {
 
-          //要做个处理,看保存的数据是否和当前的一致，如果不一致，就把当前的保存下来
+
+          } else {
+            let devicesInfo = electronStore.get(`${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`)
+
+            //要做个处理,看保存的数据是否和当前的一致，如果不一致，就把当前的保存下来
 
 
-          if (!devicesInfo && item.devices[0]) {
-            devicesInfo = item.devices[0]
-            electronStore.set(`${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`, devicesInfo)
+            if (!devicesInfo && item.devices[0]) {
+              devicesInfo = item.devices[0]
+              electronStore.set(`${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`, devicesInfo)
+            }
+
+
+            selectHardwareInfoFun(devicesInfo)
           }
-
-
-          selectHardwareInfoFun(devicesInfo)
+        } else {
+          setSelectHardwareType('mellaPro')
         }
-        setSelectHardwareType(item.type)
-        setMenuNum('1')
+
 
       }
       }
@@ -168,6 +175,7 @@ HardWareTypeUI.defaultProps = {
 export default connect(
   state => ({
     selectHardwareType: state.hardwareReduce.selectHardwareType,
+    menuNum: state.userReduce.menuNum,
   }),
   { selectHardwareInfoFun, setSelectHardwareType, setMenuNum }
 )(HardWareTypeUI)
