@@ -14,6 +14,7 @@ import electronStore from './../../utils/electronStore'
 import SelectionBox from './../../utils/selectionBox/SelectionBox'
 import { addQRCode } from '../../utils/axios';
 import { fetchRequest2 } from '../../utils/FetchUtil2';
+import { version } from './../../utils/appversion'
 let storage = window.localStorage;
 // let size = { width: 0, height: 0 }
 export default class Home extends Component {
@@ -21,7 +22,7 @@ export default class Home extends Component {
         imgurl: '',
         size: { width: 0, height: 0 }
     }
-    componentDidMount () {
+    componentDidMount() {
         let ipcRenderer = window.electron.ipcRenderer
         timerFun()
         ipcRenderer.send('close-loading-window', 1)
@@ -67,7 +68,7 @@ export default class Home extends Component {
         // console.log('-------------监听的数据', e);
 
     }
-    componentWillUnmount () {
+    componentWillUnmount() {
         let ipcRenderer = window.electron.ipcRenderer
         window.removeEventListener('resize', this.resize);
 
@@ -109,15 +110,24 @@ export default class Home extends Component {
 
 
     }
-    render () {
+    render() {
         return (
 
             <div id="home">
                 {/* <MaxMin
                     onClick={() => { this.props.history.push('/') }}
                 /> */}
-                <div className="daohang">
+                <div className="daohang" style={{ paddingTop: px(10), paddingRight: px(20) }}>
                     <MinClose />
+                </div>
+                <div className='flex refresh' style={{ alignItems: 'flex-end', paddingRight: px(20) }}>
+                    <div className='flex' style={{ flexDirection: 'row', paddingTop: px(20), paddingRight: px(18), color: '#700B33', cursor: 'pointer' }}>
+
+                        V{version}
+                    </div>
+
+
+
                 </div>
 
                 <div className="heard" >

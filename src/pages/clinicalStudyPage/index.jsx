@@ -47,12 +47,12 @@ let storage = window.localStorage;
 //定义echarts的数据个数
 const echartsDataLength = 0
 const { Option } = Select;
+let saveHistoryTime = null
 const ClinicalStudy = ({ bodyHeight, mellaConnectStatus, mellaMeasureValue, mellaMeasureNum, petDetailInfo }) => {
     const [units, setUnits] = useState('℃')
     const [temperature, setTemp] = useState(0)
     const echartsElement = useRef(null)
     const [showHistoryEchart, setShowHistoryEchart] = useState(false)
-    const [saveHistoryTime, setSaveHistoryTime] = useState(null)
     const [echarsData, setEcharsData] = useState({
         Eci: [],
         wen0: [],
@@ -104,6 +104,12 @@ const ClinicalStudy = ({ bodyHeight, mellaConnectStatus, mellaMeasureValue, mell
     }, [petDetailInfo])
 
     useEffect(() => {
+        return () => {
+            saveHistoryTime && clearTimeout(saveHistoryTime)
+        }
+    }, [])
+
+    useEffect(() => {
         //react监听屏幕窗口改变
         window.addEventListener('resize', resize)
         return () => {
@@ -147,6 +153,7 @@ const ClinicalStudy = ({ bodyHeight, mellaConnectStatus, mellaMeasureValue, mell
     }, [mellaMeasureNum])
 
     useEffect(() => {
+        console.log('=======监听mellaConnectStatus', mellaConnectStatus, echarsData.Eci.length);
         if (mellaConnectStatus === 'complete' && echarsData.Eci.length > 10) {
 
             addClinical()
@@ -185,7 +192,7 @@ const ClinicalStudy = ({ bodyHeight, mellaConnectStatus, mellaMeasureValue, mell
         }
 
         saveHistoryTime && clearTimeout(saveHistoryTime)
-        let time = setTimeout(() => {
+        saveHistoryTime = setTimeout(() => {
             let BCS = bodyConditionScore === '' ? null : parseFloat(bodyConditionScore)
             let hrartR = heartRate === '' ? null : parseFloat(heartRate)
             let respireatoryR = respiratoryRate === '' ? null : parseFloat(respiratoryRate)
@@ -271,7 +278,7 @@ const ClinicalStudy = ({ bodyHeight, mellaConnectStatus, mellaMeasureValue, mell
 
 
         }, 500)
-        setSaveHistoryTime(time)
+
     }
     const _getHistory11 = (petId) => {
         let historys = []
@@ -601,7 +608,7 @@ const ClinicalStudy = ({ bodyHeight, mellaConnectStatus, mellaMeasureValue, mell
                     </> :
 
                         <>
-                            <span style={{ fontSize: px(36) }}>{temp} <sup style={{ fontSize: px(18) }}>{unit}</sup></span><br />
+                            <span style={{ fontSize: px(36) }}>{temp < 3 ? null : temp} <sup style={{ fontSize: px(18) }}>{unit}</sup></span><br />
                             <span style={{ fontSize: px(22) }}>{text}</span>
                         </>
                 ) : (
