@@ -21,11 +21,10 @@ export default class Home extends Component {
         imgurl: '',
         size: { width: 0, height: 0 }
     }
-    componentDidMount() {
+    componentDidMount () {
         let ipcRenderer = window.electron.ipcRenderer
         timerFun()
-        // let win1 = JSON.stringify(win)
-        // console.log(win);
+        ipcRenderer.send('close-loading-window', 1)
         ipcRenderer.send('small', win())
         storage.measurepatientId = '';
         temporaryStorage.logupVetInfo = {}
@@ -68,7 +67,7 @@ export default class Home extends Component {
         // console.log('-------------监听的数据', e);
 
     }
-    componentWillUnmount() {
+    componentWillUnmount () {
         let ipcRenderer = window.electron.ipcRenderer
         window.removeEventListener('resize', this.resize);
 
@@ -110,7 +109,7 @@ export default class Home extends Component {
 
 
     }
-    render() {
+    render () {
         return (
 
             <div id="home">

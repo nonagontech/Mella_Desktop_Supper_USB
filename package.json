@@ -1,6 +1,6 @@
 {
   "name": "supermella",
-  "version": "v1.0.0",
+  "version": "v1.0.1",
   "main": "main.js",
   "private": true,
   "author": {
@@ -95,7 +95,7 @@
   "postinstall": "electron-builder install-app-deps",
   "build": {
     "productName": "Mella Super",
-    "appId": "com.ai.mellasuper",
+    "appId": "com.ai.mellasuperapp",
     "directories": {
       "output": "dist1"
     },
