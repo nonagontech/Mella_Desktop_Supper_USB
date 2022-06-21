@@ -17,13 +17,13 @@ import ScanPet from "./components/scanPet";
 import "./index.less";
 
 const ScanPage = ({ petMessage, hardwareMessage }) => {
-  let { petId } = petMessage;
+  let { petId, isWalkIn } = petMessage;
 
   return (
     <>
       <Layout className="homeBox">
         <HeaderItem />
-        {_.isEmpty(petId) ? <LinkEquipment /> : <ScanPet />}
+        {_.isEmpty(petId) && !isWalkIn ? <LinkEquipment /> : <ScanPet />}
       </Layout>
     </>
   );

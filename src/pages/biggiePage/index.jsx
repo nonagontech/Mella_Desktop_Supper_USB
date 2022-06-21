@@ -21,6 +21,7 @@ const BiggirPage = ({
   petReduce,
 }) => {
   let { petDetailInfo } = petReduce;
+  let { biggieBodyWeight } = hardwareReduce;
   //定义体重值 体脂值 体重单位 连接状态
   const [weight, setWeight] = useState(0);
   const [saveNum, setSaveNum] = useState(0);
@@ -41,7 +42,6 @@ const BiggirPage = ({
       bodyConditionScore: null,
     };
     setSaveLoad(true);
-
     console.log("---体重保存入参--：", params);
     fetchRequest("/exam/addClamantPetExam", "POST", params)
       .then((res) => {
@@ -49,25 +49,12 @@ const BiggirPage = ({
         console.log("res", res);
         if (res.flag === true) {
           switch (storage.lastOrganization) {
-            //   case '3'://vetspire
-            //     this.updataWeightVetspire()
-
-            //     break;
-
-            //   case '4'://ezyVet
-            //     this.updataWeightEzyvet()
-            //     break;
-
             default:
-              // this.setState({
-              //   isHaveBigieDate: false,
-              //   isWeightSave: false
-              // })
               message.success("Data successfully saved in Mella");
               break;
           }
           setSaveNum(saveNum + 1);
-
+          setIsHaveSaveBtn(false);
           // this._getHistory()
         }
       })
@@ -80,6 +67,7 @@ const BiggirPage = ({
   useEffect(() => {
     let isSave = storage.connectionKey ? false : true;
     setIsSavePMS(isSave);
+    return() => {}
   }, []);
   useEffect(() => {
     let {
@@ -100,7 +88,14 @@ const BiggirPage = ({
       let ipcRenderer = window.require("electron").ipcRenderer;
       ipcRenderer.send("keyboardWriting", weight);
     }
+
+    return () => {};
   }, [hardwareReduce]);
+
+  useEffect(() => {
+    setIsHaveSaveBtn(true);
+    return () => {};
+  }, [biggieBodyWeight]);
 
   return (
     <>
@@ -132,7 +127,7 @@ const BiggirPage = ({
                 <p className="biggeTitle">History</p>
               </div>
               <div className="biggeTableBox">
-                  <HistoryTable saveNum={saveNum} />
+                <HistoryTable saveNum={saveNum} />
               </div>
             </div>
           ) : (

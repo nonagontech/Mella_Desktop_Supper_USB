@@ -182,7 +182,7 @@ const HardAndPetsUI = ({ hardwareList, selectHardwareType, selectHardwareInfoFun
 
   return (
     <div className="hardList"
-      style={{ top: px(90) }}
+      style={{ top: px(90),zIndex:999 }}
       onClick={(e) => {
         e.stopPropagation()
         selectHardwareModalShowFun(false)
