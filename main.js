@@ -15,25 +15,25 @@ const path = require('path')
 const isDev = require('electron-is-dev');
 const { autoUpdater } = require('electron-updater')
 const updateElectronApp = require('update-electron-app')
-const { keyboard, Key, mouse, left, right, up, down } = require("@nut-tree/nut-js");
-// const installExtension = require('electron-devtools-installer')
-// const { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = installExtension
-const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+// const { keyboard, Key, mouse, left, right, up, down } = require("@nut-tree/nut-js");
+// // const installExtension = require('electron-devtools-installer')
+// // const { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = installExtension
+// const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 
 
 
-app.whenReady().then(async () => {
-    if (isDev) {
-        installExtension(REACT_DEVELOPER_TOOLS)
-            .then((name) => console.log(`Added Extension:  ${name}`))
-            .catch((err) => console.log('An error occurred: ', err));
-        installExtension(REDUX_DEVTOOLS)
-            .then((name) => console.log(`Added Extension:  ${name}`))
-            .catch((err) => console.log('An error occurred: ', err));
+// app.whenReady().then(async () => {
+//     if (isDev) {
+//         installExtension(REACT_DEVELOPER_TOOLS)
+//             .then((name) => console.log(`Added Extension:  ${name}`))
+//             .catch((err) => console.log('An error occurred: ', err));
+//         installExtension(REDUX_DEVTOOLS)
+//             .then((name) => console.log(`Added Extension:  ${name}`))
+//             .catch((err) => console.log('An error occurred: ', err));
 
 
-    }
-})
+//     }
+// })
 
 
 const devWidth = 1920;
