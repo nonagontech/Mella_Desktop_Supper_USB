@@ -132,10 +132,7 @@ const BiggirPage = ({
                 <p className="biggeTitle">History</p>
               </div>
               <div className="biggeTableBox">
-                <div className="clearfix">
                   <HistoryTable saveNum={saveNum} />
-                  {/* <div className="text">eaggggggggggggggggggggggggggggggggggggggggggggggggggggggggg12343452657688764353525555555555555555555555555555dsfdsgdfg</div> */}
-                </div>
               </div>
             </div>
           ) : (
