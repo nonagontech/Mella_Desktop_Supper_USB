@@ -21,13 +21,13 @@ const { Content, Header } = Layout;
 const LinkEquipment = ({ petMessage, hardwareMessage }) => {
     let { mellaConnectStatus } = hardwareMessage;
     return (
-        <>
-            <Content className={"contentBox"}>
-                <div className='chackPatientBox'>
-                    <p className='chackPatientTitle'>Select a patient</p>
-                </div>
-            </Content>
-        </>
+
+        <Content className={"contentBox"}>
+            <div className='chackPatientBox'>
+                <p className='chackPatientTitle'>Select a patient</p>
+            </div>
+        </Content>
+
     );
 }
 export default connect(

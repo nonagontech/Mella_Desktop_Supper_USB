@@ -342,15 +342,7 @@ function createLoadingWindow () {   //加载页面窗口
 function createWindow () {
 
     const windowOptions = {
-        // width: show(800).width,       //运行时窗体大小
-        // height: show(800).height,      //运行时窗体大小
 
-        // width:400/factor,       //运行时窗体大小
-        // height: 800/factor ,      //运行时窗体大小
-        // maxWidth: 600/factor ,    //最大宽度
-        // minWidth: 1200,    //最小宽度
-        // maxHeight:1200/factor ,  //最大高度
-        // minHeight: 800/factor ,   //最小高度
         resizable: true,   //能否改变窗体大小
         frame: false,//为false则是无边框窗口
         webPreferences: {
@@ -358,6 +350,7 @@ function createWindow () {
             // preload: path.join(__dirname, './public/renderer.js')
         },
         show: false, // newBrowserWindow创建后先隐藏，
+        transparent: true,
         // backgroundColor: '#E1206D'
         // icon:path.join(__dirname,'./logo.png'),//任务栏icon图标
 
@@ -370,10 +363,10 @@ function createWindow () {
     // mainWindow.loadURL(`file://${path.join(__dirname, './build/index.html')}`)
     // mainWindow.loadURL(`file://${__dirname}/index.html`);
     //是否打开开发者
-    if (isDev) {
-        mainWindow.webContents.openDevTools()
-    }
-    // mainWindow.webContents.openDevTools()
+    // if (isDev) {
+    //     mainWindow.webContents.openDevTools()
+    // }
+
 
     //系统托盘右键菜单
     let trayMenuTemplate = [
