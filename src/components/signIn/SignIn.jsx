@@ -37,7 +37,7 @@ export default class SignIn extends Component {
     isLoadQrCode: false //是否正在加载二维码
 
   }
-  componentDidMount() {
+  componentDidMount () {
     isSign = true
     storage.lastOrganization = ''
     //通知main.js渲染一个small窗口
@@ -67,7 +67,7 @@ export default class SignIn extends Component {
     this._getQRCode()
 
   }
-  componentWillUnmount() {
+  componentWillUnmount () {
     isSign = false
     this.timer && clearInterval(this.timer)
     let ipcRenderer = window.electron.ipcRenderer
@@ -418,7 +418,7 @@ export default class SignIn extends Component {
 
   }
 
-  render() {
+  render () {
     let { isCode, baseUrl } = this.state
     let code = isCode ? 'icon-diannao-copy' : 'icon-erweima-copy'
     return (

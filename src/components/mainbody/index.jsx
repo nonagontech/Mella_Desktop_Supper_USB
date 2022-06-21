@@ -69,7 +69,7 @@ class App extends Component {
     //点击菜单的序号
     clickMenuIndex: "1",
   };
-  componentDidMount() {
+  componentDidMount () {
     ipcRenderer.send("big", win());
     timerFun();
     ipcRenderer.on("changeFenBianLv", this.changeFenBianLv);
@@ -88,7 +88,7 @@ class App extends Component {
     //定时查看mella温度计是否与底座连接或断开
     this._whether_to_connect_to_mella();
   }
-  componentWillUnmount() {
+  componentWillUnmount () {
     //组件销毁，取消监听
     window.removeEventListener('resize', this.resize)
     ipcRenderer.removeListener('changeFenBianLv', this.changeFenBianLv)
@@ -97,7 +97,7 @@ class App extends Component {
     this.detectTimer && clearInterval(this.detectTimer)
   }
   //检测到props里的hardwareList更新
-  UNSAFE_componentWillReceiveProps(prevProps) {
+  UNSAFE_componentWillReceiveProps (prevProps) {
     //对比props里的hardwareList和state里的hardwareList是否相同
 
     if (!compareArray(prevProps.hardwareList, this.state.devicesTypeList)) {
@@ -585,7 +585,7 @@ class App extends Component {
             console.log(error);
           }
 
-          function getVal(shi, xiaoshuo) {
+          function getVal (shi, xiaoshuo) {
             let num1 = parseInt(shi, 16);
             let num2 = parseInt(xiaoshuo, 16);
             return `${num1}.${num2}`;
@@ -599,12 +599,12 @@ class App extends Component {
           if (
             confirmBtn[1] === "2" &&
             parseInt(confirmBtn[0]) !== rulerConfirmCount &&
-            confirmBtn[0] !==null 
+            confirmBtn[0] !== null
           ) {
-            setRulerConfirmCountFun(parseInt(confirmBtn[0],16));
+            setRulerConfirmCountFun(parseInt(confirmBtn[0], 16));
           }
         } else if (bluName.indexOf("Biggie") !== -1 && bluData.length > 10) {
-          function getVal(shi) {
+          function getVal (shi) {
             if (`${shi}`.length < 2) {
               return `0${shi}`;
             }
@@ -923,7 +923,7 @@ class App extends Component {
     }
   };
 
-  render() {
+  render () {
     let { bodyHeight } = this.state;
 
     return (

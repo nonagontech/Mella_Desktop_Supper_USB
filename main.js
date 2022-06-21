@@ -15,25 +15,23 @@ const path = require('path')
 const isDev = require('electron-is-dev');
 const { autoUpdater } = require('electron-updater')
 const updateElectronApp = require('update-electron-app')
-// const { keyboard, Key, mouse, left, right, up, down } = require("@nut-tree/nut-js");
-// // const installExtension = require('electron-devtools-installer')
-// // const { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = installExtension
-// const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+const { keyboard, Key, mouse, left, right, up, down } = require("@nut-tree/nut-js");
+if (isDev) {
+    const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+
+    app.whenReady().then(async () => {
+        if (isDev) {
+            installExtension(REACT_DEVELOPER_TOOLS)
+                .then((name) => console.log(`Added Extension:  ${name}`))
+                .catch((err) => console.log('An error occurred: ', err));
+            installExtension(REDUX_DEVTOOLS)
+                .then((name) => console.log(`Added Extension:  ${name}`))
+                .catch((err) => console.log('An error occurred: ', err));
 
 
-
-// app.whenReady().then(async () => {
-//     if (isDev) {
-//         installExtension(REACT_DEVELOPER_TOOLS)
-//             .then((name) => console.log(`Added Extension:  ${name}`))
-//             .catch((err) => console.log('An error occurred: ', err));
-//         installExtension(REDUX_DEVTOOLS)
-//             .then((name) => console.log(`Added Extension:  ${name}`))
-//             .catch((err) => console.log('An error occurred: ', err));
-
-
-//     }
-// })
+        }
+    })
+}
 
 
 const devWidth = 1920;
@@ -312,21 +310,39 @@ function show (val) {
     }
 
 }
+//创建加载中的窗口
+
+function createLoadingWindow () {   //加载页面窗口
+    loadingWindow = new BrowserWindow({
+        height: 200,
+        useContentSize: true,
+        width: 200,
+        show: true,
+        transparent: true,
+        maximizable: false,  //禁止双击放大
+        frame: false,  // 去掉顶部操作栏
+        // backgroundColor: '#000',
+    })
+
+    const urlLocation = isDev ? require('path').join(__dirname, '/public/loading.html') : `file://${path.join(__dirname, './build/loading.html')}`
+    loadingWindow.loadURL(urlLocation)
+    Menu.setApplicationMenu(null)
+
+
+
+    loadingWindow.on('closed', () => {
+        loadingWindow = null
+    })
+}
+
+
 
 
 
 function createWindow () {
 
     const windowOptions = {
-        // width: show(800).width,       //运行时窗体大小
-        // height: show(800).height,      //运行时窗体大小
 
-        // width:400/factor,       //运行时窗体大小
-        // height: 800/factor ,      //运行时窗体大小
-        // maxWidth: 600/factor ,    //最大宽度
-        // minWidth: 1200,    //最小宽度
-        // maxHeight:1200/factor ,  //最大高度
-        // minHeight: 800/factor ,   //最小高度
         resizable: true,   //能否改变窗体大小
         frame: false,//为false则是无边框窗口
         webPreferences: {
@@ -334,6 +350,7 @@ function createWindow () {
             // preload: path.join(__dirname, './public/renderer.js')
         },
         show: false, // newBrowserWindow创建后先隐藏，
+        transparent: true,
         // backgroundColor: '#E1206D'
         // icon:path.join(__dirname,'./logo.png'),//任务栏icon图标
 
@@ -346,10 +363,10 @@ function createWindow () {
     // mainWindow.loadURL(`file://${path.join(__dirname, './build/index.html')}`)
     // mainWindow.loadURL(`file://${__dirname}/index.html`);
     //是否打开开发者
-    if (isDev) {
-        mainWindow.webContents.openDevTools()
-    }
-    // mainWindow.webContents.openDevTools()
+    // if (isDev) {
+    //     mainWindow.webContents.openDevTools()
+    // }
+
 
     //系统托盘右键菜单
     let trayMenuTemplate = [
@@ -488,11 +505,12 @@ menu.append(new MenuItem({
     role: 'editMenu'
 }))
 Menu.setApplicationMenu(menu)
-
-
-
-app.on('ready', () => {
-
+const gotTheLock = app.requestSingleInstanceLock()
+if (!gotTheLock) {
+    app.quit()
+}
+//软件升级相关内容
+function checkUpdate () {
 
     autoUpdater.autoDownload = false
     autoUpdater.checkForUpdatesAndNotify()
@@ -546,41 +564,29 @@ app.on('ready', () => {
     })
     autoUpdater.on('download-progress', data => {
         console.log(data.progress, '-----', data.bytesPerSecond, '-----', data.percent, '-----', data.total, '-----', data.transferred);
-        mainWindow.webContents.send('uploadMessage', { payload: statusMessage.downLoading, output: data })
+
 
         try {
             mainWindow.setProgressBar(data.percent / 100, { mode: 'normal' })
+            mainWindow.webContents.send('uploadMessage', { payload: statusMessage.downLoading, output: data.percent / 100 })
         } catch (error) {
             console.log(error);
         }
     })
     autoUpdater.on('update-not-available', (info) => {
-        // dialog.showMessageBox({
-        //     title: 'No new version',
-        //     message: 'Currently is the latest version'
-        // })
+
         console.log('当前版本为最新版本')
         mainWindow.webContents.send('uploadMessage', { payload: statusMessage.updateNotAva, output: info })
     })
+}
 
+
+app.on('ready', () => {
+
+    createLoadingWindow()
+    checkUpdate()
     createWindow();
-    // let path1 = app.getAppPath()
-    // console.log('获取的路径为--------------', path1);
-    // let size = require('electron').screen.getPrimaryDisplay().workAreaSize
-    // winWidth = size.width
-    // winHeight = size.height
-    // mainWindow.webContents.send('show', require('electron').screen.getPrimaryDisplay().workAreaSize)
-    // fenbianlvTimer && clearInterval(fenbianlvTimer)
-    // fenbianlvTimer = setInterval(() => {
-    //     console.log('---------------===', require('electron').screen.getPrimaryDisplay());
-    //     let newWinWidth = require('electron').screen.getPrimaryDisplay().workAreaSize.width
-    //     let newWinHeight = require('electron').screen.getPrimaryDisplay().workAreaSize.height
-    //     if (newWinWidth !== winWidth || newWinHeight !== winHeight) {
-    //         winWidth = newWinWidth
-    //         winHeight = newWinHeight
-    //         mainWindow.webContents.send('changeFenBianLv', true)
-    //     }
-    // }, 1500);
+
     openUsb()
     // mouse.move(up(500))
     // const timer = setTimeout(() => {
@@ -624,6 +630,19 @@ app.on('activate', () => {
 
 });
 
+
+let isCloseLoading = false
+ipcMain.on('close-loading-window', function () {
+    if (!isCloseLoading) {
+        isCloseLoading = true
+        console.log(loadingWindow);
+        loadingWindow.close()
+        console.log(loadingWindow);
+
+    }
+})
+
+
 //登录窗口最小化
 ipcMain.on('window-min', function () {
     mainWindow.minimize();
@@ -637,6 +656,7 @@ ipcMain.on('window-max', function () {
     }
 })
 ipcMain.on('window-close', function () {
+    loadingWindow && loadingWindow.close()
     mainWindow.close();
 })
 function wind (width1, height1, data) {
