@@ -60,6 +60,7 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15 }) => {
     rulerConnectStatus,
     biggieConnectStatus,
     selectHardwareInfo,
+    selectHardwareType
   } = hardwareMessage;
   const [value, setValue] = useState(0);
   const saveCallBack = useRef();
@@ -214,7 +215,7 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15 }) => {
   };
   //判断仪器是否连接
   const isConnect = () => {
-    switch (selectHardwareInfo.deviceType) {
+    switch (selectHardwareType) {
       case 'mellaPro':
         return _.isEqual(mellaConnectStatus, "disconnected") ? (
           <Avatar size={40} src={BluetoothNotConnected} />
