@@ -281,7 +281,7 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15 }) => {
 
   return (
     <>
-      <Header className="headerBox" style={{ height: devicesTitleHeight }}>
+      <Header className="headerBox" style={{ height: devicesTitleHeight ,background:'#fff'}}>
         {_.isEmpty(petId) && !isWalkIn ? (
           <></>
         ) : (

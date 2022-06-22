@@ -15,7 +15,6 @@ import {
   setMellaMeasurePartFun,
   setMellaDeviceIdFun,
   setMellaMeasureNumFun,
-
   setBiggieConnectStatusFun,
   setBiggieBodyFatFun,
   setBiggieBodyWeightFun,
@@ -26,27 +25,27 @@ import {
   setRulerUnitFun,
   setRulerConfirmCountFun,
   setReceiveBroadcastHardwareInfoFun,
+} from "../../store/actions";
+import "./mainbody.less";
+import { message } from "antd";
+import electronStore from "../../utils/electronStore";
+import AddDevice from "./AddDevice";
+import BiggiePage from "../../pages/biggiePage";
+import ScanPage from "../../pages/scanPage";
+import { compareObject } from "../../utils/current";
+import { compareArray } from "../../utils/current";
+import AllPets from "../../pages/allPetsPage";
+import ScheduledPetPage from "../../pages/scheduledPetsPage";
+import AddScheduledPet from "../../pages/addScheduledPet";
+import ClininalStudy from "../../pages/clinicalStudyPage";
+import CombineScales from "../../pages/combineScales";
 
-} from '../../store/actions';
-import './mainbody.less'
-import { message } from 'antd';
-import electronStore from '../../utils/electronStore';
-import AddDevice from './AddDevice';
-import BiggiePage from '../../pages/biggiePage';
-import ScanPage from '../../pages/scanPage'
-import { compareObject } from '../../utils/current';
-import { compareArray } from '../../utils/current';
-import AllPets from '../../pages/allPetsPage';
-import ScheduledPetPage from '../../pages/scheduledPetsPage';
-import AddScheduledPet from '../../pages/addScheduledPet';
-import ClininalStudy from '../../pages/clinicalStudyPage';
-
-let ipcRenderer = window.require('electron').ipcRenderer
-let isMeasure = false //是否正在测量,用于判断是否需要发送指定指令给USB,查看硬件是否连接
-let initTime = 0 //初始化时间,用来计算底座没有回应温度计的时间差,如果时间差大于6秒代表断开连接
-let num07 = 0       //接收到07命令行的次数,次数大于3跳出弹框
-let firstEar = true  //为true代表一组数据测量完成,下组测量数据
-let is97Time = null //为了防抖，因为有时候断开连接和连接成功总是连续的跳出来，展示就会一直闪烁，因此引入时间差大于800ms才展示
+let ipcRenderer = window.require("electron").ipcRenderer;
+let isMeasure = false; //是否正在测量,用于判断是否需要发送指定指令给USB,查看硬件是否连接
+let initTime = 0; //初始化时间,用来计算底座没有回应温度计的时间差,如果时间差大于6秒代表断开连接
+let num07 = 0; //接收到07命令行的次数,次数大于3跳出弹框
+let firstEar = true; //为true代表一组数据测量完成,下组测量数据
+let is97Time = null; //为了防抖，因为有时候断开连接和连接成功总是连续的跳出来，展示就会一直闪烁，因此引入时间差大于800ms才展示
 
 //用于预测的东西
 let clinicalYuce = [],
@@ -69,7 +68,7 @@ class App extends Component {
     //点击菜单的序号
     clickMenuIndex: "1",
   };
-  componentDidMount () {
+  componentDidMount() {
     ipcRenderer.send("big", win());
     timerFun();
     ipcRenderer.on("changeFenBianLv", this.changeFenBianLv);
@@ -88,16 +87,16 @@ class App extends Component {
     //定时查看mella温度计是否与底座连接或断开
     this._whether_to_connect_to_mella();
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     //组件销毁，取消监听
-    window.removeEventListener('resize', this.resize)
-    ipcRenderer.removeListener('changeFenBianLv', this.changeFenBianLv)
-    ipcRenderer.removeListener('sned', this._send)
-    ipcRenderer.removeListener('noUSB', this._noUSB)
-    this.detectTimer && clearInterval(this.detectTimer)
+    window.removeEventListener("resize", this.resize);
+    ipcRenderer.removeListener("changeFenBianLv", this.changeFenBianLv);
+    ipcRenderer.removeListener("sned", this._send);
+    ipcRenderer.removeListener("noUSB", this._noUSB);
+    this.detectTimer && clearInterval(this.detectTimer);
   }
   //检测到props里的hardwareList更新
-  UNSAFE_componentWillReceiveProps (prevProps) {
+  UNSAFE_componentWillReceiveProps(prevProps) {
     //对比props里的hardwareList和state里的hardwareList是否相同
 
     if (!compareArray(prevProps.hardwareList, this.state.devicesTypeList)) {
@@ -132,7 +131,7 @@ class App extends Component {
   };
   //监听是否有USB设备,true代表没有USB设备，false代表有USB设备
   _noUSB = (e, data) => {
-    console.log("监听是否有USB设备", data);
+    // console.log("监听是否有USB设备", data);
     if (data === this.props.isHaveUsbDevice) {
       this.props.setIsHaveUsbDeviceFun(!data);
     }
@@ -144,9 +143,9 @@ class App extends Component {
   };
   //监听mella温度计是否与底座连接或断开
   _whether_to_connect_to_mella = () => {
-    console.log('监听mella温度计是否与底座连接或断开',);
-    message.destroy()
-    this.detectTimer && clearInterval(this.detectTimer)
+    console.log("监听mella温度计是否与底座连接或断开");
+    message.destroy();
+    this.detectTimer && clearInterval(this.detectTimer);
     //2秒检测一次
     this.detectTimer = setInterval(() => {
       //如果正在测量或者没有USB设备，不检测
@@ -266,11 +265,7 @@ class App extends Component {
         if (mellaMeasurePart !== "腋温" || mellaMeasurePart !== "肛温") {
           setMellaMeasurePartFun("腋温");
         }
-        this.props.setMellaMeasureNumFun(this.props.mellaMeasureNum + 1)
-
-
-
-
+        this.props.setMellaMeasureNumFun(this.props.mellaMeasureNum + 1);
       },
       208: () => {
         //耳温
@@ -440,15 +435,14 @@ class App extends Component {
 
       // }
       255: () => {
-
-        let length = newArr.length
-        let frameLength = newArr[1]   //帧长
-        let itemLength = newArr[3] + 1  //数据位的长度   13
-        let dataIndex = 0
-        let bluName = ''
-        let bluData = []
-        while (itemLength < length && (itemLength + 3 <= frameLength)) {
-          let itemData = []
+        let length = newArr.length;
+        let frameLength = newArr[1]; //帧长
+        let itemLength = newArr[3] + 1; //数据位的长度   13
+        let dataIndex = 0;
+        let bluName = "";
+        let bluData = [];
+        while (itemLength < length && itemLength + 3 <= frameLength) {
+          let itemData = [];
           for (let i = 0; i < newArr[dataIndex + 3] - 1; i++) {
             itemData.push(dataArr1[i + dataIndex + 5]);
           }
@@ -488,9 +482,9 @@ class App extends Component {
           itemLength = itemLength + newArr[dataIndex + 3] + 1;
         }
         // console.log('硬件名称', bluName, '-----硬件数据', bluData);
-        let { setReceiveBroadcastHardwareInfoFun, hardwareReduce } = this.props
+        let { setReceiveBroadcastHardwareInfoFun, hardwareReduce } = this.props;
 
-        let { receiveBroadcastHardwareInfo } = hardwareReduce
+        let { receiveBroadcastHardwareInfo } = hardwareReduce;
 
         if (bluName.indexOf("C19") !== -1 && bluData.length > 10) {
           let json = {
@@ -585,7 +579,7 @@ class App extends Component {
             console.log(error);
           }
 
-          function getVal (shi, xiaoshuo) {
+          function getVal(shi, xiaoshuo) {
             let num1 = parseInt(shi, 16);
             let num2 = parseInt(xiaoshuo, 16);
             return `${num1}.${num2}`;
@@ -604,7 +598,7 @@ class App extends Component {
             setRulerConfirmCountFun(parseInt(confirmBtn[0], 16));
           }
         } else if (bluName.indexOf("Biggie") !== -1 && bluData.length > 10) {
-          function getVal (shi) {
+          function getVal(shi) {
             if (`${shi}`.length < 2) {
               return `0${shi}`;
             }
@@ -902,28 +896,28 @@ class App extends Component {
 
       case "2":
         return <AllPets bodyHeight={bodyHeight} />;
+      case "CombineScales":
+        return <CombineScales />;
 
       case "3":
         return <ScheduledPetPage bodyHeight={bodyHeight} />;
 
       case "AddScheduledPet":
-        return <AddScheduledPet bodyHeight={bodyHeight} />
+        return <AddScheduledPet bodyHeight={bodyHeight} />;
       case "6":
-        return <>
-          <HardAndPetsUI
-            bodyHeight={bodyHeight}
-          />
-          <ClininalStudy bodyHeight={bodyHeight} />
-        </>
-
-
+        return (
+          <>
+            <HardAndPetsUI bodyHeight={bodyHeight} />
+            <ClininalStudy bodyHeight={bodyHeight} />
+          </>
+        );
 
       default:
         break;
     }
   };
 
-  render () {
+  render() {
     let { bodyHeight } = this.state;
 
     return (
@@ -981,8 +975,6 @@ export default connect(
     setRulerUnitFun,
     setRulerConfirmCountFun,
     setReceiveBroadcastHardwareInfoFun,
-    setMellaMeasureNumFun
-
-
+    setMellaMeasureNumFun,
   }
 )(App);
