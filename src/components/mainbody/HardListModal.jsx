@@ -28,8 +28,10 @@ const HardAndPetsUI = ({
   selectHardwareInfoFun,
   selectHardwareModalShowFun,
   setInfo,
-  setMenuNum
+  setMenuNum,
+  hardwareMessage,
 }) => {
+  let { selectHardwareInfo } = hardwareMessage;
   //定义数组hardwareList
   const [hardwareListArr, setHardwareList] = useState([]);
   //定义选择的硬件详细信息
@@ -154,7 +156,7 @@ const HardAndPetsUI = ({
           <div
             className="addNewDevice"
             style={{ paddingTop: px(10), paddingBottom: px(10) }}
-            onClick={()=>setMenuNum('CombineScales')}
+            onClick={() => setMenuNum("CombineScales")}
           >
             <div
               className="addNewDeviceText"
@@ -199,23 +201,19 @@ const HardAndPetsUI = ({
         let list = element.devices || [];
         setHardwareList(list);
         //获取被选中的硬件的详细信息
-        let selectHardwareInfo =
-          electronStore.get(
-            `${storage.lastOrganization}-${storage.userId}-${selectHardwareType}-selectDeviceInfo`
-          ) || {};
-        console.log("------=========--------", selectHardwareInfo);
-        if (selectHardwareInfo === {}) {
-          let selectHardwareInfo = list[0] || {};
-          setSelectHardwareDetail(selectHardwareInfo);
+        let selectHardwareInfoData = selectHardwareInfo || {};
+        if (selectHardwareInfoData === {}) {
+          let selectHardwareInfoData = list[0] || {};
+          setSelectHardwareDetail(selectHardwareInfoData);
         } else {
           let sameFlag = false;
           for (let i = 0; i < list.length; i++) {
             const element = list[i];
             if (
-              element.name === selectHardwareInfo.name &&
-              element.mac === selectHardwareInfo.mac
+              element.name === selectHardwareInfoData.name &&
+              element.mac === selectHardwareInfoData.mac
             ) {
-              setSelectHardwareDetail(selectHardwareInfo);
+              setSelectHardwareDetail(selectHardwareInfoData);
               sameFlag = true;
               break;
             }
@@ -223,8 +221,8 @@ const HardAndPetsUI = ({
           console.log("sameFlag", sameFlag);
           if (!sameFlag) {
             console.log("设置了默认值");
-            let selectHardwareInfo = list[0] || {};
-            setSelectHardwareDetail(selectHardwareInfo);
+            let selectHardwareInfoData = list[0] || {};
+            setSelectHardwareDetail(selectHardwareInfoData);
           }
         }
         break;
@@ -259,6 +257,7 @@ export default connect(
     selectHardwareType: state.hardwareReduce.selectHardwareType,
     hardwareList: state.hardwareReduce.hardwareList,
     userMessage: state.userReduce,
+    hardwareMessage: state.hardwareReduce,
   }),
-  { selectHardwareInfoFun, selectHardwareModalShowFun,setMenuNum}
+  { selectHardwareInfoFun, selectHardwareModalShowFun, setMenuNum }
 )(HardAndPetsUI);

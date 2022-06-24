@@ -25,17 +25,22 @@
             color: #141414;
             font-size: 18px;
             font-weight: 700;
-            line-height: 21px;
+            line-height: 25px;
             text-align: center;
+            margin-bottom: 50px;
         }
-    }
 
-    .selectScalesBox {
-        .cardBox {
-            width: 400px;
-            padding: 15px;
-            margin: 20px;
+        .selectScalesBox {
+            .cardBox {
+                width: 400px;
+                margin: 20px;
+                border-radius: 11px;
+                border: 2px solid #f0f0f0;
+            }
 
+            .cardBoxClick {
+                border: 2px solid #5cbbe0;
+            }
 
             .cardBodyBox {
                 display: flex;
@@ -44,5 +49,54 @@
             }
         }
 
+        .asOneCardBox {
+            .asOneCard {
+                width: 300px;
+                margin: 20px;
+                border-radius: 11px;
+                border: 2px solid #f0f0f0;
+            }
+
+            .acOneImageBox {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 30px;
+            }
+        }
+
+        .scalesBtnBox {
+            margin-top: 50px;
+
+            .scalesBtn {
+                width: 300px;
+                height: 40px;
+                background-color: #e1206d;
+                border-color: #e1206d;
+            }
+        }
+
+        .inputBox {
+            margin-top: 50px;
+            .inputName {
+                background-color: #f5f5f5;
+                border-color: #d8d8d8;
+                color: #4a4a4a;
+                width: 350px;
+                height: 40px;
+                text-align: center;
+                border-radius: 20px;
+            }
+
+            .inputName:hover {
+                border-color: #e1206d ;
+            }
+
+            .inputName:focus {
+                box-shadow: 0 0 0 2px #e1206d;
+            }
+        }
+
     }
+
 }

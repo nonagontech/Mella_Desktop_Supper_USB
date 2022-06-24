@@ -898,7 +898,8 @@ class App extends Component {
         return <AllPets bodyHeight={bodyHeight} />;
       case "CombineScales":
         return <CombineScales />;
-
+      case "AddDevice":
+        return <AddDevice bodyHeight={bodyHeight} />;
       case "3":
         return <ScheduledPetPage bodyHeight={bodyHeight} />;
 
@@ -953,6 +954,7 @@ export default connect(
     selectHardwareType: state.hardwareReduce.selectHardwareType,
     hardwareReduce: state.hardwareReduce,
     hardwareList: state.hardwareReduce.hardwareList,
+    hardwareInfo:state.hardwareReduce.selectHardwareInfo,
     menuNum: state.userReduce.menuNum,
   }),
   {

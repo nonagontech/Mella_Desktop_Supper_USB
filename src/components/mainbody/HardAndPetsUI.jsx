@@ -14,14 +14,9 @@ import HardListModal from './HardListModal'
 let storage = window.localStorage
 
 
-const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow, hardwareList, selectHardwareModalShowFun }) => {
+const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow, hardwareList, selectHardwareModalShowFun,hardwareInfo }) => {
   //定义选择的硬件详细信息
   const [selectHardwareDetail, setSelectHardwareDetail] = useState({})
-
-  useEffect(() => {
-
-  }, [])
-  let selectDevice = electronStore.get(`${storage.lastOrganization}-${storage.userId}-${selectHardwareType}-selectDeviceInfo`) || {}
   useEffect(() => {
     console.log('初始化硬件和宠物界面', hardwareList);
     //根据设备类型获取到此类型下的所有硬件,并用来展示
@@ -30,7 +25,7 @@ const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow
       if (element.type === selectHardwareType) {
         let list = element.devices || []
         //获取被选中的硬件的详细信息
-        let selectHardwareInfo = electronStore.get(`${storage.lastOrganization}-${storage.userId}-${selectHardwareType}-selectDeviceInfo`) || {}
+        let selectHardwareInfo = hardwareInfo || {}
         console.log('------=========--------', selectHardwareInfo);
         if (selectHardwareInfo === {}) {
           let selectHardwareInfo = list[0] || {}
@@ -102,7 +97,8 @@ export default connect(
   state => ({
     selectHardwareModalShow: state.hardwareReduce.selectHardwareModalShow,
     selectHardwareType: state.hardwareReduce.selectHardwareType,
-    hardwareList: state.hardwareReduce.hardwareList
+    hardwareList: state.hardwareReduce.hardwareList,
+    hardwareInfo: state.hardwareReduce.selectHardwareInfo,
   }),
   { selectHardwareModalShowFun }
 )(HardAndPetsUI)
