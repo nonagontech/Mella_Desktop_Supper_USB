@@ -74,7 +74,7 @@ const HardAndPetsUI = ({
     //判断对象是否相等
 
     let isEqual = compareObject(item, selectHardwareDetail);
-    console.log("判断两个对象是否相同", isEqual, item, selectHardwareDetail);
+    // console.log("判断两个对象是否相同", isEqual, item, selectHardwareDetail);
     return (
       <li
         key={`${index}`}
@@ -149,7 +149,7 @@ const HardAndPetsUI = ({
       default:
         break;
     }
-    console.log("selectHardwareDetail", selectHardwareDetail);
+    // console.log("selectHardwareDetail", selectHardwareDetail);
     return (
       <div>
         {isBiggie && (

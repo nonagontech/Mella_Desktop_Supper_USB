@@ -14,7 +14,11 @@ import {
   CheckCircleFilled,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { setMenuNum, selectHardwareInfoFun,selectHardwareList } from "../../store/actions";
+import {
+  setMenuNum,
+  selectHardwareInfoFun,
+  selectHardwareList,
+} from "../../store/actions";
 import _ from "lodash";
 import { devicesTitleHeight } from "../../utils/InitDate";
 import scaleImage from "./../../assets/img/scaleImage.png";
@@ -81,7 +85,7 @@ const CombineScales = ({
       style: {
         marginTop: "20vh",
       },
-      width:480,
+      width: 480,
       onOk() {
         let mac = _.join(_.map(checkHardwareList, "mac"), "/");
         let newData = {
@@ -91,20 +95,24 @@ const CombineScales = ({
           examRoom: "",
         };
         let newHardwareList = hardwareList;
-        newHardwareList[1].devices.push({...newData});
+        newHardwareList[1].devices.push({ ...newData });
         selectHardwareList(newHardwareList);
-        selectHardwareInfoFun( newData);
+        selectHardwareInfoFun(newData);
         setMenuNum("1");
       },
     });
   };
 
   useEffect(() => {
-    setBiggieList(_.find(hardwareList, ["type", "biggie"]).devices);
+    let newData = [];
+    _.forIn(_.find(hardwareList, ["type", "biggie"]).devices, (item) => {
+      if (item.mac.indexOf("/") === -1) {
+        newData.push(item);
+      }
+    });
+    setBiggieList(newData);
     return () => {};
   }, []);
-
-
 
   return (
     <>
@@ -256,6 +264,6 @@ export default connect(
   {
     setMenuNum,
     selectHardwareInfoFun,
-    selectHardwareList
+    selectHardwareList,
   }
 )(CombineScales);
