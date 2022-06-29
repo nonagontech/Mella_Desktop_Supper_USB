@@ -359,13 +359,10 @@ function createWindow () {
     const urlLocation = isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, './build/index.html')}`
     // 开发
     mainWindow.loadURL(urlLocation);
-    // 生产
-    // mainWindow.loadURL(`file://${path.join(__dirname, './build/index.html')}`)
-    // mainWindow.loadURL(`file://${__dirname}/index.html`);
     //是否打开开发者
-    // if (isDev) {
-    //     mainWindow.webContents.openDevTools()
-    // }
+    if (isDev) {
+        mainWindow.webContents.openDevTools()
+    }
 
 
     //系统托盘右键菜单

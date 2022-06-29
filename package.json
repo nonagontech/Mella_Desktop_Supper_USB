@@ -1,6 +1,6 @@
 {
   "name": "supermella",
-  "version": "v1.0.2",
+  "version": "v1.0.3",
   "main": "main.js",
   "private": true,
   "author": {
@@ -61,7 +61,8 @@
     "rebuild": "yarn electron-rebuild -v 11.2.0",
     "pack": "electron-builder --dir",
     "disk": "electron-builder",
-    "release": "cross-env GH_TOKEN=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  electron-builder"
+    "release": "cross-env GH_TOKEN=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  electron-builder",
+    "clear":"rd /s/q dist1 && md dist1"
   },
   "homepage": "./",
   "eslintConfig": {
@@ -101,7 +102,7 @@
     },
     "nsis": {
       "oneClick": false,
-      "perMachine": false,
+      "perMachine": true,
       "allowToChangeInstallationDirectory": true,
       "uninstallDisplayName": "Super Mella",
       "createDesktopShortcut": true

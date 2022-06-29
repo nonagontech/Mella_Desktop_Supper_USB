@@ -618,6 +618,7 @@ class App extends Component {
             mac += `:${bluData[i]}`;
           }
 
+
           let json = {
             deviceType: "biggie",
             macId: mac,
