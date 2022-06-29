@@ -171,7 +171,8 @@ const Heard = ({
       case 6:
         console.log('正在下载');
         setUpdateStatus('downLoading')
-        setDownLoadingNum((data.output.percent / 100).toFixed(1))
+        let loadNum = data.output.percent ? (data.output.percent / 100).toFixed(1) : 0
+        setDownLoadingNum(loadNum)
 
       default:
         break;
@@ -453,7 +454,7 @@ const Heard = ({
 
   const inputChange = (text) => {
 
-    function isNumber (val) {
+    function isNumber(val) {
       var regPos = /^\d+(\.\d+)?$/; //非负浮点数
       var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
       if (regPos.test(val) || regNeg.test(val)) {
@@ -896,7 +897,7 @@ const Heard = ({
     }
 
 
-    function getRamNumber () {
+    function getRamNumber() {
       var result = '';
       for (var i = 0; i < 2; i++) {
         result += Math.floor(Math.random() * 16).toString(16);//获取0-15并通过toString转16进制
@@ -1280,11 +1281,7 @@ const Heard = ({
         </div>
 
 
-        {/* <div className="return" style={{ marginLeft: px(10) }}
-          onClick={() => { onReturn() }}
-        >
-          <img src={heardLeft} style={{ height: px(25), }} />
-        </div> */}
+
         <div className="search" style={{ width: px(300) }}>
 
           <input
@@ -1402,7 +1399,7 @@ const Heard = ({
           </div>
 
         </div>
-        <div className="min_close" >
+        <div className="min_close" style={{ paddingRight: px(15) }}>
           <div
             className='min_icon'
             onClick={MINCOLOSE.minClock}

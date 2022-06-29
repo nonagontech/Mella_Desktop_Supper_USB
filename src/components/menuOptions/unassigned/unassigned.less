@@ -1,18 +1,21 @@
 div {
   font-family: Arial, Helvetica, sans-serif;
 }
+
 p {
   padding: 0;
   margin: 0;
 }
+
 #unassigned {
-  background-color: #fff;
+  // background-color: #fff;
   flex: 1;
   width: 100%;
   height: 100%;
   justify-content: center;
   -webkit-app-region: drag;
   position: relative;
+
   .body {
     display: flex;
     // justify-content: center;
@@ -34,6 +37,7 @@ p {
       flex-direction: row;
       width: 90%;
       justify-content: space-between;
+
       input {
         -webkit-app-region: no-drag;
         border: 0;
@@ -44,12 +48,14 @@ p {
         width: 80%;
         padding-left: 10%;
       }
+
       input::-webkit-input-placeholder {
         /* WebKit browsers */
         color: #3c3c43;
         font-size: 14px;
         font-family: iconfont;
       }
+
       .searchBtn {
         -webkit-app-region: no-drag;
         display: flex;
@@ -63,6 +69,7 @@ p {
         cursor: pointer;
         // text-align: center;
         font-size: 18px;
+
         p {
           margin: 0;
         }
@@ -101,6 +108,7 @@ p {
       display: flex;
       align-items: center;
       justify-content: center;
+
       .assign {
         height: 28px;
         background-color: #e1206d;
@@ -114,9 +122,11 @@ p {
         display: flex;
         justify-content: center;
       }
+
       th {
         text-align: center;
       }
+
       .ant-table-cell {
         padding: 0;
 
@@ -125,9 +135,11 @@ p {
           margin: 0;
         }
       }
+
       .ant-table-cell {
         text-align: center;
       }
+
       .ant-table-filter-column-title {
         text-align: center;
       }
@@ -137,6 +149,7 @@ p {
 
         .ant-modal-content {
           border-radius: 20px;
+
           #doctorSelectExamModal {
             border-radius: 30px;
             position: relative;
@@ -146,12 +159,14 @@ p {
             flex-direction: column;
             // background-color: pink;
             width: 100%;
+
             // height: 100%;
             .return {
               position: absolute;
               left: 20px;
               top: 20px;
             }
+
             .text {
               // background-color: pink;
               padding: 0 10px;
@@ -159,9 +174,11 @@ p {
               font-size: 30px;
               margin-top: 40px;
             }
+
             .Img {
               margin: 20px 0;
             }
+
             p {
               font-size: 17px;
               text-align: center;
@@ -177,23 +194,25 @@ p {
       }
     }
   }
-  .myModal{
+
+  .myModal {
     width: 100%;
     height: 100%;
     top: 0;
+
     .myfindOrg {
       border-radius: 30px;
       width: 50%;
       background-color: #fff;
       height: 85%;
-  
+
       position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       flex-direction: column;
       // background-color: hotpink;
-  
+
       // width: 100%;
       .orgHeard {
         height: 25%;
@@ -203,7 +222,7 @@ p {
         flex-direction: column;
         align-items: center;
         justify-content: space-around;
-  
+
         .titleicon {
           display: flex;
           width: 85%;
@@ -211,9 +230,9 @@ p {
           justify-content: space-between;
           align-items: center;
         }
-        .return {
-        }
-  
+
+        .return {}
+
         .text {
           // background-color: pink;
           // padding: 0 10px;
@@ -221,6 +240,7 @@ p {
           font-size: 26px;
           // margin-top: 40px;
         }
+
         .searchBox {
           width: 90%;
           height: 35px;
@@ -232,6 +252,7 @@ p {
           border-radius: 5px;
           -webkit-app-region: no-drag;
           margin: 15px 0;
+
           .icon {
             color: #7b7474;
             padding: 0;
@@ -240,6 +261,7 @@ p {
             margin: 0 10px;
             font-weight: 300;
           }
+
           input {
             flex: 1;
             width: 100%;
@@ -249,11 +271,12 @@ p {
             border: 0;
             padding: 0;
           }
+
           input::-webkit-input-placeholder {
             color: #4a4a4a;
             font-family: iconfont;
           }
-  
+
           .btn {
             display: none;
             background-color: #fff;
@@ -262,7 +285,7 @@ p {
           }
         }
       }
-  
+
       .list {
         // flex: 1;
         // background-color: rgba(212,208,208,0.4);
@@ -273,7 +296,7 @@ p {
         -webkit-app-region: no-drag;
         // background-color: pink;
         height: 55%;
-  
+
         ul {
           -webkit-app-region: no-drag;
           overflow-y: auto;
@@ -281,7 +304,7 @@ p {
           width: 100%;
           margin: 0;
           padding: 0;
-  
+
           li {
             -webkit-app-region: no-drag;
             margin: 0;
@@ -293,20 +316,21 @@ p {
             font-size: 16px;
             display: flex;
             justify-content: space-between;
-            
+
             // justify-content: flex-start;
             margin: 0 18px 5px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            .petName{
+
+            .petName {
               margin: 0;
               padding: 0;
               text-align: center;
-              display:inline;
+              display: inline;
 
             }
-           
+
             .search {
               font-family: iconfont;
               // color: #E1206D;
@@ -314,10 +338,12 @@ p {
             }
           }
         }
+
         ul::-webkit-scrollbar {
           width: 0 !important;
         }
       }
+
       .foot {
         height: 20%;
         width: 100%;
@@ -326,47 +352,53 @@ p {
         justify-content: space-around;
 
 
-  
+
         align-items: center;
         border-bottom-left-radius: 30px;
         border-bottom-right-radius: 30px;
-  
+
         background-color: #e7e7e7;
+
         #button {
           width: 45%;
           display: flex;
           align-items: center;
           justify-content: center;
+
           p {
             padding: 0;
             margin: 0;
           }
         }
-        .btnn{
+
+        .btnn {
           width: 45%;
           background-color: #e1206d;
           border-radius: 100px;
           cursor: pointer;
-          p{
+
+          p {
             color: #fff;
             margin: 0;
             padding: 0;
           }
         }
+
         span {
           // background-color: pink;
           font-size: 13px;
-  
+
           a {
             color: #e1206d;
           }
         }
+
         a {
           font-size: 13px;
           color: #e1206d;
         }
       }
-  
+
       .ant-modal-footer {
         background-color: #e7e7e7;
         border-bottom-left-radius: 20px;
@@ -374,7 +406,7 @@ p {
       }
     }
   }
-  
+
 }
 
 .web {
@@ -384,6 +416,7 @@ p {
     position: relative;
     width: 450px;
   }
+
   .ant-modal-header {
     // border-radius: 25px;
     position: absolute;
@@ -394,6 +427,7 @@ p {
     justify-content: center;
     left: 30px;
   }
+
   .ant-modal-footer {
     display: none;
     background-color: #e7e7e7;
@@ -429,6 +463,7 @@ p {
     // justify-content: center;
     align-items: center;
     margin-top: 18px;
+
     p {
       margin: 0;
       padding: 0;
@@ -439,6 +474,7 @@ p {
       font-size: 16px;
       color: #4a4a4a;
     }
+
     Input {
       width: 60%;
       height: 33px;
@@ -452,6 +488,7 @@ p {
       // margin-left: 70px;
       // margin-right: 6px;
     }
+
     .unit {
       position: absolute;
       right: 13px;
@@ -466,6 +503,7 @@ p {
       // background-color: honeydew;
       position: relative;
       width: 60%;
+
       input {
         padding: 0;
         color: #4a4a4a;
@@ -479,14 +517,17 @@ p {
       .ant-select-selector {
         padding: 0;
         margin: 0;
+
         input {
           padding: 0;
           margin: 0;
         }
+
         text-align: center;
       }
     }
   }
+
   .btnF {
     margin-top: 50px;
     background-color: #e7e7e7;

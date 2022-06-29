@@ -310,13 +310,14 @@ function show (val) {
     }
 
 }
+
 //创建加载中的窗口
 
 function createLoadingWindow () {   //加载页面窗口
     loadingWindow = new BrowserWindow({
-        height: 200,
+        height: show(800).height,
         useContentSize: true,
-        width: 200,
+        width: show(400).height,
         show: true,
         transparent: true,
         maximizable: false,  //禁止双击放大
@@ -342,6 +343,8 @@ function createLoadingWindow () {   //加载页面窗口
 function createWindow () {
 
     const windowOptions = {
+        height: show(800).height,
+        width: show(400).height,
 
         resizable: true,   //能否改变窗体大小
         frame: false,//为false则是无边框窗口
@@ -359,6 +362,9 @@ function createWindow () {
     const urlLocation = isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, './build/index.html')}`
     // 开发
     mainWindow.loadURL(urlLocation);
+    // 生产
+    // mainWindow.loadURL(`file://${path.join(__dirname, './build/index.html')}`)
+    // mainWindow.loadURL(`file://${__dirname}/index.html`);
     //是否打开开发者
     if (isDev) {
         mainWindow.webContents.openDevTools()
@@ -585,15 +591,7 @@ app.on('ready', () => {
     createWindow();
 
     openUsb()
-    // mouse.move(up(500))
-    // const timer = setTimeout(() => {
-    //     console.log('开始去写');
-    //     // keyboard.type(Key.Num6, Key.Num3)
-    //     keyboard.config.autoDelayMs = 20
-    //     keyboard.type("25.32")
-    //     // keyboardWritingFun()
-    //     clearTimeout(timer)
-    // }, 10000);
+
 
 })
 // .whenReady()

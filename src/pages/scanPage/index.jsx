@@ -12,18 +12,18 @@ import {
 } from "../../store/actions";
 import _ from "lodash";
 import HeaderItem from "../temperaturePage/components/headerItem";
-import LinkEquipment from "./components/linkEquipment";
+import LinkEquipment from "./components/LinkEquipment";
 import ScanPet from "./components/scanPet";
 import "./index.less";
 
 const ScanPage = ({ petMessage, hardwareMessage }) => {
-  let { petId } = petMessage;
+  let { petId, isWalkIn } = petMessage;
 
   return (
     <>
       <Layout className="homeBox">
         <HeaderItem />
-        {_.isEmpty(petId) ? <LinkEquipment /> : <ScanPet />}
+        {_.isEmpty(petId) && !isWalkIn ? <LinkEquipment /> : <ScanPet />}
       </Layout>
     </>
   );

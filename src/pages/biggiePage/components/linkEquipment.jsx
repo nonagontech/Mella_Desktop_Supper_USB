@@ -28,7 +28,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
             <Content className={"contentBox"}>
                 <div className='startBox'>
                     <img src={biggieonscale}></img>
-                    <p className='startTitle'>Ready, place under foreleg</p>
+                    <p className='startTitle'>Ready, place pet onto scale</p>
                 </div>
             </Content>
         </>

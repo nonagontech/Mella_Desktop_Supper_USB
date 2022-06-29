@@ -1174,9 +1174,6 @@ export default class DoctorSelectAllExam extends Component {
           </ConfigProvider>
         </div>
 
-
-
-
         <Modal
 
           // visible={isOrg}

@@ -327,12 +327,6 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
             </div>
 
             {body()}
-
-
-
-
-
-
         </div >
 
     )

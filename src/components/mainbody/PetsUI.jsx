@@ -32,7 +32,8 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
 
   useEffect(() => {
     //从本地获取宠物列表数据
-    let petList = electronStore.get('petList') || [];
+    // let petList = electronStore.get('petList') || [];
+    setPetList(petList)
     _getExam()
   }, [])
 
@@ -101,12 +102,12 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
 
   const menu = () => {
     let menuList = [
-      { value: 'Time' },
+      // { value: 'Time' },
       { value: 'Pet ID' },
-      { value: 'Owner' },
-      { value: 'Breed' },
+      // { value: 'Owner' },
+      // { value: 'Breed' },
       { value: 'Pet Name' },
-      { value: 'Gender' },
+      // { value: 'Gender' },
     ];
     let options = menuList.map((item, index) => {
       let itemstyle = {}, textColor = '#1a1a1a'
@@ -123,7 +124,9 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     return (
       <Menu onClick={({ key, }) => {
         petSortTypeFun(key)
-        dataSort(petList)
+        let petArr = dataSort(petList)
+        setPetList(petArr)
+        setPetListArrFun(petArr)
       }}>
         {options}
 

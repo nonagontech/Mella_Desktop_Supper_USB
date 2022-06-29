@@ -232,7 +232,7 @@ const ScanPet = ({
       finishScan();
     }
 
-    return () => {};
+    return () => { };
   }, [inputIndex, patientId]);
 
   useEffect(() => {
@@ -241,7 +241,7 @@ const ScanPet = ({
     } else if (carouselIndex === 1) {
       setInputIndex(0);
     }
-    return () => {};
+    return () => { };
   }, [carouselIndex]);
 
   //监听用户点击了硬件中的下一步按钮
@@ -254,12 +254,12 @@ const ScanPet = ({
     if (inputIndex === 3) {
       setCarouselIndex(2);
     }
-    return () => {};
+    return () => { };
   }, [rulerConfirmCount]);
   //监听切换了宠物
   useEffect(() => {
     setInputIndex(0);
-    return () => {};
+    return () => { };
   }, [patientId]);
   //监听用户点击了硬件中的下一步按钮和拉动皮尺
   useEffect(() => {
@@ -297,7 +297,7 @@ const ScanPet = ({
     setLowerValue(lowerValue && changeUnit(lowerValue));
     setTorsoValue(torsoValue && changeUnit(torsoValue));
     setBodyValue(bodyValue && changeUnit(bodyValue));
-    return () => {};
+    return () => { };
   }, [rulerUnit]);
 
   return (

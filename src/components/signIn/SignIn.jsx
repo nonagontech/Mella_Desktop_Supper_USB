@@ -37,7 +37,7 @@ export default class SignIn extends Component {
     isLoadQrCode: false //是否正在加载二维码
 
   }
-  componentDidMount () {
+  componentDidMount() {
     isSign = true
     storage.lastOrganization = ''
     //通知main.js渲染一个small窗口
@@ -67,7 +67,7 @@ export default class SignIn extends Component {
     this._getQRCode()
 
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     isSign = false
     this.timer && clearInterval(this.timer)
     let ipcRenderer = window.electron.ipcRenderer
@@ -418,14 +418,13 @@ export default class SignIn extends Component {
 
   }
 
-  render () {
+  render() {
     let { isCode, baseUrl } = this.state
     let code = isCode ? 'icon-diannao-copy' : 'icon-erweima-copy'
     return (
       <div id="signIn">
-        <div className="heaed">
-          <div className="l"
-          >
+        <div className="heaed" style={{ paddingTop: px(10), paddingRight: px(20) }}>
+          <div className="l" >
             <MouseDiv
               className='mouseDiv'
               beforeDiv={this.beforeDiv}
@@ -472,7 +471,6 @@ export default class SignIn extends Component {
                 style={{ width: px(310), height: px(45), marginLeft: px(6), marginBottom: px(18), fontSize: px(18) }}
 
                 visibilityToggle={false}
-                // style={{ border: 'none', outline: 'medium' }}
                 value={this.state.hash}
                 placeholder='********'
                 bordered={false}
@@ -481,6 +479,12 @@ export default class SignIn extends Component {
                   this.setState({
                     hash: str
                   })
+                }}
+                onKeyDown={(e) => {
+
+                  if (e.keyCode === 13) {
+                    this._continue()
+                  }
                 }}
               />
 
