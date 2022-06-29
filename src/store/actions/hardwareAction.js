@@ -23,7 +23,8 @@ import {
   RULER_MEASURE_VALUE,
   RULER_UNIT,
   RULER_CONFIRM_COUNT,
-  RECEIVE_BROADCAST_HARDWARE_INFO
+  RECEIVE_BROADCAST_HARDWARE_INFO,
+  MELLA_PREDICT_RETURN_VALUE
 } from './../actionTypes'
 
 //定义一个函数，让他返回一个action函数
@@ -55,6 +56,8 @@ export const setMellaMeasureNumFun = (data = {}) => getAction(data, MELLA_MEASUR
 export const setMellaMeasureValueFun = (data = {}) => getAction(data, MELLA_MEASURE_VALUE)
 //设置mella预测数组数据
 export const setMellaPredictValueFun = (data = {}) => getAction(data, MELLA_PREDICT_VALUE)
+//设置预测返回结果值
+export const setMellaPredictReturnValueFun = (data = {}) => getAction(data, MELLA_PREDICT_RETURN_VALUE)
 //设置mella测量部位
 export const setMellaMeasurePartFun = (data = {}) => getAction(data, MELLA_MEASURE_PART)
 //设置mella设备ID

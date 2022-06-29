@@ -23,6 +23,8 @@ export const MELLA_MEASURE_NUM = 'mellaMeasureNum'
 export const MELLA_MEASURE_VALUE = 'mellaMeasureValue'
 //mella预测数组数据 
 export const MELLA_PREDICT_VALUE = 'mellaPredictValue'
+//mella预测返回数值
+export const MELLA_PREDICT_RETURN_VALUE = 'mellaPredictReturnValue'
 //mella测量部位
 export const MELLA_MEASURE_PART = 'mellaMeasurePart'
 //mella设备ID

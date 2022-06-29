@@ -24,7 +24,8 @@ import {
   RULER_UNIT,
   RULER_CONFIRM_COUNT,
 
-  RECEIVE_BROADCAST_HARDWARE_INFO
+  RECEIVE_BROADCAST_HARDWARE_INFO,
+  MELLA_PREDICT_RETURN_VALUE
 
 
 } from '../actionTypes/hardwareType'
@@ -55,6 +56,8 @@ const initialState = {
   mellaMeasureNum: 0,
   //mella预测数组数据
   mellaPredictValue: [],
+  //mella预测返回值
+  mellaPredictReturnValue: 0,
   //mella测量部位
   mellaMeasurePart: '腋温',
   //mella设备ID
@@ -144,6 +147,9 @@ export default function HardwareReducer(state = initialState, action) {
 
     case RECEIVE_BROADCAST_HARDWARE_INFO:
       return { ...state, receiveBroadcastHardwareInfo: action.data }
+
+    case MELLA_PREDICT_RETURN_VALUE:
+      return { ...state, mellaPredictReturnValue: action.data }
 
 
 

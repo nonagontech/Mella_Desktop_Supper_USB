@@ -699,7 +699,7 @@ const Heard = ({
         //跳转到设置
         // menu5Click()
         history.push('/menuOptions/settings');
-        setMenuNum(e.index)
+        // setMenuNum(e.index)
         break;
       case "6":
         history.push('/MainBody')

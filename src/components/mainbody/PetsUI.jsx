@@ -11,6 +11,8 @@ import { petSortTypeFun, petDetailInfoFun, setPetListArrFun } from '../../store/
 import electronStore from '../../utils/electronStore'
 import petIcon from './../../assets/img/petIcon.png'
 import xia from './../../assets/img/xia.png'
+import MyModal from './../../utils/myModal/MyModal'
+import redjinggao from './../../assets/img/redjinggao.png'
 
 import { devicesTitleHeight } from '../../utils/InitDate'
 
@@ -21,9 +23,13 @@ import { fetchRequest } from '../../utils/FetchUtil1';
 let storage = window.localStorage;
 
 
-const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, petDetailInfo, setPetListArrFun, petListArr }) => {
+const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, petDetailInfo, setPetListArrFun, petListArr, selectHardwareType, rulerConnectStatus }) => {
   //定义宠物列表数组
   const [petList, setPetList] = useState([])
+  //是否展示弹窗
+  const [showModal, setShowModal] = useState(false)
+  //选中的宠物的详细信息
+  const [selectPetDetail, setSelectPetDetail] = useState({})
 
   useEffect(() => {
     //设置宠物列表数据
@@ -145,8 +151,13 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
           <div className='petItem'
             style={{ padding: `${px(7)}px 0 ${px(7)}px ${px(20)}px`, fontSize: 14, backgroundColor: itemBac, color: itemColor }}
             onClick={() => {
-              console.log('点击了宠物', item);
-              petDetailInfoFun(item)
+              //当硬件是尺子且尺子还在测量的时候,要做出提示
+              setSelectPetDetail(item)
+              if (selectHardwareType === 'tape' && rulerConnectStatus !== 'disconnected') {
+                setShowModal(true)
+              } else {
+                petDetailInfoFun(item)
+              }
             }}
           >
             {`${item.patientId}, ${item.petName}`}
@@ -167,6 +178,19 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
 
   return (
     <div className="PetUI" style={{ height: bodyHeight - devicesTitleHeight, }}>
+      <MyModal
+        visible={showModal}
+        element={
+          <div className='petUiModal'>
+            <img src={redjinggao} alt="" width={'45px'} style={{ margin: `${px(25)}px 0` }} />
+            <div className='bodyText' style={{ marginTop: px(30) }}>Patient Switched – select dimension to measure</div>
+            <div className="btns" style={{ marginTop: px(35) }}>
+              <div className="btn" onClick={() => { setShowModal(false) }}>Cancel</div>
+              <div className="btn" onClick={() => { setShowModal(false); petDetailInfoFun(selectPetDetail) }}>Confirm</div>
+            </div>
+          </div>
+        }
+      />
       <div className="title" style={{ padding: `${px(20)}px 0px ${px(20)}px ${px(20)}px ` }}>
         <img src={petIcon} alt="" width={px(25)} style={{ marginRight: px(10) }} />
         <div className="titleText" >Pets</div>
@@ -220,6 +244,8 @@ export default connect(
     petSortType: state.petReduce.petSortType,
     petDetailInfo: state.petReduce.petDetailInfo,
     petListArr: state.petReduce.petListArr,
+    selectHardwareType: state.hardwareReduce.selectHardwareType,
+    rulerConnectStatus: state.hardwareReduce.rulerConnectStatus,
   }),
   { petSortTypeFun, petDetailInfoFun, setPetListArrFun }
 )(PetsUI)

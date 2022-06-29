@@ -73,7 +73,7 @@ export default class Settings extends Component {
       ipcRenderer.send('setting', win())
     }
     //这里要根据保存的时候存到哪个位置的，然后拿出来更新state
-    let hardSet = electronStore.get('hardwareConfiguration')
+    let hardSet = electronStore.get(`${storage.userId}-hardwareConfiguration`)
     console.log('----', hardSet);
     let isClicleStudy = storage.isClinical === 'true' ? true : false
     if (hardSet) {
@@ -110,7 +110,7 @@ export default class Settings extends Component {
         backlightTimer: { length: 140, number: '45' },
         autoOff: { length: 0, number: '30' },
       }
-      electronStore.set('hardwareConfiguration', settings)
+      electronStore.set(`${storage.userId}-hardwareConfiguration`, settings)
       let { isHua, is15, isBacklight, isBeep, backlightTimer, autoOff } = settings
       this.setState({
         isHua,
@@ -179,7 +179,7 @@ export default class Settings extends Component {
       backlightTimer,
       autoOff,
     }
-    electronStore.set('hardwareConfiguration', settings)
+    electronStore.set(`${storage.userId}-hardwareConfiguration`, settings)
     // temporaryStorage.isClicleStudy = isClicleStudy
     storage.isClinical = `${isClicleStudy}`
     let ipcRenderer = window.electron.ipcRenderer
@@ -194,6 +194,7 @@ export default class Settings extends Component {
 
 
     ipcRenderer.send('usbdata', { command: '21', arr: setArr })
+
     this.props.history.goBack()
   }
   _goback = () => {
@@ -309,7 +310,6 @@ export default class Settings extends Component {
   _device = () => {
 
     let userId = storage.userId
-    // electronStore.delete(`${userId}-deviceList`)
     let deviceList = electronStore.get(`${userId}-deviceList`)
     console.log('---', deviceList);
     if (!deviceList) {
@@ -354,7 +354,7 @@ export default class Settings extends Component {
         </div>
 
 
-        <div className="l">
+        {/* <div className="l">
           <div className="text">Device:</div>
 
           <div className="selebox" style={{ width: px(200) }}>
@@ -371,7 +371,7 @@ export default class Settings extends Component {
           </div>
 
 
-        </div>
+        </div> */}
       </div>
     )
   }
@@ -445,7 +445,7 @@ export default class Settings extends Component {
                       <div className="check">
                         {(this.state.isHua) && <div className="ciral" />}
                       </div>
-                      <div className="unitsText">Imperial</div>
+                      <div className="unitsText">°F / lbs</div>
                     </div>
                     <div className="one"
 
@@ -454,14 +454,14 @@ export default class Settings extends Component {
                       <div className="check">
                         {(!this.state.isHua) && <div className="ciral" />}
                       </div>
-                      <div className="unitsText">Metric</div>
+                      <div className="unitsText">°C / kg</div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="item" style={{ marginBottom: px(10) }}>
-                <div className="l">
+                {/* <div className="l">
                   <div className="text">Clinical Study Mode</div>
                   <div className="switch">
                     <Switch
@@ -487,12 +487,12 @@ export default class Settings extends Component {
                     />
                   </div>
 
-                </div>
+                </div> */}
 
-
+                {/* 
                 <div className="l" style={{ height: '50px' }}>
 
-                </div>
+                </div> */}
               </div>
 
             </div>

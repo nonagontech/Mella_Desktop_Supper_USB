@@ -24,6 +24,7 @@ import { fetchRequest } from '../../../utils/FetchUtil1';
 import { px, mTop } from '../../../utils/px.js';
 import moment from 'moment';
 import './measuredData.less';
+import electronStore from '../../../utils/electronStore';
 
 const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun }) => {
     let { mellaMeasureValue, mellaConnectStatus, mellaMeasurePart } = hardwareMessage;
@@ -36,6 +37,7 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
     const [petMessages, setPetMessages] = useState({});//接收点击了那个的值
     const [saveType, setSaveType] = useState(false);//是否隐藏按钮
     const [bounds, setBounds] = useState({ left: 0, top: 0, bottom: 0, right: 0 });
+    const [isHua, setIsHua] = useState(true);
     //表格渲染
     const columns = [
         {
@@ -52,12 +54,20 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
             render: (text, record) => (moment(text).format('hh:mm A')),
         },
         {
-            title: 'Temp(℃)',
+            title: `Temp(${isHua ? '℉' : '℃'})`,
             dataIndex: 'temperature',
             width: '16%',
-            render: (text, record) => (
-                <Badge color={color()} text={text.toFixed(1)} />
-            ),
+            render: (text, record) => {
+                let num = parseFloat(text);
+                if (isHua) {
+                    num = parseInt((num * 1.8 + 32) * 10) / 10
+                } else {
+                    num = num.toFixed(1)
+                }
+
+
+                return <Badge color={color()} text={num} />
+            },
         },
         {
             title: 'Placeme',
@@ -125,8 +135,9 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
         }
         return (
             <>
-                <p style={{ color: { color } }} className='ProgressTitle'>{percent}
-                    <span style={{ color: { color } }} className='symbol'>℃</span>
+                <p style={{ color: { color } }} className='ProgressTitle'>{getTemp(percent)}
+
+                    <span style={{ color: { color } }} className='symbol'>{`${isHua ? '℉' : '℃'}`}</span>
                 </p>
                 <p style={{ color: { color } }} className='ProgressTitle'>{title()}</p>
             </>
@@ -245,7 +256,25 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
     } catch (error) {
 
     }
+    useEffect(() => {
+        let hardSet = electronStore.get(`${storage.userId}-hardwareConfiguration`)
+        if (hardSet) {
+            let { isHua } = hardSet;
+            setIsHua(isHua);
+        }
 
+
+    }, []);
+    const getTemp = () => {
+        let num = parseFloat(mellaMeasureValue);
+        if (isHua) {
+            num = parseInt((num * 1.8 + 32) * 10) / 10
+        } else {
+            num = parseFloat(num.toFixed(1))
+        }
+        return num;
+
+    }
 
     return (
         <>
@@ -254,6 +283,7 @@ const MeasuredData = ({ petMessage, hardwareMessage, setMellaConnectStatusFun })
                     <Progress
                         type="dashboard"
                         percent={_.round(mellaMeasureValue, 1)}
+
                         gapDegree={30}
                         width={'260px'}
                         strokeWidth={'8'}

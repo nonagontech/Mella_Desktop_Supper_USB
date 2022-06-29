@@ -30,6 +30,8 @@ import {
   setMellaMeasureValueFun,
   setMellaPredictValueFun,
   setMellaMeasurePartFun,
+  setMellaPredictReturnValueFun
+
 } from "../../../store/actions";
 import moment from "moment";
 import { fetchRequest } from "../../../utils/FetchUtil1";
@@ -38,7 +40,7 @@ import "./headerItem.less";
 
 const { Header } = Layout;
 
-const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15 }) => {
+const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15, setMellaPredictReturnValueFun }) => {
   let history = useHistory();
   let {
     petName,
@@ -183,7 +185,10 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15 }) => {
         let ipcRenderer = window.electron.ipcRenderer;
         if (res.message === "Success") {
           let prediction = res.result.prediction.toFixed(2);
-          console.log(prediction);
+          console.log('------yuce', prediction);
+
+          let num = parseFloat(parseFloat(prediction).toFixed(1));
+          setMellaPredictReturnValueFun(num);
 
           let tempArr = prediction.split(".");
           let intNum = tempArr[0];
@@ -199,6 +204,7 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15 }) => {
               command: "42",
               arr: [intNum, flotNum],
             });
+
             timeID && clearTimeout(timeID);
           }, 10);
         } else {
@@ -272,8 +278,8 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15 }) => {
       clearInterval(timer);
     }
     if (mellaConnectStatus === "complete") {
-      let ipcRenderer = window.electron.ipcRenderer;
-      ipcRenderer.send("keyboardWriting", mellaMeasureValue);
+      // let ipcRenderer = window.electron.ipcRenderer;
+      // ipcRenderer.send("keyboardWriting", mellaMeasureValue);
     }
     return () => {
       clearInterval(timer);
@@ -339,5 +345,6 @@ export default connect(
     setMellaMeasureValueFun,
     setMellaPredictValueFun,
     setMellaMeasurePartFun,
+    setMellaPredictReturnValueFun
   }
 )(HeaderItem);

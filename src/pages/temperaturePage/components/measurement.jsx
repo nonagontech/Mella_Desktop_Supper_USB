@@ -21,7 +21,9 @@ import {
 } from '../../../store/actions';
 import _ from 'lodash';
 import './measurement.less';
+import electronStore from '../../../utils/electronStore';
 
+let storage = window.localStorage
 const { Content, Header } = Layout;
 
 const Measurement = ({ petMessage, hardwareMessage }) => {
@@ -29,18 +31,24 @@ const Measurement = ({ petMessage, hardwareMessage }) => {
     const [percent, setPercent] = useState(0);
     const [value, setValue] = useState(0);
     const [timers, setTimers] = useState(0);
+    const [isHua, setIsHua] = useState(true);
     const saveCallBack = useRef();
     const callBack = () => {
         const random = 1;
         setValue(value + random);
         setTimers(timers + random);
     };
+
     //圆滑里面的文字
     const ProgressTitle = (percent) => {
+        let num = parseFloat(percent);
+        if (isHua) {
+            num = parseInt((num * 1.8 + 32) * 10) / 10
+        }
         return (
             <>
-                <p className='ProgressTitle'>{percent}
-                    <span className='symbol'>℃</span>
+                <p className='ProgressTitle'>{num}
+                    <span className='symbol'>{`${isHua ? '℉' : '℃'}`}</span>
                 </p>
                 <p className='ProgressTitle'>Measuring</p>
             </>
@@ -80,6 +88,15 @@ const Measurement = ({ petMessage, hardwareMessage }) => {
             clearInterval(timer);
         };
     }, [])
+    useEffect(() => {
+        let hardSet = electronStore.get(`${storage.userId}-hardwareConfiguration`)
+        if (hardSet) {
+            let { isHua } = hardSet;
+            setIsHua(isHua);
+        }
+
+
+    }, []);
 
     return (
         <>

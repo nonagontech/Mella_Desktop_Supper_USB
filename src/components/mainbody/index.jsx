@@ -69,7 +69,7 @@ class App extends Component {
     //点击菜单的序号
     clickMenuIndex: "1",
   };
-  componentDidMount () {
+  componentDidMount() {
     ipcRenderer.send("big", win());
     timerFun();
     ipcRenderer.on("changeFenBianLv", this.changeFenBianLv);
@@ -87,8 +87,11 @@ class App extends Component {
     ipcRenderer.on("noUSB", this._noUSB);
     //定时查看mella温度计是否与底座连接或断开
     this._whether_to_connect_to_mella();
+
+    //获取本地设置
+    this.getLocalSetting();
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     //组件销毁，取消监听
     window.removeEventListener("resize", this.resize);
     ipcRenderer.removeListener("changeFenBianLv", this.changeFenBianLv);
@@ -98,7 +101,7 @@ class App extends Component {
     this.rulerTimer && clearTimeout(this.rulerTimer)
   }
   //检测到props里的hardwareList更新
-  UNSAFE_componentWillReceiveProps (prevProps) {
+  UNSAFE_componentWillReceiveProps(prevProps) {
     //对比props里的hardwareList和state里的hardwareList是否相同
 
     if (!compareArray(prevProps.hardwareList, this.state.devicesTypeList)) {
@@ -125,6 +128,22 @@ class App extends Component {
     ipcRenderer.send("big", win());
     this.setState({});
   };
+  //获取本地设置
+  getLocalSetting = () => {
+    let hardSet = electronStore.get(`${storage.userId}-hardwareConfiguration`)
+    if (!hardSet) {
+      let settings = {
+        isHua: true,
+        is15: true,
+        self_tarting: false,  //自启动
+        isBacklight: true,
+        isBeep: true,
+        backlightTimer: { length: 140, number: '45' },
+        autoOff: { length: 0, number: '30' },
+      }
+      electronStore.set(`${storage.userId}-hardwareConfiguration`, settings)
+    }
+  }
   //检测USB设备发来的信息
   _send = (e, data) => {
     // console.log('检测USB设备发来的信息', data)
@@ -315,17 +334,38 @@ class App extends Component {
             units === "℉"
               ? parseInt((Temp * 1.8 + 32) * 10) / 10
               : Temp.toFixed(1);
-          // if (this.state.devicesType === 'mella') {
-          //   ipcRenderer.send('keyboardWriting', temp)
-          // }
+          if (this.props.selectHardwareType === 'mellaPro') {
+            ipcRenderer.send('keyboardWriting', temp)
+          }
           this.time193 && clearTimeout(this.time193);
-        }, 1000);
+        }, 500);
       },
       194: () => {
         //硬件收到机器学习结果并停止测量，
+        this.time193 && clearTimeout(this.time193);
+        console.log('---机器学习', newArr);
         if (mellaConnectStatus !== "complete") {
           setMellaConnectStatusFun("complete");
         }
+        const timer = setTimeout(() => {
+          setMellaMeasureValueFun(this.props.mellaPredictReturnValue)
+
+          firstEar = true;
+          if (mellaConnectStatus !== "complete") {
+            setMellaConnectStatusFun("complete");
+          }
+
+          let { units } = this.state;
+          let Temp = this.props.mellaPredictReturnValue;
+          let temp =
+            units === "℉"
+              ? parseInt((Temp * 1.8 + 32) * 10) / 10
+              : Temp.toFixed(1);
+          if (this.props.selectHardwareType === 'mellaPro') {
+            ipcRenderer.send('keyboardWriting', temp)
+          }
+          clearTimeout(timer)
+        }, 80);
         clinicalYuce = [];
         clinicalIndex = 0;
       },
@@ -355,18 +395,30 @@ class App extends Component {
          * newArr[10] 测量单位    01代表℃，00代表℉
          */
 
-        let hardSet = electronStore.get("hardwareConfiguration") || {};
+        let hardSet = electronStore.get(`${storage.userId}-hardwareConfiguration`)
+        if (!hardSet) {
+          hardSet = {
+            isHua: true,
+            is15: true,
+            self_tarting: false,  //自启动
+            isBacklight: true,
+            isBeep: true,
+            backlightTimer: { length: 140, number: '45' },
+            autoOff: { length: 0, number: '30' },
+          }
+        }
+
 
         let beep = hardSet.isBeep ? "11" : "00";
         let unit = hardSet.isHua ? "00" : "01";
 
-        // if (dataArr1[7] === hardSet.autoOff.number && dataArr1[8] === hardSet.backlightTimer.number &&
-        //   dataArr1[9] === beep && dataArr1[10] === unit) {
-        // } else {
-        //   console.log('不相同，去发送命令');
-        //   let setArr = ['03', 'ed', '07', 'dd', hardSet.autoOff.number, hardSet.isBacklight ? hardSet.backlightTimer.number : '00', hardSet.isBeep ? '11' : '00', hardSet.isHua ? '00' : '01']
-        //   ipcRenderer.send('usbdata', { command: '21', arr: setArr })
-        // }
+        if (dataArr1[7] === hardSet.autoOff.number && dataArr1[8] === hardSet.backlightTimer.number &&
+          dataArr1[9] === beep && dataArr1[10] === unit) {
+        } else {
+          console.log('不相同，去发送命令');
+          let setArr = ['03', 'ed', '07', 'dd', hardSet.autoOff.number, hardSet.isBacklight ? hardSet.backlightTimer.number : '00', hardSet.isBeep ? '11' : '00', hardSet.isHua ? '00' : '01']
+          ipcRenderer.send('usbdata', { command: '21', arr: setArr })
+        }
       },
       238: () => {
         //探头松动
@@ -593,7 +645,7 @@ class App extends Component {
             console.log(error);
           }
 
-          function getVal (shi, xiaoshuo) {
+          function getVal(shi, xiaoshuo) {
             let num1 = parseInt(shi, 16);
             let num2 = parseInt(xiaoshuo, 16);
             return `${num1}.${num2}`;
@@ -612,7 +664,7 @@ class App extends Component {
             setRulerConfirmCountFun(parseInt(confirmBtn[0], 16));
           }
         } else if (bluName.indexOf("Biggie") !== -1 && bluData.length > 10) {
-          function getVal (shi) {
+          function getVal(shi) {
             if (`${shi}`.length < 2) {
               return `0${shi}`;
             }
@@ -932,7 +984,7 @@ class App extends Component {
     }
   };
 
-  render () {
+  render() {
     let { bodyHeight } = this.state;
 
     return (
@@ -970,6 +1022,7 @@ export default connect(
     hardwareList: state.hardwareReduce.hardwareList,
     hardwareInfo: state.hardwareReduce.selectHardwareInfo,
     menuNum: state.userReduce.menuNum,
+    mellaPredictReturnValue: state.hardwareReduce.mellaPredictReturnValue,
   }),
   {
     setHardwareList,
