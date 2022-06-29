@@ -20,7 +20,7 @@ export default class AdvancedSettings extends Component {
     progress: 0
   }
 
-  componentDidMount () {
+  componentDidMount() {
     ipcRenderer.send('Lowbig', win())
     ipcRenderer.on('usbDetect', this.usbDetect)
     ipcRenderer.on('noUSB', this._noUSB)
@@ -29,7 +29,7 @@ export default class AdvancedSettings extends Component {
     ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
     ipcRenderer.send('reUpload', {})
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     ipcRenderer.removeListener('usbDetect', this.usbDetect)
     ipcRenderer.removeListener('noUSB', this._noUSB)
     ipcRenderer.removeListener('uploadBaseInfo', this._uploadBaseInfo)
@@ -237,7 +237,7 @@ export default class AdvancedSettings extends Component {
     }
   }
 
-  render () {
+  render() {
 
     return (
       <div id='advancedsettings'>
@@ -296,7 +296,7 @@ export default class AdvancedSettings extends Component {
               // onClick={this._updateBase}
               onClick={() => this._upload('base')}
             >
-              <div className="btn">Plug in the base and Update</div>
+              <div className="btn">Update Mella Charging Base</div>
             </div>
           </div>
 

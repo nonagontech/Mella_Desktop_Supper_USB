@@ -102,12 +102,12 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
 
   const menu = () => {
     let menuList = [
-      { value: 'Time' },
+      // { value: 'Time' },
       { value: 'Pet ID' },
-      { value: 'Owner' },
-      { value: 'Breed' },
+      // { value: 'Owner' },
+      // { value: 'Breed' },
       { value: 'Pet Name' },
-      { value: 'Gender' },
+      // { value: 'Gender' },
     ];
     let options = menuList.map((item, index) => {
       let itemstyle = {}, textColor = '#1a1a1a'

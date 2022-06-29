@@ -16,6 +16,7 @@ import { DownOutlined } from "@ant-design/icons";
 import Charlie from "./../../../assets/img/Charlie.png";
 import BluetoothNotConnected from "./../../../assets/img/BluetoothNotConnected.png";
 import AxillaryBluetooth from "./../../../assets/img/AxillaryBluetooth.png";
+import connectBle from "./../../../assets/img/connectBle.png";
 import redcat from "./../../../assets/images/redcat.png";
 import reddog from "./../../../assets/images/reddog.png";
 import redother from "./../../../assets/images/redother.png";
@@ -231,13 +232,13 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15 }) => {
         return _.isEqual(biggieConnectStatus, "disconnected") ? (
           <Avatar size={40} src={BluetoothNotConnected} />
         ) : (
-          <Avatar size={40} src={AxillaryBluetooth} />
+          <Avatar size={40} src={connectBle} />
         );
       case 'tape':
         return _.isEqual(rulerConnectStatus, "disconnected") ? (
           <Avatar size={40} src={BluetoothNotConnected} />
         ) : (
-          <Avatar size={40} src={AxillaryBluetooth} />
+          <Avatar size={40} src={connectBle} />
         );
       default:
         break;
@@ -256,7 +257,7 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15 }) => {
         clearTimeout(timeID);
       }, 10);
     }
-    return () => {};
+    return () => { };
   }, [value]);
 
   useEffect(() => {
@@ -281,7 +282,7 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15 }) => {
 
   return (
     <>
-      <Header className="headerBox" style={{ height: devicesTitleHeight }}>
+      <Header className="headerBox" style={{ height: devicesTitleHeight, background: '#fff' }}>
         {_.isEmpty(petId) && !isWalkIn ? (
           <></>
         ) : (

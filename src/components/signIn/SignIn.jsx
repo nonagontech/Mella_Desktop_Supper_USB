@@ -471,7 +471,6 @@ export default class SignIn extends Component {
                 style={{ width: px(310), height: px(45), marginLeft: px(6), marginBottom: px(18), fontSize: px(18) }}
 
                 visibilityToggle={false}
-                // style={{ border: 'none', outline: 'medium' }}
                 value={this.state.hash}
                 placeholder='********'
                 bordered={false}
@@ -480,6 +479,12 @@ export default class SignIn extends Component {
                   this.setState({
                     hash: str
                   })
+                }}
+                onKeyDown={(e) => {
+
+                  if (e.keyCode === 13) {
+                    this._continue()
+                  }
                 }}
               />
 
