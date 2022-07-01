@@ -15,7 +15,10 @@ import {
 import { DownOutlined } from "@ant-design/icons";
 import Charlie from "./../../../assets/img/Charlie.png";
 import BluetoothNotConnected from "./../../../assets/img/BluetoothNotConnected.png";
-import AxillaryBluetooth from "./../../../assets/img/AxillaryBluetooth.png";
+import AxillaryBluetooth from "./../../../assets/img/AxillaryBluetooth.png"; //腋温图片
+import RectalBluetoothIcon from "./../../../assets/img/RectalBluetoothIcon.png"; //肛温图片
+import EarBluetoothIcon from "./../../../assets/img/EarBluetoothIcon.png"; //耳温图片
+
 import connectBle from "./../../../assets/img/connectBle.png";
 import redcat from "./../../../assets/images/redcat.png";
 import reddog from "./../../../assets/images/reddog.png";
@@ -30,8 +33,7 @@ import {
   setMellaMeasureValueFun,
   setMellaPredictValueFun,
   setMellaMeasurePartFun,
-  setMellaPredictReturnValueFun
-
+  setMellaPredictReturnValueFun,
 } from "../../../store/actions";
 import moment from "moment";
 import { fetchRequest } from "../../../utils/FetchUtil1";
@@ -40,7 +42,12 @@ import "./headerItem.less";
 
 const { Header } = Layout;
 
-const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15, setMellaPredictReturnValueFun }) => {
+const HeaderItem = ({
+  petMessage,
+  hardwareMessage,
+  timeNum = 15,
+  setMellaPredictReturnValueFun,
+}) => {
   let history = useHistory();
   let {
     petName,
@@ -60,10 +67,11 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15, setMellaPredict
     mellaConnectStatus,
     mellaPredictValue,
     mellaMeasureValue,
+    mellaMeasurePart,
     rulerConnectStatus,
     biggieConnectStatus,
     selectHardwareInfo,
-    selectHardwareType
+    selectHardwareType,
   } = hardwareMessage;
   const [value, setValue] = useState(0);
   const saveCallBack = useRef();
@@ -185,7 +193,7 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15, setMellaPredict
         let ipcRenderer = window.electron.ipcRenderer;
         if (res.message === "Success") {
           let prediction = res.result.prediction.toFixed(2);
-          console.log('------yuce', prediction);
+          console.log("------yuce", prediction);
 
           let num = parseFloat(parseFloat(prediction).toFixed(1));
           setMellaPredictReturnValueFun(num);
@@ -220,10 +228,19 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15, setMellaPredict
         console.log("err", err);
       });
   };
-  //判断仪器是否连接
+  //判断仪器是否连接从而判断选择什么图片
   const isConnect = () => {
+    const checkImage = () => {
+      if (mellaMeasurePart === "腋温") {
+        return AxillaryBluetooth;
+      }else if(mellaMeasurePart === "耳温"){
+        return EarBluetoothIcon;
+      }else{
+        return RectalBluetoothIcon;
+      }
+    };
     switch (selectHardwareType) {
-      case 'mellaPro':
+      case "mellaPro":
         return _.isEqual(mellaConnectStatus, "disconnected") ? (
           <Avatar size={40} src={BluetoothNotConnected} />
         ) : (
@@ -231,16 +248,16 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15, setMellaPredict
             width={48}
             type="circle"
             percent={value}
-            format={() => <Avatar size={40} src={AxillaryBluetooth} />}
+            format={() => <Avatar size={40} src={checkImage()} />}
           />
         );
-      case 'biggie':
+      case "biggie":
         return _.isEqual(biggieConnectStatus, "disconnected") ? (
           <Avatar size={40} src={BluetoothNotConnected} />
         ) : (
           <Avatar size={40} src={connectBle} />
         );
-      case 'tape':
+      case "tape":
         return _.isEqual(rulerConnectStatus, "disconnected") ? (
           <Avatar size={40} src={BluetoothNotConnected} />
         ) : (
@@ -253,7 +270,6 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15, setMellaPredict
 
   useEffect(() => {
     saveCallBack.current = callBack;
-    console.log("value", value);
     if (value === 105 && timeNum !== 60) {
       prediction();
     } else if (value === 105 && timeNum === 60) {
@@ -263,7 +279,7 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15, setMellaPredict
         clearTimeout(timeID);
       }, 10);
     }
-    return () => { };
+    return () => {};
   }, [value]);
 
   useEffect(() => {
@@ -276,7 +292,9 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15, setMellaPredict
       timer = setInterval(tick, 1000);
     } else if (value > 100 || mellaConnectStatus === "complete") {
       clearInterval(timer);
-    }
+    }else if(mellaConnectStatus === "disconnected"){
+      setValue(0);
+    };
     if (mellaConnectStatus === "complete") {
       // let ipcRenderer = window.electron.ipcRenderer;
       // ipcRenderer.send("keyboardWriting", mellaMeasureValue);
@@ -288,7 +306,10 @@ const HeaderItem = ({ petMessage, hardwareMessage, timeNum = 15, setMellaPredict
 
   return (
     <>
-      <Header className="headerBox" style={{ height: devicesTitleHeight, background: '#fff' }}>
+      <Header
+        className="headerBox"
+        style={{ height: devicesTitleHeight, background: "#fff" }}
+      >
         {_.isEmpty(petId) && !isWalkIn ? (
           <></>
         ) : (
@@ -345,6 +366,6 @@ export default connect(
     setMellaMeasureValueFun,
     setMellaPredictValueFun,
     setMellaMeasurePartFun,
-    setMellaPredictReturnValueFun
+    setMellaPredictReturnValueFun,
   }
 )(HeaderItem);
