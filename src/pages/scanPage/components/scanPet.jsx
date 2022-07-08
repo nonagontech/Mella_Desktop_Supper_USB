@@ -220,6 +220,18 @@ const ScanPet = ({
       setCarouselIndex(2);
     }
   };
+  //切换宠物获取到长度信息,对数据根据界面单位进行换算
+  const petLengthDataConvert = (val) => {
+    if (!val) {
+      return "";
+    } else {
+      if (rulerUnit === "cm") {
+        return val.toFixed(1);
+      } else {
+        return _.floor(_.divide(val, 2.54), 2);
+      }
+    }
+  };
 
   //监听点击界面中下一步按钮
   useEffect(() => {
@@ -232,7 +244,7 @@ const ScanPet = ({
       finishScan();
     }
 
-    return () => { };
+    return () => {};
   }, [inputIndex, patientId]);
 
   useEffect(() => {
@@ -241,7 +253,7 @@ const ScanPet = ({
     } else if (carouselIndex === 1) {
       setInputIndex(0);
     }
-    return () => { };
+    return () => {};
   }, [carouselIndex]);
 
   //监听用户点击了硬件中的下一步按钮
@@ -254,38 +266,29 @@ const ScanPet = ({
     if (inputIndex === 3) {
       setCarouselIndex(2);
     }
-    return () => { };
+    return () => {};
   }, [rulerConfirmCount]);
-
-  //切换宠物获取到长度信息,对数据根据界面单位进行换算
-  const petLengthDataConvert = (val) => {
-    if (!val) {
-      return ''
-    } else {
-      if (rulerUnit === 'cm') {
-        return val.toFixed(1)
-      } else {
-        return _.floor(_.divide(val, 2.54), 2);
-      }
-    }
-  }
-
 
   //监听切换了宠物
   useEffect(() => {
     setInputIndex(0);
-    let { torsoLength, l2rarmDistance, upperTorsoCircumference, lowerTorsoCircumference, h2tLength, neckCircumference } = petMessage
+    let {
+      torsoLength,
+      l2rarmDistance,
+      upperTorsoCircumference,
+      lowerTorsoCircumference,
+      h2tLength,
+      neckCircumference,
+    } = petMessage;
 
-    setBodyValue(petLengthDataConvert(l2rarmDistance))
-    setLowerValue(petLengthDataConvert(lowerTorsoCircumference))
-    setUpperValue(petLengthDataConvert(upperTorsoCircumference))
-    setNeckValue(petLengthDataConvert(neckCircumference))
-    setHeadValue(petLengthDataConvert(h2tLength))
-    setTorsoValue(petLengthDataConvert(torsoLength))
+    setBodyValue(petLengthDataConvert(l2rarmDistance));
+    setLowerValue(petLengthDataConvert(lowerTorsoCircumference));
+    setUpperValue(petLengthDataConvert(upperTorsoCircumference));
+    setNeckValue(petLengthDataConvert(neckCircumference));
+    setHeadValue(petLengthDataConvert(h2tLength));
+    setTorsoValue(petLengthDataConvert(torsoLength));
 
-
-
-    return () => { };
+    return () => {};
   }, [petId]);
   //监听用户点击了硬件中的下一步按钮和拉动皮尺
   useEffect(() => {
@@ -323,7 +326,7 @@ const ScanPet = ({
     setLowerValue(lowerValue && changeUnit(lowerValue));
     setTorsoValue(torsoValue && changeUnit(torsoValue));
     setBodyValue(bodyValue && changeUnit(bodyValue));
-    return () => { };
+    return () => {};
   }, [rulerUnit]);
 
   return (
@@ -342,9 +345,9 @@ const ScanPet = ({
             style={{
               background: radioValue === "in" ? "#12ade4" : "#fff",
               borderColorRight: radioValue === "in" ? "#12ade4" : "#fff",
-              borderRadius: '20px',
-              borderTopRightRadius: '0px',
-              borderBottomRightRadius: '0px',
+              borderRadius: "20px",
+              borderTopRightRadius: "0px",
+              borderBottomRightRadius: "0px",
             }}
           >
             in
@@ -355,9 +358,9 @@ const ScanPet = ({
             style={{
               background: radioValue === "cm" ? "#12ade4" : "#fff",
               borderColorRight: radioValue === "cm" ? "#12ade4" : "#fff",
-              borderRadius: '20px',
-              borderTopLeftRadius: '0px',
-              borderBottomLeftRadius: '0px',
+              borderRadius: "20px",
+              borderTopLeftRadius: "0px",
+              borderBottomLeftRadius: "0px",
             }}
           >
             cm

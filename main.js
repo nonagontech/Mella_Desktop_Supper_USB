@@ -194,7 +194,7 @@ function processed_data (arr) {
         if (arr[i] === 'aa') {
             j = i
             let dataLength = parseInt(arr[j + 1], 16)
-            if (arr[dataLength + 1] === '55') {
+            if (arr[dataLength + 1] === '55' ||arr[dataLength + 1] === '00') {
 
                 for (; j <= dataLength + 1 + i; j++) {
                     newArr.push(parseInt(arr[j], 16))

@@ -75,7 +75,8 @@ const Heard = ({
   menu8Click,
   menu9Click,
   blueSearch,
-  setMenuNum
+  setMenuNum,
+  menuNum
 }) => {
   const [minbgc, setMinbgc] = useState('')        //最小化的背景颜色
   const [closebgc, setClosebgc] = useState('')    //关闭按钮的背景色
@@ -105,6 +106,7 @@ const Heard = ({
   const [lastVersion, setLastVersion] = useState(version)
   const [downLoadNum, setDownLoadingNum] = useState(0)
   const [selectDeviceMac, setSelectDeviceMac] = useState('')
+  const [clickType,setClickType] = useState(false);
 
   //这里是为了模拟数据所做出来的,后期要改成接口
   const testPetList = [
@@ -205,7 +207,6 @@ const Heard = ({
     }
   }
   const _send = (event, data) => {
-
     command(data)()
   }
   // newArr 指的是十进制数字数组，   dataArr1:指的是16进制字符串数组
@@ -294,11 +295,6 @@ const Heard = ({
     }
   }
 
-
-
-
-
-
   let history = useHistory();
   //最小化，关闭的
   const MINCOLOSE = {
@@ -330,10 +326,6 @@ const Heard = ({
       ipcRenderer.send('window-close')
     },
   }
-
-
-
-
 
   //搜索框内容
   const searchPetBody = () => {
@@ -619,13 +611,14 @@ const Heard = ({
 
   //左侧菜单栏
   const menuList = () => {
+    let name = menuNum==='6'?'Exit Clinical Study Mode':'Enter Clinical Study Mode'
     let menulistArr = [
       { name: 'Home', index: '1' },
       { name: 'All Patients', index: '2' },
       { name: 'Scheduled Patients', index: '3' },
       { name: 'My Account', index: '4' },
       { name: 'Settings', index: '5' },
-      { name: 'Enter Clinical Study Mode', index: '6' },
+      { name: name, index: '6' },
       { name: `Billing & Subscriptions`, index: '7' },
       { name: 'About Mella', index: '8' },
       { name: 'Log Out', index: '9' },
@@ -702,9 +695,13 @@ const Heard = ({
         // setMenuNum(e.index)
         break;
       case "6":
+        if(e.name==="Exit Clinical Study Mode"){
+          setMenuNum('1');
+        }else{
+          setMenuNum(e.index)
+        }
         history.push('/MainBody')
         console.log('临床测试');
-        setMenuNum(e.index)
         break;
       case "7":
         console.log('billing');
@@ -1511,7 +1508,7 @@ Heard.defaultProps = {
 
 export default connect(
   state => ({
-
+    menuNum:state.userReduce.menuNum
   }),
   { setMenuNum }
 )(Heard)
