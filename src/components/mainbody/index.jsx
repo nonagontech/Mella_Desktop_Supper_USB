@@ -605,8 +605,8 @@ class App extends Component {
           if (impedance) {
             setBiggieBodyFatFun(impedance);
           }
-          if (biggieConnectStatus !== "connected") {
-            setBiggieConnectStatusFun("connected");
+          if (biggieConnectStatus !== "isMeasuring") {
+            setBiggieConnectStatusFun("isMeasuring");
           }
           if (biggieUnit !== "kg") {
             setBiggieUnitFun("kg");
