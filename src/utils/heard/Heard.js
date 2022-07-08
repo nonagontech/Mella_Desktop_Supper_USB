@@ -12,7 +12,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment'
 import MyModal from './../myModal/MyModal'
 import { connect } from 'react-redux'
-import { setMenuNum } from '../../store/actions';
+import { setMenuNum,setSelectHardwareType } from '../../store/actions';
 
 //import 'antd/dist/antd.css';
 import './heard.less'
@@ -76,7 +76,8 @@ const Heard = ({
   menu9Click,
   blueSearch,
   setMenuNum,
-  menuNum
+  menuNum,
+  setSelectHardwareType,
 }) => {
   const [minbgc, setMinbgc] = useState('')        //最小化的背景颜色
   const [closebgc, setClosebgc] = useState('')    //关闭按钮的背景色
@@ -611,7 +612,7 @@ const Heard = ({
 
   //左侧菜单栏
   const menuList = () => {
-    let name = menuNum==='6'?'Exit Clinical Study Mode':'Enter Clinical Study Mode'
+    let name = electronStore.get(`${storage.userId}-isClical`)?'Exit Clinical Study Mode':'Enter Clinical Study Mode'
     let menulistArr = [
       { name: 'Home', index: '1' },
       { name: 'All Patients', index: '2' },
@@ -697,8 +698,11 @@ const Heard = ({
       case "6":
         if(e.name==="Exit Clinical Study Mode"){
           setMenuNum('1');
+          electronStore.set(`${storage.userId}-isClical`,false)
         }else{
-          setMenuNum(e.index)
+          setMenuNum(e.index);
+          electronStore.set(`${storage.userId}-isClical`,true)
+          setSelectHardwareType("mellaPro");
         }
         history.push('/MainBody')
         console.log('临床测试');
@@ -1510,5 +1514,5 @@ export default connect(
   state => ({
     menuNum:state.userReduce.menuNum
   }),
-  { setMenuNum }
+  { setMenuNum ,setSelectHardwareType}
 )(Heard)

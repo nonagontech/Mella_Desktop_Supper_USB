@@ -158,7 +158,7 @@ export default class FindWorkplace extends Component {
               storage.roleId = element.roleId
             }
             if (userWorkplace.length === 1) {
-              this.props.history.push('/uesr/selectExam')
+              this.props.history.push("/MainBody");
 
             } else {
               this.props.history.push('/page12')
@@ -166,7 +166,7 @@ export default class FindWorkplace extends Component {
           } else {
             storage.userWorkplace = ''
             storage.connectionKey = ''
-            this.props.history.push('/uesr/selectExam')
+            this.props.history.push("/MainBody");
             storage.lastOrganization = ''
             storage.lastWorkplaceId = ''
           }

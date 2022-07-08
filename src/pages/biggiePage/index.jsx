@@ -67,7 +67,7 @@ const BiggirPage = ({
   useEffect(() => {
     let isSave = storage.connectionKey ? false : true;
     setIsSavePMS(isSave);
-    return() => {}
+    return () => {};
   }, []);
   useEffect(() => {
     let {
@@ -103,9 +103,11 @@ const BiggirPage = ({
         <HeaderItem />
         <Content className="biggieContentBox">
           {_.isEmpty(petDetailInfo) ? (
-            <div className="chackPatientBox">
-              <p className="chackPatientTitle">Select a patient</p>
-            </div>
+            <>
+              <div className="chackPatientBox">
+                <p className="chackPatientTitle">Select a patient</p>
+              </div>
+            </>
           ) : connectStatus === "isMeasuring" ? (
             <div className="biggbody">
               <div className="biggieTopBox" style={{ width: px(470) }}>
@@ -127,7 +129,7 @@ const BiggirPage = ({
                 <p className="biggeTitle">History</p>
               </div>
               <div className="biggeTableBox">
-                <HistoryTable saveNum={saveNum} />
+                <HistoryTable saveNum={saveNum} tableColumnType='weight' />
               </div>
             </div>
           ) : (

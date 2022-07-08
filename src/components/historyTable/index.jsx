@@ -29,6 +29,7 @@ import {
 import Draggable from "react-draggable";
 import { fetchRequest } from "../../utils/FetchUtil1";
 import { px, mTop } from "../../utils/px";
+import electronStore from "../../utils/electronStore";
 import moment from "moment";
 import "./index.less";
 
@@ -37,12 +38,19 @@ const HistoryTable = ({
   hardwareMessage,
   setMellaConnectStatusFun,
   saveNum = 0,
+  tableColumnType, //表格内容渲染temperature为温度表格，weight为体重表格
 }) => {
   let { mellaMeasureValue, mellaConnectStatus, mellaMeasurePart } =
     hardwareMessage;
   let { petId, memo } = petMessage;
   let storage = window.localStorage;
-  const [petTemperatureData, setPetTemperatureData] = useState([]); //存储宠物历史温度数据
+  let hisHe = mTop(200);
+  let draggleRef = React.createRef();
+  try {
+    let historyElement = document.querySelectorAll(".historyTable");
+    hisHe = historyElement[0].clientHeight - mTop(60);
+  } catch (error) {}
+  const [petData, setPetData] = useState([]); //存储宠物历史数据
   const [disabled, setDisabled] = useState(true); //model是否可拖拽
   const [visible, setVisible] = useState(false); //model框是否显示
   const [newMemo, setNewMemo] = useState(""); //note内容
@@ -55,25 +63,29 @@ const HistoryTable = ({
     right: 0,
   });
   const [reRender, setReRender] = useState(0);
+  const [isHua, setIsHua] = useState(true);
 
-  //表格渲染
-  const columns = [
+  //体重表格渲染
+  const weightColumns = [
     {
       title: "Dat",
       dataIndex: "createTime",
-      // width: '15%',
+      ellipsis: true,
+      align: "center",
       render: (text, record) => moment(text).format("MMM D"),
     },
     {
       title: "Tim",
       dataIndex: "createTime",
-      // width: '20%',
+      ellipsis: true,
+      align: "center",
       render: (text, record) => moment(text).format("hh:mm A"),
     },
     {
       title: "Weight",
       dataIndex: "weight",
-      // width: '15%',
+      ellipsis: true,
+      align: "center",
       render: (text, record) => (
         <Badge color={color()} text={_.toNumber(text).toFixed(1)} />
       ),
@@ -83,8 +95,8 @@ const HistoryTable = ({
       title: "BF%",
       dataIndex: "fat",
       key: "fat",
+      ellipsis: true,
       align: "center",
-      // width: '10%',
       render: (text, record, index) => {
         return <p style={{ textAlign: "center", color: "#58BDE6" }}>{text}</p>;
       },
@@ -93,8 +105,8 @@ const HistoryTable = ({
       title: "BCS",
       dataIndex: "bodyConditionScore",
       key: "bodyConditionScore",
+      ellipsis: true,
       align: "center",
-      // width: '10%',
       render: (text, record, index) => {
         return <p style={{ textAlign: "center", color: "#58BDE6" }}>{text}</p>;
       },
@@ -102,12 +114,15 @@ const HistoryTable = ({
     {
       title: "Note",
       dataIndex: "memo",
-      // width: '15%',
+      ellipsis: true,
+      align: "center",
       render: (text, record) => text,
     },
     {
+      title: "Action",
       key: "action",
-      // width: '15%',
+      ellipsis: true,
+      align: "center",
       render: (text, record) => (
         <div
           style={{
@@ -135,18 +150,118 @@ const HistoryTable = ({
       ),
     },
   ];
-  //根据温度判断指示文字颜色
-  const color = () => {
-    if (mellaMeasureValue > 40) {
+  //温度表格渲染
+  const TemperatureColumns = [
+    {
+      title: "Date",
+      dataIndex: "createTime",
+      ellipsis: true,
+      // onHeaderCell: (row) => {
+      //   return console.log('row',row);
+      // } ,
+      align: "center",
+      render: (text, record) => moment(text).format("MMM D"),
+    },
+    {
+      title: "Time",
+      dataIndex: "createTime",
+      ellipsis: true,
+      align: "center",
+      render: (text, record) => moment(text).format("hh:mm A"),
+    },
+    {
+      title: `Temp(${isHua ? "℉" : "℃"})`,
+      dataIndex: "temperature",
+      ellipsis: true,
+      align: "center",
+      render: (text, record) => {
+        let num = parseFloat(text);
+        if (isHua) {
+          num = parseInt((num * 1.8 + 32) * 10) / 10;
+        } else {
+          num = num.toFixed(1);
+        }
+
+        return <Badge color={color(text)} text={num} />;
+      },
+    },
+    {
+      title: "Placement",
+      dataIndex: "petVitalTypeId",
+      ellipsis: true,
+      align: "center",
+      render: (text, record) => {
+        if (text === 1) {
+          return <img src={measuredTable_2} />;
+        } else if (text === 3) {
+          return <img src={measuredTable_1} />;
+        } else if (text === 4) {
+          return <img src={measuredTable_3} />;
+        } else {
+          return <img src={measuredTable_2} />;
+        }
+      },
+    },
+    {
+      title: "Notes",
+      dataIndex: "memo",
+      ellipsis: true,
+      align: "center",
+      render: (text, record) => text,
+    },
+    {
+      title: "Action",
+      key: "action",
+      align: "center",
+      render: (text, record) => (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-around",
+          }}
+        >
+          <img
+            style={{ cursor: "pointer" }}
+            src={EditCircle}
+            onClick={() => {
+              setVisible(true);
+              setPetMessages(record);
+            }}
+          />
+          <Popconfirm
+            title="Sure to delete?"
+            onConfirm={() => deletePetMessage(record.examId)}
+          >
+            <img style={{ cursor: "pointer" }} src={Delete} />
+          </Popconfirm>
+        </div>
+      ),
+    },
+  ];
+  //选择表格colum渲染
+  const columType = () => {
+    switch (tableColumnType) {
+      case "temperature":
+        return TemperatureColumns;
+      case "weight":
+        return weightColumns;
+      default:
+        break;
+    }
+  };
+  //判断指示文字颜色
+  const color = (data) => {
+    if (data > 40) {
       return "#e1206d";
-    } else if (_.inRange(_.round(mellaMeasureValue), 38, 40)) {
+    } else if (_.inRange(_.round(data), 38, 40)) {
       return "#58bde6";
     } else {
       return "#98da86";
     }
   };
-
-  //获取历史宠物温度数据
+  //获取历史宠物数据
   const getPetTemperatureData = () => {
     fetchRequest(`/pet/getPetExamByPetId/${petId}`, "GET", "")
       .then((res) => {
@@ -155,18 +270,27 @@ const HistoryTable = ({
           let arr = [];
           for (let i = 0; i < res.data.length; i++) {
             const element = res.data[i];
-            if (element.weight) {
+            const type = () => {
+              switch (tableColumnType) {
+                case "temperature":
+                  return element.temperature;
+                case "weight":
+                  return element.weight;
+                default:
+                  break;
+              }
+            };
+            if (type()) {
               arr.push(element);
             }
           }
-          setPetTemperatureData(arr);
+          setPetData(_.orderBy(arr,'createTime','desc'));
         }
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
   //保存note
   const save = () => {
     let datas = {
@@ -182,7 +306,7 @@ const HistoryTable = ({
         console.log(err);
       });
   };
-  //删除历史温度记录
+  //删除历史记录
   const deletePetMessage = (examId) => {
     fetchRequest(`/pet/deletePetExamByExamId/${examId}`, "DELETE").then(
       (res) => {
@@ -199,7 +323,7 @@ const HistoryTable = ({
   const handleCancel = (e) => {
     setVisible(false);
   };
-  let draggleRef = React.createRef();
+
   const onStart = (event, uiData) => {
     const { clientWidth, clientHeight } = window?.document?.documentElement;
     const targetRect = draggleRef?.current?.getBoundingClientRect();
@@ -215,6 +339,7 @@ const HistoryTable = ({
     getPetTemperatureData();
     return () => {};
   }, [petMessage]);
+
   useEffect(() => {
     if (reRender !== saveNum) {
       setReRender(saveNum);
@@ -223,23 +348,83 @@ const HistoryTable = ({
     return () => {};
   }, [saveNum]);
 
-  let hisHe = mTop(200);
-  try {
-    let historyElement = document.querySelectorAll(".historyTable");
-    hisHe = historyElement[0].clientHeight - mTop(60);
-  } catch (error) {}
+  useEffect(() => {
+    let hardSet = electronStore.get(`${storage.userId}-hardwareConfiguration`);
+    if (hardSet) {
+      let { isHua } = hardSet;
+      setIsHua(isHua);
+    }
+  }, []);
 
   return (
-    <Table
-      rowKey={"examId"}
-      columns={columns}
-      dataSource={petTemperatureData}
-      className="measuredTable"
-      pagination={false}
-      scroll={{
-        y: hisHe,
-      }}
-    />
+    <>
+      <Table
+        rowKey={"examId"}
+        columns={columType()}
+        dataSource={petData}
+        pagination={false}
+        scroll={{
+          y: hisHe,
+        }}
+      />
+      <Modal
+        title={
+          <div
+            style={{
+              width: "100%",
+              cursor: "move",
+              height: "20px",
+              textAlign: "center",
+            }}
+            onMouseOver={() => {
+              if (disabled) {
+                setDisabled(false);
+              }
+            }}
+            onMouseOut={() => {
+              setDisabled(true);
+            }}
+            onFocus={() => {}}
+            onBlur={() => {}}
+          >
+            Edit Note
+          </div>
+        }
+        visible={visible}
+        onCancel={handleCancel}
+        modalRender={(modal) => (
+          <Draggable
+            disabled={disabled}
+            bounds={bounds}
+            onStart={(event, uiData) => onStart(event, uiData)}
+          >
+            <div ref={draggleRef}>{modal}</div>
+          </Draggable>
+        )}
+        footer={
+          [] // 设置footer为空，去掉 取消 确定默认按钮
+        }
+        destroyOnClose={true}
+      >
+        <div className="noteModal">
+          <div className="noteModalText">
+            <p style={{ width: "80px" }}>Notes</p>
+            <textarea
+              rows="5"
+              cols="40"
+              style={{ textIndent: "10px" }}
+              // value={petMessages.memo}
+              onChange={(val) => {
+                setNewMemo(val.target.value);
+              }}
+            ></textarea>
+          </div>
+          <div className="btn" style={{ width: "60%" }} onClick={() => save()}>
+            Save Changes
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 };
 

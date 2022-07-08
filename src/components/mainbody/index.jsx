@@ -184,10 +184,10 @@ class App extends Component {
       if (isMeasure || !this.state.isHaveUsbDevice) {
         return;
       }
-      if (exchangeNum % 2 === 0) {    
-          //让底座发送查询温度计信息指令
-      ipcRenderer.send("usbdata", { command: "07", arr: ["5A"] });
-      }else{
+      if (exchangeNum % 2 === 0) {
+        //让底座发送查询温度计信息指令
+        ipcRenderer.send("usbdata", { command: "07", arr: ["5A"] });
+      } else {
         ipcRenderer.send("usbdata", { command: "31", arr: ["5A"] });
       }
 
@@ -467,10 +467,10 @@ class App extends Component {
         console.log(
           "连接成功---连接成功---连接成功---连接成功---连接成功---连接成功"
         );
-        this.getIdTimer&&clearTimeout( this.getIdTimer)
-        this.getIdTimer=setTimeout(() => {
-           ipcRenderer.send("usbdata", { command: "31", arr: ["5A"] });
-           this.getIdTimer&&clearTimeout( this.getIdTimer)
+        this.getIdTimer && clearTimeout(this.getIdTimer);
+        this.getIdTimer = setTimeout(() => {
+          ipcRenderer.send("usbdata", { command: "31", arr: ["5A"] });
+          this.getIdTimer && clearTimeout(this.getIdTimer);
         }, 50);
 
         is97Time = new Date();
@@ -958,32 +958,42 @@ class App extends Component {
     let measurePage = null;
     switch (clickMenuIndex) {
       case "1":
-        switch (selectHardwareType) {
-          case "mellaPro":
-            measurePage = <TemperaturePage />;
-
-            break;
-          case "biggie":
-            measurePage = <BiggiePage />;
-            break;
-
-          case "tape":
-            measurePage = <ScanPage />;
-            break;
-
-          default:
-            break;
-        }
-        if (selectHardwareType === "add") {
-          return <AddDevice bodyHeight={bodyHeight} />;
-        } else {
+        if (electronStore.get(`${storage.userId}-isClical`)) {
           return (
             <>
               <HardAndPetsUI bodyHeight={bodyHeight} />
-              {measurePage}
+              <ClininalStudy bodyHeight={bodyHeight} />
             </>
           );
+        } else {
+          switch (selectHardwareType) {
+            case "mellaPro":
+              measurePage = <TemperaturePage />;
+
+              break;
+            case "biggie":
+              measurePage = <BiggiePage />;
+              break;
+
+            case "tape":
+              measurePage = <ScanPage />;
+              break;
+
+            default:
+              break;
+          }
+          if (selectHardwareType === "add") {
+            return <AddDevice bodyHeight={bodyHeight} />;
+          } else {
+            return (
+              <>
+                <HardAndPetsUI bodyHeight={bodyHeight} />
+                {measurePage}
+              </>
+            );
+          }
         }
+
         break;
 
       case "2":
