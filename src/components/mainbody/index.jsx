@@ -467,11 +467,12 @@ class App extends Component {
         console.log(
           "连接成功---连接成功---连接成功---连接成功---连接成功---连接成功"
         );
-        this.getIdTimer && clearTimeout(this.getIdTimer)
+        this.getIdTimer && clearTimeout(this.getIdTimer);
         this.getIdTimer = setTimeout(() => {
           ipcRenderer.send("usbdata", { command: "31", arr: ["5A"] });
-          this.getIdTimer && clearTimeout(this.getIdTimer)
+          this.getIdTimer && clearTimeout(this.getIdTimer);
         }, 50);
+
 
         is97Time = new Date();
         this._connect_to_mella();
@@ -605,8 +606,8 @@ class App extends Component {
           if (impedance) {
             setBiggieBodyFatFun(impedance);
           }
-          if (biggieConnectStatus !== "connected") {
-            setBiggieConnectStatusFun("connected");
+          if (biggieConnectStatus !== "isMeasuring") {
+            setBiggieConnectStatusFun("isMeasuring");
           }
           if (biggieUnit !== "kg") {
             setBiggieUnitFun("kg");
@@ -958,32 +959,42 @@ class App extends Component {
     let measurePage = null;
     switch (clickMenuIndex) {
       case "1":
-        switch (selectHardwareType) {
-          case "mellaPro":
-            measurePage = <TemperaturePage />;
-
-            break;
-          case "biggie":
-            measurePage = <BiggiePage />;
-            break;
-
-          case "tape":
-            measurePage = <ScanPage />;
-            break;
-
-          default:
-            break;
-        }
-        if (selectHardwareType === "add") {
-          return <AddDevice bodyHeight={bodyHeight} />;
-        } else {
+        if (electronStore.get(`${storage.userId}-isClical`)) {
           return (
             <>
               <HardAndPetsUI bodyHeight={bodyHeight} />
-              {measurePage}
+              <ClininalStudy bodyHeight={bodyHeight} />
             </>
           );
+        } else {
+          switch (selectHardwareType) {
+            case "mellaPro":
+              measurePage = <TemperaturePage />;
+
+              break;
+            case "biggie":
+              measurePage = <BiggiePage />;
+              break;
+
+            case "tape":
+              measurePage = <ScanPage />;
+              break;
+
+            default:
+              break;
+          }
+          if (selectHardwareType === "add") {
+            return <AddDevice bodyHeight={bodyHeight} />;
+          } else {
+            return (
+              <>
+                <HardAndPetsUI bodyHeight={bodyHeight} />
+                {measurePage}
+              </>
+            );
+          }
         }
+
         break;
 
       case "2":

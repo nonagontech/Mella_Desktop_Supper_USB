@@ -23,7 +23,8 @@ import {
   setMellaMeasurePartFun,
 } from "../../../store/actions";
 import _ from "lodash";
-// import HeaderItem from './headerItem';
+import HistoryTable from "../../../components/historyTable";
+import moment from "moment";
 import "./linkEquipment.less";
 
 const { Content, Header } = Layout;
@@ -40,7 +41,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
   ];
 
   const [type, setType] = useState(false); //是否显示轮播图
-  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [carouselIndex, setCarouselIndex] = useState(0); //轮播图下标
   const saveCallBack = useRef();
   const callBack = () => {
     setCarouselIndex(carouselIndex + 1);
@@ -94,16 +95,21 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
     <>
       <Content className={"contentBox"}>
         {_.isEqual(mellaConnectStatus, "disconnected") ? (
-          <div className="startBox">
-            <p className="startTitle">
-              Turn on your
-              <br />
-              Mella Thermometer
-              <br />
-              or Pair New Mella
-            </p>
-            <img src={PressButton_Pro} />
-          </div>
+          <>
+            <div className="startBox">
+              <p className="startTitle">
+                Turn on your
+                <br />
+                Mella Thermometer
+                <br />
+                or Pair New Mella
+              </p>
+              <img src={PressButton_Pro} />
+            </div>
+            <div className="tableBox">
+              <HistoryTable tableColumnType='temperature' />
+            </div>
+          </>
         ) : (
           <>
             <div className="startBox">

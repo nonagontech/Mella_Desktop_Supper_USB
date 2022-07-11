@@ -73,7 +73,7 @@ const HardWareTypeUI = ({
         onClick={() => {
           console.log(item.type);
 
-          if (menuNum !== "6") {
+          if (menuNum !== "6"&&!electronStore.get(`${storage.userId}-isClical`)) {
             setMenuNum("1");
             setSelectHardwareType(item.type);
             if (item.type === "add") {

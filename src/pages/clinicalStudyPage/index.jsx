@@ -600,7 +600,7 @@ const ClinicalStudy = ({
         className="Tem"
         style={{
           color: temColor,
-          right: px(30),
+          right: px(100),
           bottom: mTop(120),
           pointerEvents: "none",
         }}
@@ -608,35 +608,35 @@ const ClinicalStudy = ({
         {mellaConnectStatus !== "isMeasuring" ? (
           showHistoryEchart ? (
             <>
-              <span style={{ fontSize: px(36) }}>
-                {temp} <sup style={{ fontSize: px(18) }}>{units}</sup>
+              <span style={{ fontSize: px(46),fontWeight:'bold' }}>
+                {temp} <sup style={{ fontSize: px(28),fontWeight:'bold' }}>{units}</sup>
               </span>
               <br />
               {/* <span style={{ fontSize: px(22) }}>{text}</span> */}
 
               <span
-                style={{ fontSize: px(22), color: "#8a8a8a" }}
+                style={{ fontSize: px(32), color: "#8a8a8a",fontWeight:'bold' }}
               >{`History`}</span>
             </>
           ) : (
             <>
-              <span style={{ fontSize: px(36) }}>
+              <span style={{ fontSize: px(46) ,fontWeight:'bold'}}>
                 {temp < 3 ? null : temp}{" "}
-                <sup style={{ fontSize: px(18) }}>{unit}</sup>
+                <sup style={{ fontSize: px(28),fontWeight:'bold' }}>{unit}</sup>
               </span>
               <br />
-              <span style={{ fontSize: px(22) }}>{text}</span>
+              <span style={{ fontSize: px(32),fontWeight:'bold' }}>{text}</span>
             </>
           )
         ) : lowFlog ? (
           <>
-            <span style={{ fontSize: px(36) }}>{"Low"}</span>
+            <span style={{ fontSize: px(46),fontWeight:'bold' }}>{"Low"}</span>
             <br />
           </>
         ) : (
           <>
-            <span style={{ fontSize: px(36) }}>
-              {temp} <sup style={{ fontSize: px(18) }}>{unit}</sup>
+            <span style={{ fontSize: px(46),fontWeight:'bold' }}>
+              {temp} <sup style={{ fontSize: px(28),fontWeight:'bold' }}>{unit}</sup>
             </span>
             <br />
           </>
