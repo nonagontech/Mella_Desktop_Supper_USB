@@ -14,7 +14,7 @@ import {
     setMellaMeasurePartFun
 } from '../../../store/actions';
 import _ from 'lodash';
-import './linkEquipment.less';
+import './LinkEquipment.less';
 
 const { Content, Header } = Layout;
 

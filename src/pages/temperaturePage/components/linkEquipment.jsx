@@ -12,6 +12,7 @@ import Sitting_Dog from "./../../../assets/img/Sitting_Dog.png";
 import Sitting_Cat from "./../../../assets/img/Sitting_Cat.png";
 import Laying_Dog from "./../../../assets/img/Laying_Dog.png";
 import Laying_Cat from "./../../../assets/img/Laying_Cat.png";
+import { px } from "../../../utils/px";
 
 import {
   selectHardwareModalShowFun,

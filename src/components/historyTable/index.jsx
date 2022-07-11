@@ -49,7 +49,7 @@ const HistoryTable = ({
   try {
     let historyElement = document.querySelectorAll(".historyTable");
     hisHe = historyElement[0].clientHeight - mTop(60);
-  } catch (error) {}
+  } catch (error) { }
   const [petData, setPetData] = useState([]); //存储宠物历史数据
   const [disabled, setDisabled] = useState(true); //model是否可拖拽
   const [visible, setVisible] = useState(false); //model框是否显示
@@ -64,6 +64,7 @@ const HistoryTable = ({
   });
   const [reRender, setReRender] = useState(0);
   const [isHua, setIsHua] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   //体重表格渲染
   const weightColumns = [
@@ -263,8 +264,10 @@ const HistoryTable = ({
   };
   //获取历史宠物数据
   const getPetTemperatureData = () => {
+    setLoading(true);
     fetchRequest(`/pet/getPetExamByPetId/${petId}`, "GET", "")
       .then((res) => {
+        setLoading(false);
         console.log("历史记录", res);
         if (res.flag === true) {
           let arr = [];
@@ -284,10 +287,11 @@ const HistoryTable = ({
               arr.push(element);
             }
           }
-          setPetData(_.orderBy(arr,'createTime','desc'));
+          setPetData(_.orderBy(arr, 'createTime', 'desc'));
         }
       })
       .catch((err) => {
+        setLoading(false);
         console.log(err);
       });
   };
@@ -337,7 +341,7 @@ const HistoryTable = ({
 
   useEffect(() => {
     getPetTemperatureData();
-    return () => {};
+    return () => { };
   }, [petMessage]);
 
   useEffect(() => {
@@ -345,7 +349,7 @@ const HistoryTable = ({
       setReRender(saveNum);
       getPetTemperatureData();
     }
-    return () => {};
+    return () => { };
   }, [saveNum]);
 
   useEffect(() => {
@@ -363,6 +367,7 @@ const HistoryTable = ({
         columns={columType()}
         dataSource={petData}
         pagination={false}
+        loading={loading}
         scroll={{
           y: hisHe,
         }}
@@ -384,8 +389,8 @@ const HistoryTable = ({
             onMouseOut={() => {
               setDisabled(true);
             }}
-            onFocus={() => {}}
-            onBlur={() => {}}
+            onFocus={() => { }}
+            onBlur={() => { }}
           >
             Edit Note
           </div>

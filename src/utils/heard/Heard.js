@@ -3,15 +3,18 @@ import { useHistory } from "react-router-dom";
 import { Menu, Popover, Button, Modal } from "antd";
 import PropTypes from "prop-types";
 import {
-  SyncOutlined,
-  createFromIconfontCN,
-  LoadingOutlined,
-} from "@ant-design/icons";
-import { SearchOutlined } from "@ant-design/icons";
-import moment from "moment";
-import MyModal from "./../myModal/MyModal";
-import { connect } from "react-redux";
-import { setMenuNum, setSelectHardwareType } from "../../store/actions";
+  Menu,
+  Popover,
+  Button,
+  Modal
+} from 'antd';
+import PropTypes from 'prop-types';
+import { SyncOutlined, createFromIconfontCN, LoadingOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
+import moment from 'moment'
+import MyModal from './../myModal/MyModal'
+import { connect } from 'react-redux'
+import { setMenuNum, setSelectHardwareType, petDetailInfoFun } from '../../store/actions';
 
 //import 'antd/dist/antd.css';
 import "./heard.less";
@@ -76,32 +79,39 @@ const Heard = ({
   setMenuNum,
   menuNum,
   setSelectHardwareType,
+  petListArr,
+  petDetailInfoFun
 }) => {
-  const [minbgc, setMinbgc] = useState(""); //最小化的背景颜色
-  const [closebgc, setClosebgc] = useState(""); //关闭按钮的背景色
-  const [rMin, setRMin] = useState(rMin_red); //最小化的图标
-  const [rClose, setRClose] = useState(rClose_red); //关闭按钮图标
-  const [value, setValue] = useState(""); //搜索框输入的内容
-  const [visible, setVisible] = useState(false); //搜索框下面的搜索model
-  const [loading, setLoading] = useState(false); //搜索宠物过程中的加载图标
-  const [petList, setPetList] = useState([]); //搜索到的宠物列表
-  const [menuVisible, setMenuVisible] = useState(false); //菜单图标下面的菜单内容图标
-  const [menuMouseOverIndex, setMenuMouseOverIndex] = useState(""); //用来定位鼠标滑到哪个菜单选项
-  const [modalvisible, setModalVisible] = useState(false); //关于的弹窗
-  const [modalVis, setModalVis] = useState(false); //RFID搜索是否有宠物的弹窗
-  const [isNotFound, setIsNotFound] = useState(false); //是否找到RFID对应的图标
-  const [deviceModel, setDeviceModel] = useState(false); //我的设备弹窗
-  const [noUSB, setNoUSB] = useState(false); //没有底座设备
-  const [searchMac, setSearchMac] = useState(false); //是否展示狗牌mac搜索图标下面的Modal框
-  const [bluDevice, setBluDevice] = useState([]); //搜索到的狗牌设备mac地址
-  const [isShowBlePetList, setIsShowBlePetList] = useState(false); //是否展示狗牌对应宠物
-  const [isMatchPet, setIsMatchPet] = useState(false); //正在匹配狗牌对应的宠物
-  const [macMatchPetList, setMacMatchPetList] = useState([]);
-  const [updateStatus, setUpdateStatus] = useState("init");
-  const [lastVersion, setLastVersion] = useState(version);
-  const [downLoadNum, setDownLoadingNum] = useState(0);
-  const [selectDeviceMac, setSelectDeviceMac] = useState("");
+  const [minbgc, setMinbgc] = useState('')        //最小化的背景颜色
+  const [closebgc, setClosebgc] = useState('')    //关闭按钮的背景色
+  const [rMin, setRMin] = useState(rMin_red)      //最小化的图标
+  const [rClose, setRClose] = useState(rClose_red) //关闭按钮图标
+  const [value, setValue] = useState('')          //搜索框输入的内容
+  const [visible, setVisible] = useState(false)   //搜索框下面的搜索model
+  const [loading, setLoading] = useState(false)     //搜索宠物过程中的加载图标
+  const [petList, setPetList] = useState([])        //搜索到的宠物列表
+  const [menuVisible, setMenuVisible] = useState(false)//菜单图标下面的菜单内容图标
+  const [menuMouseOverIndex, setMenuMouseOverIndex] = useState('')//用来定位鼠标滑到哪个菜单选项
+
+
+  const [modalvisible, setModalVisible] = useState(false)       //关于的弹窗
+  const [modalVis, setModalVis] = useState(false)               //RFID搜索是否有宠物的弹窗
+  const [isNotFound, setIsNotFound] = useState(false)           //是否找到RFID对应的图标
+  const [deviceModel, setDeviceModel] = useState(false)         //我的设备弹窗
+
+  const [noUSB, setNoUSB] = useState(false)                 //没有底座设备
+  const [searchMac, setSearchMac] = useState(false)         //是否展示狗牌mac搜索图标下面的Modal框
+  const [bluDevice, setBluDevice] = useState([])            //搜索到的狗牌设备mac地址
+
+  const [isShowBlePetList, setIsShowBlePetList] = useState(false)  //是否展示狗牌对应宠物
+  const [isMatchPet, setIsMatchPet] = useState(false)      //正在匹配狗牌对应的宠物
+  const [macMatchPetList, setMacMatchPetList] = useState([])
+  const [updateStatus, setUpdateStatus] = useState('init')
+  const [lastVersion, setLastVersion] = useState(version)
+  const [downLoadNum, setDownLoadingNum] = useState(0)
+  const [selectDeviceMac, setSelectDeviceMac] = useState('')
   const [clickType, setClickType] = useState(false);
+
   //这里是为了模拟数据所做出来的,后期要改成接口
   const testPetList = [
     {
@@ -137,7 +147,8 @@ const Heard = ({
   const uploadMessage = (e, data) => {
     switch (data.payload.status) {
       case -1:
-        console.log("查询异常");
+        console.log('查询异常');
+        setUpdateStatus('error')
         break;
 
       case 0:
@@ -350,12 +361,11 @@ const Heard = ({
               key={`${index}`}
               style={{ margin: `${px(20)}px 0` }}
               onClick={() => {
-                // console.log(item);
-                setValue("");
-                setVisible(false);
-                setPetList([]);
-
-                onSearch(item);
+                setValue('')
+                setVisible(false)
+                setPetList([])
+                petDetailInfoFun(item)
+                onSearch(item)
               }}
             >
               <div className="item" style={{ paddingLeft: px(40) }}>
@@ -580,19 +590,18 @@ const Heard = ({
        * toUpperCase（）方法：将字符串统一转成大写
        *
        */
-      // let list = allPetList
-      let list = electronStore.get("doctorExam") || [];
+      // let list = allPetList 
+      let list = petListArr || []
 
       let searchData = [];
       let keyWord = search;
       for (let i = 0; i < list.length; i++) {
-        let petName = list[i].petName.toLowerCase() || "";
-        let patientId = list[i].patientId.toLowerCase() || "";
-        let rfid = list[i].rfid || "";
-        if (
-          `${petName}`.indexOf(keyWord.toLowerCase()) !== -1 ||
-          `${patientId}`.indexOf(keyWord.toLowerCase()) !== -1 ||
-          `${rfid}`.indexOf(keyWord) !== -1
+        let petName = list[i].petName ? list[i].petName.toLowerCase() : ''
+        let patientId = list[i].patientId ? list[i].patientId.toLowerCase() : ''
+        let rfid = list[i].rfid || ''
+        if (`${petName}`.indexOf(keyWord.toLowerCase()) !== -1
+          || `${patientId}`.indexOf(keyWord.toLowerCase()) !== -1
+          || `${rfid}`.indexOf(keyWord) !== -1
         ) {
           searchData.push(list[i]);
         }
@@ -615,9 +624,7 @@ const Heard = ({
 
   //左侧菜单栏
   const menuList = () => {
-    let name = electronStore.get(`${storage.userId}-isClical`)
-      ? "Exit Clinical Study Mode"
-      : "Enter Clinical Study Mode";
+    let name = electronStore.get(`${storage.userId}-isClical`) ? 'Exit Clinical Study Mode' : 'Enter Clinical Study Mode'
     let menulistArr = [
       { name: "Home", index: "1" },
       { name: "All Patients", index: "2" },
@@ -692,11 +699,11 @@ const Heard = ({
         break;
       case "6":
         if (e.name === "Exit Clinical Study Mode") {
-          setMenuNum("1");
-          electronStore.set(`${storage.userId}-isClical`, false);
+          setMenuNum('1');
+          electronStore.set(`${storage.userId}-isClical`, false)
         } else {
           setMenuNum(e.index);
-          electronStore.set(`${storage.userId}-isClical`, true);
+          electronStore.set(`${storage.userId}-isClical`, true)
           setSelectHardwareType("mellaPro");
         }
         history.push("/MainBody");
@@ -768,8 +775,17 @@ const Heard = ({
         );
       case "lastVersion":
         return (
-          <div style={{ fontSize: px(22) }}>already the latest version</div>
-        );
+          <div style={{ fontSize: px(22), }}>
+            already the latest version
+          </div>
+        )
+      case 'error':
+        return (
+          <div style={{ fontSize: px(22), }}>
+            Failed to get the latest version, please try again later
+          </div>
+        )
+
 
       case "newVersion":
         return (
@@ -1645,8 +1661,9 @@ Heard.defaultProps = {
 };
 
 export default connect(
-  (state) => ({
+  state => ({
     menuNum: state.userReduce.menuNum,
+    petListArr: state.petReduce.petListArr,
   }),
-  { setMenuNum, setSelectHardwareType }
-)(Heard);
+  { setMenuNum, setSelectHardwareType, petDetailInfoFun }
+)(Heard)

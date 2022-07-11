@@ -473,6 +473,7 @@ class App extends Component {
           this.getIdTimer && clearTimeout(this.getIdTimer);
         }, 50);
 
+
         is97Time = new Date();
         this._connect_to_mella();
       },
@@ -529,6 +530,7 @@ class App extends Component {
         let dataIndex = 0;
         let bluName = "";
         let bluData = [];
+
         while (itemLength < length && itemLength + 3 <= frameLength) {
           let itemData = [];
           for (let i = 0; i < newArr[dataIndex + 3] - 1; i++) {
