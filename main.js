@@ -712,7 +712,7 @@ function wind(width1, height1, data) {
 }
 
 ipcMain.on("big", (e, data) => {
-  wind(850, 900, data);
+  wind(900, 900, data);
 
   // mainWindow.setMaximumSize(show(800).height, show(900).height);
   // mainWindow.setMinimumSize(show(800).height, show(900).height);
