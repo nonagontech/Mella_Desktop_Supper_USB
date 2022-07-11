@@ -104,7 +104,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
                 <br />
                 or Pair New Mella
               </p>
-              <img src={PressButton_Pro} />
+              <img src={PressButton_Pro} className={"PressButton_Pro"} />
             </div>
             <div className="tableBox">
               <HistoryTable tableColumnType='temperature' />
