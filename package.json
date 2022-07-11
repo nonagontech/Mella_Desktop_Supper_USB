@@ -1,6 +1,6 @@
 {
   "name": "supermella",
-  "version": "v1.1.0",
+  "version": "v1.1.3",
   "main": "main.js",
   "private": true,
   "author": {
@@ -62,7 +62,7 @@
     "pack": "electron-builder --dir",
     "disk": "electron-builder",
     "release": "cross-env GH_TOKEN=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  electron-builder",
-    "clear":"rd /s/q dist1 && md dist1"
+    "clear": "rd /s/q dist1 && md dist1"
   },
   "homepage": "./",
   "eslintConfig": {

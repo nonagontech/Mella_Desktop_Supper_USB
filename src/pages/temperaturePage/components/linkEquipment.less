@@ -19,18 +19,21 @@
 
         .bottomTip {
             width: 100%;
-            border-radius: 13.5px;
+            border-radius: 40px;
             border: 2px solid #8e8e8e;
             margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             .tipTitle {
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+
+                margin: 0;
+                padding: 0;
                 color: #8e8e8e;
                 font-size: 12px;
-                line-height: 14px;
+                padding: 5px 0;
+                // line-height: 14px;
             }
         }
     }
@@ -38,29 +41,8 @@
     .tableBox {
         position: relative;
         width: 100%;
-
-        // .ant-table-cell {
-        //     padding: 0;
-
-        //     p {
-        //         padding: 0;
-        //         margin: 0;
-        //     }
-        // }
-
-        // .ant-table-cell {
-        //     text-align: center;
-        //     padding-top: 8px;
-        //     padding-bottom: 8px;
-        // }
-
-        // .ant-table-tbody>tr>td {
-        //     padding: 0px 16px;
-        //     word-break: break-word;
-        // }
     }
 }
-
 
 .carouselBox {
     position: relative;
@@ -105,5 +87,12 @@
             // opacity: .3;
             transition: all .5s;
         }
+    }
+}
+
+// 当屏幕小于或等于 400px 时,页面中的 .box 都将被隐藏。
+@media screen and (max-width: 830px) {
+    .PressButton_Pro {
+        // display: none;
     }
 }

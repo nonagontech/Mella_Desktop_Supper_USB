@@ -16,7 +16,10 @@ import { addQRCode } from '../../utils/axios';
 import { fetchRequest2 } from '../../utils/FetchUtil2';
 import { version } from './../../utils/appversion'
 let storage = window.localStorage;
-// let size = { width: 0, height: 0 }
+//定义变量:连续点击了几次logo
+let logoClick = 0;
+//定义变量:点击logo的时间
+let logoTime = 0;
 export default class Home extends Component {
     state = {
         imgurl: '',
@@ -29,9 +32,6 @@ export default class Home extends Component {
         ipcRenderer.send('small', win())
         storage.measurepatientId = '';
         temporaryStorage.logupVetInfo = {}
-        // window.removeEventListener('resize', this.resize);
-        // window.addEventListener('resize', this.resize);
-
         ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
 
         fetchRequest2('/user/getLoginQRcode', "GET", '')
@@ -86,10 +86,6 @@ export default class Home extends Component {
     }
 
 
-
-
-
-
     _quickStart = () => {
         console.log('dianji2')
         this.props.history.push('/page1')
@@ -107,7 +103,23 @@ export default class Home extends Component {
         console.log(navigator);
         console.log(navigator.userAgent);
         console.log('---------------------------');
+    }
+    _openUtils = () => {
+        console.log('点击来了', logoClick);
+        if (new Date() - logoTime > 500) {
+            logoClick = 0;
+            logoTime = new Date();
 
+        } else {
+            logoClick++;
+            logoTime = new Date();
+            if (logoClick >= 8) {
+                logoClick = 0;
+
+                let ipcRenderer = window.electron.ipcRenderer
+                ipcRenderer.send('openDevTools', true)
+            }
+        }
 
     }
     render() {
@@ -131,11 +143,18 @@ export default class Home extends Component {
                 </div>
 
                 <div className="heard" >
-                    <img
-                        src={logo}
-                        alt=""
-                        style={{ paddingTop: mTop(100), paddingBottom: mTop(100), width: px(300) }}
-                    />
+                    <div
+
+                        onClick={this._openUtils}
+
+                    >
+                        <img
+                            src={logo}
+                            alt=""
+                            style={{ marginTop: mTop(100), marginBottom: mTop(100), width: px(300) }}
+                        />
+                    </div>
+
                 </div>
 
 

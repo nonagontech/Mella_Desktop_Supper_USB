@@ -12,7 +12,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment'
 import MyModal from './../myModal/MyModal'
 import { connect } from 'react-redux'
-import { setMenuNum,setSelectHardwareType } from '../../store/actions';
+import { setMenuNum, setSelectHardwareType, petDetailInfoFun } from '../../store/actions';
 
 //import 'antd/dist/antd.css';
 import './heard.less'
@@ -78,6 +78,8 @@ const Heard = ({
   setMenuNum,
   menuNum,
   setSelectHardwareType,
+  petListArr,
+  petDetailInfoFun
 }) => {
   const [minbgc, setMinbgc] = useState('')        //最小化的背景颜色
   const [closebgc, setClosebgc] = useState('')    //关闭按钮的背景色
@@ -107,7 +109,7 @@ const Heard = ({
   const [lastVersion, setLastVersion] = useState(version)
   const [downLoadNum, setDownLoadingNum] = useState(0)
   const [selectDeviceMac, setSelectDeviceMac] = useState('')
-  const [clickType,setClickType] = useState(false);
+  const [clickType, setClickType] = useState(false);
 
   //这里是为了模拟数据所做出来的,后期要改成接口
   const testPetList = [
@@ -143,6 +145,7 @@ const Heard = ({
     switch (data.payload.status) {
       case -1:
         console.log('查询异常');
+        setUpdateStatus('error')
         break;
 
       case 0:
@@ -372,11 +375,10 @@ const Heard = ({
               key={`${index}`}
               style={{ margin: `${px(20)}px 0` }}
               onClick={() => {
-                // console.log(item);
                 setValue('')
                 setVisible(false)
                 setPetList([])
-
+                petDetailInfoFun(item)
                 onSearch(item)
               }}
             >
@@ -582,13 +584,13 @@ const Heard = ({
        * 
        */
       // let list = allPetList 
-      let list = electronStore.get('doctorExam') || []
+      let list = petListArr || []
 
       let searchData = []
       let keyWord = search
       for (let i = 0; i < list.length; i++) {
-        let petName = list[i].petName.toLowerCase() || ''
-        let patientId = list[i].patientId.toLowerCase() || ''
+        let petName = list[i].petName ? list[i].petName.toLowerCase() : ''
+        let patientId = list[i].patientId ? list[i].patientId.toLowerCase() : ''
         let rfid = list[i].rfid || ''
         if (`${petName}`.indexOf(keyWord.toLowerCase()) !== -1
           || `${patientId}`.indexOf(keyWord.toLowerCase()) !== -1
@@ -612,7 +614,7 @@ const Heard = ({
 
   //左侧菜单栏
   const menuList = () => {
-    let name = electronStore.get(`${storage.userId}-isClical`)?'Exit Clinical Study Mode':'Enter Clinical Study Mode'
+    let name = electronStore.get(`${storage.userId}-isClical`) ? 'Exit Clinical Study Mode' : 'Enter Clinical Study Mode'
     let menulistArr = [
       { name: 'Home', index: '1' },
       { name: 'All Patients', index: '2' },
@@ -696,12 +698,12 @@ const Heard = ({
         // setMenuNum(e.index)
         break;
       case "6":
-        if(e.name==="Exit Clinical Study Mode"){
+        if (e.name === "Exit Clinical Study Mode") {
           setMenuNum('1');
-          electronStore.set(`${storage.userId}-isClical`,false)
-        }else{
+          electronStore.set(`${storage.userId}-isClical`, false)
+        } else {
           setMenuNum(e.index);
-          electronStore.set(`${storage.userId}-isClical`,true)
+          electronStore.set(`${storage.userId}-isClical`, true)
           setSelectHardwareType("mellaPro");
         }
         history.push('/MainBody')
@@ -777,6 +779,13 @@ const Heard = ({
             already the latest version
           </div>
         )
+      case 'error':
+        return (
+          <div style={{ fontSize: px(22), }}>
+            Failed to get the latest version, please try again later
+          </div>
+        )
+
 
       case 'newVersion':
         return (
@@ -1512,7 +1521,8 @@ Heard.defaultProps = {
 
 export default connect(
   state => ({
-    menuNum:state.userReduce.menuNum
+    menuNum: state.userReduce.menuNum,
+    petListArr: state.petReduce.petListArr,
   }),
-  { setMenuNum ,setSelectHardwareType}
+  { setMenuNum, setSelectHardwareType, petDetailInfoFun }
 )(Heard)

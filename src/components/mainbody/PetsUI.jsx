@@ -31,6 +31,9 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
   //选中的宠物的详细信息
   const [selectPetDetail, setSelectPetDetail] = useState({})
 
+  //获取宠物列表加载动画
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
     //设置宠物列表数据
     setPetList(petListArr)
@@ -59,9 +62,10 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     }
     console.log('查询宠物的入参', params);
 
-
+    setLoading(true)
     fetchRequest('/user/listAllPetInfo', 'GET', params)
       .then(res => {
+        setLoading(false)
         console.log('查询所有宠物', res);
         if (res.flag === true && res.data) {
           let oldList = res.data
@@ -73,6 +77,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
         }
       })
       .catch(err => {
+        setLoading(false)
         console.log(err);
 
       })
@@ -169,6 +174,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
 
     return (
       <div className="petList" style={{ marginTop: px(10), height: bodyHeight - devicesTitleHeight - px(220) }}>
+
         <ul>
           {options}
         </ul>
@@ -191,41 +197,47 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
           </div>
         }
       />
-      <div className="title" style={{ padding: `${px(20)}px 0px ${px(20)}px ${px(20)}px ` }}>
-        <img src={petIcon} alt="" width={px(25)} style={{ marginRight: px(10) }} />
-        <div className="titleText" >Pets</div>
-      </div>
-      <div className="sort" style={{ paddingLeft: px(20) }}>
-        <Dropdown overlay={menu} trigger={['click']}>
-          <div className="sortBox">
-            <img src={xia} alt="" width={px(20)} style={{ marginRight: px(10) }} />
-            <div className="sortText" >
-              {`Sort by: ${petSortType}`}
-            </div>
-          </div>
-        </Dropdown>
-      </div>
-      {petListUI()}
-
-      <div className="walkBtn">
-        <div
-          className="walkbtnBox"
-          style={{ height: px(40), marginTop: px(30) }}
-          onClick={() => {
-            let json = {
-              isWalkIn: true,
-              petId: null,
-              petName: null,
-              owner: null,
-              breed: null,
-
-            }
-            petDetailInfoFun(json)
-          }}
-        >
-          <div className="walkText">Walk-In</div>
+      <div style={{ width: '100%', position: 'relative', height: bodyHeight - devicesTitleHeight, }}>
+        <div className="title" style={{ padding: `${px(20)}px 0px ${px(20)}px ${px(20)}px ` }}>
+          <img src={petIcon} alt="" width={px(25)} style={{ marginRight: px(10) }} />
+          <div className="titleText" >Pets</div>
         </div>
+        <div className="sort" style={{ paddingLeft: px(20) }}>
+          <Dropdown overlay={menu} trigger={['click']}>
+            <div className="sortBox">
+              <img src={xia} alt="" width={px(20)} style={{ marginRight: px(10) }} />
+              <div className="sortText" >
+                {`Sort by: ${petSortType}`}
+              </div>
+            </div>
+          </Dropdown>
+        </div>
+        {petListUI()}
+
+        <div className="walkBtn">
+          <div
+            className="walkbtnBox"
+            style={{ height: px(40), marginTop: px(30) }}
+            onClick={() => {
+              let json = {
+                isWalkIn: true,
+                petId: null,
+                petName: null,
+                owner: null,
+                breed: null,
+
+              }
+              petDetailInfoFun(json)
+            }}
+          >
+            <div className="walkText">Walk-In</div>
+          </div>
+        </div>
+        <MyModal visible={loading} />
       </div>
+
+
+
 
     </div>
   )
