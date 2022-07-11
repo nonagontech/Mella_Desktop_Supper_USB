@@ -2,13 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Menu, Popover, Button, Modal } from "antd";
 import PropTypes from "prop-types";
-import {
-  Menu,
-  Popover,
-  Button,
-  Modal
-} from 'antd';
-import PropTypes from 'prop-types';
 import { SyncOutlined, createFromIconfontCN, LoadingOutlined } from '@ant-design/icons';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment'

@@ -27,7 +27,6 @@ import _ from "lodash";
 import HistoryTable from "../../../components/historyTable";
 import moment from "moment";
 import "./linkEquipment.less";
-import { px } from "../../../utils/px";
 
 const { Content, Header } = Layout;
 
