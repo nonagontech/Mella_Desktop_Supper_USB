@@ -375,8 +375,6 @@ function createWindow () {
     },
     show: false, // newBrowserWindow创建后先隐藏，
     transparent: true,
-    // backgroundColor: '#E1206D'
-    // icon:path.join(__dirname,'./logo.png'),//任务栏icon图标
   };
   mainWindow = new BrowserWindow(windowOptions);
   const urlLocation = isDev
@@ -389,7 +387,7 @@ function createWindow () {
   // mainWindow.loadURL(`file://${__dirname}/index.html`);
   //是否打开开发者
   if (isDev) {
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
   }
   // 设置窗口是否可以由用户手动最大化。
   mainWindow.setMaximizable(false)
