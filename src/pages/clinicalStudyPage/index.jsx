@@ -1426,7 +1426,7 @@ const ClinicalStudy = ({
           <Draggable
             disabled={disabled}
             bounds={bounds}
-            onStart={(event, uiData) => this.onStart(event, uiData)}
+            // onStart={(event, uiData) => this.onStart(event, uiData)}
           >
             <div>{modal}</div>
           </Draggable>
