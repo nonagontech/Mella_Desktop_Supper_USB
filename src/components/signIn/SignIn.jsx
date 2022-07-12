@@ -282,7 +282,7 @@ export default class SignIn extends Component {
             storage.lastOrganization = "";
           }
 
-          console.log("----------", userWorkplace, userWorkplace.length);
+          // console.log("----------", userWorkplace, userWorkplace.length);
 
           if (userWorkplace) {
             storage.userWorkplace = JSON.stringify(userWorkplace);
