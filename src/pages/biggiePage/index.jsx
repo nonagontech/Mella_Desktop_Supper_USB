@@ -12,6 +12,7 @@ import { px } from "../../utils/px";
 import { fetchRequest } from "../../utils/FetchUtil1";
 import MyModal from "../../utils/myModal/MyModal";
 
+
 const { Header, Content, Footer, Sider } = Layout;
 let storage = window.localStorage;
 
@@ -67,7 +68,7 @@ const BiggirPage = ({
   useEffect(() => {
     let isSave = storage.connectionKey ? false : true;
     setIsSavePMS(isSave);
-    return() => {}
+    return () => { };
   }, []);
   useEffect(() => {
     let {
@@ -89,13 +90,17 @@ const BiggirPage = ({
       ipcRenderer.send("keyboardWriting", weight);
     }
 
-    return () => {};
+    return () => { };
   }, [hardwareReduce]);
 
   useEffect(() => {
     setIsHaveSaveBtn(true);
-    return () => {};
+    return () => { };
   }, [biggieBodyWeight]);
+  //宠物变了,要设置为未连接
+  useEffect(() => {
+    setBiggieConnectStatusFun("disconnected")
+  }, [petDetailInfo]);
 
   return (
     <>
@@ -103,31 +108,36 @@ const BiggirPage = ({
         <HeaderItem />
         <Content className="biggieContentBox">
           {_.isEmpty(petDetailInfo) ? (
-            <div className="chackPatientBox">
-              <p className="chackPatientTitle">Select a patient</p>
-            </div>
-          ) : connectStatus === "isMeasuring" ? (
-            <div className="biggbody">
-              <div className="biggieTopBox" style={{ width: px(470) }}>
-                <Biggie
-                  weight={weight}
-                  bodyFat={fat}
-                  score={5}
-                  impedance={fat}
-                  isIbs={unit === "lb"}
-                  onPress={_saveWeight}
-                  discardOnPress={() =>
-                    setBiggieConnectStatusFun("disconnected")
-                  }
-                  issave={isSavePMS}
-                  isHaveSaveBtn={isHaveSaveBtn}
-                />
+            <>
+              <div className="chackPatientBox">
+                <p className="chackPatientTitle">Select a patient</p>
               </div>
+            </>
+          ) : connectStatus === "isMeasuring" ? (
+            <div className="biggbody" >
+              <div className="flex" style={{ width: '100%', }}>
+                <div className="biggieTopBox" style={{ width: px(400), }}>
+                  <Biggie
+                    weight={weight}
+                    bodyFat={fat}
+                    score={5}
+                    impedance={fat}
+                    isIbs={unit === "lb"}
+                    onPress={_saveWeight}
+                    discardOnPress={() =>
+                      setBiggieConnectStatusFun("disconnected")
+                    }
+                    issave={isSavePMS}
+                    isHaveSaveBtn={isHaveSaveBtn}
+                  />
+                </div>
+              </div>
+
               <div className="biggeTitleBox">
                 <p className="biggeTitle">History</p>
               </div>
               <div className="biggeTableBox">
-                <HistoryTable saveNum={saveNum} />
+                <HistoryTable saveNum={saveNum} tableColumnType='weight' />
               </div>
             </div>
           ) : (

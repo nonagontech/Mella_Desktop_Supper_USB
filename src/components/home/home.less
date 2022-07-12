@@ -7,31 +7,40 @@
   -webkit-user-select: none;
   font-size: 20px;
   font-family: Arial, Helvetica, sans-serif;
-  border-radius:20px;
+  border-radius: 20px;
+  overflow: hidden;
+
   .daohang {
     display: flex;
     width: 100%;
     justify-content: flex-end;
   }
+
   .heard {
     width: 100%;
     background-color: #e1206d;
+    .logo{
+      -webkit-app-region: no-drag;
+    }
+
     // -webkit-app-region: no-drag;
     img {
-      padding: 100px 0;
+      // padding: 100px 0;
       margin: 0 auto;
       display: flex;
       align-items: center;
       // background-color: #fff;
-      width: 80%;
+      // width: 80%;
     }
   }
+
   .button {
     -webkit-app-region: no-drag;
     // background-color: pink;
     display: flex;
     justify-content: center;
     margin-bottom: 25px;
+
     Button {
       width: 300px;
       background-color: #fff;
@@ -39,13 +48,16 @@
       border-width: 0;
       font-size: 20px;
     }
+
     Button:active {
       opacity: 0.5;
     }
   }
+
   .button:active {
     opacity: 0.5;
   }
+
   .text {
     display: flex;
     justify-content: center;
@@ -53,12 +65,14 @@
     font-size: 20px;
     margin-top: 5px;
   }
+
   .create {
     -webkit-app-region: no-drag;
     // background-color: pink;
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+
     Button {
       width: 300px;
       background-color: #e1206d;
@@ -67,17 +81,19 @@
       font-size: 20px;
       border: 2px solid #fff;
     }
+
     Button:active {
       opacity: 0.5;
     }
   }
+
   .create:active {
     opacity: 0.5;
   }
 }
-#root {
 
-}
-#htmlBody{
-  background-color: rgba(0,0,0,0);
+#root {}
+
+#htmlBody {
+  background-color: rgba(0, 0, 0, 0);
 }

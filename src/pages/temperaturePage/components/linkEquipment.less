@@ -6,6 +6,7 @@
     .startBox {
         display: grid;
         justify-items: center;
+        margin-bottom: 40px;
 
         .startTitle {
             width: 90%;
@@ -13,24 +14,85 @@
             font-size: 31px;
             line-height: 42px;
             text-align: center;
-            margin-bottom: 100px;
+            margin-bottom: 50px;
         }
 
         .bottomTip {
             width: 100%;
-            border-radius: 13.5px;
+            border-radius: 40px;
             border: 2px solid #8e8e8e;
             margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             .tipTitle {
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+
+                margin: 0;
+                padding: 0;
                 color: #8e8e8e;
                 font-size: 12px;
-                line-height: 14px;
+                padding: 5px 0;
+                // line-height: 14px;
             }
         }
     }
+
+    .tableBox {
+        position: relative;
+        width: 100%;
+    }
 }
+
+.carouselBox {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dotBox {
+    width: 100%;
+    position: relative;
+
+    .dotList {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        padding: 0;
+
+        li {
+            position: relative;
+            display: inline-block;
+            margin: 0 2px;
+            padding: 0;
+            text-align: center;
+            vertical-align: top;
+            margin-right: 10px;
+        }
+
+        .dotItem {
+            display: block;
+            width: 10px;
+            height: 10px;
+            padding: 0;
+            font-size: 0;
+            background: #0a0a0a;
+            border: 0;
+            border-radius: 20px;
+            outline: none;
+            // opacity: .3;
+            transition: all .5s;
+        }
+    }
+}
+
+// @media screen and (max-width: 830px) {
+//     .PressButton_Pro {
+//         height: 99px;
+//         width: 171px;
+//     }
+// }

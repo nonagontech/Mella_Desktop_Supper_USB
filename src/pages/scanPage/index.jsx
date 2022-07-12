@@ -29,6 +29,9 @@ const ScanPage = ({ petMessage, hardwareMessage }) => {
   );
 };
 
+
+
+
 export default connect(
   (state) => ({
     petMessage: state.petReduce.petDetailInfo,
