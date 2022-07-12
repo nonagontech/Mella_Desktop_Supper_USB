@@ -365,13 +365,11 @@ function createWindow () {
   const windowOptions = {
     height: show(800).height,
     width: show(400).height,
-    minHeight: show(800).height,
-    minWidth: show(400).height,
-
-
-    resizable: false, //能否改变窗体大小
+    backgroundColor: '#00FFFFFF',
+    resizable: true, //能否改变窗体大小
     frame: false, //为false则是无边框窗口
     webPreferences: {
+      // devTools:false,
       nodeIntegration: true, // 是否集成 Nodejs,把之前预加载的js去了，发现也可以运行
       // preload: path.join(__dirname, './public/renderer.js')
     },
@@ -717,7 +715,7 @@ function wind (width1, height1, data) {
 }
 
 ipcMain.on("big", (e, data) => {
-  wind(850, 900, data);
+  wind(900, 900, data);
 
   // mainWindow.setMaximumSize(show(800).height, show(900).height);
   // mainWindow.setMinimumSize(show(800).height, show(900).height);

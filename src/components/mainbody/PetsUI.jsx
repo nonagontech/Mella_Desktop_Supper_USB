@@ -173,7 +173,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     })
 
     return (
-      <div className="petList" style={{ marginTop: px(10), height: bodyHeight - devicesTitleHeight - px(220) }}>
+      <div className="petList" style={{ marginTop: px(10), height: bodyHeight - devicesTitleHeight - px(240) }}>
 
         <ul>
           {options}
@@ -217,7 +217,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
         <div className="walkBtn">
           <div
             className="walkbtnBox"
-            style={{ height: px(40), marginTop: px(30) }}
+            style={{ height: px(40), marginTop: px(15) }}
             onClick={() => {
               let json = {
                 isWalkIn: true,
