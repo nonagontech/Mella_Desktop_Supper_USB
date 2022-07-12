@@ -364,10 +364,11 @@ function createWindow() {
   const windowOptions = {
     height: show(800).height,
     width: show(400).height,
-
+    backgroundColor: '#00FFFFFF',
     resizable: true, //能否改变窗体大小
     frame: false, //为false则是无边框窗口
     webPreferences: {
+      // devTools:false,
       nodeIntegration: true, // 是否集成 Nodejs,把之前预加载的js去了，发现也可以运行
       // preload: path.join(__dirname, './public/renderer.js')
     },
