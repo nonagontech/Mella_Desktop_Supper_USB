@@ -130,9 +130,6 @@ class App extends Component {
     // ipcRenderer.send('small')
     ipcRenderer.send("big", win());
     this.setState({},()=>{
-      console.log('=========5555555555===========================');
-      console.log(this.props.test);
-      console.log('====================================');
       if (this.props.test) {
         if (this.props.test.current) {
           this.props.test.current.getEchartsInstance().dispose();

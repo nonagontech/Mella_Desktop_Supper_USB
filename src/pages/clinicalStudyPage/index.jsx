@@ -119,17 +119,16 @@ const ClinicalStudy = ({
 
   const clinicalRef = useRef(null);
   const resize = () => {
-    console.log('------------------------------------');
-    // if (clinicalRef.current && clinicalRef.current.offsetWidth) {
-    //   setWindowWidth(clinicalRef.current.offsetWidth);
-    //   if (echartsElement.current) {
-    //     echartsElement.current.getEchartsInstance().dispose();
-    //     echartsElement.current.getEchartsInstance().clear();
-    //     // setTimeout(() => {
-    //     //   echartsElement.current.getEchartsInstance().resize();
-    //     // }, 500);
-    //   }
-    // }
+    if (clinicalRef.current && clinicalRef.current.offsetWidth) {
+      // setWindowWidth(clinicalRef.current.offsetWidth);
+      if (echartsElement.current) {
+        // echartsElement.current.getEchartsInstance().dispose();
+        // echartsElement.current.getEchartsInstance().clear();
+        // setTimeout(() => {
+        //   echartsElement.current.getEchartsInstance().resize();
+        // }, 500);
+      }
+    }
   };
   const addClinical = () => {
     console.log("调用接口进行保存数据");
@@ -437,7 +436,9 @@ const ClinicalStudy = ({
       });
   };
   const getOption = () => {
-    let min, max;
+    let option ={}
+    try {
+      let min, max;
     if (units === "℃") {
       min = 25;
       max = 45;
@@ -448,7 +449,7 @@ const ClinicalStudy = ({
     let { Eci, wen0, wen1 } = _.isEmpty(echarsData1.Eci)
       ? echarsData
       : echarsData1;
-    let option = {
+     option = {
       color: ["#81b22f"],
       tooltip: {
         /*返回需要的信息*/
@@ -556,6 +557,10 @@ const ClinicalStudy = ({
         },
       ],
     };
+    } catch (error) {
+      
+    }
+    
     return option;
   };
   const _status = () => {
@@ -1652,10 +1657,13 @@ const ClinicalStudy = ({
   //echars渲染
   const echars = () => {
     if (echartsElement.current) {
-    //       echartsElement.current.getEchartsInstance().dispose();
-    // echartsElement.current.getEchartsInstance().clear();
+      // echartsElement.current.getEchartsInstance().dispose();
+      // echartsElement.current.getEchartsInstance().clear();
+      // setTimeout(() => {
+      //   echartsElement.current.getEchartsInstance().resize();
+      // }, 500);
     }
-    console.log('渲染了',echartsElement);
+
 
     return (
       <div
@@ -1665,11 +1673,12 @@ const ClinicalStudy = ({
         <ReactECharts
           option={getOption()}
           theme="Imooc"
-          style={{ height: mTop(380) }}
+          style={{ height: 380 }}
           notMerge={true}
           lazyUpdate={true}
           // theme={"theme_name"}
           ref={echartsElement}
+          className={'charts'}
         />
 
         {_status()}
@@ -1701,9 +1710,6 @@ const ClinicalStudy = ({
   }, []);
   useEffect(() => {
     mellaMeasureNumCopy = mellaMeasureNum;
-    console.log('====================================');
-    console.log(echartsElement);
-    console.log('====================================');
     setTest(echartsElement)
   }, [])
 
@@ -1785,15 +1791,9 @@ const ClinicalStudy = ({
 
   useEffect(() => {
     const option = getOption();
-    if( echartsElement.current){
+    if (echartsElement.current) {
       echartsElement.current.getEchartsInstance().setOption(option, true); // 实时改变
-    }else{
-      setTimeout(() => {
-        echartsElement.current.getEchartsInstance().resize();
-      }, 500);
     }
-
-
     return () => { };
   }, [echarsData]);
 
@@ -1900,5 +1900,5 @@ export default connect(
 
     petDetailInfo: state.petReduce.petDetailInfo,
   }),
-  {setTest}
+  { setTest }
 )(ClinicalStudy);
