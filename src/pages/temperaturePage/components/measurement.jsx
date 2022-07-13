@@ -101,7 +101,7 @@ const Measurement = ({ petMessage, hardwareMessage }) => {
     <>
       {/* <HeaderItem /> */}
       <Content className={"measureContentBox"}>
-        <div style={{marginTop:px(50)}}>
+        <div style={{marginTop:px(33)}}>
            <Progress
           type="dashboard"
           percent={_.round(mellaMeasureValue, 1)}
