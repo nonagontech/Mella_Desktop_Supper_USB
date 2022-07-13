@@ -48,6 +48,7 @@ let num07 = 0; //接收到07命令行的次数,次数大于3跳出弹框
 let firstEar = true; //为true代表一组数据测量完成,下组测量数据
 let is97Time = null; //为了防抖，因为有时候断开连接和连接成功总是连续的跳出来，展示就会一直闪烁，因此引入时间差大于800ms才展示
 let exchangeNum = 0; //奇数发送查询探头id指令，偶数发送询问配置
+let time194 = 0
 
 //用于预测的东西
 let clinicalYuce = [],
@@ -71,6 +72,7 @@ class App extends Component {
     //点击菜单的序号
     clickMenuIndex: "1",
     err07Visible: false,
+    units: '℉'
   };
   componentDidMount() {
     ipcRenderer.send("big", win());
@@ -93,6 +95,21 @@ class App extends Component {
 
     //获取本地设置
     this.getLocalSetting();
+    //获取单位
+    let hardSet = electronStore.get(`${storage.userId}-hardwareConfiguration`) || {}
+    console.log('----', hardSet);
+    let { isHua, } = hardSet
+    if (isHua === false) {
+      this.setState({
+        units: '℃'
+      })
+    } else {
+      this.setState({
+        units: '℉'
+      })
+    }
+
+
   }
   componentWillUnmount() {
     //组件销毁，取消监听
@@ -129,10 +146,7 @@ class App extends Component {
     let ipcRenderer = window.electron.ipcRenderer;
     // ipcRenderer.send('small')
     ipcRenderer.send("big", win());
-    this.setState({},()=>{
-      console.log('=========5555555555===========================');
-      console.log(this.props.test);
-      console.log('====================================');
+    this.setState({}, () => {
       if (this.props.test) {
         if (this.props.test.current) {
           this.props.test.current.getEchartsInstance().dispose();
@@ -143,7 +157,7 @@ class App extends Component {
         }
       }
     });
-   
+
   };
   //获取本地设置
   getLocalSetting = () => {
@@ -344,6 +358,10 @@ class App extends Component {
         //为了清除黏贴的数据，使用定时器
         this.time193 && clearTimeout(this.time193);
         this.time193 = setTimeout(() => {
+          if (new Date() - time194 < 1000) {
+            return;
+            this.time193 && clearTimeout(this.time193);
+          }
           firstEar = true;
           if (mellaConnectStatus !== "complete") {
             setMellaConnectStatusFun("complete");
@@ -356,6 +374,7 @@ class App extends Component {
               ? parseInt((Temp * 1.8 + 32) * 10) / 10
               : Temp.toFixed(1);
           if (this.props.selectHardwareType === "mellaPro") {
+            console.log('要去写了', units, temp);
             ipcRenderer.send("keyboardWriting", temp);
           }
           this.time193 && clearTimeout(this.time193);
@@ -364,6 +383,7 @@ class App extends Component {
       194: () => {
         //硬件收到机器学习结果并停止测量，
         this.time193 && clearTimeout(this.time193);
+        time194 = new Date()
         console.log("---机器学习", newArr);
         if (mellaConnectStatus !== "complete") {
           setMellaConnectStatusFun("complete");
