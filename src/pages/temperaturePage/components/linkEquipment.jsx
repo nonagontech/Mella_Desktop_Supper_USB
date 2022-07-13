@@ -128,10 +128,13 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
                   </div>
 
                   {mellaMeasurePart === "腋温" ? (
-                    <div className="bottomTip">
-                      <p className="tipTitle" onClick={() => clickIntoTip()}>
-                        Need Help With Accurate Placement On Pet?
-                      </p>
+                    <div className="bottomTip1">
+                      <div className="bottomTip1_1">
+                        <p className="tipTitle" onClick={() => clickIntoTip()}>
+                          Need Help With Accurate Placement On Pet?
+                        </p>
+                      </div>
+
                     </div>
                   ) : (
                     <></>

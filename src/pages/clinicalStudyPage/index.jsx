@@ -436,131 +436,131 @@ const ClinicalStudy = ({
       });
   };
   const getOption = () => {
-    let option ={}
+    let option = {}
     try {
       let min, max;
-    if (units === "℃") {
-      min = 25;
-      max = 45;
-    } else {
-      min = 75;
-      max = 115;
-    }
-    let { Eci, wen0, wen1 } = _.isEmpty(echarsData1.Eci)
-      ? echarsData
-      : echarsData1;
-     option = {
-      color: ["#81b22f"],
-      tooltip: {
-        /*返回需要的信息*/
-        trigger: "axis",
-        triggerOn: "mousemove",
-        enterable: true,
-        formatter: function (param) {
-          var value = param[0].value;
-          // console.log('---valuez值', value, units);
-          if ((units === '℉' && parseInt(value) <= 32) || (units === '℃' && parseInt(value) == 0)) {
-            return `<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">Temp:--</div>`;
-          }
-          return `<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">Temp:${value.toFixed(
-            1
-          )}${units}</div>`;
-        },
-      },
-      xAxis: {
-        name: "SPL",
-        nameLocation: "end",
-        nameTextStyle: {
-          align: "left",
-        },
-        type: "category",
-        data: Eci,
-        axisLine: {
-          lineStyle: {
-            // 设置x轴颜色
-            color: "#A0A0A0",
-            show: true,
+      if (units === "℃") {
+        min = 25;
+        max = 45;
+      } else {
+        min = 75;
+        max = 115;
+      }
+      let { Eci, wen0, wen1 } = _.isEmpty(echarsData1.Eci)
+        ? echarsData
+        : echarsData1;
+      option = {
+        color: ["#81b22f"],
+        tooltip: {
+          /*返回需要的信息*/
+          trigger: "axis",
+          triggerOn: "mousemove",
+          enterable: true,
+          formatter: function (param) {
+            var value = param[0].value;
+            // console.log('---valuez值', value, units);
+            if ((units === '℉' && parseInt(value) <= 32) || (units === '℃' && parseInt(value) == 0)) {
+              return `<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">Temp:--</div>`;
+            }
+            return `<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">Temp:${value.toFixed(
+              1
+            )}${units}</div>`;
           },
         },
-        // 设置X轴数据旋转倾斜
-        axisLabel: {
-          rotate: 0, // 旋转角度
-          interval: 29, //设置X轴数据间隔几个显示一个，为0表示都显示
-        },
-      },
-      yAxis: {
-        name: "temperature",
-        type: "value",
-        min, // 设置y轴刻度的最小值
-        max, // 设置y轴刻度的最大值
-        splitNumber: 0, // 设置y轴刻度间隔个数
-        nameTextStyle: {
-          padding: [0, 0, 0, 8],
-          // backgroundColor: 'pink',
-          width: "1200px",
-          // fontSize: 20,
-          align: "left",
-        },
-
-        axisLine: {
-          lineStyle: {
-            // 设置x轴颜色
-            color: "#A0A0A0",
-            show: true,
+        xAxis: {
+          name: "SPL",
+          nameLocation: "end",
+          nameTextStyle: {
+            align: "left",
           },
-        },
-        splitLine: {
-          show: false,
-        },
-      },
-      series: [
-        {
-          name: "模拟数据",
-          type: "line",
-          showSymbol: false,
-          hoverAnimation: false,
-          // data: [44, 40, 34, 29, 31, 33, 39, 39, 33, 25, 26, 32, 38, 39, 25, 30, 37],
-          data: wen0,
-          smooth: 0.5,
-          symbol: "none",
-          // itemStyle: {
-          //     normal: {
-
-          //     }
-          // }
-          lineStyle: {
-            // 系列级个性化折线样式
-            width: 2,
-            type: "solid",
-            color: {
-              type: "linear",
-              x: 0,
-              y: 1,
-              x2: 0,
-              y2: 0,
-              colorStops: [
-                {
-                  offset: 0.5,
-                  color: "#47C2ED", // 0% 处的颜色  蓝
-                },
-                {
-                  offset: 1,
-                  color: "#78D35D", // 50% 处的颜色  绿
-                },
-                // {
-                //   offset: 1, color: 'red' // 100% 处的颜色   红
-                // }
-              ],
-              globalCoord: false, // 缺省为 false
+          type: "category",
+          data: Eci,
+          axisLine: {
+            lineStyle: {
+              // 设置x轴颜色
+              color: "#A0A0A0",
+              show: true,
             },
           },
+          // 设置X轴数据旋转倾斜
+          axisLabel: {
+            rotate: 0, // 旋转角度
+            interval: 29, //设置X轴数据间隔几个显示一个，为0表示都显示
+          },
         },
-      ],
-    };
+        yAxis: {
+          name: "temperature",
+          type: "value",
+          min, // 设置y轴刻度的最小值
+          max, // 设置y轴刻度的最大值
+          splitNumber: 0, // 设置y轴刻度间隔个数
+          nameTextStyle: {
+            padding: [0, 0, 0, 8],
+            // backgroundColor: 'pink',
+            width: "1200px",
+            // fontSize: 20,
+            align: "left",
+          },
+
+          axisLine: {
+            lineStyle: {
+              // 设置x轴颜色
+              color: "#A0A0A0",
+              show: true,
+            },
+          },
+          splitLine: {
+            show: false,
+          },
+        },
+        series: [
+          {
+            name: "模拟数据",
+            type: "line",
+            showSymbol: false,
+            hoverAnimation: false,
+            // data: [44, 40, 34, 29, 31, 33, 39, 39, 33, 25, 26, 32, 38, 39, 25, 30, 37],
+            data: wen0,
+            smooth: 0.5,
+            symbol: "none",
+            // itemStyle: {
+            //     normal: {
+
+            //     }
+            // }
+            lineStyle: {
+              // 系列级个性化折线样式
+              width: 2,
+              type: "solid",
+              color: {
+                type: "linear",
+                x: 0,
+                y: 1,
+                x2: 0,
+                y2: 0,
+                colorStops: [
+                  {
+                    offset: 0.5,
+                    color: "#47C2ED", // 0% 处的颜色  蓝
+                  },
+                  {
+                    offset: 1,
+                    color: "#78D35D", // 50% 处的颜色  绿
+                  },
+                  // {
+                  //   offset: 1, color: 'red' // 100% 处的颜色   红
+                  // }
+                ],
+                globalCoord: false, // 缺省为 false
+              },
+            },
+          },
+        ],
+      };
     } catch (error) {
-      
+
     }
-    
+
     return option;
   };
   const _status = () => {
@@ -674,7 +674,7 @@ const ClinicalStudy = ({
             <br />
           </>
         )}
-      </div>
+      </div >
     );
   };
   const handleChange = (index) => {
