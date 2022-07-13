@@ -50,6 +50,8 @@ import { fetchRequest3 } from "../../utils/FetchUtil3";
 let resyncDeviceIsClick = true; //用于控制多次点击重新配对按钮
 let storage = window.localStorage;
 
+let mellaMeasureNumCopy = 0;
+
 //定义echarts的数据个数
 const echartsDataLength = 0;
 const { Option } = Select;
@@ -447,6 +449,10 @@ const ClinicalStudy = ({
         enterable: true,
         formatter: function (param) {
           var value = param[0].value;
+          console.log('---valuez值',value,units);
+          if((units === '℉' && parseInt(value)<=32)|| (units === '℃' && parseInt(value)==0)){
+            return  `<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">Temp:--</div>`;
+          }
           return `<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">Temp:${value.toFixed(
             1
           )}${units}</div>`;
@@ -1644,8 +1650,16 @@ const ClinicalStudy = ({
       window.removeEventListener("resize", resize);
     };
   }, []);
+  useEffect(()=>{
+    mellaMeasureNumCopy = mellaMeasureNum;
+  },[])
 
   useEffect(() => {
+    if (mellaMeasureNumCopy === mellaMeasureNum) {
+      
+      return
+    }
+    mellaMeasureNumCopy = mellaMeasureNum
     // console.log('监听', mellaMeasureValue);
     setTemp(mellaMeasureValue);
     let { Eci, wen0, wen1 } = echarsData;
