@@ -77,7 +77,7 @@ const Measurement = ({ petMessage, hardwareMessage }) => {
     if (timers > 2) {
       setTimers(0);
     }
-    return () => {};
+    return () => { };
   });
 
   useEffect(() => {
@@ -101,17 +101,18 @@ const Measurement = ({ petMessage, hardwareMessage }) => {
     <>
       {/* <HeaderItem /> */}
       <Content className={"measureContentBox"}>
-        <div style={{marginTop:px(50)}}>
-           <Progress
-          type="dashboard"
-          percent={_.round(mellaMeasureValue, 1)}
-          gapDegree={30}
-          width={px(260)}
-          strokeWidth={"8"}
-          format={(percent) => ProgressTitle(percent)}
-        />
+        <div style={{ marginTop: px(50) }}>
+          <Progress
+            type="dashboard"
+            percent={_.round(mellaMeasureValue, 1)}
+            gapDegree={30}
+            width={px(260)}
+            strokeWidth={"8"}
+            format={(percent) => ProgressTitle(percent)}
+            strokeColor={'#4C595E'}
+          />
         </div>
-       
+
         {checkImage()}
       </Content>
     </>
