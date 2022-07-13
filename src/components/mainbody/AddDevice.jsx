@@ -322,7 +322,7 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
 
     return (
         <div className='addDevice' style={{ height: bodyHeight }}>
-            <div className="addDeviceTitle" style={{ height: devicesTitleHeight, fontSize: 26, paddingLeft: px(20) }}>
+            <div className="addDeviceTitle" style={{ height: px(100), fontSize: 26, paddingLeft: px(20) }}>
                 {topText}
             </div>
 

@@ -42,6 +42,7 @@ import placement_gang from "./../../assets/images/placement_gang.png";
 import placement_er from "./../../assets/images/placement_er.png";
 import palcement_ye from "./../../assets/images/palcement_ye.png";
 import close from "./../../assets/img/close.png";
+import { setTest } from "../../store/actions";
 
 import "./clinical.less";
 import { fetchRequest } from "../../utils/FetchUtil1";
@@ -49,6 +50,8 @@ import { fetchRequest3 } from "../../utils/FetchUtil3";
 
 let resyncDeviceIsClick = true; //用于控制多次点击重新配对按钮
 let storage = window.localStorage;
+
+let mellaMeasureNumCopy = 0;
 
 //定义echarts的数据个数
 const echartsDataLength = 0;
@@ -60,6 +63,7 @@ const ClinicalStudy = ({
   mellaMeasureValue,
   mellaMeasureNum,
   petDetailInfo,
+  setTest
 }) => {
   const [units, setUnits] = useState("");
   const [temperature, setTemp] = useState(0);
@@ -111,16 +115,21 @@ const ClinicalStudy = ({
     right: 0,
   });
   const [memo, setMemo] = useState("");
-  const [windowWidth, setWindowWidth] = useState(px(550));
+  const [windowWidth, setWindowWidth] = useState(px(500));
 
   const clinicalRef = useRef(null);
   const resize = () => {
-    if (clinicalRef.current) {
-      let { offsetWidth } = clinicalRef.current;
-      console.log("改变", offsetWidth);
-      //在这里改变windowWidth会导致进入分屏后项目崩溃
-      // setWindowWidth(offsetWidth);
-    }
+    console.log('------------------------------------');
+    // if (clinicalRef.current && clinicalRef.current.offsetWidth) {
+    //   setWindowWidth(clinicalRef.current.offsetWidth);
+    //   if (echartsElement.current) {
+    //     echartsElement.current.getEchartsInstance().dispose();
+    //     echartsElement.current.getEchartsInstance().clear();
+    //     // setTimeout(() => {
+    //     //   echartsElement.current.getEchartsInstance().resize();
+    //     // }, 500);
+    //   }
+    // }
   };
   const addClinical = () => {
     console.log("调用接口进行保存数据");
@@ -224,7 +233,7 @@ const ClinicalStudy = ({
     setLoading(true);
     fetchRequest(`/pet/getPetExamAndClinicalByPetId/${petId}`, "GET", "") //userID要自动的
       .then((res) => {
-        console.log("获取历史记录", res);
+        // console.log("获取历史记录", res);
         setLoading(false);
 
         if (res.flag === true) {
@@ -339,9 +348,7 @@ const ClinicalStudy = ({
         }
       })
       .catch((err) => {
-        this.setState({
-          loading: false,
-        });
+        setLoading(false);
         console.log(err);
       });
   };
@@ -438,7 +445,9 @@ const ClinicalStudy = ({
       min = 75;
       max = 115;
     }
-    let { Eci, wen0, wen1 } = _.isEmpty(echarsData1.Eci) ? echarsData : echarsData1;
+    let { Eci, wen0, wen1 } = _.isEmpty(echarsData1.Eci)
+      ? echarsData
+      : echarsData1;
     let option = {
       color: ["#81b22f"],
       tooltip: {
@@ -448,6 +457,10 @@ const ClinicalStudy = ({
         enterable: true,
         formatter: function (param) {
           var value = param[0].value;
+          // console.log('---valuez值', value, units);
+          if ((units === '℉' && parseInt(value) <= 32) || (units === '℃' && parseInt(value) == 0)) {
+            return `<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">Temp:--</div>`;
+          }
           return `<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">Temp:${value.toFixed(
             1
           )}${units}</div>`;
@@ -563,8 +576,7 @@ const ClinicalStudy = ({
       Temp = "";
       text = "connected";
       temColor = "#3B3A3A";
-    }
-    else {
+    } else {
       text = "connected";
       temColor = "#3B3A3A";
       if (Temp > 15) {
@@ -582,9 +594,9 @@ const ClinicalStudy = ({
       }
     }
     let temp = "";
-    if (`${Temp}` !== "NaN" && Temp !== "") {
-      temp =
-        units === "℉" ? parseInt((Temp * 1.8 + 32) * 10) / 10 : Temp.toFixed(1);
+
+    if (`${Temp}` !== "NaN" && Temp) {
+      temp = units === "℉" ? parseInt((Temp * 1.8 + 32) * 10) / 10 : Temp.toFixed(1);
     }
     let lowFlog = false;
     if (unit === "℃") {
@@ -596,6 +608,7 @@ const ClinicalStudy = ({
         lowFlog = true;
       }
     }
+
     return (
       <div
         className="Tem"
@@ -609,40 +622,54 @@ const ClinicalStudy = ({
         {mellaConnectStatus !== "isMeasuring" ? (
           showHistoryEchart ? (
             <>
-              <span style={{ fontSize: px(46), fontWeight: 'bold' }}>
-                {temp} <sup style={{ fontSize: px(28), fontWeight: 'bold' }}>{units}</sup>
+              <span style={{ fontSize: px(46), fontWeight: "bold" }}>
+                {temp}{" "}
+                <sup style={{ fontSize: px(28), fontWeight: "bold" }}>
+                  {units}
+                </sup>
               </span>
               <br />
               {/* <span style={{ fontSize: px(22) }}>{text}</span> */}
 
               <span
-                style={{ fontSize: px(32), color: "#8a8a8a", fontWeight: 'bold' }}
+                style={{
+                  fontSize: px(32),
+                  color: "#8a8a8a",
+                  fontWeight: "bold",
+                }}
               >{`History`}</span>
             </>
           ) : (
             <>
-              <span style={{ fontSize: px(46), fontWeight: 'bold' }}>
-                {temp < 3 ? null : temp}{" "}
-                <sup style={{ fontSize: px(28), fontWeight: 'bold' }}>{unit}</sup>
+              <span style={{ fontSize: px(46), fontWeight: "bold" }}>
+                {(temp < 3 && !temp) ? null : temp}{" "}
+                <sup style={{ fontSize: px(28), fontWeight: "bold" }}>
+                  {unit}
+                </sup>
               </span>
               <br />
-              <span style={{ fontSize: px(32), fontWeight: 'bold' }}>{text}</span>
+              <span style={{ fontSize: px(32), fontWeight: "bold" }}>
+                {text}
+              </span>
             </>
           )
         ) : lowFlog ? (
           <>
-            <span style={{ fontSize: px(46), fontWeight: 'bold' }}>{"Low"}</span>
+            <span style={{ fontSize: px(46), fontWeight: "bold" }}>
+              {"Low"}
+            </span>
             <br />
           </>
         ) : (
           <>
-            <span style={{ fontSize: px(46), fontWeight: 'bold' }}>
-              {temp} <sup style={{ fontSize: px(28), fontWeight: 'bold' }}>{unit}</sup>
+            <span style={{ fontSize: px(46), fontWeight: "bold" }}>
+              {temp}{" "}
+              <sup style={{ fontSize: px(28), fontWeight: "bold" }}>{unit}</sup>
             </span>
             <br />
           </>
         )}
-      </div>
+      </div >
     );
   };
   const handleChange = (index) => {
@@ -1622,6 +1649,33 @@ const ClinicalStudy = ({
     };
     electronStore.set(`${storage.userId}-hardwareConfiguration`, settings);
   };
+  //echars渲染
+  const echars = () => {
+    if (echartsElement.current) {
+      //       echartsElement.current.getEchartsInstance().dispose();
+      // echartsElement.current.getEchartsInstance().clear();
+    }
+    console.log('渲染了', echartsElement);
+
+    return (
+      <div
+        id="myCharts"
+        style={{ marginTop: mTop(50), width: px(480) }}
+      >
+        <ReactECharts
+          option={getOption()}
+          theme="Imooc"
+          style={{ height: mTop(380) }}
+          notMerge={true}
+          lazyUpdate={true}
+          // theme={"theme_name"}
+          ref={echartsElement}
+        />
+
+        {_status()}
+      </div>
+    );
+  }
 
   useEffect(() => {
     if (petDetailInfo.petId) {
@@ -1645,8 +1699,19 @@ const ClinicalStudy = ({
       window.removeEventListener("resize", resize);
     };
   }, []);
+  useEffect(() => {
+    mellaMeasureNumCopy = mellaMeasureNum;
+    console.log('====================================');
+    console.log(echartsElement);
+    console.log('====================================');
+    setTest(echartsElement)
+  }, [])
 
   useEffect(() => {
+    if (mellaMeasureNumCopy === mellaMeasureNum) {
+      return
+    }
+    mellaMeasureNumCopy = mellaMeasureNum
     // console.log('监听', mellaMeasureValue);
     setTemp(mellaMeasureValue);
     let { Eci, wen0, wen1 } = echarsData;
@@ -1663,9 +1728,7 @@ const ClinicalStudy = ({
       wen0: win0Copy,
       wen1: wen1Copy,
     };
-
     setEcharsData(json);
-
     let Eci1 = echarsData1.Eci;
     let wen01 = echarsData1.wen0;
     let wen11 = echarsData1.wen1;
@@ -1686,7 +1749,6 @@ const ClinicalStudy = ({
       wen1: wen1Copy1,
     };
     setEcharsData1(json1);
-
     // const option = getOption();
     // echartsElement.current.getEchartsInstance().setOption(option);
     return () => { };
@@ -1723,10 +1785,14 @@ const ClinicalStudy = ({
 
   useEffect(() => {
     const option = getOption();
-    setTimeout(() => {
-      echartsElement.current.getEchartsInstance().clear();
-      echartsElement.current.getEchartsInstance().setOption(option); // 实时改变
-    }, 50);
+    if (echartsElement.current) {
+      echartsElement.current.getEchartsInstance().setOption(option, true); // 实时改变
+    } else {
+      setTimeout(() => {
+        echartsElement.current.getEchartsInstance().resize();
+      }, 500);
+    }
+
 
     return () => { };
   }, [echarsData]);
@@ -1752,14 +1818,14 @@ const ClinicalStudy = ({
       }}
       ref={clinicalRef}
     >
-      <div className="clinicalTitle">
-        <Layout>
+      <div className="clinicalTitle" style={{ height: px(100), background: "#fff", position: 'relative' }}>
+        <Layout style={{ height: '100%' }}>
           <HeaderItem timeNum={60} />
         </Layout>
       </div>
       <div
         className="clinicalBody"
-        style={{ width: "100%", height: bodyHeight - devicesTitleHeight }}
+        style={{ width: "100%", height: bodyHeight - px(100) }}
       >
         <div className="clinical_top">
           <div className="r">
@@ -1791,22 +1857,9 @@ const ClinicalStudy = ({
                 </div>
               </div>
             )}
-            <div
-              id="myCharts"
-              style={{ marginTop: mTop(50), width: windowWidth }}
-            >
-              <ReactECharts
-                option={getOption()}
-                theme="Imooc"
-                style={{ height: mTop(380) }}
-                notMerge={true}
-                lazyUpdate={true}
-                // theme={"theme_name"}
-                ref={echartsElement}
-              />
-
-              {_status()}
-            </div>
+            {
+              echars()
+            }
 
             {/* 底部宠物信息 */}
             {_foot()}
@@ -1847,5 +1900,5 @@ export default connect(
 
     petDetailInfo: state.petReduce.petDetailInfo,
   }),
-  {}
+  { setTest }
 )(ClinicalStudy);

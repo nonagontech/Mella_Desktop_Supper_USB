@@ -39,6 +39,7 @@ import moment from "moment";
 import { fetchRequest } from "../../../utils/FetchUtil1";
 import _ from "lodash";
 import "./headerItem.less";
+import { px } from "../../../utils/px";
 
 const { Header } = Layout;
 
@@ -233,9 +234,9 @@ const HeaderItem = ({
     const checkImage = () => {
       if (mellaMeasurePart === "腋温") {
         return AxillaryBluetooth;
-      }else if(mellaMeasurePart === "耳温"){
+      } else if (mellaMeasurePart === "耳温") {
         return EarBluetoothIcon;
-      }else{
+      } else {
         return RectalBluetoothIcon;
       }
     };
@@ -279,7 +280,7 @@ const HeaderItem = ({
         clearTimeout(timeID);
       }, 10);
     }
-    return () => {};
+    return () => { };
   }, [value]);
 
   useEffect(() => {
@@ -292,7 +293,7 @@ const HeaderItem = ({
       timer = setInterval(tick, 1000);
     } else if (value > 100 || mellaConnectStatus === "complete") {
       clearInterval(timer);
-    }else if(mellaConnectStatus === "disconnected"){
+    } else if (mellaConnectStatus === "disconnected") {
       setValue(0);
     };
     if (mellaConnectStatus === "complete") {
@@ -305,15 +306,12 @@ const HeaderItem = ({
   }, [mellaConnectStatus]);
 
   return (
-    <>
-      <Header
-        className="headerBox"
-        style={{ height: devicesTitleHeight, background: "#fff" }}
-      >
+    <div className="headerBox">
+      <Header style={{ background: "#fff",height:'100%'}}>
         {_.isEmpty(petId) && !isWalkIn ? (
           <></>
         ) : (
-          <Row className="heardRow">
+          <Row className="heardRow" >
             {/*头部左侧 */}
             <Col flex={10}>
               {isWalkIn ? (
@@ -350,7 +348,7 @@ const HeaderItem = ({
           </Row>
         )}
       </Header>
-    </>
+    </div>
   );
 };
 export default connect(

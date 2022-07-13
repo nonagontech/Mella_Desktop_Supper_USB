@@ -110,7 +110,7 @@ usbDetect.on("remove", function (device) {
  *
  */
 
-function openUsb () {
+function openUsb() {
   //搜索底座存不存在，不存在就去展示
   let flog = false,
     path = ""; //usb所在的接口路径
@@ -194,21 +194,21 @@ function openUsb () {
 /**
  * 打开底座usb的蓝牙通信
  */
-function open_USB_Communication () {
+function open_USB_Communication() {
   console.log("打开了底座通信");
   device.write([0x00, 0xaa, 0x04, 0x36, 0x11, 0x23, 0x55]);
 }
 /**
  * 关闭底座usb的蓝牙通信
  */
-function close_USB_Communication () {
+function close_USB_Communication() {
   device && device.write([0x00, 0xaa, 0x04, 0x36, 0x00, 0x32, 0x55]);
 }
 /**
  * 对接收的数据进行处理
  */
 let testFlog = 0; //为了模拟体脂称数据
-function processed_data (arr) {
+function processed_data(arr) {
   let j,
     newArr = [],
     trueArr = [],
@@ -254,7 +254,7 @@ function processed_data (arr) {
   return trueArr;
 }
 //校验数据是否有误
-function check (arr) {
+function check(arr) {
   if (arr.length < 3) {
     return;
   }
@@ -270,7 +270,7 @@ function check (arr) {
 //向蓝牙发送的数据进行转换，
 //入参 十六进制的控制命令字符串、数据位数组，数组的内容也是十六进制字符串
 //返回值：返回要发送的数组，数组里的每一位都是十进制的数字
-function sendData (command, arr) {
+function sendData(command, arr) {
   //帧长,如果帧长是一位,前面加0
   let sendArr = [];
 
@@ -303,7 +303,7 @@ function sendData (command, arr) {
 //托盘对象
 var appTray = null;
 
-function show (val) {
+function show(val) {
   let size = require("electron").screen.getPrimaryDisplay().workAreaSize;
   // console.log('-----===========---------', require('electron').screen.getAllDisplays());
   //1920 1080
@@ -336,7 +336,7 @@ function show (val) {
 
 //创建加载中的窗口
 
-function createLoadingWindow () {
+function createLoadingWindow() {
   //加载页面窗口
   loadingWindow = new BrowserWindow({
     height: show(800).height,
@@ -361,7 +361,7 @@ function createLoadingWindow () {
 
 }
 
-function createWindow () {
+function createWindow() {
   const windowOptions = {
     height: show(800).height,
     width: show(400).height,
@@ -375,8 +375,6 @@ function createWindow () {
     },
     show: false, // newBrowserWindow创建后先隐藏，
     transparent: true,
-    // backgroundColor: '#E1206D'
-    // icon:path.join(__dirname,'./logo.png'),//任务栏icon图标
   };
   mainWindow = new BrowserWindow(windowOptions);
   const urlLocation = isDev
@@ -389,7 +387,7 @@ function createWindow () {
   // mainWindow.loadURL(`file://${__dirname}/index.html`);
   //是否打开开发者
   if (isDev) {
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
   }
   // 设置窗口是否可以由用户手动最大化。
   mainWindow.setMaximizable(false)
@@ -542,7 +540,7 @@ if (!gotTheLock) {
   app.quit();
 }
 //软件升级相关内容
-function checkUpdate () {
+function checkUpdate() {
   autoUpdater.autoDownload = false;
   autoUpdater.checkForUpdatesAndNotify();
   autoUpdater.on("error", (err) => {
@@ -647,7 +645,7 @@ app.on("ready", () => {
   createLoadingWindow();
   checkUpdate();
   createWindow();
-
+  openUsb();
 
 });
 
@@ -701,7 +699,7 @@ ipcMain.on("window-close", function () {
   loadingWindow && loadingWindow.close();
   mainWindow.close();
 });
-function wind (width1, height1, data) {
+function wind(width1, height1, data) {
   let width = show(width1).height;
   let height = show(height1).height;
   if (data) {
@@ -973,7 +971,7 @@ ipcMain.on("reUpload", (event, data) => {
   sendNum = 0;
 });
 
-function sendUpload (params) {
+function sendUpload(params) {
   console.log(sendNum);
   if (sendNum < dataArr.length) {
     let value = dataArr[sendNum++];
@@ -1007,16 +1005,16 @@ function sendUpload (params) {
  * @param {String} val
  *
  */
-async function keyboardWritingFun (val) {
+async function keyboardWritingFun(val) {
   keyboard.config.autoDelayMs = 20;
   if (process.platform === "darwin") {
     console.log("这是mac");
-    await keyboard.pressKey(Key.LeftSuper, Key.A);
-    await keyboard.releaseKey(Key.LeftSuper, Key.A);
+    // await keyboard.pressKey(Key.LeftSuper, Key.A);
+    // await keyboard.releaseKey(Key.LeftSuper, Key.A);
     await keyboard.type(`${val}`);
   } else {
-    await keyboard.pressKey(Key.LeftControl, Key.A);
-    await keyboard.releaseKey(Key.LeftControl, Key.A);
+    // await keyboard.pressKey(Key.LeftControl, Key.A);
+    // await keyboard.releaseKey(Key.LeftControl, Key.A);
     await keyboard.type(`${val}`);
   }
 }

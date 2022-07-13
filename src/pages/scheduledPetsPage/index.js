@@ -162,7 +162,7 @@ const ScheduledPetPage = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetList
     return (
         <div id='scheduled' style={{ height: bodyHeight }}>
             <div className="allPetHeard">
-                <div className="addDeviceTitle flex" style={{ height: devicesTitleHeight, fontSize: 26, paddingLeft: px(20) }}>
+                <div className="addDeviceTitle flex" style={{ height: px(100), fontSize: 26, paddingLeft: px(20) }}>
                     <div className="title">Scheduled Patients</div>
                     <div className="refresh flex"
                         style={{ fontSize: px(25), marginLeft: px(10) }}
@@ -194,7 +194,7 @@ const ScheduledPetPage = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetList
                 </div>
 
             </div>
-            <div className="body111" style={{ height: bodyHeight - devicesTitleHeight }}>
+            <div className="body111" style={{ height: bodyHeight - px(100) }}>
 
                 <PetTable
                     // bodyHeight={bodyHeight - devicesTitleHeight}

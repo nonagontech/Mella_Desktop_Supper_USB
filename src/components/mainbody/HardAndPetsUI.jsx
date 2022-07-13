@@ -56,7 +56,7 @@ const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow
 
   return (
     <div className='deviceAndPets' style={{ width: px(200), height: bodyHeight }}>
-      <div className='deviceAndPets-title' style={{ height: devicesTitleHeight }}
+      <div className='deviceAndPets-title' style={{ height: px(100) }}
         onClick={(e) => {
           //react阻止冒泡
           e.stopPropagation()

@@ -248,8 +248,8 @@ const AddScheduledPet = ({ bodyHeight, setMenuNum }) => {
     }
     return (
         <div className='addScjediled' style={{ height: bodyHeight }}>
-            <div className="addDeviceTitle" style={{ height: devicesTitleHeight, fontSize: 26, paddingLeft: px(20) }}>Create New Scheduled </div>
-            <div className='addSBody' style={{ width: '100%', height: bodyHeight - devicesTitleHeight, }}>
+            <div className="addDeviceTitle" style={{ height: px(100), fontSize: 26, paddingLeft: px(20) }}>Create New Scheduled </div>
+            <div className='addSBody' style={{ width: '100%', height: bodyHeight - px(100), }}>
                 {body()}
 
 

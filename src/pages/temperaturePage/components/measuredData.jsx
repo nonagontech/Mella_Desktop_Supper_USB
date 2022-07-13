@@ -125,18 +125,19 @@ const MeasuredData = ({
           }}
         >
           <img
-            className="operationIcon"
+            // className="operationIcon"
             src={EditCircle}
             onClick={() => {
               setVisible(true);
               setPetMessages(record);
             }}
+            width={px(30)}
           />
           <Popconfirm
             title="Sure to delete?"
             onConfirm={() => deletePetMessage(record.examId)}
           >
-            <img src={Delete} />
+            <img src={Delete}   width={px(30)}/>
           </Popconfirm>
         </div>
       ),
@@ -316,7 +317,7 @@ const MeasuredData = ({
             type="dashboard"
             percent={_.round(mellaMeasureValue, 1)}
             gapDegree={30}
-            width={"260px"}
+            width={px(260)}
             strokeWidth={"8"}
             format={(percent) => ProgressTitle(percent)}
             strokeColor={{

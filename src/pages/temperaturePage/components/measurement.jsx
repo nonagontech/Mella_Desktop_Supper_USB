@@ -17,6 +17,7 @@ import {
 } from "../../../store/actions";
 import _ from "lodash";
 import "./measurement.less";
+import { px } from "../../../utils/px";
 import electronStore from "../../../utils/electronStore";
 
 let storage = window.localStorage;
@@ -99,15 +100,18 @@ const Measurement = ({ petMessage, hardwareMessage }) => {
   return (
     <>
       {/* <HeaderItem /> */}
-      <Content className={"contentBox"}>
-        <Progress
+      <Content className={"measureContentBox"}>
+        <div style={{marginTop:px(50)}}>
+           <Progress
           type="dashboard"
           percent={_.round(mellaMeasureValue, 1)}
           gapDegree={30}
-          width={"260px"}
+          width={px(260)}
           strokeWidth={"8"}
           format={(percent) => ProgressTitle(percent)}
         />
+        </div>
+       
         {checkImage()}
       </Content>
     </>

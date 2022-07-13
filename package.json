@@ -62,7 +62,8 @@
     "pack": "electron-builder --dir",
     "disk": "electron-builder",
     "release": "cross-env GH_TOKEN=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  electron-builder",
-    "clear": "rd /s/q dist1 && md dist1"
+    "clear": "rd /s/q dist1 && md dist1",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "homepage": "./",
   "eslintConfig": {
@@ -91,7 +92,8 @@
     "electron-rebuild": "^2.3.5",
     "nodemon": "^2.0.7",
     "rebuild": "^0.1.2",
-    "redux-devtools-extension": "^2.13.9"
+    "redux-devtools-extension": "^2.13.9",
+    "source-map-explorer": "^2.5.2"
   },
   "postinstall": "electron-builder install-app-deps",
   "build": {

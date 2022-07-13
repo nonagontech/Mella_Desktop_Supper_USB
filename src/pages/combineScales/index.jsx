@@ -23,6 +23,7 @@ import _ from "lodash";
 import { devicesTitleHeight } from "../../utils/InitDate";
 import scaleImage from "./../../assets/img/scaleImage.png";
 import combinedscales from "./../../assets/img/combinedscales.png";
+import { px } from "../../utils/px";
 import "./index.less";
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -117,7 +118,7 @@ const CombineScales = ({
   return (
     <>
       <Layout className="mergePage">
-        <Header className="headerBox" style={{ height: devicesTitleHeight }}>
+        <Header className="headerBox" style={{ height: px(100) }}>
           <span className="headerTitle">
             {confirmType ? "Scales Combined As One" : "Combine Scales"}
           </span>

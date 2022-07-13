@@ -15,6 +15,7 @@ import {
 } from "../../store/actions";
 import _ from "lodash";
 import HeaderItem from "./components/headerItem";
+import { px } from "../../utils/px";
 import "./index.less";
 
 const { Content, Header } = Layout;
@@ -40,7 +41,11 @@ const TemperaturePage = ({ petMessage, hardwareMessage }) => {
   return (
     <>
       <Layout className="homeBox">
-        <HeaderItem />
+        <div style={{ height: px(100), background: "#fff", position: 'relative' }}>
+          <div style={{ height: '100%' }}>
+            <HeaderItem />
+          </div>
+        </div>
         {_.isEmpty(petMessage) ? (
           <div className="chackPatientBox">
             <p className="chackPatientTitle">Select a patient</p>
