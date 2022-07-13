@@ -156,10 +156,10 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
     const noData = () => {
         return (
             <div className='flex nodata' style={{ paddingTop: px(60), paddingBottom: px(60) }}>
-                <p style={{ fontSize: px(22) }}>No pet found, </p>  &nbsp;&nbsp;
+                <p style={{ fontSize: px(22) }}> {`No Pets Scheduled &`}</p>  &nbsp;&nbsp;
                 <a style={{ fontSize: px(22) }} href="#"
                     onClick={(e) => {
-                        console.log('我要去添加宠物');
+                        console.log('我要去添加宠物1111');
                         try {
                             if (type === 'scheduled') {
                                 setMenuNum('AddScheduledPet')
@@ -173,7 +173,7 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
 
                     }}
 
-                >{`go to add`}</a>
+                >{`Schedule a Pet`}</a>
             </div>
         )
     }
