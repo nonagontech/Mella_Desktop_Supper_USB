@@ -439,7 +439,9 @@ const ClinicalStudy = ({
       min = 75;
       max = 115;
     }
-    let { Eci, wen0, wen1 } = _.isEmpty(echarsData1.Eci) ? echarsData : echarsData1;
+    let { Eci, wen0, wen1 } = _.isEmpty(echarsData1.Eci)
+      ? echarsData
+      : echarsData1;
     let option = {
       color: ["#81b22f"],
       tooltip: {
@@ -564,12 +566,11 @@ const ClinicalStudy = ({
         text = "disconnected";
         temColor = "#3B3A3A";
       }
-    }else if(mellaConnectStatus === "connected"){
+    } else if (mellaConnectStatus === "connected") {
       Temp = "";
       text = "connected";
       temColor = "#3B3A3A";
-    }
-     else {
+    } else {
       text = "connected";
       temColor = "#3B3A3A";
       if (Temp > 15) {
@@ -614,35 +615,49 @@ const ClinicalStudy = ({
         {mellaConnectStatus !== "isMeasuring" ? (
           showHistoryEchart ? (
             <>
-              <span style={{ fontSize: px(46),fontWeight:'bold' }}>
-                {temp} <sup style={{ fontSize: px(28),fontWeight:'bold' }}>{units}</sup>
+              <span style={{ fontSize: px(46), fontWeight: "bold" }}>
+                {temp}{" "}
+                <sup style={{ fontSize: px(28), fontWeight: "bold" }}>
+                  {units}
+                </sup>
               </span>
               <br />
               {/* <span style={{ fontSize: px(22) }}>{text}</span> */}
 
               <span
-                style={{ fontSize: px(32), color: "#8a8a8a",fontWeight:'bold' }}
+                style={{
+                  fontSize: px(32),
+                  color: "#8a8a8a",
+                  fontWeight: "bold",
+                }}
               >{`History`}</span>
             </>
           ) : (
             <>
-              <span style={{ fontSize: px(46) ,fontWeight:'bold'}}>
+              <span style={{ fontSize: px(46), fontWeight: "bold" }}>
                 {temp < 3 ? null : temp}{" "}
-                <sup style={{ fontSize: px(28),fontWeight:'bold' }}>{unit}</sup>
+                <sup style={{ fontSize: px(28), fontWeight: "bold" }}>
+                  {unit}
+                </sup>
               </span>
               <br />
-              <span style={{ fontSize: px(32),fontWeight:'bold' }}>{text}</span>
+              <span style={{ fontSize: px(32), fontWeight: "bold" }}>
+                {text}
+              </span>
             </>
           )
         ) : lowFlog ? (
           <>
-            <span style={{ fontSize: px(46),fontWeight:'bold' }}>{"Low"}</span>
+            <span style={{ fontSize: px(46), fontWeight: "bold" }}>
+              {"Low"}
+            </span>
             <br />
           </>
         ) : (
           <>
-            <span style={{ fontSize: px(46),fontWeight:'bold' }}>
-              {temp} <sup style={{ fontSize: px(28),fontWeight:'bold' }}>{unit}</sup>
+            <span style={{ fontSize: px(46), fontWeight: "bold" }}>
+              {temp}{" "}
+              <sup style={{ fontSize: px(28), fontWeight: "bold" }}>{unit}</sup>
             </span>
             <br />
           </>
@@ -975,7 +990,7 @@ const ClinicalStudy = ({
           : "";
       let editRectal =
         referenceRectalTemperature !== null &&
-        referenceRectalTemperature !== undefined
+          referenceRectalTemperature !== undefined
           ? (referenceRectalTemperature * 1.8 + 32).toFixed(1)
           : "";
       let editRoomTemperature =
@@ -1312,7 +1327,7 @@ const ClinicalStudy = ({
         "#clinicalMeasure11 .historyTable"
       );
       hisHe = historyElement[0].clientHeight - mTop(100);
-    } catch (error) {}
+    } catch (error) { }
 
     return (
       <div className="historyTable" style={{ height: "90%" }}>
@@ -1416,9 +1431,9 @@ const ClinicalStudy = ({
             onMouseOut={() => {
               setDisabled(true);
             }}
-            onFocus={() => {}}
-            onBlur={() => {}}
-            // end
+            onFocus={() => { }}
+            onBlur={() => { }}
+          // end
           >
             Modification history information
           </div>
@@ -1432,7 +1447,7 @@ const ClinicalStudy = ({
           <Draggable
             disabled={disabled}
             bounds={bounds}
-            // onStart={(event, uiData) => this.onStart(event, uiData)}
+          // onStart={(event, uiData) => this.onStart(event, uiData)}
           >
             <div>{modal}</div>
           </Draggable>
@@ -1634,7 +1649,7 @@ const ClinicalStudy = ({
     } else if (petDetailInfo.isWalkIn) {
       _getEmergencyHistory();
     }
-    return () => {};
+    return () => { };
   }, [petDetailInfo]);
 
   useEffect(() => {
@@ -1702,7 +1717,7 @@ const ClinicalStudy = ({
 
     // const option = getOption();
     // echartsElement.current.getEchartsInstance().setOption(option);
-    return () => {};
+    return () => { };
   }, [mellaMeasureNum]);
 
   useEffect(() => {
@@ -1731,13 +1746,13 @@ const ClinicalStudy = ({
     }
 
     setMellaStatus(mellaConnectStatus);
-    return () => {};
+    return () => { };
   }, [mellaConnectStatus]);
 
   useEffect(() => {
     const option = getOption();
     echartsElement.current.getEchartsInstance().setOption(option); // 实时改变
-    return () => {};
+    return () => { };
   }, [echarsData]);
 
   useEffect(() => {
@@ -1747,7 +1762,7 @@ const ClinicalStudy = ({
     } else {
       setUnits(hardSet.isHua ? "℉" : "℃");
     }
-    return () => {};
+    return () => { };
   }, []);
 
   return (
@@ -1776,7 +1791,7 @@ const ClinicalStudy = ({
             {mellaConnectStatus === "disconnected" && (
               <div
                 className="bb1"
-                // style={{ left: px(150) }}
+              // style={{ left: px(150) }}
               >
                 <div
                   className="btn78"
