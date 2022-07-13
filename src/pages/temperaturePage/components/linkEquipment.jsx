@@ -98,14 +98,16 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
         {_.isEqual(mellaConnectStatus, "disconnected") ? (
           <>
             <div className="startBox">
-              <p className="startTitle">
+              <p className="startTitle" style={{ fontSize: px(31) }}>
                 Turn on your
                 <br />
                 Mella Thermometer
                 <br />
                 or Pair New Mella
               </p>
-              <img src={PressButton_Pro} className={"PressButton_Pro"} style={{width:px(300),height:px(200)}} />
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <img src={PressButton_Pro} className={"PressButton_Pro"} style={{ width: px(300), height: px(200) }} />
+              </div>
             </div>
             <div className="tableBox">
               <HistoryTable tableColumnType='temperature' />
@@ -121,7 +123,10 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
               </p>
               {!type ? (
                 <>
-                  <img src={checkImage()}></img>
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <img src={checkImage()}></img>
+                  </div>
+
                   {mellaMeasurePart === "腋温" ? (
                     <div className="bottomTip">
                       <p className="tipTitle" onClick={() => clickIntoTip()}>

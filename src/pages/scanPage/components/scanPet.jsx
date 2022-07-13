@@ -38,6 +38,7 @@ import catLower from "./../../../assets/img/catLower.png";
 import catFull from "./../../../assets/img/catFull.png";
 import catBody from "./../../../assets/img/catBody.png";
 import "./scanPet.less";
+import { px } from "../../../utils/px";
 
 const { Content, Header } = Layout;
 const ScanPet = ({
@@ -244,7 +245,7 @@ const ScanPet = ({
       finishScan();
     }
 
-    return () => {};
+    return () => { };
   }, [inputIndex, patientId]);
 
   useEffect(() => {
@@ -253,7 +254,7 @@ const ScanPet = ({
     } else if (carouselIndex === 1) {
       setInputIndex(0);
     }
-    return () => {};
+    return () => { };
   }, [carouselIndex]);
 
   //监听用户点击了硬件中的下一步按钮
@@ -266,7 +267,7 @@ const ScanPet = ({
     if (inputIndex === 3) {
       setCarouselIndex(2);
     }
-    return () => {};
+    return () => { };
   }, [rulerConfirmCount]);
 
   //监听切换了宠物
@@ -288,7 +289,7 @@ const ScanPet = ({
     setHeadValue(petLengthDataConvert(h2tLength));
     setTorsoValue(petLengthDataConvert(torsoLength));
 
-    return () => {};
+    return () => { };
   }, [petId]);
   //监听用户点击了硬件中的下一步按钮和拉动皮尺
   useEffect(() => {
@@ -326,13 +327,13 @@ const ScanPet = ({
     setLowerValue(lowerValue && changeUnit(lowerValue));
     setTorsoValue(torsoValue && changeUnit(torsoValue));
     setBodyValue(bodyValue && changeUnit(bodyValue));
-    return () => {};
+    return () => { };
   }, [rulerUnit]);
 
   return (
     <>
-      <Content className="contentBox">
-        <div className="scanImageBox">{changeImage()}</div>
+      <Content className="scanContentBox">
+        <div className="scanImageBox" style={{ width: px(300), height: px(200), marginTop: px(40) }}>{changeImage()}</div>
         {/*选择单位框*/}
         <Radio.Group
           value={radioValue}
@@ -366,7 +367,7 @@ const ScanPet = ({
             cm
           </Radio.Button>
         </Radio.Group>
-        <div className="slideshowBox">
+        <div className="slideshowBox" style={{ height: px(100) }}>
           <div className="scollInputGroup">
             {/*第一列输入框*/}
             <Input.Group

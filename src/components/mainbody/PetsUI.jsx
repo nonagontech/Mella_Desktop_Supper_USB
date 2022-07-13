@@ -173,7 +173,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     })
 
     return (
-      <div className="petList" style={{ marginTop: px(10), height: bodyHeight - devicesTitleHeight - px(240) }}>
+      <div className="petList" style={{ marginTop: px(10), height: bodyHeight - px(100) - px(240) }}>
 
         <ul>
           {options}
@@ -183,7 +183,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
   }
 
   return (
-    <div className="PetUI" style={{ height: bodyHeight - devicesTitleHeight, }}>
+    <div className="PetUI" style={{ height: bodyHeight - px(100), }}>
       <MyModal
         visible={showModal}
         element={
@@ -197,7 +197,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
           </div>
         }
       />
-      <div style={{ width: '100%', position: 'relative', height: bodyHeight - devicesTitleHeight, }}>
+      <div style={{ width: '100%', position: 'relative', height: bodyHeight - px(100), }}>
         <div className="title" style={{ padding: `${px(20)}px 0px ${px(20)}px ${px(20)}px ` }}>
           <img src={petIcon} alt="" width={px(25)} style={{ marginRight: px(10) }} />
           <div className="titleText" >Pets</div>

@@ -16,7 +16,7 @@ const devWidth = 1920;
 const devHeight = 1040;
 
 let size = window.screen
-console.log('-------------------------分辨率的大小-----------------', size);
+// console.log('-------------------------分辨率的大小-----------------', size);
 let width = parseInt(window.screen.availWidth);
 let height = parseInt(window.screen.availHeight);
 if (width < height) {

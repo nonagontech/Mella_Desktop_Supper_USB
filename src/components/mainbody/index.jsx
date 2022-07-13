@@ -129,7 +129,21 @@ class App extends Component {
     let ipcRenderer = window.electron.ipcRenderer;
     // ipcRenderer.send('small')
     ipcRenderer.send("big", win());
-    this.setState({});
+    this.setState({},()=>{
+      console.log('=========5555555555===========================');
+      console.log(this.props.test);
+      console.log('====================================');
+      if (this.props.test) {
+        if (this.props.test.current) {
+          this.props.test.current.getEchartsInstance().dispose();
+          this.props.test.current.getEchartsInstance().clear();
+          setTimeout(() => {
+            this.props.test.current.getEchartsInstance().resize();
+          }, 500);
+        }
+      }
+    });
+   
   };
   //获取本地设置
   getLocalSetting = () => {
@@ -1099,6 +1113,7 @@ export default connect(
     hardwareInfo: state.hardwareReduce.selectHardwareInfo,
     menuNum: state.userReduce.menuNum,
     mellaPredictReturnValue: state.hardwareReduce.mellaPredictReturnValue,
+    test: state.userReduce.test
   }),
   {
     setHardwareList,

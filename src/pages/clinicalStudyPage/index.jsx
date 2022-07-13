@@ -42,6 +42,7 @@ import placement_gang from "./../../assets/images/placement_gang.png";
 import placement_er from "./../../assets/images/placement_er.png";
 import palcement_ye from "./../../assets/images/palcement_ye.png";
 import close from "./../../assets/img/close.png";
+import { setTest } from "../../store/actions";
 
 import "./clinical.less";
 import { fetchRequest } from "../../utils/FetchUtil1";
@@ -62,6 +63,7 @@ const ClinicalStudy = ({
   mellaMeasureValue,
   mellaMeasureNum,
   petDetailInfo,
+  setTest
 }) => {
   const [units, setUnits] = useState("");
   const [temperature, setTemp] = useState(0);
@@ -113,15 +115,21 @@ const ClinicalStudy = ({
     right: 0,
   });
   const [memo, setMemo] = useState("");
-  const [windowWidth, setWindowWidth] = useState(px(550));
+  const [windowWidth, setWindowWidth] = useState(px(500));
 
   const clinicalRef = useRef(null);
   const resize = () => {
-    if (clinicalRef.current) {
-      let { offsetWidth } = clinicalRef.current;
-      //   console.log("改变", offsetWidth);
-      setWindowWidth(offsetWidth);
-    }
+    console.log('------------------------------------');
+    // if (clinicalRef.current && clinicalRef.current.offsetWidth) {
+    //   setWindowWidth(clinicalRef.current.offsetWidth);
+    //   if (echartsElement.current) {
+    //     echartsElement.current.getEchartsInstance().dispose();
+    //     echartsElement.current.getEchartsInstance().clear();
+    //     // setTimeout(() => {
+    //     //   echartsElement.current.getEchartsInstance().resize();
+    //     // }, 500);
+    //   }
+    // }
   };
   const addClinical = () => {
     console.log("调用接口进行保存数据");
@@ -225,7 +233,7 @@ const ClinicalStudy = ({
     setLoading(true);
     fetchRequest(`/pet/getPetExamAndClinicalByPetId/${petId}`, "GET", "") //userID要自动的
       .then((res) => {
-        console.log("获取历史记录", res);
+        // console.log("获取历史记录", res);
         setLoading(false);
 
         if (res.flag === true) {
@@ -340,9 +348,7 @@ const ClinicalStudy = ({
         }
       })
       .catch((err) => {
-        this.setState({
-          loading: false,
-        });
+        setLoading(false);
         console.log(err);
       });
   };
@@ -451,9 +457,9 @@ const ClinicalStudy = ({
         enterable: true,
         formatter: function (param) {
           var value = param[0].value;
-          console.log('---valuez值',value,units);
-          if((units === '℉' && parseInt(value)<=32)|| (units === '℃' && parseInt(value)==0)){
-            return  `<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">Temp:--</div>`;
+          // console.log('---valuez值', value, units);
+          if ((units === '℉' && parseInt(value) <= 32) || (units === '℃' && parseInt(value) == 0)) {
+            return `<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">Temp:--</div>`;
           }
           return `<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">Temp:${value.toFixed(
             1
@@ -588,9 +594,9 @@ const ClinicalStudy = ({
       }
     }
     let temp = "";
-    if (`${Temp}` !== "NaN" && Temp !== "") {
-      temp =
-        units === "℉" ? parseInt((Temp * 1.8 + 32) * 10) / 10 : Temp.toFixed(1);
+
+    if (`${Temp}` !== "NaN" && Temp) {
+      temp = units === "℉" ? parseInt((Temp * 1.8 + 32) * 10) / 10 : Temp.toFixed(1);
     }
     let lowFlog = false;
     if (unit === "℃") {
@@ -602,6 +608,7 @@ const ClinicalStudy = ({
         lowFlog = true;
       }
     }
+
     return (
       <div
         className="Tem"
@@ -635,7 +642,7 @@ const ClinicalStudy = ({
           ) : (
             <>
               <span style={{ fontSize: px(46), fontWeight: "bold" }}>
-                {temp < 3 ? null : temp}{" "}
+                {(temp < 3 && !temp) ? null : temp}{" "}
                 <sup style={{ fontSize: px(28), fontWeight: "bold" }}>
                   {unit}
                 </sup>
@@ -1642,6 +1649,33 @@ const ClinicalStudy = ({
     };
     electronStore.set(`${storage.userId}-hardwareConfiguration`, settings);
   };
+  //echars渲染
+  const echars = () => {
+    if (echartsElement.current) {
+    //       echartsElement.current.getEchartsInstance().dispose();
+    // echartsElement.current.getEchartsInstance().clear();
+    }
+    console.log('渲染了',echartsElement);
+
+    return (
+      <div
+        id="myCharts"
+        style={{ marginTop: mTop(50), width: px(480) }}
+      >
+        <ReactECharts
+          option={getOption()}
+          theme="Imooc"
+          style={{ height: mTop(380) }}
+          notMerge={true}
+          lazyUpdate={true}
+          // theme={"theme_name"}
+          ref={echartsElement}
+        />
+
+        {_status()}
+      </div>
+    );
+  }
 
   useEffect(() => {
     if (petDetailInfo.petId) {
@@ -1665,13 +1699,16 @@ const ClinicalStudy = ({
       window.removeEventListener("resize", resize);
     };
   }, []);
-  useEffect(()=>{
+  useEffect(() => {
     mellaMeasureNumCopy = mellaMeasureNum;
-  },[])
+    console.log('====================================');
+    console.log(echartsElement);
+    console.log('====================================');
+    setTest(echartsElement)
+  }, [])
 
   useEffect(() => {
     if (mellaMeasureNumCopy === mellaMeasureNum) {
-      
       return
     }
     mellaMeasureNumCopy = mellaMeasureNum
@@ -1691,9 +1728,7 @@ const ClinicalStudy = ({
       wen0: win0Copy,
       wen1: wen1Copy,
     };
-
     setEcharsData(json);
-
     let Eci1 = echarsData1.Eci;
     let wen01 = echarsData1.wen0;
     let wen11 = echarsData1.wen1;
@@ -1714,7 +1749,6 @@ const ClinicalStudy = ({
       wen1: wen1Copy1,
     };
     setEcharsData1(json1);
-
     // const option = getOption();
     // echartsElement.current.getEchartsInstance().setOption(option);
     return () => { };
@@ -1751,7 +1785,15 @@ const ClinicalStudy = ({
 
   useEffect(() => {
     const option = getOption();
-    echartsElement.current.getEchartsInstance().setOption(option); // 实时改变
+    if( echartsElement.current){
+      echartsElement.current.getEchartsInstance().setOption(option, true); // 实时改变
+    }else{
+      setTimeout(() => {
+        echartsElement.current.getEchartsInstance().resize();
+      }, 500);
+    }
+
+
     return () => { };
   }, [echarsData]);
 
@@ -1776,14 +1818,14 @@ const ClinicalStudy = ({
       }}
       ref={clinicalRef}
     >
-      <div className="clinicalTitle">
-        <Layout>
+      <div className="clinicalTitle" style={{ height: px(100), background: "#fff", position: 'relative' }}>
+        <Layout style={{ height: '100%' }}>
           <HeaderItem timeNum={60} />
         </Layout>
       </div>
       <div
         className="clinicalBody"
-        style={{ width: "100%", height: bodyHeight - devicesTitleHeight }}
+        style={{ width: "100%", height: bodyHeight - px(100) }}
       >
         <div className="clinical_top">
           <div className="r">
@@ -1815,22 +1857,9 @@ const ClinicalStudy = ({
                 </div>
               </div>
             )}
-            <div
-              id="myCharts"
-              style={{ marginTop: mTop(50), width: windowWidth }}
-            >
-              <ReactECharts
-                option={getOption()}
-                theme="Imooc"
-                style={{ height: mTop(380) }}
-                notMerge={true}
-                lazyUpdate={true}
-                // theme={"theme_name"}
-                ref={echartsElement}
-              />
-
-              {_status()}
-            </div>
+            {
+              echars()
+            }
 
             {/* 底部宠物信息 */}
             {_foot()}
@@ -1871,5 +1900,5 @@ export default connect(
 
     petDetailInfo: state.petReduce.petDetailInfo,
   }),
-  {}
+  {setTest}
 )(ClinicalStudy);

@@ -1009,12 +1009,12 @@ async function keyboardWritingFun(val) {
   keyboard.config.autoDelayMs = 20;
   if (process.platform === "darwin") {
     console.log("这是mac");
-    await keyboard.pressKey(Key.LeftSuper, Key.A);
-    await keyboard.releaseKey(Key.LeftSuper, Key.A);
+    // await keyboard.pressKey(Key.LeftSuper, Key.A);
+    // await keyboard.releaseKey(Key.LeftSuper, Key.A);
     await keyboard.type(`${val}`);
   } else {
-    await keyboard.pressKey(Key.LeftControl, Key.A);
-    await keyboard.releaseKey(Key.LeftControl, Key.A);
+    // await keyboard.pressKey(Key.LeftControl, Key.A);
+    // await keyboard.releaseKey(Key.LeftControl, Key.A);
     await keyboard.type(`${val}`);
   }
 }

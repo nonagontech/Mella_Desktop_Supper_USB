@@ -105,7 +105,11 @@ const BiggirPage = ({
   return (
     <>
       <Layout className="biggiePage">
-        <HeaderItem />
+        <div style={{ height: px(100), background: "#fff", position: 'relative' }}>
+          <div style={{ height: '100%' }}>
+            <HeaderItem />
+          </div>
+        </div>
         <Content className="biggieContentBox">
           {_.isEmpty(petDetailInfo) ? (
             <>
