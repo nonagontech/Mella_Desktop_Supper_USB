@@ -146,17 +146,17 @@ class App extends Component {
     let ipcRenderer = window.electron.ipcRenderer;
     // ipcRenderer.send('small')
     ipcRenderer.send("big", win());
-    this.setState({}, () => {
-      if (this.props.test) {
-        if (this.props.test.current) {
-          this.props.test.current.getEchartsInstance().dispose();
-          this.props.test.current.getEchartsInstance().clear();
-          setTimeout(() => {
-            this.props.test.current.getEchartsInstance().resize();
-          }, 500);
-        }
-      }
-    });
+    // this.setState({}, () => {
+    //   if (this.props.test) {
+    //     if (this.props.test.current) {
+    //       this.props.test.current.getEchartsInstance().dispose();
+    //       this.props.test.current.getEchartsInstance().clear();
+    //       setTimeout(() => {
+    //         this.props.test.current.getEchartsInstance().resize();
+    //       }, 500);
+    //     }
+    //   }
+    // });
 
   };
   //获取本地设置

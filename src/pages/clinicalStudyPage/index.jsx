@@ -1,49 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { connect } from "react-redux";
-import {
-  Layout,
-  message,
-  Input,
-  Menu,
-  Modal,
-  Table,
-  Popconfirm,
-  Tooltip,
-  Select,
-  Spin,
-} from "antd";
+import { Layout, message, Input, Modal, Table, Popconfirm, Select } from "antd";
 import ReactECharts from "echarts-for-react";
 import propTypes from "prop-types";
 import moment from "moment";
-import {
-  createFromIconfontCN,
-  SyncOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 import Draggable from "react-draggable";
-import { devicesTitleHeight } from "../../utils/InitDate";
 import { px, mTop } from "../../utils/px";
 import HeaderItem from "./../temperaturePage/components/headerItem";
-import MyModal from "./../../utils/myModal/MyModal";
 import electronStore from "../../utils/electronStore";
 import _ from "lodash";
-
-import ye from "./../../assets/images/ye1.png";
-import er from "./../../assets/images/er3.png";
-import gang from "./../../assets/images/gang3.png";
-import dog from "./../../assets/images/dog.png";
-import cat from "./../../assets/images/cat.png";
-import other from "./../../assets/images/other.png";
 import edit from "./../../assets/images/edit.png";
 import del from "./../../assets/images/del.png";
 import start from "./../../assets/img/start.png";
-import redjinggao from "./../../assets/img/redjinggao.png";
 import placement_gang from "./../../assets/images/placement_gang.png";
 import placement_er from "./../../assets/images/placement_er.png";
 import palcement_ye from "./../../assets/images/palcement_ye.png";
-import close from "./../../assets/img/close.png";
 import { setTest } from "../../store/actions";
-
 import "./clinical.less";
 import { fetchRequest } from "../../utils/FetchUtil1";
 import { fetchRequest3 } from "../../utils/FetchUtil3";
@@ -54,7 +27,6 @@ let storage = window.localStorage;
 let mellaMeasureNumCopy = 0;
 
 //定义echarts的数据个数
-const echartsDataLength = 0;
 const { Option } = Select;
 let saveHistoryTime = null;
 const ClinicalStudy = ({
@@ -63,18 +35,16 @@ const ClinicalStudy = ({
   mellaMeasureValue,
   mellaMeasureNum,
   petDetailInfo,
-  setTest
+  setTest,
 }) => {
   const [units, setUnits] = useState("");
   const [temperature, setTemp] = useState(0);
-  const echartsElement = useRef(null);
   const [showHistoryEchart, setShowHistoryEchart] = useState(false);
   const [echarsData, setEcharsData] = useState({
     Eci: [],
     wen0: [],
     wen1: [],
   });
-
   const [echarsData1, setEcharsData1] = useState({
     Eci: [],
     wen0: [],
@@ -90,7 +60,6 @@ const ClinicalStudy = ({
   const [bloodPressure, setBloodPressure] = useState("");
   const [respiratoryRate, setRespiratoryRate] = useState("");
   const [notes, setNotes] = useState("");
-
   const [isPetCharacteristics, setIsPetCharacteristics] = useState(false);
   const [historyData, setHistoryData] = useState([]);
   const [editRectal, setEditRectal] = useState("");
@@ -117,17 +86,22 @@ const ClinicalStudy = ({
   const [memo, setMemo] = useState("");
   const [windowWidth, setWindowWidth] = useState(px(500));
 
+  const echartsElement = useRef(null);
   const clinicalRef = useRef(null);
+  // const echartsElement = useRef(null);
+  //分辨率变化
+  const chartsBox = useCallback((node) => {
+    // console.log('echartsElement.current: ', echartsElement.current);
+    if (node !== null) {
+      setTimeout(() => {
+        echartsElement.current.getEchartsInstance().resize({ height: px(380)});
+      }, 1000)
+    }
+  }, [window.screen.availWidth]);
+  //窗口宽高变化
   const resize = () => {
     if (clinicalRef.current && clinicalRef.current.offsetWidth) {
-      // setWindowWidth(clinicalRef.current.offsetWidth);
-      if (echartsElement.current) {
-        // echartsElement.current.getEchartsInstance().dispose();
-        // echartsElement.current.getEchartsInstance().clear();
-        // setTimeout(() => {
-        //   echartsElement.current.getEchartsInstance().resize();
-        // }, 500);
-      }
+      setWindowWidth(clinicalRef.current.offsetWidth);
     }
   };
   const addClinical = () => {
@@ -436,7 +410,7 @@ const ClinicalStudy = ({
       });
   };
   const getOption = () => {
-    let option = {}
+    let option = {};
     try {
       let min, max;
       if (units === "℃") {
@@ -459,7 +433,10 @@ const ClinicalStudy = ({
           formatter: function (param) {
             var value = param[0].value;
             // console.log('---valuez值', value, units);
-            if ((units === '℉' && parseInt(value) <= 32) || (units === '℃' && parseInt(value) == 0)) {
+            if (
+              (units === "℉" && parseInt(value) <= 32) ||
+              (units === "℃" && parseInt(value) == 0)
+            ) {
               return `<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">Temp:--</div>`;
             }
             return `<div style="border-bottom: 1px solid rgba(255,255,255,.3); font-size: 16px;padding-bottom: 7px;margin-bottom: 7px;">Temp:${value.toFixed(
@@ -557,9 +534,7 @@ const ClinicalStudy = ({
           },
         ],
       };
-    } catch (error) {
-
-    }
+    } catch (error) { }
 
     return option;
   };
@@ -601,7 +576,8 @@ const ClinicalStudy = ({
     let temp = "";
 
     if (`${Temp}` !== "NaN" && Temp) {
-      temp = units === "℉" ? parseInt((Temp * 1.8 + 32) * 10) / 10 : Temp.toFixed(1);
+      temp =
+        units === "℉" ? parseInt((Temp * 1.8 + 32) * 10) / 10 : Temp.toFixed(1);
     }
     let lowFlog = false;
     if (unit === "℃") {
@@ -647,7 +623,7 @@ const ClinicalStudy = ({
           ) : (
             <>
               <span style={{ fontSize: px(46), fontWeight: "bold" }}>
-                {(temp < 3 && !temp) ? null : temp}{" "}
+                {temp < 3 && !temp ? null : temp}{" "}
                 <sup style={{ fontSize: px(28), fontWeight: "bold" }}>
                   {unit}
                 </sup>
@@ -674,7 +650,7 @@ const ClinicalStudy = ({
             <br />
           </>
         )}
-      </div >
+      </div>
     );
   };
   const handleChange = (index) => {
@@ -1656,35 +1632,22 @@ const ClinicalStudy = ({
   };
   //echars渲染
   const echars = () => {
-    if (echartsElement.current) {
-      // echartsElement.current.getEchartsInstance().dispose();
-      // echartsElement.current.getEchartsInstance().clear();
-      // setTimeout(() => {
-      //   echartsElement.current.getEchartsInstance().resize();
-      // }, 500);
-    }
-
-
     return (
-      <div
-        id="myCharts"
-        style={{ marginTop: mTop(50), width: px(480) }}
-      >
+      <div id="myCharts" style={{ marginTop: mTop(50), width: windowWidth }} ref={chartsBox}>
         <ReactECharts
           option={getOption()}
           theme="Imooc"
-          style={{ height: 380 }}
+          style={{ height: 'auto', width: 'auto' }}
           notMerge={true}
           lazyUpdate={true}
-          // theme={"theme_name"}
           ref={echartsElement}
-          className={'charts'}
+          className={"charts"}
         />
 
         {_status()}
       </div>
     );
-  }
+  };
 
   useEffect(() => {
     if (petDetailInfo.petId) {
@@ -1704,20 +1667,22 @@ const ClinicalStudy = ({
   useEffect(() => {
     //react监听屏幕窗口改变
     window.addEventListener("resize", resize);
+
     return () => {
       window.removeEventListener("resize", resize);
     };
   }, []);
+
   useEffect(() => {
     mellaMeasureNumCopy = mellaMeasureNum;
-    setTest(echartsElement)
-  }, [])
+    // setTest(echartsElement);
+  }, []);
 
   useEffect(() => {
     if (mellaMeasureNumCopy === mellaMeasureNum) {
-      return
+      return;
     }
-    mellaMeasureNumCopy = mellaMeasureNum
+    mellaMeasureNumCopy = mellaMeasureNum;
     // console.log('监听', mellaMeasureValue);
     setTemp(mellaMeasureValue);
     let { Eci, wen0, wen1 } = echarsData;
@@ -1789,13 +1754,13 @@ const ClinicalStudy = ({
     return () => { };
   }, [mellaConnectStatus]);
 
-  useEffect(() => {
-    const option = getOption();
-    if (echartsElement.current) {
-      echartsElement.current.getEchartsInstance().setOption(option, true); // 实时改变
-    }
-    return () => { };
-  }, [echarsData]);
+  // useEffect(() => {
+  //   // const option = getOption();
+  //   // if (echartsElement.current) {
+  //   //   echartsElement.current.getEchartsInstance().setOption(option, true); // 实时改变
+  //   // }
+  //   return () => { };
+  // }, [echarsData]);
 
   useEffect(() => {
     let hardSet = electronStore.get(`${storage.userId}-hardwareConfiguration`);
@@ -1818,8 +1783,11 @@ const ClinicalStudy = ({
       }}
       ref={clinicalRef}
     >
-      <div className="clinicalTitle" style={{ height: px(100), background: "#fff", position: 'relative' }}>
-        <Layout style={{ height: '100%' }}>
+      <div
+        className="clinicalTitle"
+        style={{ height: px(100), background: "#fff", position: "relative" }}
+      >
+        <Layout style={{ height: "100%" }}>
           <HeaderItem timeNum={60} />
         </Layout>
       </div>
@@ -1857,9 +1825,7 @@ const ClinicalStudy = ({
                 </div>
               </div>
             )}
-            {
-              echars()
-            }
+            {echars()}
 
             {/* 底部宠物信息 */}
             {_foot()}
