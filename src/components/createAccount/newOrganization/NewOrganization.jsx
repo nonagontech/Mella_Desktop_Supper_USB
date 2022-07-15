@@ -148,7 +148,7 @@ export default class NewOrganization extends Component {
     fetchRequest(`/organization/addOrganization/${temporaryStorage.logupSuccessData.userId}`, "POST", params)
 
       .then(res => {
-        console.log('添加组织返回的信息', res);
+        // console.log('添加组织返回的信息', res);
         this.setState({
           loadVisible: false
         })
