@@ -143,7 +143,7 @@ export default class NewOrganization extends Component {
       loadVisible: true
     })
 
-    console.log('入参信息：', params, temporaryStorage.logupSuccessData.userId);
+    // console.log('入参信息：', params, temporaryStorage.logupSuccessData.userId);
     // fetchRequest(`/organization/addOrganization/${temporaryStorage.logupSuccessData.userId}`, "POST", params)
     fetchRequest(`/organization/addOrganization/${temporaryStorage.logupSuccessData.userId}`, "POST", params)
 
