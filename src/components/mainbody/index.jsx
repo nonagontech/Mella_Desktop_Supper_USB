@@ -1029,9 +1029,6 @@ class App extends Component {
             );
           }
         }
-
-        break;
-
       case "2":
         return <AllPets bodyHeight={bodyHeight} />;
       case "CombineScales":

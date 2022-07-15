@@ -1611,7 +1611,7 @@ export default class Mesasure extends Component {
               let petArr = res.data
               if (petArr.length > 1) {
                 petArr.sort(function (a, b) {
-                  return a.createTime > b.createTime ? -1 : -1;
+                  return a.createTime > b.createTime ? 1 : -1;
                 })
               }
 
@@ -1678,7 +1678,7 @@ export default class Mesasure extends Component {
               let petArr = res.data
               if (petArr.length > 1) {
                 petArr.sort(function (a, b) {
-                  return a.createTime > b.createTime ? -1 : -1;
+                  return a.createTime > b.createTime ? 1 : -1;
                 })
               }
 
@@ -2975,7 +2975,7 @@ export default class Mesasure extends Component {
                 let petArr = res.data
                 if (petArr.length > 1) {
                   petArr.sort(function (a, b) {
-                    return a.createTime > b.createTime ? -1 : -1;
+                    return a.createTime > b.createTime ? 1 : -1;
                   })
                 }
 
@@ -3015,7 +3015,7 @@ export default class Mesasure extends Component {
                 let petArr = res.data
                 if (petArr.length > 1) {
                   petArr.sort(function (a, b) {
-                    return a.createTime > b.createTime ? -1 : -1;
+                    return a.createTime > b.createTime ? 1 : -1;
                   })
                 }
 

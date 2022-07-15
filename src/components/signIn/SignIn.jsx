@@ -344,7 +344,7 @@ export default class SignIn extends Component {
   //二维码界面
   _qrCode = () => {
     let { isCode, baseUrl, isExpired, isLoadQrCode } = this.state;
-    let imgOpacity = isLoadQrCode ? (baseUrl ? "0.1" : 0.5) : "1";
+    let imgOpacity = isLoadQrCode ? (baseUrl ? 0.1 : 0.5) : 1;
 
     if (!isExpired) {
       const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;

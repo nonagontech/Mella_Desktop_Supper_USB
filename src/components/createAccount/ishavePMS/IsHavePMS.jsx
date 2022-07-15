@@ -13,7 +13,7 @@ import MaxMin from '../../../utils/maxminreturn/MaxMinReturn'
 
 
 
-const IsHavePMS = ({ }) => {
+const IsHavePMS = () => {
 
   let history = useHistory();
   useEffect(() => {

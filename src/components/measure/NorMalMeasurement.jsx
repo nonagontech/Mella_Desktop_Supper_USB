@@ -132,10 +132,10 @@ export default class NorMalMeasurement extends Component {
     owner: '',
     breedName: '',
     isMix: false,
-    age: '',
+    age: null,
     weight: '',
     url: '',
-    speciesId: '',
+    speciesId: null,
 
     //圆环的一些信息
     temp_statu: 'Ready',
@@ -722,23 +722,23 @@ export default class NorMalMeasurement extends Component {
 
 
       },
-      194: () => {       //硬件收到机器学习结果并停止测量，通知我们一声
-        endflog = true
-        countdownTimer && clearInterval(countdownTimer)
-        this.setState({
-          isMeasure: false,
-          endMeasure: true,
-          isEarMeasure: false
-        })
-        lastConnectionTime = new Date();
-        if (saveHistoryTime != null) {
-          clearTimeout(saveHistoryTime)
-        }
+      // 194: () => {       //硬件收到机器学习结果并停止测量，通知我们一声
+      //   endflog = true
+      //   countdownTimer && clearInterval(countdownTimer)
+      //   this.setState({
+      //     isMeasure: false,
+      //     endMeasure: true,
+      //     isEarMeasure: false
+      //   })
+      //   lastConnectionTime = new Date();
+      //   if (saveHistoryTime != null) {
+      //     clearTimeout(saveHistoryTime)
+      //   }
 
-        clinicalYuce = []
-        clinicalIndex = 0
-        isMeasurement = false
-      },
+      //   clinicalYuce = []
+      //   clinicalIndex = 0
+      //   isMeasurement = false
+      // },
 
       192: () => {   //开始测量返回结果
         switch (newArr[3]) {
@@ -805,11 +805,7 @@ export default class NorMalMeasurement extends Component {
         clinicalYuce = []
         clinicalIndex = 0
         endflog = true
-
-
         countdownTimer && clearInterval(countdownTimer)
-
-
       },
       98: () => { //蓝牙连接断开
         console.log('断开连接---断开连接---断开连接---断开连接---断开连接---断开连接');
@@ -1785,8 +1781,6 @@ export default class NorMalMeasurement extends Component {
             </div>
           );
         }
-
-        break;
       case 'biggie':
         return (
           <div className='part'>
@@ -1795,7 +1789,6 @@ export default class NorMalMeasurement extends Component {
 
           </div>
         )
-        break
       default:
         break;
     }

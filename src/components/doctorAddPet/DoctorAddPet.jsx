@@ -62,7 +62,6 @@ export default class DoctorAddPet extends Component {
         birthday: moment(new Date()).format('MMMM D, YYYY'),
         patientId: '',
         petName: '',
-
         petId: '',
         lastName: '',
         firstName: '',
@@ -71,8 +70,6 @@ export default class DoctorAddPet extends Component {
         intFlog: false,
         spin: false,
         visible: false,
-
-        imgurl: '',
         dogBreed: [],
         catBreed: [],
         searchBreed: '',

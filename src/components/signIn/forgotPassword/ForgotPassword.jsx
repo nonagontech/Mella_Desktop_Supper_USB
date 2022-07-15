@@ -87,8 +87,6 @@ export default class ForgotPassword extends Component {
                 isLimit: true
               })
               break;
-
-
             case 11013:
               console.log('邮箱未被注册，跳出弹框询问是否前往注册');
             case 11014:
@@ -98,8 +96,6 @@ export default class ForgotPassword extends Component {
                 spin: false
               })
               return
-              break
-
           }
         } else {
           console.log('系统错误', res);

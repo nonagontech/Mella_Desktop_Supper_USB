@@ -88,13 +88,11 @@ const ClinicalStudy = ({
 
   const echartsElement = useRef(null);
   const clinicalRef = useRef(null);
-  // const echartsElement = useRef(null);
   //分辨率变化
   const chartsBox = useCallback((node) => {
-    // console.log('echartsElement.current: ', echartsElement.current);
-    if (node !== null) {
+    if (node !== null && echartsElement.current) {
       setTimeout(() => {
-        echartsElement.current.getEchartsInstance().resize({ height: px(380)});
+        echartsElement.current.getEchartsInstance().resize({ height: px(380) });
       }, 1000)
     }
   }, [window.screen.availWidth]);
@@ -573,7 +571,7 @@ const ClinicalStudy = ({
         }
       }
     }
-    let temp = "";
+    let temp = null;
 
     if (`${Temp}` !== "NaN" && Temp) {
       temp =
