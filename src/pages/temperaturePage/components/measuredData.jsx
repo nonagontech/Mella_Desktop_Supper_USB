@@ -169,7 +169,6 @@ const MeasuredData = ({
       <>
         <p style={{ color: { color } }} className="ProgressTitle">
           {getTemp(percent)}
-
           <span style={{ color: { color } }} className="symbol">{`${
             isHua ? "℉" : "℃"
           }`}</span>
@@ -286,7 +285,7 @@ const MeasuredData = ({
       bottom: clientHeight - (targetRect?.bottom - uiData?.y),
     });
   };
-  const getTemp = () => {
+  const getTemp = (percent) => {
     let num = parseFloat(mellaMeasureValue);
     if (isHua) {
       num = parseInt((num * 1.8 + 32) * 10) / 10;

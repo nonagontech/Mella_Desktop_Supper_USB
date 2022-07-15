@@ -359,8 +359,8 @@ class App extends Component {
         this.time193 && clearTimeout(this.time193);
         this.time193 = setTimeout(() => {
           if (new Date() - time194 < 1000) {
-            return;
             this.time193 && clearTimeout(this.time193);
+            return;
           }
           firstEar = true;
           if (mellaConnectStatus !== "complete") {
