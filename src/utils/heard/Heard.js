@@ -162,10 +162,10 @@ const Heard = ({
         setUpdateStatus("newVersion");
         break;
 
-      case 3:
-        console.log("下载新版成功");
-      case 4:
-        console.log("取消背景下载");
+      // case 3:
+      //   console.log("下载新版成功");
+      // case 4:
+      //   console.log("取消背景下载");
       case 5:
         console.log("取消安装");
         setUpdateStatus("init");
@@ -177,6 +177,7 @@ const Heard = ({
           ? (data.output.percent / 100).toFixed(1)
           : 0;
         setDownLoadingNum(loadNum);
+      break;
 
       default:
         break;

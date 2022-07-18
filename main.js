@@ -338,7 +338,7 @@ function show(val) {
 
 function createLoadingWindow() {
   //加载页面窗口
-  loadingWindow = new BrowserWindow({
+  let loadingWindow = new BrowserWindow({
     height: show(800).height,
     useContentSize: true,
     width: show(400).height,

@@ -87,8 +87,8 @@ export default class ForgotPassword extends Component {
                 isLimit: true
               })
               break;
-            case 11013:
-              console.log('邮箱未被注册，跳出弹框询问是否前往注册');
+            // case 11013:
+            //   console.log('邮箱未被注册，跳出弹框询问是否前往注册');
             case 11014:
               console.log('邮箱被注销或者封停，跳出弹框询问是否前往注册');
               this.setState({

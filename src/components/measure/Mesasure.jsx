@@ -1572,8 +1572,8 @@ export default class Mesasure extends Component {
   _getPetInfo = () => {
 
     switch (storage.identity) {
-      case '1':
-        console.log('我是vetspire查找');
+      // case '1':
+      //   console.log('我是vetspire查找');
 
 
 
