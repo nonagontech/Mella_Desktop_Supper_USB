@@ -157,7 +157,7 @@ export default class NewOrganization extends Component {
             this.setState({ visible: true })
           }
           if (res.code === 20000) {
-            console.log('添加成功，跳转');
+            // console.log('添加成功，跳转');
             temporaryStorage.logupOrganization = res.data
             this.props.history.push('/uesr/logUp/InviteTeam')
           }
