@@ -149,6 +149,7 @@ const ClinicalStudy = ({
         memo: notes,
         petVitalTypeId: petVitalId,
         clinicalDataEntityList: emerData,
+        anusTemperature:referenceT
       };
       if (storage.roleId === `1`) {
         datas.userId = storage.userId;

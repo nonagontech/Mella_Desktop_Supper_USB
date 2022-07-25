@@ -39,6 +39,7 @@ import ScheduledPetPage from "../../pages/scheduledPetsPage";
 import AddScheduledPet from "../../pages/addScheduledPet";
 import ClininalStudy from "../../pages/clinicalStudyPage";
 import CombineScales from "../../pages/combineScales";
+import OtterEQPage from '../../pages/otterEQ'
 import { Modal } from "antd";
 
 let ipcRenderer = window.require("electron").ipcRenderer;
@@ -554,9 +555,6 @@ class App extends Component {
           });
         }
       },
-      // 255: () => {
-
-      // }
       255: () => {
         let length = newArr.length;
         let frameLength = newArr[1]; //帧长
@@ -849,7 +847,7 @@ class App extends Component {
       });
     }
   };
-  //获取设备类型
+  //获取设备类型(渲染左侧硬件种类侧边栏)
   getDevicesType = () => {
     // let devicesTypeList = [
     //   {
@@ -972,6 +970,17 @@ class App extends Component {
           },
         ],
       });
+      devicesTypeList.push({
+        type: "otterEQ",
+        devices: [
+          {
+            name: "otterEQ",
+            mac: "375082",
+            deviceType: "otterEQ",
+            examRoom: "",
+          },
+        ],
+      });
     }
 
     let hardList = [].concat(devicesTypeList);
@@ -1013,6 +1022,9 @@ class App extends Component {
 
             case "tape":
               measurePage = <ScanPage />;
+              break;
+            case "otterEQ":
+              measurePage = <OtterEQPage/>;
               break;
 
             default:

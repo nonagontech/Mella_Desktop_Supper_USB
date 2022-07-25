@@ -72,7 +72,6 @@ const HardWareTypeUI = ({
         style={{ padding: `${px(10)}px 0` }}
         onClick={() => {
           console.log(item.type);
-
           if (menuNum !== "6"&&!electronStore.get(`${storage.userId}-isClical`)) {
             setMenuNum("1");
             setSelectHardwareType(item.type);
