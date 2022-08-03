@@ -723,7 +723,11 @@ class App extends Component {
           ) {
             setRulerConfirmCountFun(parseInt(confirmBtn[0], 16));
           }
-        } else if (bluName.indexOf("Biggie") !== -1 && bluData.length > 10) {
+        } else if(bluName.indexOf("Tabby") !== -1){
+
+        }
+
+        else if (bluName.indexOf("Biggie") !== -1 && bluData.length > 10) {
           function getVal(shi) {
             if (`${shi}`.length < 2) {
               return `0${shi}`;

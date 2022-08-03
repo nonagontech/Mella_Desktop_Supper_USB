@@ -433,7 +433,7 @@ export default class NorMalMeasurement extends Component {
     this.command(data)()
   }
   /**
-   * 
+   *
    *usb检测，为true代表插上了设备，false代表拔出了设备
    */
   usbDetect = (event, data) => {
@@ -1114,7 +1114,7 @@ export default class NorMalMeasurement extends Component {
               break;
             case 7: console.log('---UUID'); break;
             case 239:
-              // console.log('---mac地址'); 
+              // console.log('---mac地址');
               break;
 
             case 3: console.log('----尺子的,不知道什么用'); break;
@@ -2420,8 +2420,8 @@ export default class NorMalMeasurement extends Component {
       newText = newText.replace(/^\./g, "");
       newText = newText.replace(/\.{2,}/g, ".");
       newText = newText.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
-      newText = newText.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');//只能输入两个小数  
-      if (newText.indexOf(".") < 0 && newText != "") {//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额  
+      newText = newText.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');//只能输入两个小数
+      if (newText.indexOf(".") < 0 && newText != "") {//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
         newText = parseFloat(newText)
       }
       return `${newText}`
@@ -2675,10 +2675,6 @@ export default class NorMalMeasurement extends Component {
         } else {
           message.error('upload failed')
         }
-
-
-
-
       })
       .catch(err => {
         this.setState({
@@ -2686,15 +2682,11 @@ export default class NorMalMeasurement extends Component {
         })
         message.error('update failed')
         console.log(err);
-
-
       })
   }
   _history = () => {
     const _del = (key, record) => {
       console.log('删除', key, record);
-
-
       /**------------这里还要删除后台的数据------------ */
       fetchRequest(`/pet/deletePetExamByExamId/${key}`, 'DELETE')
         .then(res => {
@@ -2926,7 +2918,7 @@ export default class NorMalMeasurement extends Component {
               * endvalue:将从后台得到的数据全部转化成华氏度
               * min：猫的正常体温的左区间,单位℉，后期要做的猫狗都行，这需要告诉我此宠物是猫还是狗
               * max：猫的正常体温的右区间,单位℉，后期要做的猫狗都行，这需要告诉我此宠物是猫还是狗
-              * 
+              *
               */
 
               let bag = '', tem = ''
@@ -3330,7 +3322,7 @@ export default class NorMalMeasurement extends Component {
                 if (vitalArr[0].weight && vitalArr[0].weight.value) {
                   params = {
                     query: `mutation {
-                      updateVital(      
+                      updateVital(
                           id:"${vitalArr[0].id}"
                           input:{
                             weight:{value:${vitalArr[0].weight.value}}
@@ -3347,7 +3339,7 @@ export default class NorMalMeasurement extends Component {
                 } else {
                   params = {
                     query: `mutation {
-                      updateVital(      
+                      updateVital(
                           id:"${vitalArr[0].id}"
                           input:{
                               temperature:{value:${temperature}}
@@ -3889,7 +3881,7 @@ export default class NorMalMeasurement extends Component {
               bordered={false}
               onChange={(item) => {
               }}
-             
+
             /> */}
             <textarea
               rows="5"
@@ -4011,7 +4003,7 @@ export default class NorMalMeasurement extends Component {
                           id:"${vitalArr[0].id}"
                           input:{
                             weight:{value:${this.state.biggieDate}}
-                            
+
                               patientId:"${this.state.patientId}"
                           }
                       )

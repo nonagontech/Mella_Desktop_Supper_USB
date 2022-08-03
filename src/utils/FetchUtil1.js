@@ -1,6 +1,7 @@
 
-// let COMMON_URL = 'http://106.14.220.139:8043/mellaserver';//本地
+// let COMMON_URL = 'http://192.168.0.60:8080/mellaserver';//本地
 let COMMON_URL = 'https://www.mellaserver.com/api/mellaserver';//企业AWS
+// let COMMON_URL = 'http://3.214.224.72:8088/api/mellaserver';//企业AWS
 let token = '';
 
 //'/v1/appUser/login', 'POST', params
@@ -29,7 +30,7 @@ export function fetchRequest (url, method, params = '', Authorization = '') {
             Object.keys(params).forEach(key =>
                 paramsArray.push(key + "=" + params[key])
             );
-            // 判断是否地址拼接的有没有 ？,当没有的时候，使用 ？拼接第一个参数，如果有参数拼接，则用&符号拼接后边的参数   
+            // 判断是否地址拼接的有没有 ？,当没有的时候，使用 ？拼接第一个参数，如果有参数拼接，则用&符号拼接后边的参数
             if (url.search(/\?/) === -1) {
                 url = url + "?" + paramsArray.join("&");
             } else {

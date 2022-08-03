@@ -1602,7 +1602,7 @@ const ClinicalStudy = ({
             style={{ backgroundColor: lbgc }}
             onClick={() => setIsPetCharacteristics(true)}
           >
-            Pet Characteristics
+            Exam Details
           </div>
           <div
             className="foot_l"
