@@ -724,11 +724,7 @@ class App extends Component {
           ) {
             setRulerConfirmCountFun(parseInt(confirmBtn[0], 16));
           }
-        } else if (bluName.indexOf("Tabby") !== -1) {
-
-        }
-
-        else if (bluName.indexOf("Biggie") !== -1 && bluData.length > 10) {
+        } else if (bluName.indexOf("Biggie") !== -1 && bluData.length > 10) {
           function getVal(shi) {
             if (`${shi}`.length < 2) {
               return `0${shi}`;
@@ -797,6 +793,150 @@ class App extends Component {
           if (impedance !== biggieBodyFat) {
             setBiggieBodyFatFun(impedance);
           }
+        } else if (bluName.indexOf("MaeBowl") !== -1 && bluData.length > 10) {
+          function getVal(shi) {
+            if (`${shi}`.length < 2) {
+              return `0${shi}`;
+            }
+            return `${shi}`;
+          }
+          let mac = bluData[1];
+          for (let i = 2; i <= 6; i++) {
+            mac += `:${bluData[i]}`;
+          }
+          //定义硬件版本号
+          let hardwareVersion = bluData[7] + bluData[8];
+          //定义软件版本号
+          let softwareVersion = bluData[9];
+          //定义wifi标志位
+          let wifiFlag = bluData[10];
+          //定义控制字
+          let control = bluData[11];
+          //定义重量
+          let weight = `${getVal(bluData[12].toString(16))}${getVal(
+            bluData[13].toString(16)
+          )}`
+          weight = parseInt(weight, 16);
+          let arr11 = bluData[14]
+          weight = weight / Math.pow(10, parseInt(arr11[0]));
+          let weightUnits = null
+          switch (arr11[1]) {
+            case '0':
+              weightUnits = 'kg'
+
+              break;
+            case '1':
+              weightUnits = 'lb'
+
+              break;
+            case '2':
+              weightUnits = 'g'
+
+              break;
+            case '3':
+              weightUnits = 'ml'
+
+              break;
+            case '4':
+              weightUnits = 'oz'
+
+              break;
+
+            default:
+              break;
+          }
+          console.log({
+            // mac,
+            // hardwareVersion,
+            // softwareVersion,
+            wifiFlag,
+            control,
+            weight,
+            weightUnits,
+          });
+
+
+        } else if (bluName.indexOf("Tabby") !== -1 && bluData.length > 10) {
+          console.log('硬件名称', bluName, '-----硬件数据', bluData);
+          let {
+            hardwareReduce,
+            setRulerConfirmCountFun,
+            setRulerConnectStatusFun,
+            setRulerMeasureValueFun,
+            setRulerUnitFun,
+          } = this.props;
+          let {
+            rulerConnectStatus,
+            rulerMeasureValue,
+            rulerUnit,
+            rulerConfirmCount,
+            receiveBroadcastHardwareInfo,
+          } = hardwareReduce;
+          let confirmBtn = bluData[10]; //十六进制数字，值为01代表尺子拉动，值为x2代表按了尺子确认按钮
+          let rulerUnitNum = parseInt(bluData[13], 16); //十进制数字，值等于11代表单位为in，00代表单位为cm
+          let newVal = null; //为测量数值，和单位匹配对应
+          const ITEMINDEX = 6;
+          let units = rulerUnitNum === 0 ? "cm" : "in";
+          let mac = bluData[1];
+          for (let i = 2; i <= 6; i++) {
+            mac += `:${bluData[i]}`;
+          }
+          let json = {
+            deviceType: "tape",
+            macId: mac,
+            name: bluName,
+          };
+          if (!compareObject(receiveBroadcastHardwareInfo, json)) {
+            setReceiveBroadcastHardwareInfoFun(json);
+          }
+
+          if (units !== rulerUnit) {
+            setRulerUnitFun(units);
+          }
+          if (rulerConnectStatus !== "isMeasuring") {
+            setRulerConnectStatusFun("isMeasuring");
+          }
+          this.rulerTimer && clearTimeout(this.rulerTimer);
+          this.rulerTimer = setTimeout(() => {
+            setRulerConnectStatusFun("disconnected");
+          }, 5000);
+          //num1和num2组成测得的测量值，num的值为测量数值，单位恒为厘米
+          let num1 = bluData[11];
+          let num2 = bluData[12];
+          let num = getVal(num1, num2);
+          try {
+            newVal = parseFloat(num);
+            if (rulerUnitNum === 17) {
+              newVal = newVal.toFixed(2);
+            } else {
+              newVal = newVal.toFixed(1);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+
+          function getVal(shi, xiaoshuo) {
+            let num1 = parseInt(shi, 16);
+            let num2 = parseInt(xiaoshuo, 16);
+            return `${num1}.${num2}`;
+          }
+          if (newVal !== rulerMeasureValue) {
+            setRulerMeasureValueFun(newVal);
+          }
+
+          //点击了确认按钮
+
+          if (
+            confirmBtn[1] === "2" &&
+            parseInt(confirmBtn[0]) !== rulerConfirmCount &&
+            confirmBtn[0] !== null
+          ) {
+            setRulerConfirmCountFun(parseInt(confirmBtn[0], 16));
+          }
+
+
+
+
         }
       },
       182: () => {
