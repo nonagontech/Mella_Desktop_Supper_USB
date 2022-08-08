@@ -594,7 +594,7 @@ export default class DoctorAddPet extends Component {
                             style={{ width: '100%' }}
                             bordered={false}
                             value={breedName}
-                            // size = {'small'}        
+                            // size = {'small'}
                             placeholder="Search to Select"
                             optionFilterProp="children"
                             listHeight={256}
@@ -730,7 +730,6 @@ export default class DoctorAddPet extends Component {
 
         return (
             <div id="doctorAddPet">
-
                 <div className="heard">
                     <Heard
                         onReturn={() => {
@@ -740,10 +739,6 @@ export default class DoctorAddPet extends Component {
                         }}
                     />
                 </div>
-
-
-
-
                 <div className="editPetInfo_top" >
                     <div className="title" style={{ marginBottom: px(20), marginTop: px(20) }}>{`New Pet`}</div>
                     {this._petSpecies()}
@@ -756,12 +751,10 @@ export default class DoctorAddPet extends Component {
                     <div className="save"
                         onClick={() => {
                             message.destroy()
-
                             if (!this.state.patientId) {
                                 message.error('Please enter patient ID', 0)
                                 return
                             }
-
                             let params = {
                                 patientId: this.state.patientId,
                                 doctorId: storage.userId
@@ -776,8 +769,6 @@ export default class DoctorAddPet extends Component {
                             this.setState({
                                 spin: true
                             })
-                            console.log('-----------检测patient是否存在', params);
-
                             fetchRequest(`/pet/checkPatientId`, "GET", params)
                                 .then(res => {
                                     console.log(res);
@@ -807,16 +798,8 @@ export default class DoctorAddPet extends Component {
                                                     break;
                                             }
                                         }
-
-
-
-
-
-                                        // console.log(petName, birthday, petSpeciesBreedId, isMix, weight, gender, petSpecies);
-                                        // let petSpeciesBreedId = 13001
                                         let data = {
                                             petName,
-                                            // breedName,
                                             birthday: moment(birthday).format('YYYY-MM-DD'),
                                             gender,
                                             owner,
