@@ -857,7 +857,7 @@ class App extends Component {
 
 
         } else if (bluName.indexOf("Tabby") !== -1 && bluData.length > 10) {
-          console.log('硬件名称', bluName, '-----硬件数据', bluData);
+          // console.log('硬件名称', bluName, '-----硬件数据', bluData);
           let {
             hardwareReduce,
             setRulerConfirmCountFun,
