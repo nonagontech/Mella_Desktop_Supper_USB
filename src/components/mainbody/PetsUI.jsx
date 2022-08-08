@@ -163,6 +163,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
               } else {
                 petDetailInfoFun(item)
               }
+              // petDetailInfoFun(item)
             }}
           >
             {`${item.patientId}, ${item.petName}`}

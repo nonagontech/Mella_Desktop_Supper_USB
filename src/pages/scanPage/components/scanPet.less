@@ -1,89 +1,128 @@
 .scanContentBox {
-    background: #fff;
+  background: #fff;
+  display: grid;
+  justify-items: center;
+
+  .scanImageBox {
+    width: 100%;
     display: grid;
     justify-items: center;
-    .scanImageBox {
-        width: 100%;
-        display: grid;
-        justify-items: center;
-    }
+  }
 
-    .selectLengthUnit {
-        margin-top: 10px;
-    }
+  .selectLengthUnit {
+    margin-top: 10px;
+  }
 
-    .slideshowBox {
+  .slideshowBox {
+    position: relative;
+    // overflow: hidden;
+
+    .scollInputGroup {
+      .inputGroupItem {
+        .inputItemBox {
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+
+          .inputItem {
+            width: 100px;
+          }
+
+          .inputTitle {
+            text-align: center;
+            color: #a0a0a0;
+            line-height: 20px;
+          }
+        }
+      }
+    }
+  }
+
+
+  .dotBox {
+    width: 100%;
+    position: relative;
+
+    .dotList {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      padding: 0;
+
+      li {
         position: relative;
-        // overflow: hidden;
+        display: inline-block;
+        margin: 0 2px;
+        padding: 0;
+        text-align: center;
+        vertical-align: top;
+        margin-right: 10px;
+      }
 
-        .scollInputGroup {
-            .inputGroupItem {
-                .inputItemBox {
-                    display: flex;
-                    align-items: flex-end;
-                    justify-content: center;
+      .dotItem {
+        display: block;
+        width: 10px;
+        height: 10px;
+        padding: 0;
+        font-size: 0;
+        background: #0a0a0a;
+        border: 0;
+        border-radius: 20px;
+        outline: none;
+        // opacity: .3;
+        transition: all .5s;
+      }
+    }
+  }
 
-                    .inputItem {
-                        width: 100px;
-                    }
+  .nextBtnBox {
+    width: 330px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
 
-                    .inputTitle {
-                        text-align: center;
-                        color: #a0a0a0;
-                        line-height: 20px;
-                    }
-                }
-            }
-        }
+    .nextBtn {
+      width: 100%;
+      background: #e1206d;
+      border-color: #e1206d;
+    }
+  }
+}
+
+.myModal {
+  top: 0;
+  left: 0;
+
+  .petUiModal {
+    width: 300px;
+    height: 300px;
+    background-color: #fff;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .bodyText {
+      width: 85%;
+      text-align: center;
     }
 
+    .btns {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
 
-    .dotBox {
-        width: 100%;
-        position: relative;
+      .btn {
+        width: 35%;
+        background-color: #e1206d;
+        border-radius: 30px;
+        color: #fff;
+        cursor: pointer;
+        text-align: center;
 
-        .dotList {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            padding: 0;
 
-            li {
-                position: relative;
-                display: inline-block;
-                margin: 0 2px;
-                padding: 0;
-                text-align: center;
-                vertical-align: top;
-                margin-right: 10px;
-            }
-
-            .dotItem {
-                display: block;
-                width: 10px;
-                height: 10px;
-                padding: 0;
-                font-size: 0;
-                background: #0a0a0a;
-                border: 0;
-                border-radius: 20px;
-                outline: none;
-                // opacity: .3;
-                transition: all .5s;
-            }
-        }
+      }
     }
-
-    .nextBtnBox {
-        width: 330px;
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
-
-        .nextBtn {
-            width: 100%;
-            background: #e1206d;
-            border-color: #e1206d;
-        }
-    }
+  }
 }

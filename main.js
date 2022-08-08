@@ -152,7 +152,7 @@ function openUsb() {
           str += `${hex[i]}${hex[i + 1]} `;
           dataArr.push(`${hex[i]}${hex[i + 1]}`);
         }
-        console.log(dataIndex++, upload, "接受的数据位：", str);
+        // console.log(dataIndex++, upload, "接受的数据位：", str);
         if (upload) {
           const timer = setTimeout(() => {
             sendUpload();
@@ -250,7 +250,7 @@ function processed_data(arr) {
 
     // }
   }
-  console.log("-----出参-------", trueArr);
+  // console.log("-----出参-------", trueArr);
   return trueArr;
 }
 //校验数据是否有误

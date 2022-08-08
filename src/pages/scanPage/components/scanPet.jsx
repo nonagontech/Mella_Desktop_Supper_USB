@@ -37,8 +37,10 @@ import catUpper from "./../../../assets/img/catUpper.png";
 import catLower from "./../../../assets/img/catLower.png";
 import catFull from "./../../../assets/img/catFull.png";
 import catBody from "./../../../assets/img/catBody.png";
+import redjinggao from './../../../assets/img/redjinggao.png'
 import "./scanPet.less";
 import { px } from "../../../utils/px";
+import MyModal from '../../../utils/myModal/MyModal'
 
 const { Content, Header } = Layout;
 const ScanPet = ({
@@ -48,9 +50,10 @@ const ScanPet = ({
   setRulerConfirmCountFun,
   setRulerMeasureValueFun,
   setRulerUnitFun,
+  setRulerConnectStatusFun
 }) => {
   let { petSpeciesBreedId, patientId, petId } = petMessage;
-  let { rulerMeasureValue, rulerConfirmCount, rulerUnit } = ruleMessage;
+  let { rulerMeasureValue, rulerConfirmCount, rulerUnit, rulerConnectStatus } = ruleMessage;
   let storage = window.localStorage;
   const [radioValue, setRadioValue] = useState("in");
   const [inputIndex, setInputIndex] = useState(-1);
@@ -62,7 +65,10 @@ const ScanPet = ({
   const [lowerValue, setLowerValue] = useState(""); //接收输入框的值
   const [torsoValue, setTorsoValue] = useState(""); //接收输入框的值
   const [bodyValue, setBodyValue] = useState(""); //接收输入框的值
+  const [showModal, setShowModal] = useState(false);
+  const [selectPetDetail, setSelectPetDetail] = useState({})
   let newData = [];
+
 
   //保存input组
   const inputEl = (data) => {
@@ -234,6 +240,29 @@ const ScanPet = ({
     }
   };
 
+  //尺子正在测量中切换宠物清空数据
+  const onClickModal = () => {
+    setShowModal(false);
+    // petDetailInfoFun(selectPetDetail);
+    setInputIndex(0);
+    setCarouselIndex(1);
+    let {
+      torsoLength,
+      l2rarmDistance,
+      upperTorsoCircumference,
+      lowerTorsoCircumference,
+      h2tLength,
+      neckCircumference,
+    } = petMessage;
+
+    setBodyValue(petLengthDataConvert(l2rarmDistance));
+    setLowerValue(petLengthDataConvert(lowerTorsoCircumference));
+    setUpperValue(petLengthDataConvert(upperTorsoCircumference));
+    setNeckValue(petLengthDataConvert(neckCircumference));
+    setHeadValue(petLengthDataConvert(h2tLength));
+    setTorsoValue(petLengthDataConvert(torsoLength));
+  }
+
   //监听点击界面中下一步按钮
   useEffect(() => {
     console.log("inputIndex", inputIndex);
@@ -246,7 +275,7 @@ const ScanPet = ({
     }
 
     return () => { };
-  }, [inputIndex, patientId]);
+  }, [inputIndex]);
 
   useEffect(() => {
     if (carouselIndex === 2) {
@@ -270,25 +299,34 @@ const ScanPet = ({
     return () => { };
   }, [rulerConfirmCount]);
 
+  // useEffect(() => {
+  //   setRulerConnectStatusFun('disconnected')
+  // },[])
+
+
   //监听切换了宠物
   useEffect(() => {
-    setInputIndex(0);
-    let {
-      torsoLength,
-      l2rarmDistance,
-      upperTorsoCircumference,
-      lowerTorsoCircumference,
-      h2tLength,
-      neckCircumference,
-    } = petMessage;
+    // if (rulerConnectStatus === 'isMeasuring') {
+    //   setShowModal(true);
+    // } else {
+      setInputIndex(0);
+      setCarouselIndex(1);
+      let {
+        torsoLength,
+        l2rarmDistance,
+        upperTorsoCircumference,
+        lowerTorsoCircumference,
+        h2tLength,
+        neckCircumference,
+      } = petMessage;
 
-    setBodyValue(petLengthDataConvert(l2rarmDistance));
-    setLowerValue(petLengthDataConvert(lowerTorsoCircumference));
-    setUpperValue(petLengthDataConvert(upperTorsoCircumference));
-    setNeckValue(petLengthDataConvert(neckCircumference));
-    setHeadValue(petLengthDataConvert(h2tLength));
-    setTorsoValue(petLengthDataConvert(torsoLength));
-
+      setBodyValue(petLengthDataConvert(l2rarmDistance));
+      setLowerValue(petLengthDataConvert(lowerTorsoCircumference));
+      setUpperValue(petLengthDataConvert(upperTorsoCircumference));
+      setNeckValue(petLengthDataConvert(neckCircumference));
+      setHeadValue(petLengthDataConvert(h2tLength));
+      setTorsoValue(petLengthDataConvert(torsoLength));
+    // }
     return () => { };
   }, [petId]);
   //监听用户点击了硬件中的下一步按钮和拉动皮尺
@@ -329,6 +367,7 @@ const ScanPet = ({
     setBodyValue(bodyValue && changeUnit(bodyValue));
     return () => { };
   }, [rulerUnit]);
+
 
   return (
     <>
@@ -494,6 +533,19 @@ const ScanPet = ({
           </Button>
         </div>
       </Content>
+      {/* <MyModal
+        visible={showModal}
+        element={
+          <div className='petUiModal'>
+            <img src={redjinggao} alt="" width={'45px'} style={{ margin: `${px(25)}px 0` }} />
+            <div className='bodyText' style={{ marginTop: px(30) }}>Patient Switched – select dimension to measure</div>
+            <div className="btns" style={{ marginTop: px(35) }}>
+              <div className="btn" onClick={() => { setShowModal(false) }}>Cancel</div>
+              <div className="btn" onClick={() => { onClickModal() }}>Confirm</div>
+            </div>
+          </div>
+        }
+      /> */}
     </>
   );
 };
