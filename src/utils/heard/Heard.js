@@ -584,7 +584,7 @@ const Heard = ({
        * toUpperCase（）方法：将字符串统一转成大写
        *
        */
-      // let list = allPetList 
+      // let list = allPetList
       let list = petListArr || []
 
       let searchData = [];
@@ -683,7 +683,8 @@ const Heard = ({
         setMenuNum(e.index);
         break;
       case "4":
-        console.log("我的账号");
+        history.push("/MainBody");
+        setMenuNum(e.index);
         break;
       case "5":
         //跳转到设置

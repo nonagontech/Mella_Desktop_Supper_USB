@@ -1014,12 +1014,12 @@ let countryList = [
     'locale': 'SY',
     'code': 963
   },
-  {
-    'en': 'Taiwan',
-    'zh': '台湾省',
-    'locale': 'TW',
-    'code': 886
-  },
+  // {
+  //   'en': 'Taiwan',
+  //   'zh': '中国台湾',
+  //   'locale': 'TW',
+  //   'code': 886
+  // },
   {
     'en': 'Tajikstan',
     'zh': '塔吉克斯坦',

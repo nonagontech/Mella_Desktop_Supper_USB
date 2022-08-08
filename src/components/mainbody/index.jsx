@@ -39,7 +39,8 @@ import ScheduledPetPage from "../../pages/scheduledPetsPage";
 import AddScheduledPet from "../../pages/addScheduledPet";
 import ClininalStudy from "../../pages/clinicalStudyPage";
 import CombineScales from "../../pages/combineScales";
-import OtterEQPage from '../../pages/otterEQ'
+import OtterEQPage from '../../pages/otterEQ';
+import MyAccount from "../../pages/myAccount";
 import { Modal } from "antd";
 
 let ipcRenderer = window.require("electron").ipcRenderer;
@@ -723,7 +724,7 @@ class App extends Component {
           ) {
             setRulerConfirmCountFun(parseInt(confirmBtn[0], 16));
           }
-        } else if(bluName.indexOf("Tabby") !== -1){
+        } else if (bluName.indexOf("Tabby") !== -1) {
 
         }
 
@@ -1028,7 +1029,7 @@ class App extends Component {
               measurePage = <ScanPage />;
               break;
             case "otterEQ":
-              measurePage = <OtterEQPage/>;
+              measurePage = <OtterEQPage />;
               break;
 
             default:
@@ -1062,6 +1063,11 @@ class App extends Component {
             <HardAndPetsUI bodyHeight={bodyHeight} />
             <ClininalStudy bodyHeight={bodyHeight} />
           </>
+        );
+
+      case "4":
+        return (
+          <MyAccount bodyHeight={bodyHeight} />
         );
 
       default:

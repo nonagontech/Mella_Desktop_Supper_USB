@@ -488,61 +488,8 @@ class EditPetInfo extends Component {
 
             </ul>
           </div>
-
-
-
         </div>
         <div className="r">
-          {/* <div className="img"
-                    style={{ width: px(110), height: px(110) }}
-                >
-                    <div className="ciral" onClick={() => {
-                        let file = document.getElementById('f')
-                        file.click();
-                    }}>
-                        <img src={this.avatar} alt="" id="touxiang" height="280px" />
-                        <input type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" className="uploadImg" id="f" onChange={(e) => {
-                            console.log(e);
-                            let $target = e.target || e.srcElement
-                            if ($target.files.length === 0) {
-                                return;
-                            }
-                            let file = $target.files[0]
-                            var reader = new FileReader()                   //创建文件阅读器实例
-                            reader.readAsDataURL(file)
-                            reader.onload = (data) => {
-                                let res = data.target || data.srcElement
-                                console.dir(document.getElementById('touxiang'));
-                                document.getElementById('touxiang').src = res.result
-
-
-                                const formData = new FormData();
-                                formData.append('img', file);
-                                fetch(`${url}/image/uploadImage`, {
-                                    method: 'POST',
-                                    headers: {
-                                    },
-                                    body: formData
-                                })
-                                    .then((response) => response.json())
-                                    .then((res) => {
-                                        console.log(res);
-                                        if (res.flag === true) {
-                                            this.setState({
-                                                imageId: res.data.imageId,
-                                                imgurl: res.data.url
-                                            })
-                                        }
-                                    })
-                                    .catch((err) => {
-                                        console.log(err);
-                                    });
-                            }
-
-                        }} />
-                        <p style={{ fontSize: px(14), height: mTop(35) }}>Upload Photo</p>
-                    </div>
-                </div> */}
           <div className="img">
             <Avatar
               init={
@@ -552,7 +499,6 @@ class EditPetInfo extends Component {
                 </div>
               }
               getinfo={(val) => {
-                console.log('我是父组件，从子组件获取到的数据位：', val);
                 if (val) {
                   this.setState({
                     imageId: val
@@ -561,21 +507,16 @@ class EditPetInfo extends Component {
 
               }}
               getAllInfo={(val) => {
-                console.log('所有的信息', val);
                 if (val.url) {
                   this.setState({
                     petUrl: val.url
                   })
                 }
-
               }}
             />
           </div>
-
         </div>
-
       </div>
-
     )
   }
   _petName = () => {
