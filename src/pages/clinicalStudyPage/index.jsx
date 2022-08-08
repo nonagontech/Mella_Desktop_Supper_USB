@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { connect } from "react-redux";
 import { Layout, message, Input, Modal, Table, Popconfirm, Select } from "antd";
 import ReactECharts from "echarts-for-react";
-import * as echarts from "echarts";
 import propTypes from "prop-types";
 import moment from "moment";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -29,7 +28,6 @@ let mellaMeasureNumCopy = 0;
 //定义echarts的数据个数
 const { Option } = Select;
 let saveHistoryTime = null;
-let myChart = null
 const ClinicalStudy = ({
   bodyHeight,
   mellaConnectStatus,
@@ -94,19 +92,12 @@ const ClinicalStudy = ({
   const clinicalRef = useRef(null);
   //分辨率变化
   const chartsBox = useCallback((node) => {
-    // if (node !== null && echartsElement.current) {
-    //   setTimeout(() => {
-    //     console.log('??????????', echartsElement.current.getEchartsInstance());
-    //     echartsElement.current.getEchartsInstance().resize({ height: px(380) });
-    //   }, 1000)
-    // }
-    if (!myChart) {
-      myChart = echarts.init(document.getElementById("myChart"));
+    if (node !== null && echartsElement.current) {
+      setTimeout(() => {
+        echartsElement.current.getEchartsInstance().resize({ height: px(380) });
+      }, 1000)
     }
-
-    myChart.resize();
   }, [window.screen.availWidth]);
-
   //窗口宽高变化
   const resize = () => {
     if (clinicalRef.current && clinicalRef.current.offsetWidth) {
@@ -1635,7 +1626,7 @@ const ClinicalStudy = ({
   //echars渲染
   const echars = () => {
     return (
-      <div id="myCharts" style={{ marginTop: mTop(50), width: windowWidth, height: '380px' }} ref={chartsBox}>
+      <div id="myCharts" style={{ marginTop: mTop(50), width: windowWidth,height:'380px'}} ref={chartsBox}>
         <ReactECharts
           option={getOption()}
           theme="Imooc"
@@ -1664,16 +1655,6 @@ const ClinicalStudy = ({
       saveHistoryTime && clearTimeout(saveHistoryTime);
     };
   }, []);
-
-  useEffect(() => {
-    initCharts()
-
-  }, [])
-  const initCharts = () => {
-    myChart = echarts.init(document.getElementById("myChart"));
-    let option = getOption()
-    myChart.setOption(option);
-  }
 
   useEffect(() => {
     //react监听屏幕窗口改变
