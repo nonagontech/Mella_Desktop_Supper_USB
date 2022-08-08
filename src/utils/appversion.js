@@ -1,5 +1,5 @@
-export const version = '1.1.5';
-export const updateTime = '07-13-22';
+export const version = '1.1.8';
+export const updateTime = '08-08-22';
 
 
 

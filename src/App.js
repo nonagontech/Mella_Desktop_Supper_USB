@@ -52,6 +52,7 @@ import AdvancedSettings from './components/menuOptions/advancedSettings/Advanced
 import Invite from './components/menuOptions/invite/Invite'
 import PetAndParents from './components/menuOptions/petAndParents/PetAndParents'
 import EditParent from './components/menuOptions/editParent/EditParent'
+import MyAccount from './pages/myAccount'
 // import AdminAddPet from './components/menuOptions/adminAddPet/AdminAddPet'
 import Veterinarians from './components/menuOptions/admin_VetProfile/Veterinarians'
 import AddDevice from './components/menuOptions/addDevice/AddDevice'
@@ -132,6 +133,7 @@ class App extends Component {
           <Route exact path="/menuOptions/invite" component={Invite} />
           <Route exact path="/menuOptions/petAndParents" component={PetAndParents} />
           <Route exact path="/menuOptions/editParent" component={EditParent} />
+          <Route exact path="/MyAccount" component={MyAccount} />
           {/* <Route exact path="/menuOptions/adminAddPet" component={AdminAddPet} /> */}
           <Route exact path="/menuOptions/veterinarians" component={Veterinarians} />
           <Route exact path="/menuOptions/AddDevice" component={AddDevice} />

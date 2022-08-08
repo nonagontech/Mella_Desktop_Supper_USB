@@ -335,7 +335,7 @@ function show(val) {
 }
 
 //创建加载中的窗口
-
+let loadingWindow=null
 function createLoadingWindow() {
   //加载页面窗口
   loadingWindow = new BrowserWindow({

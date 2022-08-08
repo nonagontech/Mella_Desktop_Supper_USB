@@ -95,10 +95,6 @@ class EditPetInfo extends Component {
   componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('big', win())
-
-
-
-
     // if (this.props.location.participate) {
     //   let props = this.props.location.participate
     //   console.log(props);
@@ -124,6 +120,7 @@ class EditPetInfo extends Component {
         patientId,
         petId,
         oldPatientId: patientId,
+        breedName: breedName
 
       }, () => {
         this._getPetInfo()
@@ -298,7 +295,7 @@ class EditPetInfo extends Component {
           petName = isNull(petName)
           lastName = isNull(lastName)
           firstName = isNull(firstName)
-          breedName = isNull(breedName)
+          // breedName = isNull(breedName)
 
           let confirmSelectBreedJson = {}
           if (petSpeciesBreedId || petSpeciesBreedId === 0) {
@@ -323,8 +320,6 @@ class EditPetInfo extends Component {
           } else {
             weight = ''
           }
-
-
           this.setState({
             petId,
             petName,
@@ -337,8 +332,6 @@ class EditPetInfo extends Component {
             imgurl: url,
             gender,
             petSpecies: speciesId,
-
-
             initpetName: petName,
             initlastName: lastName,
             initfirstName: firstName,
@@ -495,61 +488,8 @@ class EditPetInfo extends Component {
 
             </ul>
           </div>
-
-
-
         </div>
         <div className="r">
-          {/* <div className="img"
-                    style={{ width: px(110), height: px(110) }}
-                >
-                    <div className="ciral" onClick={() => {
-                        let file = document.getElementById('f')
-                        file.click();
-                    }}>
-                        <img src={this.avatar} alt="" id="touxiang" height="280px" />
-                        <input type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" className="uploadImg" id="f" onChange={(e) => {
-                            console.log(e);
-                            let $target = e.target || e.srcElement
-                            if ($target.files.length === 0) {
-                                return;
-                            }
-                            let file = $target.files[0]
-                            var reader = new FileReader()                   //创建文件阅读器实例
-                            reader.readAsDataURL(file)
-                            reader.onload = (data) => {
-                                let res = data.target || data.srcElement
-                                console.dir(document.getElementById('touxiang'));
-                                document.getElementById('touxiang').src = res.result
-
-
-                                const formData = new FormData();
-                                formData.append('img', file);
-                                fetch(`${url}/image/uploadImage`, {
-                                    method: 'POST',
-                                    headers: {
-                                    },
-                                    body: formData
-                                })
-                                    .then((response) => response.json())
-                                    .then((res) => {
-                                        console.log(res);
-                                        if (res.flag === true) {
-                                            this.setState({
-                                                imageId: res.data.imageId,
-                                                imgurl: res.data.url
-                                            })
-                                        }
-                                    })
-                                    .catch((err) => {
-                                        console.log(err);
-                                    });
-                            }
-
-                        }} />
-                        <p style={{ fontSize: px(14), height: mTop(35) }}>Upload Photo</p>
-                    </div>
-                </div> */}
           <div className="img">
             <Avatar
               init={
@@ -559,7 +499,6 @@ class EditPetInfo extends Component {
                 </div>
               }
               getinfo={(val) => {
-                console.log('我是父组件，从子组件获取到的数据位：', val);
                 if (val) {
                   this.setState({
                     imageId: val
@@ -568,21 +507,16 @@ class EditPetInfo extends Component {
 
               }}
               getAllInfo={(val) => {
-                console.log('所有的信息', val);
                 if (val.url) {
                   this.setState({
                     petUrl: val.url
                   })
                 }
-
               }}
             />
           </div>
-
         </div>
-
       </div>
-
     )
   }
   _petName = () => {
@@ -716,29 +650,27 @@ class EditPetInfo extends Component {
       <div className="petName" style={{ marginTop: mTop(18), alignItems: 'flex-end' }}
       >
         <div className="l">
-
           <p ><span style={{ color: 'red' }}>*</span> Patient ID</p>
           <div className="infoInput">
             <Input bordered={false}
               value={this.state.patientId}
               onChange={(item) => {
-
                 this.setState({
                   patientId: item.target.value.replace(/\s/g, ""),
                   intFlog: true
-
                 })
                 if (item.target.value !== errPatientId) {
                   message.destroy()
                 }
               }}
               onBlur={() => {
-                message.destroy()
-                console.log('我离开光标了');
                 if (this.state.patientId === this.state.oldPatientId) {
                   return
                 }
-
+                if (this.state.patientId === '') {
+                  message.error('The pet ID cannot be empty');
+                  return
+                }
                 let params = {
                   patientId: this.state.patientId,
                   doctorId: storage.userId
@@ -746,18 +678,19 @@ class EditPetInfo extends Component {
                 if (storage.lastWorkplaceId) {
                   params.workplaceId = storage.lastWorkplaceId
                 }
+                if (storage.lastOrganization) {
+                  params.organizationId = storage.lastOrganization
+                }
 
                 fetchRequest(`/pet/checkPatientId`, "GET", params)
                   .then(res => {
-                    console.log(res);
                     if (res.flag === false) {
                       errPatientId = params.patientId
-                      message.destroy()
-                      message.error('This patient ID is already occupied, please change to a new one', 0)
+                      message.error('This patient ID is already occupied, please change to a new one');
                     } else {
-                      errPatientId = ''
+                      errPatientId = '';
+                      message.success('This pet ID will work');
                     }
-
                   })
                   .catch(err => {
                     console.log(err);
@@ -766,10 +699,7 @@ class EditPetInfo extends Component {
               }}
             />
           </div>
-
         </div>
-
-
         <div className="r">
           <div className="infoInput flex"
             style={{ marginTop: px(8), flexDirection: 'row', justifyContent: 'space-between', cursor: 'pointer', }}
@@ -780,59 +710,14 @@ class EditPetInfo extends Component {
               })
             }}
           >
-
             <div className="myBreed" style={{ width: '90%', height: px(25) }}>{confirmSelectUserJson.name ? confirmSelectUserJson.name : 'My Parents'}</div>
             <div className="nextimg" >
               <img src={nextImg} style={{ height: px(15) }} />
             </div>
-
-
           </div>
-
-
         </div>
-
       </div>
-
     )
-
-    // return (
-    //   <div className="petName" style={{ marginTop: mTop(30) }}>
-    //     <div className="l">
-    //       <p >Owner First Name</p>
-    //       <div className="infoInput">
-    //         <Input bordered={false}
-    //           value={this.state.initfirstName}
-    //           onChange={(item) => {
-
-    //             this.setState({
-    //               firstName: item.target.value.replace(/(^\s*)|(\s*$)/g, ""),
-    //               initfirstName: item.target.value
-    //             })
-    //           }}
-
-    //         />
-    //       </div>
-    //     </div>
-
-    //     <div className="r">
-    //       <p >Owner Last Name</p>
-    //       <div className="infoInput">
-    //         <Input bordered={false}
-    //           value={this.state.initlastName}
-    //           onChange={(item) => {
-
-    //             this.setState({
-    //               lastName: item.target.value.replace(/(^\s*)|(\s*$)/g, ""),
-    //               initlastName: item.target.value
-    //             })
-    //           }}
-    //         />
-    //       </div>
-    //     </div>
-    //   </div>
-
-    // )
   }
   _select = (value, data) => {
     console.log(value, data);  //value的值为id
@@ -843,35 +728,11 @@ class EditPetInfo extends Component {
   }
   _primaryBreed = () => {
     let options = null
-    // switch (this.state.petSpecies) {
-    //     case 2: options = this.state.catData.map(d => <Option key={d.petSpeciesBreedId}>{d.breedName}</Option>); break;
-    //     case 1: options = this.state.dogData.map(d => <Option key={d.petSpeciesBreedId}>{d.breedName}</Option>); break;
-    // }
     options = this.state.breedArr.map(d => <Option key={d.petSpeciesBreedId}>{d.breedName}</Option>);
     let { breedName, confirmSelectBreedJson } = this.state
-    // console.log('-----breedName:', confirmSelectBreedJson);
-
     return (
       <div className="petName" style={{ marginTop: mTop(30), alignItems: 'flex-end', }}>
         <div className="l">
-          {/* <p >Primary Breed</p>
-          <div className="infoInput">
-            <Select
-              showSearch
-              style={{ width: '100%' }}
-              bordered={false}
-              value={breedName}
-              // size = {'small'}        
-              placeholder="Search to Select"
-              optionFilterProp="children"
-              listHeight={256}
-              onSelect={(value, data) => this._select(value, data)}
-              filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-              filterSort={(optionA, optionB) => optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())}
-            >
-              {options}
-            </Select>
-          </div> */}
           <div className="infoInput flex"
             style={{ marginTop: px(8), flexDirection: 'row', justifyContent: 'space-between', cursor: 'pointer' }}
             onClick={() => {
@@ -880,20 +741,16 @@ class EditPetInfo extends Component {
               })
             }}
           >
-
-            <div className="myBreed" style={{ width: '90%', height: px(25) }}>{confirmSelectBreedJson.name ? confirmSelectBreedJson.name : 'My Breed'}</div>
+            <div className="myBreed" style={{ width: '90%', height: px(25) }}>
+              {
+                confirmSelectBreedJson.name ? confirmSelectBreedJson.name : 'My Breed'
+              }
+            </div>
             <div className="nextimg" >
               <img src={nextImg} style={{ height: px(15) }} />
             </div>
-
-
           </div>
-
-
         </div>
-
-
-
         <div className="r" >
           <div className="max">
             Mix?
@@ -903,10 +760,8 @@ class EditPetInfo extends Component {
               })}
             >
               {(this.state.isMix) ? (<img src={dui} alt="" width='20px' />) : (null)}
-
             </div>
           </div>
-
         </div>
       </div>
 
@@ -918,12 +773,10 @@ class EditPetInfo extends Component {
       case 1: ibBgcColor = '#E1206D'; ibCor = '#fff'; kgBgcColor = '#fff'; kgCor = '#E1206D'; break;
       case 2: ibBgcColor = '#fff'; ibCor = '#E1206D'; kgBgcColor = '#E1206D'; kgCor = '#fff'; break;
     }
-
     switch (this.state.gender) {
       case 1: femaleBgc = '#E1206D'; maleBgc = '#F08FB6'; break;
       case 0: femaleBgc = '#F08FB6'; maleBgc = '#E1206D'; break;
     }
-
     return (
       <div className="petName" style={{ marginTop: mTop(30) }}>
         <div className="l">
@@ -937,7 +790,6 @@ class EditPetInfo extends Component {
                   weight: item.target.value
                 })
               }}
-
             />
             <div className="ibKg">
               <div className="ibs"
@@ -966,12 +818,9 @@ class EditPetInfo extends Component {
                   this.setState({ unit: 2 })
                 }}
               >kgs</div>
-
             </div>
-
           </div>
         </div>
-
         <div className="r">
           <p style={{ color: '#4a4a4a', fontSize: '17px', marginTop: '20px' }}>Pet Gender</p>
           <div className="gender">
@@ -1011,7 +860,6 @@ class EditPetInfo extends Component {
         <div className="close1">
           {/* 菜单 */}
           <div className="menu">
-
             <MyIcon type='icon-fanhui4' className="icon" onClick={() => {
               // if (storage.goEditPet === "mesasure") {
               //   this.props.history.push({ pathname: 'page8', participate: { patientId: this.state.patientId } })
@@ -1039,12 +887,7 @@ class EditPetInfo extends Component {
               style={{ backgroundColor: closebgc, color: closeColor }}
             ></div>
           </div>
-
-
         </div>
-
-
-
         <div className="editPetInfo_top">
           <div className="title">{`${this.state.patientId}, ${this.state.petName}`}</div>
           {this._petSpecies()}
@@ -1061,14 +904,28 @@ class EditPetInfo extends Component {
               if (unit === 1) {
                 weight = (0.45359 * weight).toFixed(2)
               }
-
-              let data = {
-                petName,
-                weight: parseFloat(weight),
-                gender,
-                firstName,
-                lastName,
+              let data = {}
+              if (this.state.patientId === this.state.oldPatientId) {
+                data = {
+                  petName,
+                  weight: parseFloat(weight),
+                  gender,
+                  firstName,
+                  lastName,
+                  // patientId: this.state.patientId,
+                }
+              } else {
+                data = {
+                  petName,
+                  weight: parseFloat(weight),
+                  gender,
+                  firstName,
+                  lastName,
+                  patientId: this.state.patientId,
+                }
               }
+
+
               if (birthday) {
                 data.birthday = moment(birthday).format('YYYY-MM-DD')
               }
@@ -1084,62 +941,57 @@ class EditPetInfo extends Component {
               if (confirmSelectUserJson.petSpeciesBreedId) {
                 data.userId = confirmSelectUserJson.petSpeciesBreedId
               }
+              if (storage.lastOrganization) {
+                data.organizationId = storage.lastOrganization
+              }
+              if (this.state.patientId === '') {
+                message.error('The pet ID cannot be empty');
+              } else {
+                this.setState({
+                  spin: true
+                })
+                fetchRequest(`/pet/updatePetInfo/${petId}`, 'POST', data)
+                  .then(res => {
+                    this.setState({
+                      spin: false
+                    })
+                    console.log(res);
+                    if (res.flag === true) {
+                      try {
+                        if (storage.identity === '3') {
+                          let data = JSON.parse(storage.doctorExam)
+                          data.petName = petName
+                          data.weight = weight
+                          data.gender = gender
+                          data.patientId = this.state.patientId
+                          if (birthday) {
+                            data.age = moment(new Date()).diff(moment(birthday), 'years')
+                          }
+                          if (confirmSelectBreedJson.name) {
+                            data.breed = confirmSelectBreedJson.name
+                          }
+                          if (this.state.petUrl) {
+                            data.url = this.state.petUrl
+                          }
 
-              console.log('------', data);
-              this.setState({
-                spin: true
-              })
-              fetchRequest(`/pet/updatePetInfo/${petId}`, 'POST', data)
-                .then(res => {
-                  this.setState({
-                    spin: false
-                  })
-                  console.log(res);
-                  if (res.flag === true) {
-                    try {
-                      if (storage.identity === '3') {
-                        let data = JSON.parse(storage.doctorExam)
-                        data.petName = petName
-                        data.weight = weight
-                        data.gender = gender
-                        data.patientId = this.state.patientId
-                        if (birthday) {
-                          data.age = moment(new Date()).diff(moment(birthday), 'years')
+                          storage.doctorExam = JSON.stringify(data)
                         }
-                        if (confirmSelectBreedJson.name) {
-                          data.breed = confirmSelectBreedJson.name
-                        }
-                        if (this.state.petUrl) {
-                          data.url = this.state.petUrl
-                        }
+                      } catch (error) {
 
-                        storage.doctorExam = JSON.stringify(data)
                       }
-                    } catch (error) {
-
+                      this.props.petDetailInfoFun({ ...this.props.petDetailInfo, petName, birthday, patientId: this.state.patientId })
+                      this.props.history.goBack()
+                    } else {
+                      message.error('This patient ID is already occupied, please change to a new one')
                     }
-                    console.log('从哪来', storage.goEditPet);
-                    // if (storage.goEditPet === "mesasure") {
-                    //   this.props.history.replace({ pathname: 'page8', participate: { patientId: this.state.patientId } })
-                    // } else {
-                    //   this.props.history.goBack()
-                    // }
-
-                    this.props.petDetailInfoFun({ ...this.props.petDetailInfo, petName, birthday, patientId: this.state.patientId })
-                    this.props.history.goBack()
-
-
-
-                  } else {
-                    message.error('Update failed')
-                  }
-                })
-                .catch(err => {
-                  this.setState({
-                    spin: false
                   })
-                  console.log(err);
-                })
+                  .catch(err => {
+                    this.setState({
+                      spin: false
+                    })
+                    console.log(err);
+                  })
+              }
             }}
 
           >Save Changes</div>

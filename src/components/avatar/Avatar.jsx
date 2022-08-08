@@ -75,17 +75,13 @@ const Demo = (props) => {
           action="http://ec2-3-214-224-72.compute-1.amazonaws.com:8080/mellaserver/image/uploadImage"
           listType="picture-card"
           name='img'
-          // showUploadList={false}
           fileList={fileList}
           onChange={onChange}
           onPreview={onPreview}
           data={(file) => {
             console.log('--文件信息---', file);
           }}
-        // maxCount={1}
-        // customRequest = {()=>{
-
-        // }}
+          accept="image/*"
         >
           {fileList.length < 1 && (init || '+ Upload')}
         </Upload>

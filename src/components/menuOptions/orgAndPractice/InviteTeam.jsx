@@ -95,13 +95,13 @@ export default class Team extends Component {
                                     inputValue: '',
                                 });
                                 break;
-                            case 11012:
-                                console.log('账号被限制、注册未激活状态');
+                            // case 11012:
+                            //     console.log('账号被限制、注册未激活状态');
 
 
 
-                            case 11013:
-                                console.log('邮箱未被注册，跳出弹框询问是否前往注册');
+                            // case 11013:
+                            //     console.log('邮箱未被注册，跳出弹框询问是否前往注册');
                             case 11014:
                                 console.log('邮箱被注销或者封停，跳出弹框询问是否前往注册');
                                 message.error('This mailbox was not found!', 3)

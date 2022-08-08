@@ -143,12 +143,12 @@ export default class NewOrganization extends Component {
       loadVisible: true
     })
 
-    console.log('入参信息：', params, temporaryStorage.logupSuccessData.userId);
+    // console.log('入参信息：', params, temporaryStorage.logupSuccessData.userId);
     // fetchRequest(`/organization/addOrganization/${temporaryStorage.logupSuccessData.userId}`, "POST", params)
     fetchRequest(`/organization/addOrganization/${temporaryStorage.logupSuccessData.userId}`, "POST", params)
 
       .then(res => {
-        console.log('添加组织返回的信息', res);
+        // console.log('添加组织返回的信息', res);
         this.setState({
           loadVisible: false
         })
@@ -157,7 +157,7 @@ export default class NewOrganization extends Component {
             this.setState({ visible: true })
           }
           if (res.code === 20000) {
-            console.log('添加成功，跳转');
+            // console.log('添加成功，跳转');
             temporaryStorage.logupOrganization = res.data
             this.props.history.push('/uesr/logUp/InviteTeam')
           }

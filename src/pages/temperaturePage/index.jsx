@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Layout, Menu, PageHeader } from "antd";
+import { Layout } from "antd";
 import LinkEquipment from "./components/linkEquipment";
 import Measurement from "./components/measurement";
 import MeasuredData from "./components/measuredData";
@@ -17,8 +17,6 @@ import _ from "lodash";
 import HeaderItem from "./components/headerItem";
 import { px } from "../../utils/px";
 import "./index.less";
-
-const { Content, Header } = Layout;
 
 const TemperaturePage = ({ petMessage, hardwareMessage }) => {
   let { mellaConnectStatus } = hardwareMessage;

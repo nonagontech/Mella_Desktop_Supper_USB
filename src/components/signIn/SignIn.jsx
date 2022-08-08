@@ -354,7 +354,6 @@ export default class SignIn extends Component {
             src={`data:image/jpeg;base64,${baseUrl}`}
             alt=""
             style={{
-              opacity: "1",
               width: px(120),
               height: px(120),
               opacity: imgOpacity,

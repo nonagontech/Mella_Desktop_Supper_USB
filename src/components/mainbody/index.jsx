@@ -39,6 +39,8 @@ import ScheduledPetPage from "../../pages/scheduledPetsPage";
 import AddScheduledPet from "../../pages/addScheduledPet";
 import ClininalStudy from "../../pages/clinicalStudyPage";
 import CombineScales from "../../pages/combineScales";
+import OtterEQPage from '../../pages/otterEQ';
+import MyAccount from "../../pages/myAccount";
 import { Modal } from "antd";
 
 let ipcRenderer = window.require("electron").ipcRenderer;
@@ -359,8 +361,8 @@ class App extends Component {
         this.time193 && clearTimeout(this.time193);
         this.time193 = setTimeout(() => {
           if (new Date() - time194 < 1000) {
-            return;
             this.time193 && clearTimeout(this.time193);
+            return;
           }
           firstEar = true;
           if (mellaConnectStatus !== "complete") {
@@ -554,9 +556,6 @@ class App extends Component {
           });
         }
       },
-      // 255: () => {
-
-      // }
       255: () => {
         let length = newArr.length;
         let frameLength = newArr[1]; //帧长
@@ -857,6 +856,87 @@ class App extends Component {
           });
 
 
+        } else if (bluName.indexOf("Tabby") !== -1 && bluData.length > 10) {
+          console.log('硬件名称', bluName, '-----硬件数据', bluData);
+          let {
+            hardwareReduce,
+            setRulerConfirmCountFun,
+            setRulerConnectStatusFun,
+            setRulerMeasureValueFun,
+            setRulerUnitFun,
+          } = this.props;
+          let {
+            rulerConnectStatus,
+            rulerMeasureValue,
+            rulerUnit,
+            rulerConfirmCount,
+            receiveBroadcastHardwareInfo,
+          } = hardwareReduce;
+          let confirmBtn = bluData[10]; //十六进制数字，值为01代表尺子拉动，值为x2代表按了尺子确认按钮
+          let rulerUnitNum = parseInt(bluData[13], 16); //十进制数字，值等于11代表单位为in，00代表单位为cm
+          let newVal = null; //为测量数值，和单位匹配对应
+          const ITEMINDEX = 6;
+          let units = rulerUnitNum === 0 ? "cm" : "in";
+          let mac = bluData[1];
+          for (let i = 2; i <= 6; i++) {
+            mac += `:${bluData[i]}`;
+          }
+          let json = {
+            deviceType: "tape",
+            macId: mac,
+            name: bluName,
+          };
+          if (!compareObject(receiveBroadcastHardwareInfo, json)) {
+            setReceiveBroadcastHardwareInfoFun(json);
+          }
+
+          if (units !== rulerUnit) {
+            setRulerUnitFun(units);
+          }
+          if (rulerConnectStatus !== "isMeasuring") {
+            setRulerConnectStatusFun("isMeasuring");
+          }
+          this.rulerTimer && clearTimeout(this.rulerTimer);
+          this.rulerTimer = setTimeout(() => {
+            setRulerConnectStatusFun("disconnected");
+          }, 5000);
+          //num1和num2组成测得的测量值，num的值为测量数值，单位恒为厘米
+          let num1 = bluData[11];
+          let num2 = bluData[12];
+          let num = getVal(num1, num2);
+          try {
+            newVal = parseFloat(num);
+            if (rulerUnitNum === 17) {
+              newVal = newVal.toFixed(2);
+            } else {
+              newVal = newVal.toFixed(1);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+
+          function getVal(shi, xiaoshuo) {
+            let num1 = parseInt(shi, 16);
+            let num2 = parseInt(xiaoshuo, 16);
+            return `${num1}.${num2}`;
+          }
+          if (newVal !== rulerMeasureValue) {
+            setRulerMeasureValueFun(newVal);
+          }
+
+          //点击了确认按钮
+
+          if (
+            confirmBtn[1] === "2" &&
+            parseInt(confirmBtn[0]) !== rulerConfirmCount &&
+            confirmBtn[0] !== null
+          ) {
+            setRulerConfirmCountFun(parseInt(confirmBtn[0], 16));
+          }
+
+
+
+
         }
       },
       182: () => {
@@ -912,7 +992,7 @@ class App extends Component {
       });
     }
   };
-  //获取设备类型
+  //获取设备类型(渲染左侧硬件种类侧边栏)
   getDevicesType = () => {
     // let devicesTypeList = [
     //   {
@@ -1035,6 +1115,17 @@ class App extends Component {
           },
         ],
       });
+      devicesTypeList.push({
+        type: "otterEQ",
+        devices: [
+          {
+            name: "otterEQ",
+            mac: "375082",
+            deviceType: "otterEQ",
+            examRoom: "",
+          },
+        ],
+      });
     }
 
     let hardList = [].concat(devicesTypeList);
@@ -1077,6 +1168,9 @@ class App extends Component {
             case "tape":
               measurePage = <ScanPage />;
               break;
+            case "otterEQ":
+              measurePage = <OtterEQPage />;
+              break;
 
             default:
               break;
@@ -1109,6 +1203,11 @@ class App extends Component {
             <HardAndPetsUI bodyHeight={bodyHeight} />
             <ClininalStudy bodyHeight={bodyHeight} />
           </>
+        );
+
+      case "4":
+        return (
+          <MyAccount bodyHeight={bodyHeight} />
         );
 
       default:

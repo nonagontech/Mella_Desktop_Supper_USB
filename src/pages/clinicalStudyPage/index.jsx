@@ -21,7 +21,6 @@ import { setTest } from "../../store/actions";
 import "./clinical.less";
 import { fetchRequest } from "../../utils/FetchUtil1";
 import { fetchRequest3 } from "../../utils/FetchUtil3";
-
 let resyncDeviceIsClick = true; //用于控制多次点击重新配对按钮
 let storage = window.localStorage;
 
@@ -38,6 +37,8 @@ const ClinicalStudy = ({
   mellaMeasureNum,
   petDetailInfo,
   setTest,
+  biggieBodyWeight,
+  biggieUnit,
 }) => {
   const [units, setUnits] = useState("");
   const [temperature, setTemp] = useState(0);
@@ -87,6 +88,7 @@ const ClinicalStudy = ({
   });
   const [memo, setMemo] = useState("");
   const [windowWidth, setWindowWidth] = useState(px(500));
+  const [WeightValue, setWeightValue] = useState('');
 
   const echartsElement = useRef(null);
   const clinicalRef = useRef(null);
@@ -158,6 +160,7 @@ const ClinicalStudy = ({
         memo: notes,
         petVitalTypeId: petVitalId,
         clinicalDataEntityList: emerData,
+        anusTemperature: referenceT
       };
       if (storage.roleId === `1`) {
         datas.userId = storage.userId;
@@ -165,6 +168,14 @@ const ClinicalStudy = ({
         datas.doctorId = storage.userId;
         datas.userId = storage.userId;
       }
+
+      let updatePetInfoData = {
+        weight: (WeightValue / 2.2046).toFixed(2)
+      }
+      if (storage.lastOrganization) {
+        updatePetInfoData.organizationId = storage.lastOrganization
+      }
+
       let { petId, isWalkIn } = petDetailInfo;
       if (petId && !isWalkIn) {
         datas.petId = petId;
@@ -205,6 +216,19 @@ const ClinicalStudy = ({
             console.log(err);
             message.error(err);
           });
+      }
+      if (WeightValue !== '') {
+        fetchRequest(`/pet/updatePetInfo/${petId}`, 'POST', updatePetInfoData)
+          .then((res) => {
+            if (res.flag === true) {
+
+            } else {
+              message.error('Failed to update pet weight');
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          })
       }
     }, 500);
   };
@@ -702,8 +726,7 @@ const ClinicalStudy = ({
               className="inp"
               // style={{ border: 'none', outline: 'medium' }}
               // style={{ width: px(105), height: mTop(33), fontSize: px(18), marginRight: px(6) }}
-
-              value={`${roomTemperature}`}
+              value={roomTemperature}
               bordered={false}
               onChange={(item) => {
                 let str = item.target.value
@@ -715,20 +738,9 @@ const ClinicalStudy = ({
                   .replace(/^(\-)*(\d+)\.(\d\d).*$/, "$1$2.$3");
                 setRoomTemperature(str);
               }}
+              suffix={'℉'}
+              maxLength={8}
             />
-            <span
-              style={{
-                position: "absolute",
-                top: "5%",
-                right: "5%",
-                display: "table-cell",
-                whiteSpace: "nowrap",
-                paddingTop: "5px",
-                paddingRight: "5px",
-              }}
-            >
-              ℉
-            </span>
           </div>
           <div
             style={{
@@ -755,20 +767,9 @@ const ClinicalStudy = ({
                   .replace(/^(\-)*(\d+)\.(\d\d).*$/, "$1$2.$3");
                 setReferenceRectalTemperature(str);
               }}
+              suffix={'℉'}
+              maxLength={8}
             />
-            <span
-              style={{
-                position: "absolute",
-                top: "10%",
-                right: "5%",
-                display: "table-cell",
-                whiteSpace: "nowrap",
-                paddingTop: "5px",
-                paddingRight: "5px",
-              }}
-            >
-              ℉
-            </span>
           </div>
         </div>
         <div className="child">
@@ -795,6 +796,7 @@ const ClinicalStudy = ({
                   .replace(/^(\-)*(\d+)\.(\d\d).*$/, "$1$2.$3");
                 setBodyConditionScore(str);
               }}
+              maxLength={8}
             />
           </div>
           <div className="furLength">
@@ -843,20 +845,9 @@ const ClinicalStudy = ({
                   .replace(/^(\-)*(\d+)\.(\d\d).*$/, "$1$2.$3");
                 setHeartRate(str);
               }}
+              suffix={'bpm'}
+              maxLength={8}
             />
-            <span
-              style={{
-                position: "absolute",
-                top: "2%",
-                right: "5%",
-                display: "table-cell",
-                whiteSpace: "nowrap",
-                paddingTop: "5px",
-                paddingRight: "1px",
-              }}
-            >
-              bpm
-            </span>
           </div>
           <div
             style={{
@@ -882,20 +873,9 @@ const ClinicalStudy = ({
                   .replace(/^(\-)*(\d+)\.(\d\d).*$/, "$1$2.$3");
                 setBloodPressure(str);
               }}
+              suffix={'mm'}
+              maxLength={8}
             />
-            <span
-              style={{
-                position: "absolute",
-                top: "2%",
-                right: "5%",
-                display: "table-cell",
-                whiteSpace: "nowrap",
-                paddingTop: "5px",
-                paddingRight: "5px",
-              }}
-            >
-              mm
-            </span>
           </div>
         </div>
         <div className="child" style={{ marginBottom: px(40) }}>
@@ -923,22 +903,24 @@ const ClinicalStudy = ({
                   .replace(/^(\-)*(\d+)\.(\d\d).*$/, "$1$2.$3");
                 setRespiratoryRate(str);
               }}
+              suffix={'bpm'}
+              maxLength={8}
             />
-            <span
-              style={{
-                position: "absolute",
-                top: "2%",
-                right: "5%",
-                display: "table-cell",
-                whiteSpace: "nowrap",
-                paddingTop: "5px",
-                paddingRight: "1px",
-              }}
-            >
-              bpm
-            </span>
           </div>
-          <div className="furLength" id="_bodyType"></div>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+            <p style={{ width: '150px' }}>Weight:  </p>
+            <Input className='inp'
+              style={{ border: 'none', outline: 'medium' }}
+              value={WeightValue}
+              bordered={false}
+              onChange={(item) => {
+                let str = item.target.value.replace(/[^\d^\.]+/g, '').replace(/\.{2,}/g, ".").replace(".", "$#$").replace(/\./g, "").replace("$#$", ".").replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3')
+                setWeightValue(str);
+              }}
+              suffix={'Ibs'}
+              maxLength={8}
+            />
+          </div>
         </div>
       </div>
     );
@@ -1078,6 +1060,7 @@ const ClinicalStudy = ({
         key: "operation",
         width: "16%",
         className: `${isflog ? "operation" : ""}`,
+
         render: (text, record, index) => {
           // console.log('狩猎:', text, record, index);
           //record:
@@ -1141,6 +1124,8 @@ const ClinicalStudy = ({
         key: "date",
         width: "14%",
         className: `${isflog ? "operation" : ""}`,
+        ellipsis: true,
+        align: "center",
         render: (text, record, index) => {
           return <p style={{ textAlign: "center" }}>{text}</p>;
         },
@@ -1151,6 +1136,8 @@ const ClinicalStudy = ({
         key: "time",
         width: "14%",
         className: `${isflog ? "operation" : ""}`,
+        ellipsis: true,
+        align: "center",
         render: (text, record, index) => {
           return <p style={{ textAlign: "center" }}>{text}</p>;
         },
@@ -1162,6 +1149,8 @@ const ClinicalStudy = ({
         dataIndex: "temp",
         className: `${isflog ? "operation" : ""}`,
         width: "14%",
+        ellipsis: true,
+        align: "center",
         render: (text, record, index) => {
           // console.log(text, record);
 
@@ -1238,6 +1227,8 @@ const ClinicalStudy = ({
         dataIndex: "referenceRectalTemperature",
         width: "15%",
         className: `${isflog ? "operation" : ""}`,
+        ellipsis: true,
+        align: "center",
         render: (text, record, index) => {
           // console.log('肛温的值：', text);
           let num = text;
@@ -1269,6 +1260,8 @@ const ClinicalStudy = ({
         align: "center",
         width: "15%",
         className: `${isflog ? "operation" : ""}`,
+        ellipsis: true,
+        align: "center",
         render: (text, record, index) => {
           switch (record.placement) {
             case 1:
@@ -1310,6 +1303,8 @@ const ClinicalStudy = ({
         key: "note",
         width: "12%",
         className: `${isflog ? "operation" : ""}`,
+        ellipsis: true,
+        align: "center",
         render: (text, record, index) => {
           return <p style={{ width: "100%" }}>{text}</p>;
         },
@@ -1325,7 +1320,7 @@ const ClinicalStudy = ({
     } catch (error) { }
 
     return (
-      <div className="historyTable" style={{ height: "90%" }}>
+      <div className="historyTable">
         <Table
           columns={columns}
           loading={loading}
@@ -1610,7 +1605,7 @@ const ClinicalStudy = ({
             style={{ backgroundColor: lbgc }}
             onClick={() => setIsPetCharacteristics(true)}
           >
-            Pet Characteristics
+            Exam Details
           </div>
           <div
             className="foot_l"
@@ -1640,8 +1635,8 @@ const ClinicalStudy = ({
   //echars渲染
   const echars = () => {
     return (
-      <div id="myCharts" style={{ marginTop: mTop(50), width: windowWidth }} ref={chartsBox}>
-        {/* <ReactECharts
+      <div id="myCharts" style={{ marginTop: mTop(50), width: windowWidth, height: '380px' }} ref={chartsBox}>
+        <ReactECharts
           option={getOption()}
           theme="Imooc"
           style={{ height: 'auto', width: 'auto' }}
@@ -1649,9 +1644,7 @@ const ClinicalStudy = ({
           lazyUpdate={true}
           ref={echartsElement}
           className={"charts"}
-        /> */}
-        <div id="myChart" style={{ width: windowWidth, height: px(300) }}></div>
-
+        />
         {_status()}
       </div>
     );
@@ -1773,13 +1766,6 @@ const ClinicalStudy = ({
   }, [mellaConnectStatus]);
 
   useEffect(() => {
-    // let myChart = echarts.init(document.getElementById("myChart"));
-    let option = getOption()
-    myChart.setOption(option);
-    return () => { };
-  }, [echarsData]);
-
-  useEffect(() => {
     let hardSet = electronStore.get(`${storage.userId}-hardwareConfiguration`);
     if (!hardSet) {
       getLocalSetting();
@@ -1788,6 +1774,43 @@ const ClinicalStudy = ({
     }
     return () => { };
   }, []);
+
+  useEffect(() => {
+    let bufferData = electronStore.get(`${petDetailInfo.petId}`);
+    // console.log('bufferData: ', bufferData);
+    setRoomTemperature(bufferData ? bufferData?.roomTemperature : '');
+    setReferenceRectalTemperature(bufferData ? bufferData?.referenceRectalTemperature : '');
+    setBodyConditionScore(bufferData ? bufferData?.bodyConditionScore : '');
+    setFurLength(bufferData ? bufferData?.furLength : '');
+    setHeartRate(bufferData ? bufferData?.heartRate : '');
+    setBloodPressure(bufferData ? bufferData?.bloodPressure : '');
+    setRespiratoryRate(bufferData ? bufferData?.respiratoryRate : '');
+    setWeightValue(bufferData ? bufferData?.WeightValue : '');
+    return (() => { })
+  }, [petDetailInfo.petId]);
+
+  useEffect(() => {
+    return () => {
+      let newData = {
+        roomTemperature: roomTemperature,
+        referenceRectalTemperature: referenceRectalTemperature,
+        bodyConditionScore: bodyConditionScore,
+        furLength: furLength,
+        heartRate: heartRate,
+        bloodPressure: bloodPressure,
+        respiratoryRate: respiratoryRate,
+        WeightValue: WeightValue
+      }
+      electronStore.set(`${petDetailInfo.petId}`, newData);
+    }
+  }, [roomTemperature, referenceRectalTemperature, bodyConditionScore, furLength, heartRate, bloodPressure, respiratoryRate, WeightValue, petDetailInfo.petId])
+
+  useEffect(() => {
+    if (biggieBodyWeight !== 0) {
+      setWeightValue((biggieBodyWeight * 2.2046).toFixed(2));
+    }
+    return (() => { })
+  }, [biggieBodyWeight])
 
   return (
     <div
@@ -1880,7 +1903,8 @@ export default connect(
     mellaConnectStatus: state.hardwareReduce.mellaConnectStatus,
     mellaMeasureValue: state.hardwareReduce.mellaMeasureValue,
     mellaMeasureNum: state.hardwareReduce.mellaMeasureNum,
-
+    biggieBodyWeight: state.hardwareReduce.biggieBodyWeight,
+    biggieUnit: state.hardwareReduce.biggieUnit,
     petDetailInfo: state.petReduce.petDetailInfo,
   }),
   { setTest }

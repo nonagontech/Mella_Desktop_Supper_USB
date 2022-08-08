@@ -162,10 +162,10 @@ const Heard = ({
         setUpdateStatus("newVersion");
         break;
 
-      case 3:
-        console.log("下载新版成功");
-      case 4:
-        console.log("取消背景下载");
+      // case 3:
+      //   console.log("下载新版成功");
+      // case 4:
+      //   console.log("取消背景下载");
       case 5:
         console.log("取消安装");
         setUpdateStatus("init");
@@ -177,6 +177,7 @@ const Heard = ({
           ? (data.output.percent / 100).toFixed(1)
           : 0;
         setDownLoadingNum(loadNum);
+      break;
 
       default:
         break;
@@ -583,7 +584,7 @@ const Heard = ({
        * toUpperCase（）方法：将字符串统一转成大写
        *
        */
-      // let list = allPetList 
+      // let list = allPetList
       let list = petListArr || []
 
       let searchData = [];
@@ -682,7 +683,8 @@ const Heard = ({
         setMenuNum(e.index);
         break;
       case "4":
-        console.log("我的账号");
+        history.push("/MainBody");
+        setMenuNum(e.index);
         break;
       case "5":
         //跳转到设置
