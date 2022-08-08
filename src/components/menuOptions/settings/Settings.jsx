@@ -286,12 +286,8 @@ export default class Settings extends Component {
       let previous = e.target;
       //上一个兄弟节点
       previous = previous.previousElementSibling;
-      while (previous) {
-        if (previous === null) break;
-        if (previous.tagName.toLowerCase() === "input") {
-          previous.focus();
-          break;
-        }
+      if (previous !== null && previous.tagName.toLowerCase() === "input") {
+        previous.focus();
       }
     }
   };

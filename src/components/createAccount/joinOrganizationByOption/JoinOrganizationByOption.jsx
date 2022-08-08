@@ -12,9 +12,6 @@ import { createFromIconfontCN, SyncOutlined } from '@ant-design/icons';
 import Button from './../../../utils/button/Button'
 import Close from './../../../assets/img/close.png'
 import left1 from './../../../assets/img/left1.png'
-
-
-
 import './joinOrganizationByOption.less'
 import { fetchRequest } from '../../../utils/FetchUtil1';
 import temporaryStorage from '../../../utils/temporaryStorage';

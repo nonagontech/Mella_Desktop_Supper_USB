@@ -146,17 +146,17 @@ class App extends Component {
     let ipcRenderer = window.electron.ipcRenderer;
     // ipcRenderer.send('small')
     ipcRenderer.send("big", win());
-    this.setState({}, () => {
-      if (this.props.test) {
-        if (this.props.test.current) {
-          this.props.test.current.getEchartsInstance().dispose();
-          this.props.test.current.getEchartsInstance().clear();
-          setTimeout(() => {
-            this.props.test.current.getEchartsInstance().resize();
-          }, 500);
-        }
-      }
-    });
+    // this.setState({}, () => {
+    //   if (this.props.test) {
+    //     if (this.props.test.current) {
+    //       this.props.test.current.getEchartsInstance().dispose();
+    //       this.props.test.current.getEchartsInstance().clear();
+    //       setTimeout(() => {
+    //         this.props.test.current.getEchartsInstance().resize();
+    //       }, 500);
+    //     }
+    //   }
+    // });
 
   };
   //获取本地设置
@@ -794,6 +794,69 @@ class App extends Component {
           if (impedance !== biggieBodyFat) {
             setBiggieBodyFatFun(impedance);
           }
+        } else if (bluName.indexOf("MaeBowl") !== -1 && bluData.length > 10) {
+          function getVal(shi) {
+            if (`${shi}`.length < 2) {
+              return `0${shi}`;
+            }
+            return `${shi}`;
+          }
+          let mac = bluData[1];
+          for (let i = 2; i <= 6; i++) {
+            mac += `:${bluData[i]}`;
+          }
+          //定义硬件版本号
+          let hardwareVersion = bluData[7] + bluData[8];
+          //定义软件版本号
+          let softwareVersion = bluData[9];
+          //定义wifi标志位
+          let wifiFlag = bluData[10];
+          //定义控制字
+          let control = bluData[11];
+          //定义重量
+          let weight = `${getVal(bluData[12].toString(16))}${getVal(
+            bluData[13].toString(16)
+          )}`
+          weight = parseInt(weight, 16);
+          let arr11 = bluData[14]
+          weight = weight / Math.pow(10, parseInt(arr11[0]));
+          let weightUnits = null
+          switch (arr11[1]) {
+            case '0':
+              weightUnits = 'kg'
+
+              break;
+            case '1':
+              weightUnits = 'lb'
+
+              break;
+            case '2':
+              weightUnits = 'g'
+
+              break;
+            case '3':
+              weightUnits = 'ml'
+
+              break;
+            case '4':
+              weightUnits = 'oz'
+
+              break;
+
+            default:
+              break;
+          }
+          console.log({
+            // mac,
+            // hardwareVersion,
+            // softwareVersion,
+            wifiFlag,
+            control,
+            weight,
+            weightUnits,
+          });
+
+
         }
       },
       182: () => {
@@ -1029,9 +1092,6 @@ class App extends Component {
             );
           }
         }
-
-        break;
-
       case "2":
         return <AllPets bodyHeight={bodyHeight} />;
       case "CombineScales":

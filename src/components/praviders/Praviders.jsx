@@ -72,12 +72,12 @@ export default class Praviders extends Component {
             })
     }
 
-    _option = () => {
-        const { data } = this.state
-        for (let i = 0; i < data.length; i++) {
-            return <Option value={`${data[i].id}`}>{data[i].name}</Option>
-        }
-    }
+    // _option = () => {
+    //     const { data } = this.state
+    //     for (let i = 0; i < data.length; i++) {
+    //         return <Option value={`${data[i].id}`}>{data[i].name}</Option>
+    //     }
+    // }
     _select = (value) => {
         console.log(value);  //value的值为id
         this.setState({

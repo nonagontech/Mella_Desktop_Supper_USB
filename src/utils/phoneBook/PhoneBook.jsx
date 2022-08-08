@@ -46,7 +46,7 @@ const PhoneBook = ({ listDate, selectFun, searchText, confirmSelectBreed }) => {
         // console.log('listsDate', listDate)
         console.log('进来了');
         let test = []
-        listDate.map((item, index) => {
+        listDate.forEach((item, index) => {
             let data = {
                 name: item.breedName,
                 hidden: false,
@@ -62,7 +62,7 @@ const PhoneBook = ({ listDate, selectFun, searchText, confirmSelectBreed }) => {
         // console.log('原始的数据:',list)
 
         // 右侧字母栏数据处理
-        list.map((item, index) => {
+        list.forEach((item, index) => {
             letterArr.push(pinyin(item.name.substring(0, 1), {
                 style: pinyin.STYLE_FIRST_LETTER,
             })[0][0].toUpperCase());
@@ -71,15 +71,15 @@ const PhoneBook = ({ listDate, selectFun, searchText, confirmSelectBreed }) => {
         });
 
         // 分组数据处理
-        letterArr.map((item, index) => {
+        letterArr.forEach((item, index) => {
             sections.push({
                 title: item,
                 data: []
             })
         });
-        list.map(item => {
+        list.forEach(item => {
             let listItem = item;
-            sections.map(item => {
+            sections.forEach(item => {
                 // console.log('}}}}}}}}}}}}}}',item)
                 let first = listItem.name.substring(0, 1);
                 let test = pinyin(first, { style: pinyin.STYLE_FIRST_LETTER })[0][0].toUpperCase();
@@ -112,7 +112,7 @@ const PhoneBook = ({ listDate, selectFun, searchText, confirmSelectBreed }) => {
             let arr = []
             if (searchText.length > 0) {
                 allData.map((item, i) => {
-                    item.data.map((data, index) => {
+                    item.data.forEach((data, index) => {
                         // console.log(index)
                         let dataName = data.name ? data.name.toUpperCase() : ''
                         let keyData = searchText ? searchText.toUpperCase() : ''
@@ -134,7 +134,7 @@ const PhoneBook = ({ listDate, selectFun, searchText, confirmSelectBreed }) => {
                 })
                 //   console.log('--------------------------', arr)
                 let letterArr = []
-                arr.map((item, index) => {
+                arr.forEach((item, index) => {
                     letterArr.push(item.title)
                 })
                 // newArr = []

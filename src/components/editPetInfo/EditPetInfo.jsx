@@ -315,7 +315,7 @@ class EditPetInfo extends Component {
           else {
             birthday = ''
           }
-          if (gender === null || gender === NaN || `${gender}` === 'null' || `${gender}` === 'NaN') {
+          if (gender === null || isNaN(gender) || `${gender}` === 'null' || `${gender}` === 'NaN') {
             gender = 0
           }
           if (weight) {
@@ -366,7 +366,7 @@ class EditPetInfo extends Component {
         message.error('data load failed')
       })
     const isNull = (value) => {
-      if (value === null || value === NaN || `${value}` === 'null' || `${value}` === 'NaN') {
+      if (value === null || isNaN(value) || `${value}` === 'null' || `${value}` === 'NaN') {
         return ''
       } else {
         return value

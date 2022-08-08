@@ -275,7 +275,7 @@ export default class EzyVetSelectExam extends Component {
                             let items = res.items
                             for (let i = 0; i < items.length; i++) {
 
-                              const { name, id, created_at, modified_at, species_id } = items[i].breed
+                              let { name, id, created_at, modified_at, species_id } = items[i].breed
 
                               if (name === '') {
                                 name = 'unKnown'

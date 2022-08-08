@@ -27,7 +27,6 @@ export default class Unassigned extends Component {
     serchExamData: [], //搜索到的测量记录
     seleceEmergencies: {}, //分配的这条记录里的所有内容，比如温度、id、时间等
     visible: false, //nodel框是否显示
-    disabled: true, //model是否可拖拽
     imgId: -1, //上传后返回的图像id号
 
     assignPatientId: "",
@@ -389,7 +388,7 @@ export default class Unassigned extends Component {
                 let petArr = res.data;
                 if (petArr.length > 1) {
                   petArr.sort(function (a, b) {
-                    return a.createTime > b.createTime ? -1 : -1;
+                    return a.createTime > b.createTime ? 1 : -1;
                   });
                 }
                 console.log(petArr);
@@ -425,7 +424,7 @@ export default class Unassigned extends Component {
                 let petArr = res.data;
                 if (petArr.length > 1) {
                   petArr.sort(function (a, b) {
-                    return a.createTime > b.createTime ? -1 : -1;
+                    return a.createTime > b.createTime ? 1 : -1;
                   });
                 }
 
