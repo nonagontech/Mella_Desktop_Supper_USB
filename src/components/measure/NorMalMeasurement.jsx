@@ -182,7 +182,7 @@ export default class NorMalMeasurement extends Component {
 
     isWalkIn: false,               //是否是从walkIn进来的
   }
-  componentWillMount () {
+  componentWillMount() {
     try {
       console.log('--------------', this.props.location.isconnected);
       if (this.props.location.isconnected === false || this.props.location.isconnected === true) {
@@ -203,7 +203,7 @@ export default class NorMalMeasurement extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     ipcRenderer.send('big', win())
     storage.isClinical = 'false'
     if (storage.identity === '2') {
@@ -306,7 +306,7 @@ export default class NorMalMeasurement extends Component {
         h2tLength = changeNum(h2tLength)
         torsoLength = changeNum(torsoLength)
 
-        function changeNum (params) {
+        function changeNum(params) {
 
           if (params) {
             if (rulerUnit === 'cm') {
@@ -383,7 +383,7 @@ export default class NorMalMeasurement extends Component {
     }
 
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     ipcRenderer.removeListener('sned', this._send)
     ipcRenderer.removeListener('usbDetect', this.usbDetect)
     ipcRenderer.removeListener('noUSB', this._noUSB)
@@ -713,7 +713,7 @@ export default class NorMalMeasurement extends Component {
           this.time193 && clearTimeout(this.time193)
           console.log('-----------=======最终结果值========---------', this.state.Temp);
           let { Temp, units } = this.state
-          let temp = units === '℉' ? parseInt((Temp * 1.8 + 32) * 10) / 10 : Temp.toFixed(1)
+          let temp = units === '℉' ? (Temp * 1.8 + 32).toFixed(1) : `${Temp}`.toFixed(1)
           if (this.state.devicesType === 'mella') {
             ipcRenderer.send('keyboardWriting', temp)
           }
@@ -894,7 +894,7 @@ export default class NorMalMeasurement extends Component {
         }
       },
       99: () => { //体脂称的广播信息
-        function getVal (shi, xiaoshuo) {
+        function getVal(shi, xiaoshuo) {
 
           if (shi.length < 2) {
             shi = `0${shi}`
@@ -975,7 +975,7 @@ export default class NorMalMeasurement extends Component {
         }
 
 
-        function getVal (shi, xiaoshuo) {
+        function getVal(shi, xiaoshuo) {
 
           if (shi.length < 2) {
             shi = `0${shi}`
@@ -1200,7 +1200,7 @@ export default class NorMalMeasurement extends Component {
 
 
 
-          function getVal (shi, xiaoshuo) {
+          function getVal(shi, xiaoshuo) {
 
             if (shi.length < 2) {
               shi = `0${shi}`
@@ -1355,7 +1355,7 @@ export default class NorMalMeasurement extends Component {
 
 
 
-          function getVal (shi, xiaoshuo) {
+          function getVal(shi, xiaoshuo) {
             let num1 = parseInt(shi, 16)
             let num2 = parseInt(xiaoshuo, 16)
 
@@ -1465,7 +1465,7 @@ export default class NorMalMeasurement extends Component {
         // console.log(bluData);
 
         else if (bluName.indexOf('Biggie') !== -1 && this.state.devicesType === 'biggie' && bluData.length > 10) {
-          function getVal (shi) {
+          function getVal(shi) {
             if (`${shi}`.length < 2) {
               return `0${shi}`
             }
@@ -2414,7 +2414,7 @@ export default class NorMalMeasurement extends Component {
   _notes = () => {
     let { l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference,
       h2tLength, torsoLength, rulerUnit, updatePetAttributes } = this.state
-    function num (val) {
+    function num(val) {
       let weight = val.target.value
       let newText = weight.replace(/[^\d.]/g, "");
       newText = newText.replace(/^\./g, "");
@@ -2632,7 +2632,7 @@ export default class NorMalMeasurement extends Component {
     h2tLength = newNum(h2tLength)
     torsoLength = newNum(torsoLength)
 
-    function newNum (val) {
+    function newNum(val) {
       if (val) {
         if (rulerUnit === 'in') {
           return parseFloat((parseFloat(val) * 2.54).toFixed(1))
@@ -3667,7 +3667,7 @@ export default class NorMalMeasurement extends Component {
               style={{ width: px(120), height: mTop(35) }}
               onClick={() => {
                 console.log('点击了Discard');
-                let hardSet = electronStore.get('hardwareConfiguration') ||{}
+                let hardSet = electronStore.get('hardwareConfiguration') || {}
                 let countdown = hardSet.is15 ? 15 : 30
                 this.setState({
                   endMeasure: false,
@@ -3800,7 +3800,7 @@ export default class NorMalMeasurement extends Component {
   _modal = () => {
     let that = this
 
-    function save () {
+    function save() {
       let datas = {
         memo: that.state.memo
       }
@@ -4303,7 +4303,7 @@ export default class NorMalMeasurement extends Component {
   }
 
 
-  render () {
+  render() {
     const { closeColor, closebgc, minbgc, isWeightSave } = this.state
     // console.dir(this.input1)
     // try {

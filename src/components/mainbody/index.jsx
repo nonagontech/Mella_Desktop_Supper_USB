@@ -373,7 +373,7 @@ class App extends Component {
           let Temp = this.props.mellaMeasureValue;
           let temp =
             units === "℉"
-              ? parseInt((Temp * 1.8 + 32) * 10) / 10
+              ? (Temp * 1.8 + 32).toFixed(1)
               : Temp.toFixed(1);
           if (this.props.selectHardwareType === "mellaPro") {
             console.log('要去写了', units, temp);
@@ -402,7 +402,7 @@ class App extends Component {
           let Temp = this.props.mellaPredictReturnValue;
           let temp =
             units === "℉"
-              ? parseInt((Temp * 1.8 + 32) * 10) / 10
+              ? (Temp * 1.8 + 32).toFixed(1)
               : Temp.toFixed(1);
           if (this.props.selectHardwareType === "mellaPro") {
             ipcRenderer.send("keyboardWriting", temp);
