@@ -701,7 +701,7 @@ ipcMain.on("window-close", function () {
   loadingWindow && loadingWindow.close();
   mainWindow.close();
 });
-function wind(width1, height1, data) {
+function wind(width1, height1, data, min = {}) {
   let width = show(width1).height;
   let height = show(height1).height;
   console.log('----设置大小', { width, height });
@@ -712,12 +712,19 @@ function wind(width1, height1, data) {
 
   // mainWindow.setMaximumSize(width, height);
 
-  mainWindow.setMinimumSize(width, height);
+  // mainWindow.setMinimumSize(width, height);
+  if (min && min.width) {
+    mainWindow.setMinimumSize(min.width, min.height)
+  } else {
+    mainWindow.setMinimumSize(width, height);
+  }
+
   mainWindow.setSize(width, height);
 }
 
 ipcMain.on("big", (e, data) => {
-  wind(900, 900, data);
+  wind(900, 900, data, { width: 810, height: 810 });
+
 
   // mainWindow.setMaximumSize(show(800).height, show(900).height);
   // mainWindow.setMinimumSize(show(800).height, show(900).height);

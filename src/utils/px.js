@@ -42,6 +42,7 @@ export const px = (val) => {
 };
 
 export const mTop = (val) => {
+  return val
   let width = parseInt(window.screen.availWidth);
   let height = parseInt(window.screen.availHeight);
   if (width < height) {
@@ -69,6 +70,7 @@ export const pX = (val) => {
   return parseInt((windowWidth / 650) * val);
 };
 export const MTop = (val) => {
+  return val
   let windowWidth = document.documentElement.clientHeight;
   console.log("px", windowWidth);
   return parseInt((windowWidth / 375) * val);

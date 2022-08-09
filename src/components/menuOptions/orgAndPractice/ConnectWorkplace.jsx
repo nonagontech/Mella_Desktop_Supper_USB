@@ -30,7 +30,7 @@ export default class ConnectWorkplace extends Component {
   componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer;
     let { height, width } = window.screen;
-    ipcRenderer.send("Lowbig");
+    ipcRenderer.send("big");
     ipcRenderer.on("changeFenBianLv", this.changeFenBianLv);
 
     let userWorkplace = [];
@@ -253,7 +253,7 @@ export default class ConnectWorkplace extends Component {
                   let lastWorkplaceId = workplaceJson[key][0].workplaceId;
                   // console.log(lastWorkplaceId);
                   storage.lastWorkplaceId = lastWorkplaceId;
-                } catch (error) {}
+                } catch (error) { }
                 storage.connectionKey = connectionKey;
                 this.props.history.replace("/menuOptions/settings");
               }}

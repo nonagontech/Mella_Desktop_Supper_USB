@@ -535,7 +535,7 @@ export default class Settings extends Component {
                   <div className="l "
                     onClick={() => this.props.history.push('/menuOptions/petAndParents')}
 
-                    style={{ marginTop: '25px', marginBottom: '20px' }}>
+                    style={{ marginTop: '25px', }}>
                     <div className="text">Pet and Parents Profile Management</div>
                     <div className="rightIcon">&#xe60c;</div>
                   </div>
@@ -572,7 +572,7 @@ export default class Settings extends Component {
               </div>
 
 
-              <div className="item" style={{ marginTop: px(35) }}>
+              <div className="item" style={{ marginTop: px(25) }}>
                 <div className="l">
                   <div className="backlight" style={{ width: px(300) }} >
                     <div className="text">Backlight Timer</div>
@@ -615,7 +615,7 @@ export default class Settings extends Component {
                 </div>
               </div>
 
-              <div className="item" style={{ marginTop: px(35) }}>
+              <div className="item" style={{ marginTop: px(25) }}>
 
 
 

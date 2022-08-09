@@ -834,7 +834,7 @@ export default class Unassigned extends Component {
                 title="Sure to delete?"
                 onConfirm={() => _del(record.historyId, record)}
               >
-                <img src={del} alt="" style={{ marginRight: "8px" }} />
+                <img src={del} alt="" width={25} style={{ marginRight: "8px" }} />
               </Popconfirm>
             </div>
           );
@@ -1075,7 +1075,7 @@ export default class Unassigned extends Component {
                 padding: 0,
                 margin: 0,
                 width: "95%",
-                height: MTop(280),
+                height: MTop(550),
                 // backgroundColor: 'pink'
               }}
               loading={loading}
@@ -1085,7 +1085,7 @@ export default class Unassigned extends Component {
               // pagination={{ pageSize: 8, showSizeChanger: false, showQuickJumper: true }}
               pagination={false}
               scroll={{
-                y: MTop(260),
+                y: MTop(500),
               }}
             />
           </div>
