@@ -96,7 +96,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
   useEffect(() => {
     if(mellaMeasurePart === '腋温'){
       setTitle('Ready, place under foreleg');
-    }else if( mellaMeasurePart === '耳温'){99.5
+    }else if( mellaMeasurePart === '耳温'){
       setTitle('Ready, place in ear');
     }else{
       setTitle('Ready, place in anus');
