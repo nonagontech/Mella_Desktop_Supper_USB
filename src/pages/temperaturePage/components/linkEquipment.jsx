@@ -43,6 +43,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
 
   const [type, setType] = useState(false); //是否显示轮播图
   const [carouselIndex, setCarouselIndex] = useState(0); //轮播图下标
+  const [title,setTitle] = useState('Ready, place under foreleg')//准备测量的文字
   const saveCallBack = useRef();
   const callBack = () => {
     setCarouselIndex(carouselIndex + 1);
@@ -92,6 +93,16 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
     };
   }, [type, mellaConnectStatus]);
 
+  useEffect(() => {
+    if(mellaMeasurePart === '腋温'){
+      setTitle('Ready, place under foreleg');
+    }else if( mellaMeasurePart === '耳温'){99.5
+      setTitle('Ready, place in ear');
+    }else{
+      setTitle('Ready, place in anus');
+    }
+  },[mellaMeasurePart])
+
   return (
     <>
       <Content className={"contentBox"}>
@@ -118,7 +129,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
             <div className="startBox">
               <p className="startTitle">
                 {!type
-                  ? "Ready, place under foreleg"
+                  ? title
                   : "Place Under Foreleg Standing"}
               </p>
               {!type ? (

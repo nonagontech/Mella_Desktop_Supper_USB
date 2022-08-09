@@ -74,7 +74,7 @@ export default class AdvancedSettings extends Component {
 
   }
   /**
-   * 
+   *
    *usb插拔检测（不一定是底座设备插拔），为true代表插上了设备，false代表拔出了设备
    */
   usbDetect = (event, data) => {
@@ -106,7 +106,7 @@ export default class AdvancedSettings extends Component {
             progress: 0,
           })
           message.destroy()
-          message.success('update successed')
+          message.success('Update Successful');
           ipcRenderer.send('reUpload', {})
         } else {
           this.setState({

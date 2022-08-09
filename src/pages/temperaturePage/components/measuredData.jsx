@@ -28,10 +28,13 @@ import {
 } from "../../../store/actions";
 import Draggable from "react-draggable";
 import { fetchRequest } from "../../../utils/FetchUtil1";
+import { fetchRequest2 } from "../../../utils/FetchUtil2";
+import { fetchRequest4 } from "../../../utils/FetchUtil4";
 import { px, mTop } from "../../../utils/px.js";
 import moment from "moment";
-import "./measuredData.less";
 import electronStore from "../../../utils/electronStore";
+import "./measuredData.less";
+
 
 const MeasuredData = ({
   petMessage,
@@ -41,13 +44,13 @@ const MeasuredData = ({
   let { mellaMeasureValue, mellaConnectStatus, mellaMeasurePart } =
     hardwareMessage;
   let draggleRef = React.createRef();
-  let { petId, memo } = petMessage;
+  let { petId, memo, patientId } = petMessage;
   let storage = window.localStorage;
   let hisHe = mTop(200);
   try {
     let historyElement = document.querySelectorAll(".measurementBox .table");
     hisHe = historyElement[0].clientHeight - mTop(60);
-  } catch (error) {}
+  } catch (error) { }
   const [petTemperatureData, setPetTemperatureData] = useState([]); //存储宠物历史温度数据
   const [disabled, setDisabled] = useState(true); //model是否可拖拽
   const [visible, setVisible] = useState(false); //model框是否显示
@@ -64,21 +67,24 @@ const MeasuredData = ({
   //表格渲染
   const columns = [
     {
-      title: "Dat",
+      title: "Date",
       dataIndex: "createTime",
-      width: "14%",
+      ellipsis: true,
+      align: "center",
       render: (text, record) => moment(text).format("MMM D"),
     },
     {
-      title: "Tim",
+      title: "Time",
       dataIndex: "createTime",
-      width: "20%",
+      ellipsis: true,
+      align: "center",
       render: (text, record) => moment(text).format("hh:mm A"),
     },
     {
       title: `Temp(${isHua ? "℉" : "℃"})`,
       dataIndex: "temperature",
-      width: "16%",
+      ellipsis: true,
+      align: "center",
       render: (text, record) => {
         let num = parseFloat(text);
         if (isHua) {
@@ -91,9 +97,10 @@ const MeasuredData = ({
       },
     },
     {
-      title: "Placeme",
+      title: "Placement",
       dataIndex: "petVitalTypeId",
-      width: "15%",
+      ellipsis: true,
+      align: "center",
       render: (text, record) => {
         if (text === 1) {
           return <img src={measuredTable_2} />;
@@ -107,14 +114,15 @@ const MeasuredData = ({
       },
     },
     {
-      title: "Note",
+      title: "Notes",
       dataIndex: "memo",
-      width: "20%",
+      ellipsis: true,
+      align: "center",
       render: (text, record) => text,
     },
     {
-      key: "action",
-      width: "15%",
+      key: "Action",
+      align: "center",
       render: (text, record) => (
         <div
           style={{
@@ -131,13 +139,13 @@ const MeasuredData = ({
               setVisible(true);
               setPetMessages(record);
             }}
-            width={px(30)}
+            style={{ cursor: "pointer" }}
           />
           <Popconfirm
             title="Sure to delete?"
             onConfirm={() => deletePetMessage(record.examId)}
           >
-            <img src={Delete}   width={px(30)}/>
+            <img src={Delete} style={{ cursor: "pointer" }} />
           </Popconfirm>
         </div>
       ),
@@ -169,9 +177,8 @@ const MeasuredData = ({
       <>
         <p style={{ color: { color } }} className="ProgressTitle">
           {getTemp(percent)}
-          <span style={{ color: { color } }} className="symbol">{`${
-            isHua ? "℉" : "℃"
-          }`}</span>
+          <span style={{ color: { color } }} className="symbol">{`${isHua ? "℉" : "℃"
+            }`}</span>
         </p>
         <p style={{ color: { color } }} className="ProgressTitle">
           {title()}
@@ -192,7 +199,7 @@ const MeasuredData = ({
               arr.push(element);
             }
           }
-          setPetTemperatureData(_.orderBy(arr,'createTime','desc'));
+          setPetTemperatureData(_.orderBy(arr, 'createTime', 'desc'));
         }
       })
       .catch((err) => {
@@ -234,10 +241,19 @@ const MeasuredData = ({
     fetchRequest("/exam/addClamantPetExam", "POST", params)
       .then((res) => {
         if (res.flag === true) {
-          getPetTemperatureData();
-          setSaveType(true);
-          message.success("save successfully");
+          switch (storage.lastOrganization) {
+            case '3'://vetspire
+              updataVetspire(mellaMeasureValue)
+              break;
+            case '4'://ezyVet
+              updataEzyvet(mellaMeasureValue, petVitalId)
+              break;
+            default: message.success('Data successfully saved in Mella')
+              break;
+          }
         }
+        setSaveType(true);
+        getPetTemperatureData();
       })
       .catch((err) => {
         console.log(err);
@@ -286,18 +302,145 @@ const MeasuredData = ({
     });
   };
   const getTemp = (percent) => {
+
     let num = parseFloat(mellaMeasureValue);
     if (isHua) {
-      num = parseInt((num * 1.8 + 32) * 10) / 10;
+      num = (num * 1.8 + 32).toFixed(1);
     } else {
       num = parseFloat(num.toFixed(1));
     }
     return num;
   };
+  const updataEzyvet = (Temp, petVitalId) => {
+    let params = {
+      id: patientId
+    }
+    fetchRequest4('/EzyVet/ezyvetGetPetLatestExam', "GET", params, `Bearer ${storage.connectionKey}`)
+      .then(res => {
+        if (res.code === 10004 && res.msg === 'ezyvet token失效') {
+          storage.connectionKey = res.newToken;
+          reupdataEzyvet(Temp, petVitalId)
+          return
+        }
+        if (res.flag && res.data && res.data.items.length > 0) {
+          let data = res.data.items[0]
+          let { consult_id } = data
+          if (!consult_id) {
+            message.error('Failed to obtain the latest medical record, the data is saved in Mella')
+            return
+          }
+          let paramId = data.id
+          let temperature = Temp
+          let parames1 = {
+            consult_id,
+            temperature
+          }
+          fetchRequest2(`/EzyVet/healthstatus/${paramId}/${petVitalId}`, "PATCH", parames1, `Bearer ${storage.connectionKey}`)
+            .then(res => {
+              if (res.code === 10004 && res.msg === 'ezyvet token失效') {
+                storage.connectionKey = res.newToken;
+                reupdataEzyvet(Temp, petVitalId)
+                return
+              }
+              if (res.flag) {
+                message.success('Data successfully saved in EzyVet')
+              } else {
+                message.error('Data failed saved in EzyVet')
+              }
+            })
+            .catch(err => {
+              message.error('Data failed saved in EzyVet')
+            })
+        } else {
+          message.error('Failed to obtain the latest medical record, the data is saved in Mella')
+        }
+      })
+      .catch(err => {
+        message.error('Failed to obtain the latest medical record, the data is saved in Mella')
+      })
+  }
+
+  const reupdataEzyvet = (Temp, petVitalId) => {
+    let params = {
+      id: patientId
+    }
+    fetchRequest4('/EzyVet/ezyvetGetPetLatestExam', "GET", params, `Bearer ${storage.connectionKey}`)
+      .then(res => {
+        if (res.flag && res.data && res.data.items.length > 0) {
+          let data = res.data.items[0]
+
+          let { consult_id } = data
+          if (!consult_id) {
+            message.error('Failed to obtain the latest medical record, the data is saved in Mella')
+            return
+          }
+          let paramId = data.id
+          let temperature = Temp
+          let parames1 = {
+            consult_id,
+            temperature
+          }
+          fetchRequest2(`/EzyVet/healthstatus/${paramId}/${petVitalId}`, "PATCH", parames1, `Bearer ${storage.connectionKey}`)
+            .then(res => {
+              if (res.flag) {
+                message.success('Data successfully saved in EzyVet')
+              } else {
+                message.error('Data failed saved in EzyVet')
+              }
+            })
+            .catch(err => {
+              message.error('Data failed saved in EzyVet')
+            })
+        } else {
+          message.error('Failed to obtain the latest medical record, the data is saved in Mella')
+        }
+      })
+      .catch(err => {
+        message.error('Failed to obtain the latest medical record, the data is saved in Mella')
+      })
+  }
+
+
+  const updataVetspire = (Temp) => {
+    let datas = {
+      APIkey: storage.connectionKey,
+      patientId: patientId
+    }
+    fetchRequest4('/VetSpire/vetspireGetPetLatestExam', "POST", datas)
+      .then(res => {
+        if (res.flag) {
+          let data = res.data.encounters[0].vitals
+          let encountersId = data.id
+          let temperature = parseInt((Temp * 1.8 + 32) * 10) / 10
+          let params = {
+            vitalId: encountersId,
+            APIkey: storage.connectionKey,
+            temp: temperature
+          }
+          fetchRequest2(`/VetSpire/updateVitalsTemperatureByVitalId`, "POST", params)
+            .then(res => {
+              if (res.flag) {
+                message.success('Data successfully saved in Vetspire')
+              } else {
+                message.error('Data failed saved in Vetspire')
+              }
+            })
+            .catch(err => {
+              message.error('Data failed saved in Vetspire')
+            })
+        } else {
+          message.error('Failed to obtain the latest medical record, the data is saved in Mella')
+        }
+      })
+      .catch(err => {
+        message.error('Failed to obtain the latest medical record, the data is saved in Mella')
+      })
+  }
+
 
   useEffect(() => {
     getPetTemperatureData();
-    return () => {};
+    return () => { };
   }, [petMessage]);
 
   useEffect(() => {
@@ -381,8 +524,8 @@ const MeasuredData = ({
             onMouseOut={() => {
               setDisabled(true);
             }}
-            onFocus={() => {}}
-            onBlur={() => {}}
+            onFocus={() => { }}
+            onBlur={() => { }}
           >
             Edit Note
           </div>
