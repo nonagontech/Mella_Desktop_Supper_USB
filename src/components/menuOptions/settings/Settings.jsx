@@ -67,11 +67,12 @@ export default class Settings extends Component {
     let ipcRenderer = window.electron.ipcRenderer
     let { height, width } = window.screen
     let windowsHeight = height > width ? width : height
-    if (windowsHeight < 900) {
-      ipcRenderer.send('table', win())
-    } else {
-      ipcRenderer.send('setting', win())
-    }
+    // if (windowsHeight < 900) {
+    //   ipcRenderer.send('table', win())
+    // } else {
+    //   ipcRenderer.send('setting', win())
+    // }
+    ipcRenderer.send('big', win())
     //这里要根据保存的时候存到哪个位置的，然后拿出来更新state
     let hardSet = electronStore.get(`${storage.userId}-hardwareConfiguration`)
     console.log('----', hardSet);

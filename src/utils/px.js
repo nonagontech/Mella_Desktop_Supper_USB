@@ -26,23 +26,19 @@ if (width < height) {
 }
 
 export const px = (val) => {
-  let width = parseInt(window.screen.availWidth);
-  let height = parseInt(window.screen.availHeight);
+  return val
+  // let width = parseInt(window.screen.availWidth);
+  // let height = parseInt(window.screen.availHeight);
 
-  // console.log('px', width, height)
 
-  // if ((width === 2560 && height === 1440) || (width === 1440 && height === 2560)) {
-  //   width = 1920
-  //   height = 1080
+
+  // if (width < height) {
+  //   let a = width;
+  //   width = height;
+  //   height = a;
   // }
 
-  if (width < height) {
-    let a = width;
-    width = height;
-    height = a;
-  }
-
-  return parseInt((val / devWidth) * width);
+  // return parseInt((val / devWidth) * width);
 };
 
 export const mTop = (val) => {
@@ -96,29 +92,29 @@ export const win = () => {
   // })
 
   return {
-    width,
-    height,
+    width: 1920,
+    height: 1080,
   };
 };
 
 let timer = null;
 export const timerFun = () => {
-  console.log("jianting1------------");
-  timer && clearInterval(timer);
-  timer = setInterval(() => {
-    let width = parseInt(window.screen.availWidth);
-    let height = parseInt(window.screen.availHeight);
-    if (width < height) {
-      let a = width;
-      width = height;
-      height = a;
-    }
-    // console.log('jianting1', windowssize, { width, height });
-    if (width !== windowssize.width || height !== windowssize.height) {
-      windowssize.width = width;
-      windowssize.height = height;
-      let ipcRenderer = window.electron.ipcRenderer;
-      ipcRenderer.send("changeFenBianLv", windowssize);
-    }
-  }, 2000);
+  // console.log("jianting1------------");
+  // timer && clearInterval(timer);
+  // timer = setInterval(() => {
+  //   let width = parseInt(window.screen.availWidth);
+  //   let height = parseInt(window.screen.availHeight);
+  //   if (width < height) {
+  //     let a = width;
+  //     width = height;
+  //     height = a;
+  //   }
+  //   // console.log('jianting1', windowssize, { width, height });
+  //   if (width !== windowssize.width || height !== windowssize.height) {
+  //     windowssize.width = width;
+  //     windowssize.height = height;
+  //     let ipcRenderer = window.electron.ipcRenderer;
+  //     ipcRenderer.send("changeFenBianLv", windowssize);
+  //   }
+  // }, 2000);
 };

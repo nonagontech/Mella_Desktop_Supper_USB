@@ -25,7 +25,7 @@ export default class Home extends Component {
         imgurl: '',
         size: { width: 0, height: 0 }
     }
-    componentDidMount () {
+    componentDidMount() {
         let ipcRenderer = window.electron.ipcRenderer
         timerFun()
         ipcRenderer.send('close-loading-window', 1)
@@ -34,30 +34,30 @@ export default class Home extends Component {
         temporaryStorage.logupVetInfo = {}
         ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
 
-        fetchRequest2('/user/getLoginQRcode', "GET", '')
-            // addQRCode()
-            .then(res => {
-                console.log('首页获取', res);
+        // fetchRequest2('/user/getLoginQRcode', "GET", '')
+        //     // addQRCode()
+        //     .then(res => {
+        //         console.log('首页获取', res);
 
 
-            })
-            .catch(err => {
+        //     })
+        //     .catch(err => {
 
-                console.log(err);
-            })
+        //         console.log(err);
+        //     })
 
 
-        addQRCode()
-            .then(res => {
-                message.destroy()
+        // addQRCode()
+        //     .then(res => {
+        //         message.destroy()
 
-                console.log('---获取二维码', res);
+        //         console.log('---获取二维码', res);
 
-            })
-            .catch(err => {
+        //     })
+        //     .catch(err => {
 
-                console.log(err);
-            })
+        //         console.log(err);
+        //     })
 
 
 
@@ -68,7 +68,7 @@ export default class Home extends Component {
         // console.log('-------------监听的数据', e);
 
     }
-    componentWillUnmount () {
+    componentWillUnmount() {
         let ipcRenderer = window.electron.ipcRenderer
         window.removeEventListener('resize', this.resize);
 
@@ -122,7 +122,7 @@ export default class Home extends Component {
         }
 
     }
-    render () {
+    render() {
         return (
 
             <div id="home">
