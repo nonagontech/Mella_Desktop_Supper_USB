@@ -134,8 +134,8 @@ const Heard = ({
       petId: "f713a238-f5df-4c85-8c4f-5766b0770c07",
     },
   ];
-  const [size, setSize] = useState({height:px(50)});
-  const [headerRef,setHeaderRef] = useState();
+  const [size, setSize] = useState({ height: px(50) });
+  const [headerRef, setHeaderRef] = useState();
 
   const uploadMessage = (e, data) => {
     switch (data.payload.status) {
@@ -177,7 +177,7 @@ const Heard = ({
           ? (data.output.percent / 100).toFixed(1)
           : 0;
         setDownLoadingNum(loadNum);
-      break;
+        break;
 
       default:
         break;
@@ -1386,243 +1386,247 @@ const Heard = ({
     //监听屏幕窗口改变
     // window.addEventListener("resize", resize());
     console.log('====================================');
-    console.log('window.screen.availWidth',window.screen.availWidth);
+    console.log('window.screen.availWidth', window.screen.availWidth);
     console.log('====================================');
     console.log(px(50));
-    setSize({height:50});
+    setSize({ height: 50 });
   }, [window.screen.availWidth])
 
   return (
-    <div
-      id="heard"
-      style={size}
-      ref={(val) => {
-        setHeaderRef(val);
-      }}
-    >
-      <div className="l">
-        <div
-          className="menuF"
-          style={{ marginLeft: px(40), marginRight: px(40) }}
-        >
+    <div id="heardUI">
+      <div id="heardUITop" />
+      <div
+        id="heard"
+        style={size}
+        ref={(val) => {
+          setHeaderRef(val);
+        }}
+      >
+        <div className="l">
           <div
-            className="menu"
-            onMouseOver={menuMouseOver}
-            onMouseOut={menuMouseOut}
+            className="menuF"
+            style={{ marginLeft: px(40), marginRight: px(40) }}
           >
-            <img src={menu} style={{ width: px(20) }} />
-            {menuVisible ? (
-              // true
-              <div className="manuBody" style={{ top: px(20), left: px(-40) }}>
-                <div
-                  className="triangle"
-                  style={{
-                    borderLeft: `${px(10)}px solid transparent`,
-                    borderRight: `${px(10)}px solid transparent`,
-                    borderBottom: `${px(13)}px solid #fff`,
-                    left: px(40),
-                  }}
-                />
-
-                <div className="manuBodyList" style={{ marginTop: px(13) }}>
-                  {menuList()}
-                </div>
-              </div>
-            ) : null}
-          </div>
-        </div>
-
-        <div className="search" style={{ width: px(300) }}>
-          <input
-            placeholder="Search Pet    &#xe63f;"
-            style={{ fontSize: px(16), paddingLeft: px(20) }}
-            value={value}
-            onChange={(text) => {
-              inputChange(text);
-            }}
-            onKeyUp={(e) => {
-              // console.log(e);
-              if (e.keyCode === 13) {
-                console.log("回车,去搜索");
-              }
-              if (e.keyCode === 27) {
-                console.log("清空");
-                setValue("");
-                setVisible(false);
-              }
-            }}
-          />
-          {blueSearch ? (
             <div
-              className="searchIconFa bluSearch"
-            // style={{ cursor: 'pointer', backgroundColor: 'pink' }}
-            // onClick={blueClick}
+              className="menu"
+              onMouseOver={menuMouseOver}
+              onMouseOut={menuMouseOut}
             >
-              <div onClick={blueClick}>
-                {/* <img src={blueSearchPng} style={{ width: '50%' }} /> */}
+              <img src={menu} style={{ width: px(20) }} />
+              {menuVisible ? (
+                // true
+                <div className="manuBody" style={{ top: px(20), left: px(-40) }}>
+                  <div
+                    className="triangle"
+                    style={{
+                      borderLeft: `${px(10)}px solid transparent`,
+                      borderRight: `${px(10)}px solid transparent`,
+                      borderBottom: `${px(13)}px solid #fff`,
+                      left: px(40),
+                    }}
+                  />
+
+                  <div className="manuBodyList" style={{ marginTop: px(13) }}>
+                    {menuList()}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="search" style={{ width: px(300) }}>
+            <input
+              placeholder="Search Pet    &#xe63f;"
+              style={{ fontSize: px(16), paddingLeft: px(20) }}
+              value={value}
+              onChange={(text) => {
+                inputChange(text);
+              }}
+              onKeyUp={(e) => {
+                // console.log(e);
+                if (e.keyCode === 13) {
+                  console.log("回车,去搜索");
+                }
+                if (e.keyCode === 27) {
+                  console.log("清空");
+                  setValue("");
+                  setVisible(false);
+                }
+              }}
+            />
+            {blueSearch ? (
+              <div
+                className="searchIconFa bluSearch"
+              // style={{ cursor: 'pointer', backgroundColor: 'pink' }}
+              // onClick={blueClick}
+              >
+                <div onClick={blueClick}>
+                  {/* <img src={blueSearchPng} style={{ width: '50%' }} /> */}
+                  <span
+                    className=" iconfont icon-sousuo searchIcon"
+                    style={{ fontSize: px(25) }}
+                  />
+                </div>
+
+                {searchMac ? (
+                  // true ?
+                  <div className="searchPet flex" style={{ width: px(400) }}>
+                    <div
+                      className="triangle"
+                      style={{
+                        borderLeft: `${px(20)}px solid transparent`,
+                        borderRight: `${px(20)}px solid transparent`,
+                        borderBottom: `${px(25)}px solid #fff`,
+                        // marginLeft: px(30),
+                        zIndex: 999,
+                      }}
+                    />
+
+                    <div className="searchPetBody" style={{ width: "100%" }}>
+                      {blusearchBody()}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            ) : (
+              <div className="searchIconFa">
                 <span
                   className=" iconfont icon-sousuo searchIcon"
                   style={{ fontSize: px(25) }}
                 />
               </div>
+            )}
 
-              {searchMac ? (
-                // true ?
-                <div className="searchPet flex" style={{ width: px(400) }}>
-                  <div
-                    className="triangle"
-                    style={{
-                      borderLeft: `${px(20)}px solid transparent`,
-                      borderRight: `${px(20)}px solid transparent`,
-                      borderBottom: `${px(25)}px solid #fff`,
-                      // marginLeft: px(30),
-                      zIndex: 999,
-                    }}
-                  />
+            {visible ? (
+              // true ?
+              <div className="searchPet" style={{ top: px(35), width: px(400) }}>
+                <div
+                  className="triangle"
+                  style={{
+                    borderLeft: `${px(20)}px solid transparent`,
+                    borderRight: `${px(20)}px solid transparent`,
+                    borderBottom: `${px(25)}px solid #fff`,
+                    marginLeft: px(30),
+                    zIndex: 999,
+                  }}
+                />
 
-                  <div className="searchPetBody" style={{ width: "100%" }}>
-                    {blusearchBody()}
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          ) : (
-            <div className="searchIconFa">
-              <span
-                className=" iconfont icon-sousuo searchIcon"
-                style={{ fontSize: px(25) }}
-              />
-            </div>
-          )}
-
-          {visible ? (
-            // true ?
-            <div className="searchPet" style={{ top: px(35), width: px(400) }}>
-              <div
-                className="triangle"
-                style={{
-                  borderLeft: `${px(20)}px solid transparent`,
-                  borderRight: `${px(20)}px solid transparent`,
-                  borderBottom: `${px(25)}px solid #fff`,
-                  marginLeft: px(30),
-                  zIndex: 999,
-                }}
-              />
-
-              <div className="searchPetBody">{searchPetBody()}</div>
-            </div>
-          ) : null}
-        </div>
-      </div>
-
-      <div className="r">
-        <div className="heardCenter">
-          <div
-            className="message"
-            onClick={() => history.push("/menuOptions/unassigned")}
-          >
-            <img
-              src={message}
-              alt=""
-              style={{ height: px(25), width: px(25) }}
-            />
-          </div>
-          <div
-            className="help"
-            style={{ margin: `0 ${px(25)}px` }}
-            onClick={() => history.push("/menuOptions/help")}
-          >
-            <img src={help} alt="" style={{ height: px(25) }} />
-          </div>
-        </div>
-        <div className="min_close" style={{ paddingRight: px(15) }}>
-          <div
-            className="min_icon"
-            onClick={MINCOLOSE.minClock}
-            style={{ backgroundColor: minbgc, height: px(50), width: px(50) }}
-            onMouseEnter={MINCOLOSE.minMouseEnter}
-            onMouseLeave={MINCOLOSE.minMouseLeave}
-          >
-            <img src={rMin} alt="" style={{ width: px(20) }} />
-          </div>
-          <div
-            className="min_icon"
-            onClick={MINCOLOSE.closeClock}
-            style={{ backgroundColor: closebgc, height: px(50), width: px(50) }}
-            onMouseEnter={MINCOLOSE.closeMouseEnter}
-            onMouseLeave={MINCOLOSE.closeMouseLeave}
-          >
-            <img src={rClose} alt="" style={{ width: px(20) }} />
-          </div>
-        </div>
-      </div>
-
-      {modalvisible && modal()}
-      {deviceModel && devices()}
-
-      <MyModal
-        // visible={true}
-        visible={modalVis}
-        element={
-          <div
-            className="tip"
-            style={{ width: px(420), height: px(480), borderRadius: px(20) }}
-          >
-            <div
-              className="close"
-              style={{ height: px(60) }}
-              onClick={() => setModalVis(false)}
-            >
-              <div className="flex" style={{ height: px(60), width: px(60) }}>
-                <img src={close} alt="" style={{ width: px(20) }} />
+                <div className="searchPetBody">{searchPetBody()}</div>
               </div>
-            </div>
-            <div className="text">
-              <h1 style={{ fontSize: px(36), marginTop: px(30) }}>
-                {" "}
-                {isNotFound ? "Pet not found!" : "Pet found!"}
-              </h1>
-            </div>
-            <div className="flex" style={{ margin: `${px(20)}px 0` }}>
-              {isNotFound ? (
-                <img src={redclose} width="50px" />
-              ) : (
-                <img src={jinggao} width="50px" />
-              )}
+            ) : null}
+          </div>
+        </div>
+
+        <div className="r">
+          <div className="heardCenter">
+            <div
+              className="message"
+              onClick={() => history.push("/menuOptions/unassigned")}
+            >
+              <img
+                src={message}
+                alt=""
+                style={{ height: px(25), width: px(25) }}
+              />
             </div>
             <div
-              className="textbody"
-              style={{ marginTop: px(30), color: "#000" }}
+              className="help"
+              style={{ margin: `0 ${px(25)}px` }}
+              onClick={() => history.push("/menuOptions/help")}
             >
-              {isNotFound ? (
-                <p style={{ fontSize: px(22) }}>
-                  {" "}
-                  This pet is not on your database
-                </p>
-              ) : (
-                <p style={{ fontSize: px(22) }}>
-                  Pet Identified but does not <br /> belong to your
-                  organization.
-                </p>
-              )}
+              <img src={help} alt="" style={{ height: px(25) }} />
             </div>
+          </div>
+          <div className="min_close" style={{ paddingRight: px(15) }}>
+            <div
+              className="min_icon"
+              onClick={MINCOLOSE.minClock}
+              style={{ backgroundColor: minbgc, height: px(50), width: px(50) }}
+              onMouseEnter={MINCOLOSE.minMouseEnter}
+              onMouseLeave={MINCOLOSE.minMouseLeave}
+            >
+              <img src={rMin} alt="" style={{ width: px(20) }} />
+            </div>
+            <div
+              className="min_icon"
+              onClick={MINCOLOSE.closeClock}
+              style={{ backgroundColor: closebgc, height: px(50), width: px(50) }}
+              onMouseEnter={MINCOLOSE.closeMouseEnter}
+              onMouseLeave={MINCOLOSE.closeMouseLeave}
+            >
+              <img src={rClose} alt="" style={{ width: px(20) }} />
+            </div>
+          </div>
+        </div>
 
-            <div className="flex" style={{ marginTop: px(30), width: "100%" }}>
+        {modalvisible && modal()}
+        {deviceModel && devices()}
+
+        <MyModal
+          // visible={true}
+          visible={modalVis}
+          element={
+            <div
+              className="tip"
+              style={{ width: px(420), height: px(480), borderRadius: px(20) }}
+            >
               <div
-                className="btn flex"
-                style={{ height: px(40) }}
-                onClick={() => {
-                  setModalVis(false);
-                  cencleClick();
-                }}
+                className="close"
+                style={{ height: px(60) }}
+                onClick={() => setModalVis(false)}
               >
-                <p>OK</p>
+                <div className="flex" style={{ height: px(60), width: px(60) }}>
+                  <img src={close} alt="" style={{ width: px(20) }} />
+                </div>
+              </div>
+              <div className="text">
+                <h1 style={{ fontSize: px(36), marginTop: px(30) }}>
+                  {" "}
+                  {isNotFound ? "Pet not found!" : "Pet found!"}
+                </h1>
+              </div>
+              <div className="flex" style={{ margin: `${px(20)}px 0` }}>
+                {isNotFound ? (
+                  <img src={redclose} width="50px" />
+                ) : (
+                  <img src={jinggao} width="50px" />
+                )}
+              </div>
+              <div
+                className="textbody"
+                style={{ marginTop: px(30), color: "#000" }}
+              >
+                {isNotFound ? (
+                  <p style={{ fontSize: px(22) }}>
+                    {" "}
+                    This pet is not on your database
+                  </p>
+                ) : (
+                  <p style={{ fontSize: px(22) }}>
+                    Pet Identified but does not <br /> belong to your
+                    organization.
+                  </p>
+                )}
+              </div>
+
+              <div className="flex" style={{ marginTop: px(30), width: "100%" }}>
+                <div
+                  className="btn flex"
+                  style={{ height: px(40) }}
+                  onClick={() => {
+                    setModalVis(false);
+                    cencleClick();
+                  }}
+                >
+                  <p>OK</p>
+                </div>
               </div>
             </div>
-          </div>
-        }
-      />
+          }
+        />
+      </div>
     </div>
+
   );
 };
 

@@ -67,11 +67,12 @@ export default class Settings extends Component {
     let ipcRenderer = window.electron.ipcRenderer
     let { height, width } = window.screen
     let windowsHeight = height > width ? width : height
-    if (windowsHeight < 900) {
-      ipcRenderer.send('table', win())
-    } else {
-      ipcRenderer.send('setting', win())
-    }
+    // if (windowsHeight < 900) {
+    //   ipcRenderer.send('table', win())
+    // } else {
+    //   ipcRenderer.send('setting', win())
+    // }
+    ipcRenderer.send('big', win())
     //这里要根据保存的时候存到哪个位置的，然后拿出来更新state
     let hardSet = electronStore.get(`${storage.userId}-hardwareConfiguration`)
     console.log('----', hardSet);
@@ -534,7 +535,7 @@ export default class Settings extends Component {
                   <div className="l "
                     onClick={() => this.props.history.push('/menuOptions/petAndParents')}
 
-                    style={{ marginTop: '25px', marginBottom: '20px' }}>
+                    style={{ marginTop: '25px', }}>
                     <div className="text">Pet and Parents Profile Management</div>
                     <div className="rightIcon">&#xe60c;</div>
                   </div>
@@ -571,7 +572,7 @@ export default class Settings extends Component {
               </div>
 
 
-              <div className="item" style={{ marginTop: px(35) }}>
+              <div className="item" style={{ marginTop: px(25) }}>
                 <div className="l">
                   <div className="backlight" style={{ width: px(300) }} >
                     <div className="text">Backlight Timer</div>
@@ -614,7 +615,7 @@ export default class Settings extends Component {
                 </div>
               </div>
 
-              <div className="item" style={{ marginTop: px(35) }}>
+              <div className="item" style={{ marginTop: px(25) }}>
 
 
 

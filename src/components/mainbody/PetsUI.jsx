@@ -6,6 +6,7 @@ import {
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import { LoadingOutlined } from '@ant-design/icons';
 import { px } from '../../utils/px'
 import { petSortTypeFun, petDetailInfoFun, setPetListArrFun } from '../../store/actions'
 import electronStore from '../../utils/electronStore'
@@ -175,10 +176,18 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
 
     return (
       <div className="petList" style={{ marginTop: px(10), height: bodyHeight - px(100) - px(240) }}>
+        {loading ?
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', width: '100%', height: '100%' }}>
+            <div className="loadIcon" style={{ marginBottom: px(5) }}>
+              <LoadingOutlined style={{ fontSize: 30, color: '#141414', marginTop: px(-30), }} />
+            </div>
+            <p style={{ color: '#141414' }}>loading... </p>
+          </div>
+          :
+          <ul>
+            {options}
+          </ul>}
 
-        <ul>
-          {options}
-        </ul>
       </div>
     )
   }
@@ -234,7 +243,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
             <div className="walkText">Walk-In</div>
           </div>
         </div>
-        <MyModal visible={loading} />
+        {/* <MyModal visible={loading} /> */}
       </div>
 
 

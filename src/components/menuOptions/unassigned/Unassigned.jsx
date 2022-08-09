@@ -52,11 +52,11 @@ export default class Unassigned extends Component {
     selectPetId: "",
   };
 
-  componentDidMount () {
+  componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer;
     let { height, width } = window.screen;
     let windowsHeight = height > width ? width : height;
-    ipcRenderer.send("Lowbig");
+    ipcRenderer.send("big");
     // if (windowsHeight < 1000) {
     //   ipcRenderer.send('table')
     // } else {
@@ -81,7 +81,7 @@ export default class Unassigned extends Component {
       petListData: list || [],
     });
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     message.destroy();
     let ipcRenderer = window.electron.ipcRenderer;
 
@@ -103,7 +103,7 @@ export default class Unassigned extends Component {
 
   _getEmergencyHistory = () => {
     //封装的日期排序方法
-    function ForwardRankingDate (data, p) {
+    function ForwardRankingDate(data, p) {
       for (let i = 0; i < data.length - 1; i++) {
         for (let j = 0; j < data.length - 1 - i; j++) {
           if (Date.parse(data[j][p]) < Date.parse(data[j + 1][p])) {
@@ -345,7 +345,7 @@ export default class Unassigned extends Component {
   _modal = () => {
     let that = this;
 
-    function getPetInfoByPatientId () {
+    function getPetInfoByPatientId() {
       switch (storage.identity) {
         case "1":
           console.log("我是vetspire查找");
@@ -790,7 +790,7 @@ export default class Unassigned extends Component {
     return <ul>{option}</ul>;
   };
 
-  render () {
+  render() {
     let { loading, disabled, historyData, searchText, serchExamData } =
       this.state;
     const _del = (key, record) => {
@@ -834,7 +834,7 @@ export default class Unassigned extends Component {
                 title="Sure to delete?"
                 onConfirm={() => _del(record.historyId, record)}
               >
-                <img src={del} alt="" style={{ marginRight: "8px" }} />
+                <img src={del} alt="" width={25} style={{ marginRight: "8px" }} />
               </Popconfirm>
             </div>
           );
@@ -1075,7 +1075,7 @@ export default class Unassigned extends Component {
                 padding: 0,
                 margin: 0,
                 width: "95%",
-                height: MTop(280),
+                height: MTop(550),
                 // backgroundColor: 'pink'
               }}
               loading={loading}
@@ -1085,7 +1085,7 @@ export default class Unassigned extends Component {
               // pagination={{ pageSize: 8, showSizeChanger: false, showQuickJumper: true }}
               pagination={false}
               scroll={{
-                y: MTop(260),
+                y: MTop(500),
               }}
             />
           </div>

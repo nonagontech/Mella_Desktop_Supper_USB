@@ -8,27 +8,32 @@
   flex: 1;
   width: 100%;
   height: 100%;
-  justify-content: center;
+  // justify-content: center;
   -webkit-app-region: no-drag;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+
   .heard {
-    height: 8%;
+    // height: 8%;
+    height: 50px;
     width: 100%;
   }
+
   overflow-x: hidden;
 
   .body {
     overflow-y: auto;
-    height: 92%;
+    // height: 92%;
+    height: calc(100% - 50px);
     // background-color: pink;
     display: flex;
     align-items: center;
     width: 100%;
     justify-content: space-between;
     flex-direction: column;
+
     .desk {
       // padding: 0 40px;
       width: 100%;
@@ -40,8 +45,9 @@
         font-weight: bold;
         color: #141414;
         font-size: 26px;
-        margin: 30px 0 20px 50px;
+        margin: 20px 0 10px 50px;
       }
+
       .user {
         margin-top: 15px;
       }
@@ -50,6 +56,7 @@
         display: flex;
         flex-direction: row;
         margin-bottom: 10px;
+
         .l {
           display: flex;
           flex: 1;
@@ -63,7 +70,10 @@
           .text {
             color: #141414;
             font-size: 15px;
+            padding: 0%;
+            margin: 0%;
           }
+
           .icon {
             width: 18px;
             height: 18px;
@@ -73,29 +83,35 @@
             align-items: center;
             justify-content: center;
             -webkit-app-region: no-drag;
+
             span {
               font-family: 'iconfont';
               color: #ababab;
               font-size: 18px;
             }
           }
+
           .ant-switch-checked {
             background-color: #4cd964;
           }
+
           .rightIcon {
             font-family: 'iconfont';
             color: #ababab;
             font-size: 18px;
           }
+
           .unit {
             display: flex;
             flex-direction: row;
             align-items: center;
+
             .one {
               display: flex;
               flex-direction: row;
               align-items: center;
               margin-right: 15px;
+
               .check {
                 width: 12px;
                 height: 12px;
@@ -105,6 +121,7 @@
                 align-items: center;
                 justify-content: center;
                 margin-right: 6px;
+
                 .ciral {
                   width: 8px;
                   height: 8px;
@@ -112,28 +129,35 @@
                   background-color: #e1206d;
                 }
               }
+
               .unitsText {
                 font-size: 14px;
                 color: #141414;
               }
             }
           }
+
           .switch {
             z-index: 5;
+
             button {
               z-index: 2;
             }
+
             .ant-switch-checked {
               background-color: #4cd964;
             }
           }
+
           .hardSetting {
             font-weight: bold;
             color: #141414;
             font-size: 26px;
             // margin-top: 15px;
           }
+
           .backlight {
+
             // width: 300px;
             .solid {
               display: flex;
@@ -143,16 +167,20 @@
               font-size: 12px;
               margin-top: 40px;
               text-align: center;
+
               .slider {
                 // width: 185px;
                 background-color: pink;
                 margin: 0 20px;
+
                 .ant-slider {
                   height: 1px;
+
                   .ant-slider-rail {
                     height: 1px;
                     background-color: #d8d8d8;
                   }
+
                   .ant-slider-track {
                     background-color: #d8d8d8;
                     height: 1px;
@@ -166,10 +194,12 @@
               }
             }
           }
-          .selebox{
-            .selectionbox{
+
+          .selebox {
+            .selectionbox {
               width: 100%;
-              .box{
+
+              .box {
                 border-radius: 100px;
                 padding-left: 5%;
                 padding-right: 5%;
@@ -192,6 +222,7 @@
       padding: 0;
     }
   }
+
   .myModal {
     .isSave {
       width: 50%;
@@ -201,11 +232,13 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
+
       p {
         margin: 0;
         padding: 0;
         color: #000;
       }
+
       .btn {
         width: 100%;
         display: flex;
@@ -217,16 +250,19 @@
           color: #fff;
         }
       }
+
       .title {
         width: 70%;
         text-align: center;
       }
+
       .verify {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-around;
         width: 75%;
+
         input {
           border-width: 0;
           border-bottom: 1px solid #d8d8d8;

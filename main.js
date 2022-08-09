@@ -32,27 +32,27 @@ const {
   up,
   down,
 } = require("@nut-tree/nut-js");
-if (isDev) {
-  const {
-    default: installExtension,
-    REACT_DEVELOPER_TOOLS,
-    REDUX_DEVTOOLS,
-  } = require("electron-devtools-installer");
+// if (isDev) {
+//   const {
+//     default: installExtension,
+//     REACT_DEVELOPER_TOOLS,
+//     REDUX_DEVTOOLS,
+//   } = require("electron-devtools-installer");
 
-  app.whenReady().then(async () => {
-    if (isDev) {
-      installExtension(REACT_DEVELOPER_TOOLS)
-        .then((name) => console.log(`Added Extension:  ${name}`))
-        .catch((err) => console.log("An error occurred: ", err));
-      installExtension(REDUX_DEVTOOLS)
-        .then((name) => console.log(`Added Extension:  ${name}`))
-        .catch((err) => console.log("An error occurred: ", err));
-    }
-  });
-}
+//   app.whenReady().then(async () => {
+//     if (isDev) {
+//       installExtension(REACT_DEVELOPER_TOOLS)
+//         .then((name) => console.log(`Added Extension:  ${name}`))
+//         .catch((err) => console.log("An error occurred: ", err));
+//       installExtension(REDUX_DEVTOOLS)
+//         .then((name) => console.log(`Added Extension:  ${name}`))
+//         .catch((err) => console.log("An error occurred: ", err));
+//     }
+//   });
+// }
 
 const devWidth = 1920;
-const devHeight = 1040;
+const devHeight = 1080;
 //每次在检测到底座后都会发送打开底座的指令去打开底座,但是在发送升级指令后设备会断开重连检测.这就会导致在发送升级文件前会发送一段数据,导致mac升级时文件效验不通过,导致升级失败.因此加了此标志位,当发送了升级指令则为true,发送文件后重置为false
 let enterUpgradeFlog = false;
 
@@ -310,6 +310,8 @@ function show(val) {
   //size{width:1880,height:1080}
   let width = parseInt(size.width);
   let height = parseInt(size.height + 40);
+  width = 1920
+  height = 1080
   // console.log({
   //     width,
   //     height
@@ -324,10 +326,10 @@ function show(val) {
   let windowWidth = parseInt((val / devWidth) * width);
   let windowHeight = parseInt((val / devHeight) * height);
 
-  // console.log(val, width, height, {
-  //     width: windowWidth,
-  //     height: windowHeight
-  // });
+  console.log(val, width, height, {
+    width: windowWidth,
+    height: windowHeight
+  });
   return {
     width: windowWidth,
     height: windowHeight,
@@ -335,7 +337,7 @@ function show(val) {
 }
 
 //创建加载中的窗口
-let loadingWindow=null
+let loadingWindow = null
 function createLoadingWindow() {
   //加载页面窗口
   loadingWindow = new BrowserWindow({
@@ -699,21 +701,30 @@ ipcMain.on("window-close", function () {
   loadingWindow && loadingWindow.close();
   mainWindow.close();
 });
-function wind(width1, height1, data) {
+function wind(width1, height1, data, min = {}) {
   let width = show(width1).height;
   let height = show(height1).height;
+  console.log('----设置大小', { width, height });
   if (data) {
     width = parseInt((width1 / devHeight) * data.height);
     height = parseInt((height1 / devHeight) * data.height);
   }
 
   // mainWindow.setMaximumSize(width, height);
-  mainWindow.setMinimumSize(width, height);
+
+  // mainWindow.setMinimumSize(width, height);
+  if (min && min.width) {
+    mainWindow.setMinimumSize(min.width, min.height)
+  } else {
+    mainWindow.setMinimumSize(width, height);
+  }
+
   mainWindow.setSize(width, height);
 }
 
 ipcMain.on("big", (e, data) => {
-  wind(900, 900, data);
+  wind(900, 900, data, { width: 810, height: 810 });
+
 
   // mainWindow.setMaximumSize(show(800).height, show(900).height);
   // mainWindow.setMinimumSize(show(800).height, show(900).height);
@@ -760,7 +771,7 @@ ipcMain.on("small", (e, data) => {
 });
 
 ipcMain.on("changeFenBianLv", (e, data) => {
-  mainWindow.webContents.send("changeFenBianLv", true);
+  // mainWindow.webContents.send("changeFenBianLv", true);
 });
 
 ipcMain.on("mesasure", (e, data) => {

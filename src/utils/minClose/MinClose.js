@@ -83,7 +83,7 @@ const MinClose = ({ minHeight, imgWidth }) => {
 
 MinClose.propTypes = {
   minHeight: PropTypes.string,
-  imgWidth: PropTypes.number,
+  imgWidth: PropTypes.string,
 }
 MinClose.defaultProps = {
   minHeight: '40px',
