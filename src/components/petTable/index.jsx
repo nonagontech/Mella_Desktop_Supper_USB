@@ -26,14 +26,14 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
          *     语法：stringObject.indexOf(searchvalue, fromindex)
          *   参数：searchvalue 必需。规定需检索的字符串值。 fromindex 可选的整数参数。规定在字符串中开始检索的位置。它的合法取值是 0 到 stringObject.length - 1。如省略该参数，则将从字符串的首字符开始检索。
          *    说明：该方法将从头到尾地检索字符串 stringObject，看它是否含有子串 searchvalue。开始检索的位置在字符串的 fromindex 处或字符串的开头（没有指定 fromindex 时）。如果找到一个 searchvalue，则返回 searchvalue 的第一次出现的位置。stringObject 中的字符位置是从 0 开始的。如果没有找到，将返回 -1。
-         *  
+         *
          * list         原数组
          * keyWord      查询关键词
          * searchData   查询的结果
-         * 
+         *
          * toLowerCase（）方法：将字符串统一转成小写
          * toUpperCase（）方法：将字符串统一转成大写
-         * 
+         *
          */
         let list = petListArr
         let searchData = []
@@ -50,11 +50,6 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
         }
         console.log(searchData);
         setSearchData(searchData)
-
-
-
-
-
     }
 
     const columns = [
@@ -271,13 +266,12 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
                             y: px(480)
                         }}
                         onRow={(record) => {
+                          console.log('record: ', record);
                             return {
                                 onClick: (event) => {
                                     setMenuNum('1')
                                     petDetailInfoFun(record)
-                                    console.log('record', record);
                                 }, // 点击行
-
                             };
                         }}
                     />
