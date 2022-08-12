@@ -459,13 +459,14 @@ const MeasuredData = ({
             type="dashboard"
             percent={_.round(mellaMeasureValue, 1)}
             gapDegree={30}
-            width={px(260)}
+            // width={px(260)}
             strokeWidth={"8"}
             format={(percent) => ProgressTitle(percent)}
             strokeColor={{
               "0%": "#7bd163",
               "100%": "#19ade4",
             }}
+            className="measurementProgress"
           />
           {!saveType && (
             <div className="buttonBox">
@@ -501,7 +502,8 @@ const MeasuredData = ({
             className="measuredTable"
             pagination={false}
             scroll={{
-              y: hisHe,
+              // y: hisHe,
+              y: '80%'
             }}
           ></Table>
         </div>

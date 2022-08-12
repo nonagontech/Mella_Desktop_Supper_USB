@@ -255,7 +255,8 @@ export default class ConnectWorkplace extends Component {
                   storage.lastWorkplaceId = lastWorkplaceId;
                 } catch (error) { }
                 storage.connectionKey = connectionKey;
-                this.props.history.replace("/menuOptions/settings");
+                // this.props.history.replace("/menuOptions/settings");
+                this.props.history.goBack();
               }}
             >
               <p style={{ fontSize: px(18) }}>Save Changes</p>

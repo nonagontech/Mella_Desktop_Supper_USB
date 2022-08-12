@@ -84,7 +84,7 @@ export default class Help extends Component {
 
         <div className="body">
           <div className="title">How can we help you?</div>
-          <div className="input" style={{ marginTop: px(25) }}>
+          <div className="input">
             <input
               type="text"
               placeholder="Describe you issue     &#xe63f;"
@@ -92,23 +92,23 @@ export default class Help extends Component {
             />
           </div>
 
-          <div className="list" style={{ marginTop: px(50) }}>
+          <div className="list">
             <ul>
               {list.map((data, index) => (
                 <li key={index}
-                  style={{ width: px(150), height: px(150) }}
+                  // style={{ width: px(150), height: px(150) }}
                 >
 
                   <>
-                    <img src={data.img} alt="" style={{ height: px(80) }} />
-                    <p style={{ fontSize: px(19) }}>{data.title}</p>
+                    <img src={data.img} alt="" />
+                    <p>{data.title}</p>
                   </>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="popularArticles" style={{ marginTop: px(80) }}>
+          <div className="popularArticles">
             <div className="text">Popular Articles</div>
             <span className=" iconfont  icon-jiantou3 dropDown" />
           </div>
@@ -117,10 +117,10 @@ export default class Help extends Component {
             <span className=" iconfont  icon-jiantou3 dropDown" />
           </div>
 
-          <div className="time" style={{ marginTop: px(40) }}>
-            <p style={{ fontSize: px(30) }}>Still need help?</p>
+          <div className="time">
+            <p style={{ fontSize: px(24) }}>Still need help?</p>
             <div className="line" style={{ height: px(6) }}></div>
-            <p style={{ fontSize: px(30) }}>Monday - Friday: 9am - 5pm (ET)</p>
+            <p style={{ fontSize: px(24) }}>Monday - Friday: 9am - 5pm (ET)</p>
           </div>
 
 
@@ -128,10 +128,10 @@ export default class Help extends Component {
 
         <div className="foot">
           <div className="l">
-            <img src={email} alt="" style={{ height: px(50) }} />
-            <div className="text" style={{ fontSize: px(18) }}>Drop us a line</div>
+            <img src={email} alt=""/>
+            <div className="text">Drop us a line</div>
             <a href="mailto:support@mella.ai"
-              style={{ fontSize: px(18) }}
+              // style={{ fontSize: px(18) }}
               onClick={(e) => {
                 // e.preventDefault();
                 // let electron = window.electron
@@ -142,9 +142,9 @@ export default class Help extends Component {
           </div>
 
           <div className="l r">
-            <img src={phone} alt="" style={{ height: px(50) }} />
-            <div className="text" style={{ fontSize: px(18) }}>Bark at Us!</div>
-            <div className="text" style={{ fontSize: px(18) }}>201.977.6411</div>
+            <img src={phone} alt=""/>
+            <div className="text">Bark at Us!</div>
+            <div className="text">201.977.6411</div>
           </div>
         </div>
       </div>

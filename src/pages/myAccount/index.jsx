@@ -20,11 +20,12 @@ import _ from "lodash";
 import { px, mTop } from "../../utils/px";
 import changePhoto from '../../assets/images/changePhoto.png';
 import countryList from '../../utils/areaCode/country';
-import { fetchRequest } from '../../utils/FetchUtil1'
+import { fetchRequest } from '../../utils/FetchUtil1';
+import PropTypes from 'prop-types';
 import "./index.less";
 
 
-const MyAccount = () => {
+const MyAccount = ({bodyHeight}) => {
   let storage = window.localStorage;
   const [form] = Form.useForm();
   const { Option } = Select;
@@ -48,7 +49,6 @@ const MyAccount = () => {
       domain: res,
       userId: storage.userId
     };
-    console.log('data: ', data);
     fetchRequest(`/user/update`, "POST", data)
       .then((res) => {
         if (res.msg === 'success') {
@@ -91,7 +91,7 @@ const MyAccount = () => {
   }, [])
 
   return (
-    <Layout className="myAccountBox">
+    <Layout className="myAccountBox" style={{ height: bodyHeight }}>
       <div style={{ height: px(100), background: "#fff", position: 'relative' }}>
         <div style={{
           height: '100%',
@@ -107,10 +107,11 @@ const MyAccount = () => {
           form={form}
           layout="vertical"
           onFinish={onFinish}
+          className="accountForm"
         >
           <Row>
-            <Col flex={1} style={{ padding: '16px' }}>
-              <Form.Item valuePropName="fileList" name="imageId" style={{ height: '148px' }}>
+            <Col flex={1} className="leftColBox">
+              <Form.Item valuePropName="fileList" name="imageId" className="imageFormItem">
                 <div style={{ display: 'grid', justifyItems: 'center', alignItems: 'center' }}>
                   <Avatar
                     init={
@@ -137,7 +138,7 @@ const MyAccount = () => {
                 <Input placeholder="input placeholder" bordered={false} className="accountInput" />
               </Form.Item>
             </Col>
-            <Col flex={1} style={{ padding: '16px' }}>
+            <Col flex={1} className="rightColBox">
               <Form.Item label="FirstName" name="firstName">
                 <Input placeholder="input placeholder" bordered={false} className="accountInput" />
               </Form.Item>
@@ -149,7 +150,7 @@ const MyAccount = () => {
               </Form.Item>
             </Col>
           </Row>
-          <Form.Item label="Address" style={{ padding: '16px' }}>
+          <Form.Item className="addressFormItem" label="Address">
             <div style={{ display: 'flex' }}>
               <Form.Item name="address1" style={{ marginRight: px(16) }}>
                 <Input placeholder="address1" bordered={false} className="accountInput" />
@@ -184,7 +185,7 @@ const MyAccount = () => {
               </Form.Item>
             </div>
           </Form.Item>
-          <Form.Item label="Areas of Expertise" name="domain" style={{ padding: '16px' }}>
+          <Form.Item className="expertiseFormItem" label="Areas of Expertise" name="domain">
             <Checkbox.Group>
               <Row>
                 <Col span={6}>
@@ -300,7 +301,7 @@ const MyAccount = () => {
               </Row>
             </Checkbox.Group>
           </Form.Item>
-          <Form.Item style={{ marginTop: px(100) }}>
+          <Form.Item className="btnFormItem">
             <div style={{ display: 'flex', justifyContent: 'center' }}>
               <Button type="primary" htmlType="submit" shape="round" size="large" style={{ width: px(260) }}>Save Changes</Button>
             </div>
@@ -310,6 +311,12 @@ const MyAccount = () => {
     </Layout>
   );
 }
+
+MyAccount.propTypes = {
+  bodyHeight: PropTypes.number,
+  devicesTypeList: PropTypes.array
+}
+
 export default connect(
   (state) => ({}),
 )(MyAccount);

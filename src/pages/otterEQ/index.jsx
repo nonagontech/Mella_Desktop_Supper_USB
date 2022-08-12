@@ -13,12 +13,12 @@ import {
   petSortTypeFun,
   petDetailInfoFun,
 } from "../../store/actions";
+import PropTypes from 'prop-types';
 import "./index.less";
+
 const { Content, Header } = Layout;
-const OtterEQPage = ({ petMessage, hardwareMessage }) => {
-
+const OtterEQPage = ({ petMessage, hardwareMessage,bodyHeight }) => {
   const [cutPageType, setCutPageType] = useState('linkPage');
-
   const changePage = () => {
     switch (cutPageType) {
       case "linkPage":
@@ -42,7 +42,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage }) => {
   }
 
   return (
-    <Layout className="ottterEQBox">
+    <Layout className="ottterEQBox" style={{ height: bodyHeight }}>
       <div style={{ height: px(100), background: "#fff", position: 'relative' }}>
         <div style={{ height: '100%' }}>
           <HeaderItem />
@@ -60,6 +60,11 @@ const OtterEQPage = ({ petMessage, hardwareMessage }) => {
     </Layout>
   );
 };
+
+OtterEQPage.propTypes = {
+  bodyHeight: PropTypes.number,
+  devicesTypeList: PropTypes.array
+}
 
 export default connect(
   (state) => ({

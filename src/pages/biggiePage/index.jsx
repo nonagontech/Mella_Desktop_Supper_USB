@@ -7,11 +7,12 @@ import { setBiggieConnectStatusFun } from "../../store/actions";
 import HeaderItem from "./../temperaturePage/components/headerItem";
 import HistoryTable from "../../components/historyTable";
 import LinkEquipment from "./components/linkEquipment";
-import "./biggiePage.less";
 import { px } from "../../utils/px";
 import { fetchRequest } from "../../utils/FetchUtil1";
 import { fetchRequest4 } from "../../utils/FetchUtil4";
 import MyModal from "../../utils/myModal/MyModal";
+import PropTypes from 'prop-types';
+import "./biggiePage.less";
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -21,6 +22,7 @@ const BiggirPage = ({
   hardwareReduce,
   setBiggieConnectStatusFun,
   petReduce,
+  bodyHeight,
 }) => {
   let { petDetailInfo } = petReduce;
   let { biggieBodyWeight } = hardwareReduce;
@@ -229,7 +231,7 @@ const BiggirPage = ({
 
   return (
     <>
-      <Layout className="biggiePage">
+      <Layout className="biggiePage" style={{ height: bodyHeight }}>
         <div style={{ height: px(100), background: "#fff", position: 'relative' }}>
           <div style={{ height: '100%' }}>
             <HeaderItem />
@@ -280,6 +282,11 @@ const BiggirPage = ({
     </>
   );
 };
+
+BiggirPage.propTypes = {
+  bodyHeight: PropTypes.number,
+  devicesTypeList: PropTypes.array
+}
 
 export default connect(
   (state) => ({

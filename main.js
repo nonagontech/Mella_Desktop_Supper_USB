@@ -32,24 +32,24 @@ const {
   up,
   down,
 } = require("@nut-tree/nut-js");
-// if (isDev) {
-//   const {
-//     default: installExtension,
-//     REACT_DEVELOPER_TOOLS,
-//     REDUX_DEVTOOLS,
-//   } = require("electron-devtools-installer");
+if (isDev) {
+  const {
+    default: installExtension,
+    REACT_DEVELOPER_TOOLS,
+    REDUX_DEVTOOLS,
+  } = require("electron-devtools-installer");
 
-//   app.whenReady().then(async () => {
-//     if (isDev) {
-//       installExtension(REACT_DEVELOPER_TOOLS)
-//         .then((name) => console.log(`Added Extension:  ${name}`))
-//         .catch((err) => console.log("An error occurred: ", err));
-//       installExtension(REDUX_DEVTOOLS)
-//         .then((name) => console.log(`Added Extension:  ${name}`))
-//         .catch((err) => console.log("An error occurred: ", err));
-//     }
-//   });
-// }
+  app.whenReady().then(async () => {
+    if (isDev) {
+      installExtension(REACT_DEVELOPER_TOOLS)
+        .then((name) => console.log(`Added Extension:  ${name}`))
+        .catch((err) => console.log("An error occurred: ", err));
+      installExtension(REDUX_DEVTOOLS)
+        .then((name) => console.log(`Added Extension:  ${name}`))
+        .catch((err) => console.log("An error occurred: ", err));
+    }
+  });
+}
 
 const devWidth = 1920;
 const devHeight = 1080;
@@ -723,13 +723,17 @@ function wind(width1, height1, data, min = {}) {
 }
 
 ipcMain.on("big", (e, data) => {
-  wind(900, 900, data, { width: 810, height: 810 });
-
-
+  let size = require("electron").screen.getPrimaryDisplay().workAreaSize;
+  if (size.height >= 728 && size.height < 1040) {
+    wind(800, 640, data, { width: 800, height: 640 });
+  } else {
+    wind(900, 900, data, { width: 810, height: 810 });
+  }
   // mainWindow.setMaximumSize(show(800).height, show(900).height);
   // mainWindow.setMinimumSize(show(800).height, show(900).height);
   // mainWindow.setSize(show(800).height, show(1000).height)
 });
+
 ipcMain.on("setting", (e, data) => {
   wind(850, 900, data);
   // mainWindow.setMaximumSize(show(850).height, show(900).height);
@@ -756,8 +760,12 @@ ipcMain.on("middle", (e, data) => {
   // mainWindow.setSize(700, 800)
 });
 ipcMain.on("small", (e, data) => {
-  wind(400, 830, data);
-
+  let size = require("electron").screen.getPrimaryDisplay().workAreaSize;
+  if (size.height >= 728 && size.height < 1040) {
+    wind(300, 640, data);
+  }else{
+    wind(400, 830, data);
+  }
   // let width = show(400).height
   // let height = show(800).height
   // if (data) {

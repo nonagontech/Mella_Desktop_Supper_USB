@@ -69,14 +69,14 @@ const HistoryTable = ({
   //体重表格渲染
   const weightColumns = [
     {
-      title: "Dat",
+      title: "Data",
       dataIndex: "createTime",
       ellipsis: true,
       align: "center",
       render: (text, record) => moment(text).format("MMM D"),
     },
     {
-      title: "Tim",
+      title: "Time",
       dataIndex: "createTime",
       ellipsis: true,
       align: "center",
@@ -369,8 +369,10 @@ const HistoryTable = ({
         pagination={false}
         loading={loading}
         scroll={{
-          y: hisHe,
+          // y: hisHe,
+          y: '80%'
         }}
+        className="historyTableStyle"
       />
       <Modal
         title={

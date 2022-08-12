@@ -43,7 +43,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
 
   const [type, setType] = useState(false); //是否显示轮播图
   const [carouselIndex, setCarouselIndex] = useState(0); //轮播图下标
-  const [title,setTitle] = useState('Ready, place under foreleg')//准备测量的文字
+  const [title, setTitle] = useState('Ready, place under foreleg')//准备测量的文字
   const saveCallBack = useRef();
   const callBack = () => {
     setCarouselIndex(carouselIndex + 1);
@@ -94,22 +94,22 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
   }, [type, mellaConnectStatus]);
 
   useEffect(() => {
-    if(mellaMeasurePart === '腋温'){
+    if (mellaMeasurePart === '腋温') {
       setTitle('Ready, place under foreleg');
-    }else if( mellaMeasurePart === '耳温'){
+    } else if (mellaMeasurePart === '耳温') {
       setTitle('Ready, place in ear');
-    }else{
+    } else {
       setTitle('Ready, place in anus');
     }
-  },[mellaMeasurePart])
+  }, [mellaMeasurePart])
 
   return (
     <>
-      <Content className={"contentBox"}>
+      <Content className={"temperatureContentBox"}>
         {_.isEqual(mellaConnectStatus, "disconnected") ? (
           <>
             <div className="startBox">
-              <p className="startTitle" style={{ fontSize: px(31) }}>
+              <p className="startTitle">
                 Turn on your
                 <br />
                 Mella Thermometer
@@ -117,7 +117,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
                 or Pair New Mella
               </p>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <img src={PressButton_Pro} className={"PressButton_Pro"} style={{ width: px(300), height: px(200) }} />
+                <img src={PressButton_Pro} className="PressButton_Pro" />
               </div>
             </div>
             <div className="tableBox">
@@ -135,7 +135,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
               {!type ? (
                 <>
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <img src={checkImage()}></img>
+                    <img src={checkImage()} className="checkImages"></img>
                   </div>
 
                   {mellaMeasurePart === "腋温" ? (
@@ -145,7 +145,6 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
                           Need Help With Accurate Placement On Pet?
                         </p>
                       </div>
-
                     </div>
                   ) : (
                     <></>
@@ -156,15 +155,14 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
                   <div className="carouselBox">
                     {_.map(imageMap, (item, index) => {
                       return (
-                        <div key={index}>
-                          <img
-                            className="contentStyle"
-                            src={item}
-                            style={{
-                              display: carouselIndex === index ? "" : "none",
-                            }}
-                          />
-                        </div>
+                        <img
+                          key={index}
+                          className="contentImgStyle"
+                          src={item}
+                          style={{
+                            display: carouselIndex === index ? "" : "none",
+                          }}
+                        />
                       );
                     })}
                   </div>

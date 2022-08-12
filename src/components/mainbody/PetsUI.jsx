@@ -208,10 +208,21 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
         }
       />
       <div style={{ width: '100%', position: 'relative', height: bodyHeight - px(100), }}>
+        {/* <div className="sort" style={{ paddingLeft: px(20) }}>
+          <Dropdown overlay={menu} trigger={['click']}>
+            <div className="sortBox">
+              <img src={xia} alt="" width={px(20)} style={{ marginRight: px(10) }} />
+              <div className="sortText" >
+                {`Sort by: ${petSortType}`}
+              </div>
+            </div>
+          </Dropdown>
+        </div> */}
         <div className="title" style={{ padding: `${px(20)}px 0px ${px(20)}px ${px(20)}px ` }}>
           <img src={petIcon} alt="" width={px(25)} style={{ marginRight: px(10) }} />
           <div className="titleText" >Pets</div>
         </div>
+
         <div className="sort" style={{ paddingLeft: px(20) }}>
           <Dropdown overlay={menu} trigger={['click']}>
             <div className="sortBox">

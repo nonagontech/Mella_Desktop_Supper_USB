@@ -436,16 +436,16 @@ export default class SignIn extends Component {
 
         <div className="body">
           <div className="logo">
-            <img src={mellaLogo} alt="" style={{ width: px(120) }} />
+            <img src={mellaLogo} alt="" />
           </div>
           <div className="body" style={{ position: "relative" }}>
             <div
               className="text"
-              style={{
-                fontSize: px(28),
-                marginBottom: px(20),
-                marginTop: px(30),
-              }}
+              // style={{
+              //   fontSize: px(28),
+              //   marginBottom: px(20),
+              //   marginTop: px(30),
+              // }}
             >
               Please enter email <br />
               and password
@@ -454,13 +454,11 @@ export default class SignIn extends Component {
             <div className="inpF">
               <Input
                 className="inp"
-                style={{
-                  width: px(310),
-                  height: px(45),
-                  marginLeft: px(6),
-                  marginBottom: px(18),
-                  fontSize: px(18),
-                }}
+                // style={{
+                //   width: px(310),
+                //   height: px(45),
+                //   fontSize: px(18),
+                // }}
                 value={this.state.email}
                 placeholder="rachel@friends.com"
                 bordered={false}
@@ -473,13 +471,13 @@ export default class SignIn extends Component {
               />
               <Input.Password
                 className="inp"
-                style={{
-                  width: px(310),
-                  height: px(45),
-                  marginLeft: px(6),
-                  marginBottom: px(18),
-                  fontSize: px(18),
-                }}
+                // style={{
+                //   width: px(310),
+                //   height: px(45),
+                //   marginLeft: px(6),
+                //   marginBottom: px(18),
+                //   fontSize: px(18),
+                // }}
                 visibilityToggle={false}
                 value={this.state.hash}
                 placeholder="********"
@@ -499,12 +497,12 @@ export default class SignIn extends Component {
 
               <div
                 className="text"
-                style={{
-                  fontSize: px(28),
-                  lineHeight: px(1),
-                  marginTop: px(10),
-                  marginBottom: px(20),
-                }}
+                // style={{
+                //   fontSize: px(28),
+                //   lineHeight: px(1),
+                //   marginTop: px(10),
+                //   marginBottom: px(20),
+                // }}
               >
                 {"Or scan QR Code"}
               </div>
@@ -566,12 +564,12 @@ export default class SignIn extends Component {
 
         <div
           className="button11"
-          style={{ backgroundColor: "#E7E7E7", padding: `${px(32)}px 0` }}
+          style={{ backgroundColor: "#E7E7E7" }}
         >
           <div
             className="btn1 flex"
             onClick={this._continue}
-            style={{ height: px(40) }}
+            // style={{ height: px(40) }}
           >
             <p>{`CONTINUE`}</p>
           </div>

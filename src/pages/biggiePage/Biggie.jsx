@@ -10,15 +10,15 @@ import xia from './../../assets/img/xia.png'
 import './biggie.less'
 
 /**
- * 
+ *
  * @param {string} weight   体重值
  * @param {string} bodyFat   体脂
  * @param {string} score   健康指数
  * @param {string} impedance   阻抗值
  * @param {boolean} issave   按钮文本，为true展示save，为false展示send to pms
  * @param {function} onPress   点击按钮调用的函数
- * 
- * @returns 
+ *
+ * @returns
  */
 
 const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnPress, isIbs, isHaveSaveBtn = true }) => {
@@ -36,7 +36,7 @@ const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnP
     <div className="biggie" >
       <div className="top">
 
-        <div style={{ marginTop: px(150), height: px(160), borderRadius: px(150) }} className='biggiel'>
+        <div style={{ borderRadius: px(150) }} className='biggiel'>
           <div style={{ backgroundColor: lTColor, borderRadius: px(75), }} className='lT'>
             <div className='lTText' style={{ fontSize: lTtextSize }}>{lTtext}</div>
           </div>
@@ -48,16 +48,16 @@ const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnP
         </div>
 
 
-        <div style={{ height: px(240), borderRadius: px(150), marginBottom: px(50) }} className='cen'>
+        <div style={{  borderRadius: px(150) }} className='cen'>
           <div style={{ borderRadius: px(75) }} className='lT'>
             <img
               src={cir}
               width={'100%'}
             />
           </div>
-          <div className='cTText' style={{ top: px(45), fontSize: px(32), fontWeight: '800' }}>{weight}</div>
-          <div style={{ top: px(95), fontSize: px(25) }} className='cTText'>{`${isIbs ? 'lbs' : 'kgs'}`}</div>
-          <div className='cenCText' style={{ fontSize: px(24) }}>Weight</div>
+          <div className='cTText' style={{ fontWeight: '800' }}>{weight}</div>
+          <div className='cTTextUnit'>{`${isIbs ? 'lbs' : 'kgs'}`}</div>
+          <div className='cenCText'>Weight</div>
           <img
             src={xia}
             style={{ width: px(20), marginBottom: px(6) }}
@@ -66,7 +66,7 @@ const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnP
 
 
 
-        <div style={{ marginTop: px(150), height: px(160), borderRadius: px(150) }} className='biggiel'>
+        <div style={{ borderRadius: px(150) }} className='biggiel'>
           <div style={{ backgroundColor: rTColor, borderRadius: px(75) }} className='lT'>
             <div className='lTText' style={{ fontSize: rTtextSize }}>{rTtext}</div>
           </div>
@@ -81,12 +81,12 @@ const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnP
 
 
 
-      <div className='biggiefoot' style={{ marginTop: px(10), }}>
+      <div className='biggiefoot'>
         {isHaveSaveBtn &&
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
             <div
               className='biggiefootbtn'
-              style={{ height: px(36), }}
+              // style={{ height: px(36), }}
               onClick={() => {
                 discardOnPress()
               }}
@@ -97,7 +97,7 @@ const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnP
 
             <div
               className='biggiefootbtn'
-              style={{ height: px(36), }}
+              // style={{ height: px(36), }}
               onClick={() => {
                 onPress()
               }}

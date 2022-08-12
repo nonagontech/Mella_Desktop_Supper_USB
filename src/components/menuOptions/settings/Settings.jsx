@@ -345,31 +345,11 @@ export default class Settings extends Component {
 
 
     return (
-      <div className="item" style={{ marginTop: px(15) }}>
-        <div className="l">
-          <div className="hardSetting">{`Hardware Settings`}</div>
-        </div>
-
-
-        {/* <div className="l">
-          <div className="text">Device:</div>
-
-          <div className="selebox" style={{ width: px(200) }}>
-            <SelectionBox
-              listArr={deviceArr}
-              clickItem={(value) => {
-                console.log('选择的设备:', value);
-                electronStore.set(`${storage.userId}-selectDevice`, value.key)
-
-              }}
-              initSelectVale={selectDeviceName}
-
-            />
-          </div>
-
-
-        </div> */}
+      // <div className="item" style={{ marginTop: px(15) }}>
+      <div className="title">
+        <div className="hardSetting">{`Hardware Settings`}</div>
       </div>
+      // </div>
     )
   }
 
@@ -486,7 +466,7 @@ export default class Settings extends Component {
 
                 </div> */}
 
-                {/* 
+                {/*
                 <div className="l" style={{ height: '50px' }}>
 
                 </div> */}
@@ -550,7 +530,7 @@ export default class Settings extends Component {
             <div className="desk">
 
               {this._device()}
-              <div className="item" style={{ marginTop: px(25) }}>
+              <div className="item">
                 <div className="l">
                   <div className="text">Backlight</div>
                   <Switch
@@ -572,7 +552,7 @@ export default class Settings extends Component {
               </div>
 
 
-              <div className="item" style={{ marginTop: px(25) }}>
+              <div className="item">
                 <div className="l">
                   <div className="backlight" style={{ width: px(300) }} >
                     <div className="text">Backlight Timer</div>
@@ -615,7 +595,7 @@ export default class Settings extends Component {
                 </div>
               </div>
 
-              <div className="item" style={{ marginTop: px(25) }}>
+              <div className="item">
 
 
 
@@ -655,17 +635,12 @@ export default class Settings extends Component {
           </div>
 
 
-          <div className="btn" style={{ padding: `${px(40)}px 0` }}>
+          <div className="btnSave">
             <Button
               text={'Save Changes'}
               onClick={this._save}
             />
           </div>
-
-
-
-
-
         </div>
 
         <MyModal

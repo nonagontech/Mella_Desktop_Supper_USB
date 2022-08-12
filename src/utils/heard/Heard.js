@@ -624,6 +624,7 @@ const Heard = ({
       { name: "All Patients", index: "2" },
       { name: "Scheduled Patients", index: "3" },
       { name: "My Account", index: "4" },
+      {name:"Org & Practice Profiles" ,index:"10"},
       { name: "Settings", index: "5" },
       { name: name, index: "6" },
       { name: `Billing & Subscriptions`, index: "7" },
@@ -723,6 +724,10 @@ const Heard = ({
         storage.isClinical = "false";
         setMenuNum("1");
         history.push("/");
+        break;
+
+      case "10":
+        history.push('/menuOptions/ConnectWorkplace');
         break;
 
       default:

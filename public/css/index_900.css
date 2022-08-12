@@ -1,0 +1,428 @@
+/*登录界面*/
+#home .heard .logo img {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  width: 300px
+}
+
+#home .button .siginInBtn {
+  width: 300px;
+  font-size: 20px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#home .text{
+  font-size: 20px;
+}
+
+#home .create .createBtn{
+  width: 300px;
+  font-size: 20px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#signIn .logo img {
+  width: 120px;
+}
+
+#signIn .text{
+  font-size: 28px;
+  margin-bottom: 20px;
+  margin-top: 30px;
+}
+
+#signIn .inpF .inp{
+  width: 310px;
+  height: 45px;
+  font-size: 18px;
+}
+
+#signIn .button11{
+  padding: 32px 0;
+}
+
+#signIn .button11 .btn1{
+  height: 40px;
+  width: 70%;
+}
+
+
+/*头部*/
+.popBox {
+  max-width: 392px;
+}
+
+.topItem .cardTopBox .topLeftBox {
+  padding: 20px;
+}
+
+.topItem .cardTopBox .topRightBox {
+  padding: 20px;
+}
+
+.topItem .cardTopBox .cardTitle {
+  font-size: 20px;
+  line-height: 25px;
+}
+
+.itemList {
+  padding: 25px !important;
+  font-size: 16px;
+  line-height: 18px;
+}
+
+/*历史表格*/
+.historyTableStyle .ant-table-body {
+  max-height: 200px !important;
+}
+
+/*温度测量页面*/
+.temperatureContentBox .startBox .startTitle {
+  font-size: 32px;
+  line-height: 42px;
+  margin-top: 50px;
+}
+
+.temperatureContentBox .PressButton_Pro {
+  width: 300px;
+  height: 200px;
+}
+
+.temperatureContentBox .checkImages {
+  width: 200px;
+  height: 300px;
+  margin-top: 0px;
+}
+
+.temperatureContentBox .startBox .bottomTip1 {
+  margin-top: 100px;
+}
+
+.temperatureContentBox .startBox .bottomTip1 .bottomTip1_1 {
+  padding: 5px 80px;
+}
+
+.temperatureContentBox .carouselBox {
+  height: 400px;
+}
+
+.measureContentBox .measuringProgress {
+  width: 260px;
+}
+
+.measureContentBox .measuringProgress .ant-progress-inner {
+  width: 260px !important;
+  height: 260px !important;
+}
+
+.measurementBox .progress .measurementProgress .ant-progress-inner {
+  width: 260px !important;
+  height: 260px !important;
+}
+
+.measurementBox .buttonBox {
+  margin-top: 40px;
+}
+
+.measurementBox .listTitleBox1 {
+  margin-top: 20px;
+}
+
+.measurementBox .table .measuredTable .ant-table-body {
+  max-height: 200px !important;
+}
+
+/*体重测量界面*/
+.linkBox {
+  padding-top: 50px;
+}
+
+.linkBox .startBox {
+  padding-bottom: 20px;
+}
+
+.linkBox .startBox .startTitle {
+  font-size: 32px;
+  line-height: 42px;
+  margin-top: 10px;
+}
+
+.biggiePage .biggieContentBox .biggbody .biggieTopBox .biggie .top .biggiel {
+  width: 20%;
+  margin-top: 150px;
+  height: 160px;
+}
+
+.biggiePage .biggieContentBox .biggbody .biggieTopBox .biggie .top .cen {
+  height: 240px;
+  margin-bottom: 50px;
+  width: 35%;
+}
+
+.biggiePage .biggieContentBox .biggbody .biggieTopBox .biggie .top .cTText {
+  font-size: 32px;
+  top: 45px;
+}
+
+.biggiePage .biggieContentBox .biggbody .biggieTopBox .biggie .top .cTTextUnit {
+  top: 95px;
+  font-size: 25px;
+}
+
+.biggiePage .biggieContentBox .biggbody .biggieTopBox .biggie .top .cenCText {
+  font-size: 24px;
+}
+
+.biggiePage .biggieContentBox .biggbody .biggieTopBox .biggie .biggiefoot {
+  margin-top: 10px;
+}
+
+.biggiePage .biggieContentBox .biggbody .biggieTopBox .biggie .biggiefoot .biggiefootbtn {
+  width: 40%;
+  height: 36px;
+}
+
+.biggiePage .biggbody .biggeTitleBox {
+  margin-top: 20px;
+}
+
+/*体脂秤合并界面*/
+.mergePage .headerBox .headerTitle {
+  font-size: 24px;
+  line-height: 24px;
+}
+
+.mergePage .combineContentBox .tipTitleBox {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.mergePage .combineContentBox .selectScalesBox .cardBox {
+  width: 400px;
+}
+
+.mergePage .combineContentBox .scalesBtnBox {
+  margin-top: 50px;
+}
+
+.mergePage .combineContentBox .scalesBtnBox .scalesBtn {
+  width: 300px;
+  height: 40px;
+}
+
+.mergePage .combineContentBox .asOneCardBox .asOneCard {
+  margin: 20px;
+}
+
+.mergePage .combineContentBox .asOneCardBox .acOneImageBox {
+  margin: 30px;
+}
+
+.mergePage .combineContentBox .inputBox {
+  margin-top: 50px;
+}
+
+.mergePage .combineContentBox .inputBox .inputName {
+  width: 350px;
+  height: 40px;
+}
+
+/*尺子测量界面*/
+.scanContentBox .scanImageBox {
+  width: 300px;
+  height: 200px;
+  margin-top: 40px;
+}
+
+.scanContentBox .dotBox .dotList {
+  margin-top: 16px;
+}
+
+.scanContentBox .nextBtnBox {
+  width: 330px;
+  margin-top: 20px;
+}
+
+
+/*医生添加宠物界面*/
+
+#doctorAddPet .editPetInfo_top {
+  height: 80%;
+}
+
+#doctorAddPet .editPetInfo_foot {
+  height: 15%;
+}
+
+/*修改宠物详情信息*/
+#editPetInfo .editPetInfo_top {
+  height: 80%;
+}
+
+#editPetInfo .editPetInfo_foot {
+  height: 15%;
+}
+
+/*所有宠物列表界面*/
+.petTable .pet_table_heard {
+  margin-top: 40px;
+}
+
+.petTable .heard2 {
+  margin-top: 40px;
+}
+
+.petTable .table .allPetTable .ant-table-body {
+  max-height: 480px !important;
+}
+
+/*用户个人信息界面*/
+.myAccountBox .accountForm .ant-form-item {
+  margin-bottom: 24px;
+}
+
+.myAccountBox .accountForm .leftColBox {
+  padding: 16px;
+}
+
+.myAccountBox .accountForm .leftColBox .imageFormItem {
+  height: 148px;
+}
+
+.myAccountBox .accountForm .rightColBox {
+  padding: 16px;
+}
+
+.myAccountBox .accountForm .addressFormItem {
+  padding: 16px;
+}
+
+.myAccountBox .accountForm .expertiseFormItem {
+  padding: 16px;
+}
+
+.myAccountBox .accountForm .btnFormItem {
+  margin-top: 100px;
+}
+
+/*临床测试界面*/
+#clinical .clinicalBody .clinical_top .r .bb1 .btn78 {
+  margin-top: 20px;
+  width: 220px;
+  height: 30px;
+  font-size: 16px;
+}
+
+/* #clinical .clinicalBody .clinical_top .r #myCharts {
+  margin-top: 50px;
+  height: 380px !important;
+} */
+
+/* #clinical .clinicalBody .clinical_top .r #myCharts .charts {
+  height: 380px !important;
+}
+
+#clinical .clinicalBody .clinical_top .r #myCharts .charts canvas {
+  height: 380px !important;
+} */
+
+#clinical .clinicalBody .clinical_top .clinical_foot .top {
+  height: 40px;
+  font-size: 16px;
+}
+
+.historyTable .activeImageBox {
+  padding: 18px 0;
+}
+
+.historyTable .activeImageBox .activeImages {
+  width: 25px;
+}
+
+.editModalBox {
+  top: 100px;
+}
+
+#clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child {
+  height: 33px;
+  margin: 15px 0;
+}
+
+#clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child:nth-child(1) {
+  margin-top: 30px;
+}
+
+/*设置界面*/
+#settings .body .desk:nth-child(3) {
+  border: none;
+}
+
+#settings .body .desk:nth-child(3) .item {
+  margin-top: 25px;
+}
+
+#settings .body .desk .title {
+  margin: 50px 0 10px 50px;
+  font-size: 26px;
+}
+
+#settings .body .btnSave {
+  padding: 20px 0;
+}
+
+/*帮助界面*/
+#help .body .title {
+  margin-top: 16px;
+  font-size: 24px;
+}
+
+#help .body .input {
+  margin-top: 25px;
+}
+
+#help .body .list {
+  margin-top: 50px;
+}
+
+#help .body .list li {
+  width: 150px;
+  height: 150px;
+}
+
+#help .body .list li img {
+  height: 80px;
+}
+
+#help .body .list li p {
+  font-size: 19px;
+}
+
+#help .body .popularArticles {
+  margin-top: 80px;
+}
+
+#help .body .tutorials {
+  margin-top: 20px;
+}
+
+#help .body .time {
+  margin-top: 40px;
+}
+
+#help .foot .l img {
+  height: 50px;
+}
+
+#help .foot .l a {
+  font-size: 18px;
+}
+
+#help .foot .l .text {
+  font-size: 18px;
+}

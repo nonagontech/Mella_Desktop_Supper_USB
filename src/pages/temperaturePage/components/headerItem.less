@@ -1,100 +1,95 @@
 .headerBox {
+  width: 100%;
+  height: 100%;
+  background-color: #FFFFFF;
+  border-bottom: 2px solid #979797;
+
+  .heardRow {
     width: 100%;
     height: 100%;
-    background-color: #FFFFFF;
-    border-bottom: 2px solid #979797;
+    display: flex;
+    align-items: center;
+    // background-color: pink;
+    justify-content: space-between;
 
-    .heardRow {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        // background-color: pink;
-        justify-content: space-between;
-        .walkInTitle{
-            display: contents;
-            color: #141414;
-            font-size: 26px;
-            font-weight: 700;
-            line-height: 24px;
-            padding-right: 20px;
-        }
+    .walkInTitle {
+      display: contents;
+      color: #141414;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 24px;
+      padding-right: 20px;
     }
+  }
 
-    .petMessageBox {
-        display: flex;
-        align-items: center;
-        
-        .petName {
-            display: contents;
-            color: #141414;
-            font-size: 21px;
-            font-weight: 700;
-            line-height: 24px;
-            padding-right: 20px;
-        }
-    }
+  .petMessageBox {
+    display: flex;
+    align-items: center;
 
-    .petMessageBox:nth-child(2) {
-        padding-left: 20px;
+    .petName {
+      color: #141414;
+      font-size: 21px;
+      font-weight: 700;
+      line-height: 24px;
+      padding-right: 20px;
+      max-width: 270px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin: 0;
     }
+  }
 
-    .linkStateImageBox {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-    }
+  .petMessageBox:nth-child(2) {
+    padding-left: 20px;
+  }
+
+  .linkStateImageBox {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
 }
 
 .topItem {
-    padding: 0px;
+  padding: 0px;
 
-    .cardTopBox {
-        width: 100%;
-        height: 50%;
-        background-color: #e1206d;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
+  .cardTopBox {
+    width: 100%;
+    height: 50%;
+    background-color: #e1206d;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 
-        .topLeftBox {
-            padding: 20px;
-            display: grid;
-            justify-items: center;
-        }
-
-        .topRightBox {
-            padding: 20px;
-            display: grid;
-            justify-items: end;
-        }
-
-        .cardTitle {
-            color: #FFFFFF;
-            font-size: 20px;
-            line-height: 25px;
-            text-align: center;
-            margin-bottom: 5px;
-        }
+    .topLeftBox {
+      display: grid;
+      justify-items: center;
     }
-}
 
+    .topRightBox {
+      display: grid;
+      justify-items: end;
+    }
+
+    .cardTitle {
+      color: #FFFFFF;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+  }
+
+
+}
 
 .itemList {
-    padding: 25px;
-    margin: 0;
-    font-size: 16px;
-    line-height: 18px;
-    color: #1a1a1a;
-    border-bottom: 1px solid #979797;
+  color: #1a1a1a;
+  border-bottom: 1px solid #979797;
+  margin: 0;
 }
 
-.itemList:nth-child(3) {
-    border: none;
-}
-
-.popBox{
-    max-width: 397px;
-}
+// .popBox {
+//   max-width: 397px;
+// }

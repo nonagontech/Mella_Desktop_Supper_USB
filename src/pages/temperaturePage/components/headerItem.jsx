@@ -159,15 +159,15 @@ const HeaderItem = ({
             </div>
           </div>
         </Menu.Item>
-        <Menu.Item key={"editPetInfo"}>
-          <p className="itemList">Edit Pet Profile</p>
-        </Menu.Item>
-        <Menu.Item>
-          <p className="itemList">Export Temperature History</p>
-        </Menu.Item>
-        <Menu.Item>
-          <p className="itemList">Export All Vitals History</p>
-        </Menu.Item>
+          <Menu.Item key={"editPetInfo"} style={{ paddingLeft: '8px' }}>
+            <p className="itemList">Edit Pet Profile</p>
+          </Menu.Item>
+          <Menu.Item style={{ paddingLeft: '8px' }}>
+            <p className="itemList">Export Temperature History</p>
+          </Menu.Item>
+          <Menu.Item style={{ paddingLeft: '8px' }}>
+            <p className="itemList">Export All Vitals History</p>
+          </Menu.Item>
       </Menu>
     );
   };
@@ -307,7 +307,7 @@ const HeaderItem = ({
 
   return (
     <div className="headerBox">
-      <Header style={{ background: "#fff",height:'100%'}}>
+      <Header style={{ background: "#fff", height: '100%' }}>
         {_.isEmpty(petId) && !isWalkIn ? (
           <></>
         ) : (
