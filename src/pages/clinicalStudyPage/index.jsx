@@ -1053,8 +1053,6 @@ const ClinicalStudy = ({
         className: `${isflog ? "operation" : ""}`,
 
         render: (text, record, index) => {
-          // console.log('狩猎:', text, record, index);
-          //record:
           return (
             <div
               style={{
@@ -1626,7 +1624,10 @@ const ClinicalStudy = ({
   //echars渲染
   const echars = () => {
     return (
-      <div id="myCharts" style={{ marginTop: mTop(50), width: windowWidth,height:'380px'}} ref={chartsBox}>
+      <div id="myCharts"
+        style={{ marginTop: mTop(50), width: windowWidth, height: '380px' }}
+        ref={chartsBox}
+      >
         <ReactECharts
           option={getOption()}
           theme="Imooc"

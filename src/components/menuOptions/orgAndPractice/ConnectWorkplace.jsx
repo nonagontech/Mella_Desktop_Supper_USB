@@ -44,7 +44,7 @@ export default class ConnectWorkplace extends Component {
           organizationName:'11111',
           connectionKey:''
         }]
-        
+
          workplace:{
            1:{
               workplaceId:1,

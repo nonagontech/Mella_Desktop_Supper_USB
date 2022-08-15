@@ -3,7 +3,7 @@ let COMMON_URL = 'https://www.mellaserver.com/big/mellabiggie';//内部负载均
 
 //let COMMON_URL = 'http://34.206.181.105:31668/mellabiggie';//内部负载均衡
 
-// let COMMON_URL = 'http://192.168.0.36:9090/mellabiggie';//本地测试
+// let COMMON_URL = 'http://192.168.0.60:9090/mellabiggie';//本地测试
 let token = '';
 
 
@@ -42,7 +42,7 @@ export async function fetchRequest4 (url, method, params = '', Authorization = '
       Object.keys(params).forEach(key =>
         paramsArray.push(key + "=" + params[key])
       );
-      // 判断是否地址拼接的有没有 ？,当没有的时候，使用 ？拼接第一个参数，如果有参数拼接，则用&符号拼接后边的参数   
+      // 判断是否地址拼接的有没有 ？,当没有的时候，使用 ？拼接第一个参数，如果有参数拼接，则用&符号拼接后边的参数
       if (url.search(/\?/) === -1) {
         url = url + "?" + paramsArray.join("&");
       } else {

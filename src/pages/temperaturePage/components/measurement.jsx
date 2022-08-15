@@ -40,7 +40,7 @@ const Measurement = ({ petMessage, hardwareMessage }) => {
   const ProgressTitle = (percent) => {
     let num = parseFloat(percent);
     if (isHua) {
-      num = parseInt((num * 1.8 + 32) * 10) / 10;
+      num = (num * 1.8 + 32).toFixed(1);
     }
     return (
       <>

@@ -10,6 +10,7 @@ import LinkEquipment from "./components/linkEquipment";
 import "./biggiePage.less";
 import { px } from "../../utils/px";
 import { fetchRequest } from "../../utils/FetchUtil1";
+import { fetchRequest4 } from "../../utils/FetchUtil4";
 import MyModal from "../../utils/myModal/MyModal";
 
 
@@ -47,16 +48,20 @@ const BiggirPage = ({
     fetchRequest("/exam/addClamantPetExam", "POST", params)
       .then((res) => {
         setSaveLoad(false);
-        console.log("res", res);
         if (res.flag === true) {
           switch (storage.lastOrganization) {
+            case '3'://vetspire
+              updataWeightVetspire()
+              break;
+            case '4'://ezyVet
+              updataWeightEzyvet()
+              break;
             default:
               message.success("Data successfully saved in Mella");
               break;
           }
           setSaveNum(saveNum + 1);
           setIsHaveSaveBtn(false);
-          // this._getHistory()
         }
       })
       .catch((err) => {
@@ -64,6 +69,126 @@ const BiggirPage = ({
         setSaveLoad(false);
       });
   };
+  const updataWeightVetspire = () => {
+    let datas = {
+      APIkey: storage.connectionKey,
+      patientId: petDetailInfo.patientId,
+    }
+    fetchRequest4('/VetSpire/vetspireGetPetLatestExam', "POST", datas)
+      .then(res => {
+        if (res.flag) {
+          let data = res.data.encounters[0].vitals
+          let encountersId = data.id
+          let params = {
+            vitalId: encountersId,
+            APIkey: storage.connectionKey,
+            weight: unit === 'kg' ? (weight * 2.2046).toFixed(1) : weight
+          }
+          fetchRequest4(`/VetSpire/vetspireUpdateWeight`, "POST", params)
+            .then(res => {
+              if (res.flag) {
+                message.success('Data successfully saved in Vetspire')
+              } else {
+                message.error('Data failed saved in Vetspire')
+              }
+            })
+            .catch(err => {
+              message.error('Data failed saved in Vetspire')
+            })
+        } else {
+          message.error('Failed to obtain the latest medical record')
+        }
+      })
+      .catch(err => {
+        message.error('Failed to obtain the latest medical record')
+      })
+
+  }
+  const updataWeightEzyvet = () => {
+    let params = {
+      id: petDetailInfo.patientId
+    }
+    fetchRequest4('/EzyVet/ezyvetGetPetLatestExam', "GET", params, `Bearer ${storage.connectionKey}`)
+      .then(res => {
+        if (res.code === 10004 && res.msg === 'ezyvet token失效') {
+          storage.connectionKey = res.newToken;
+          reUpdataWeightEzyvet();
+          return
+        }
+        if (res.flag && res.data && res.data.items.length > 0) {
+          let data = res.data.items[0]
+          let { consult_id } = data
+          if (!consult_id) {
+            message.error('Failed to obtain the latest medical record, the data is saved in Mella')
+            return
+          }
+          let paramId = data.id
+          let parames1 = {
+            consult_id,
+            weight: unit === 'kg' ? weight : (weight / 2.2046).toFixed(2)
+          }
+          fetchRequest4(`/EzyVet/ezyvetUpdateWeight/${paramId}`, "PATCH", parames1, `Bearer ${storage.connectionKey}`)
+            .then(res => {
+              if (res.code === 10004 && res.msg === 'ezyvet token失效') {
+                storage.connectionKey = res.newToken;
+                reUpdataWeightEzyvet();
+                return
+              }
+              if (res.flag) {
+                message.success('Data successfully saved in EzyVet')
+              } else {
+                message.error('Data failed saved in EzyVet')
+              }
+            })
+            .catch(err => {
+              message.error('Data failed saved in EzyVet')
+            })
+        } else {
+          message.error('Failed to obtain the latest medical record')
+        }
+      })
+      .catch(err => {
+        message.error('Failed to obtain the latest medical record')
+      })
+  }
+
+  const reUpdataWeightEzyvet = () => {
+    let params = {
+      id: petDetailInfo.patientId
+    }
+    fetchRequest4('/EzyVet/ezyvetGetPetLatestExam', "GET", params, `Bearer ${storage.connectionKey}`)
+      .then(res => {
+        if (res.flag && res.data && res.data.items.length > 0) {
+          let data = res.data.items[0]
+          let { consult_id } = data
+          if (!consult_id) {
+            message.error('Failed to obtain the latest medical record, the data is saved in Mella')
+            return
+          }
+          let paramId = data.id
+          let parames1 = {
+            consult_id,
+            weight: unit === 'kg' ? weight : (weight / 2.2046).toFixed(2)
+          }
+          fetchRequest4(`/EzyVet/ezyvetUpdateWeight/${paramId}`, "PATCH", parames1, `Bearer ${storage.connectionKey}`)
+            .then(res => {
+              if (res.flag) {
+                message.success('Data successfully saved in EzyVet')
+              } else {
+                message.error('Data failed saved in EzyVet')
+              }
+            })
+            .catch(err => {
+              message.error('Data failed saved in EzyVet')
+            })
+        } else {
+          message.error('Failed to obtain the latest medical record')
+        }
+      })
+      .catch(err => {
+        message.error('Failed to obtain the latest medical record')
+      })
+  }
 
   useEffect(() => {
     let isSave = storage.connectionKey ? false : true;
