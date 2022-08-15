@@ -106,10 +106,11 @@ const Measurement = ({ petMessage, hardwareMessage }) => {
             type="dashboard"
             percent={_.round(mellaMeasureValue, 1)}
             gapDegree={30}
-            width={px(260)}
+            // width={px(260)}
             strokeWidth={"8"}
             format={(percent) => ProgressTitle(percent)}
             strokeColor={'#4C595E'}
+            className='measuringProgress'
           />
         </div>
 

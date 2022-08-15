@@ -87,6 +87,10 @@ html, body {
   height: 100%;
   width: 100%;
 }
+p{
+  margin: 0 !important;
+  padding: 0 !important;
+}
 
 #root {
   height: 100%;
@@ -97,4 +101,10 @@ html, body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+.ant-spin-nested-loading{
+  height: 100%;
+}
+.ant-spin-container{
+  height: 100%;
 }

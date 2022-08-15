@@ -14,15 +14,17 @@ import _ from "lodash";
 import HeaderItem from "../temperaturePage/components/headerItem";
 import LinkEquipment from "./components/LinkEquipment";
 import ScanPet from "./components/scanPet";
+import PropTypes from 'prop-types';
 import { px } from "../../utils/px";
+
 import "./index.less";
 
-const ScanPage = ({ petMessage, hardwareMessage }) => {
+const ScanPage = ({ petMessage, hardwareMessage, bodyHeight, }) => {
   let { petId, isWalkIn } = petMessage;
 
   return (
     <>
-      <Layout className="scanHomeBox">
+      <Layout className="scanHomeBox" style={{ height: bodyHeight }}>
         <div style={{ height: px(100), background: "#fff", position: 'relative' }}>
           <div style={{ height: '100%' }}>
             <HeaderItem />
@@ -34,8 +36,10 @@ const ScanPage = ({ petMessage, hardwareMessage }) => {
   );
 };
 
-
-
+ScanPage.propTypes = {
+  bodyHeight: PropTypes.number,
+  devicesTypeList: PropTypes.array
+}
 
 export default connect(
   (state) => ({

@@ -267,9 +267,6 @@ class EditPetInfo extends Component {
     this.setState({
       spin: true
     })
-
-
-
     console.log('入参：', datas);
     fetchRequest('/pet/getPetInfoByPatientIdAndPetId', 'POST', datas)
       .then(res => {
@@ -292,7 +289,7 @@ class EditPetInfo extends Component {
           if (isMix !== true) {
             isMix = false
           }
-          petName = isNull(petName)
+          // petName = isNull(petName)
           lastName = isNull(lastName)
           firstName = isNull(firstName)
           // breedName = isNull(breedName)
@@ -520,10 +517,6 @@ class EditPetInfo extends Component {
     )
   }
   _petName = () => {
-
-    const onPanelChange = (value, mode) => {
-      console.log('-----', value, mode);
-    }
     let birthday = this.state.birthday
     let birthdayValue = birthday ? moment(birthday) : moment(new Date())
     return (
@@ -535,7 +528,6 @@ class EditPetInfo extends Component {
               bordered={false}
               value={this.state.initpetName}
               onChange={(item) => {
-
                 this.setState({
                   petName: item.target.value.replace(/(^\s*)|(\s*$)/g, ""),
                   initpetName: item.target.value

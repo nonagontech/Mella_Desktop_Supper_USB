@@ -112,7 +112,7 @@ const CombineScales = ({
       }
     });
     setBiggieList(newData);
-    return () => {};
+    return () => { };
   }, []);
 
   return (
@@ -123,133 +123,135 @@ const CombineScales = ({
             {confirmType ? "Scales Combined As One" : "Combine Scales"}
           </span>
         </Header>
-        <Content className="contentBox">
-          <div className="tipTitleBox">
-            {!confirmType ? (
-              <span>
-                Select the scales you'd
-                <br />
-                like to combine
-              </span>
+        <Content className="combineContentBox">
+          <div>
+            <div className="tipTitleBox">
+              {!confirmType ? (
+                <span>
+                  Select the scales you'd
+                  <br />
+                  like to combine
+                </span>
+              ) : (
+                <span>
+                  These two scales are now combined.
+                  <br />
+                  Please give this combination a name
+                </span>
+              )}
+            </div>
+            {confirmType ? (
+              <div className="asOneCardBox">
+                <Space>
+                  {_.map(checkHardwareList, (item, index) => {
+                    return (
+                      <Card className="asOneCard">
+                        <Meta
+                          avatar={<Avatar src={scaleImage} size={53} />}
+                          description={
+                            <div style={{ display: "grid" }}>
+                              <span>Device Name:{item.name}</span>
+                              <span>
+                                {item.deviceType === "biggie"
+                                  ? "Biggie Pro Scale"
+                                  : "Biggie Home Scale"}
+                              </span>
+                              <span>SN:{item.mac}</span>
+                            </div>
+                          }
+                        />
+                      </Card>
+                    );
+                  })}
+                </Space>
+                <div className="acOneImageBox">
+                  <img src={combinedscales} />
+                </div>
+              </div>
             ) : (
-              <span>
-                These two scales are now combined.
-                <br />
-                Please give this combination a name
-              </span>
+              <div className="selectScalesBox">
+                <div>
+                  {_.map(biggieList, (item, index) => {
+                    return (
+                      <Card
+                        className="cardBox"
+                        hoverable
+                        onClick={() => onClick(`${index}`, item)}
+                        id={`${index}`}
+                        key={index}
+                      >
+                        <div className="cardBodyBox">
+                          <Meta
+                            avatar={<Avatar src={scaleImage} size={53} />}
+                            description={
+                              <div style={{ display: "grid" }}>
+                                <span>Device Name:{item.name}</span>
+                                <span>
+                                  {item.deviceType === "biggie"
+                                    ? "Biggie Pro Scale"
+                                    : "Biggie Home Scale"}
+                                </span>
+                                <span>SN:{item.mac}</span>
+                              </div>
+                            }
+                          />
+                          <CheckCircleFilled
+                            id={`${"icon" + index}`}
+                            style={{
+                              color: "#5cbbe0",
+                              fontSize: "20px",
+                              display: "none",
+                            }}
+                          />
+                        </div>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
             )}
-          </div>
-
-          {confirmType ? (
-            <div className="asOneCardBox">
-              <Space>
-                {_.map(checkHardwareList, (item, index) => {
-                  return (
-                    <Card className="asOneCard">
-                      <Meta
-                        avatar={<Avatar src={scaleImage} size={53} />}
-                        description={
-                          <div style={{ display: "grid" }}>
-                            <span>Device Name:{item.name}</span>
-                            <span>
-                              {item.deviceType === "biggie"
-                                ? "Biggie Pro Scale"
-                                : "Biggie Home Scale"}
-                            </span>
-                            <span>SN:{item.mac}</span>
-                          </div>
-                        }
-                      />
-                    </Card>
-                  );
-                })}
-              </Space>
-              <div className="acOneImageBox">
-                <img src={combinedscales} />
-              </div>
-            </div>
-          ) : (
-            <div className="selectScalesBox">
-              {_.map(biggieList, (item, index) => {
-                return (
-                  <Card
-                    className="cardBox"
-                    hoverable
-                    onClick={() => onClick(`${index}`, item)}
-                    id={`${index}`}
-                    key={index}
+            {confirmType ? (
+              <>
+                <div className="inputBox">
+                  <Input
+                    placeholder="Combined Scale Name"
+                    className="inputName"
+                    maxLength={25}
+                    onChange={saveChangeName}
+                  />
+                </div>
+                <div className="scalesBtnBox">
+                  <Button
+                    type="primary"
+                    className="scalesBtn"
+                    shape="round"
+                    onClick={() => startMeasuring()}
                   >
-                    <div className="cardBodyBox">
-                      <Meta
-                        avatar={<Avatar src={scaleImage} size={53} />}
-                        description={
-                          <div style={{ display: "grid" }}>
-                            <span>Device Name:{item.name}</span>
-                            <span>
-                              {item.deviceType === "biggie"
-                                ? "Biggie Pro Scale"
-                                : "Biggie Home Scale"}
-                            </span>
-                            <span>SN:{item.mac}</span>
-                          </div>
-                        }
-                      />
-                      <CheckCircleFilled
-                        id={`${"icon" + index}`}
-                        style={{
-                          color: "#5cbbe0",
-                          fontSize: "20px",
-                          display: "none",
-                        }}
-                      />
-                    </div>
-                  </Card>
-                );
-              })}
-            </div>
-          )}
-
-          {confirmType ? (
-            <>
-              <div className="inputBox">
-                <Input
-                  placeholder="Combined Scale Name"
-                  className="inputName"
-                  maxLength={25}
-                  onChange={saveChangeName}
-                />
-              </div>
-              <div className="scalesBtnBox">
+                    Save & Start Measuring
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <Space className="scalesBtnBox">
                 <Button
                   type="primary"
                   className="scalesBtn"
                   shape="round"
-                  onClick={() => startMeasuring()}
+                  onClick={() => setMenuNum("AddDevice")}
                 >
-                  Save & Start Measuring
+                  Add New Scale
                 </Button>
-              </div>
-            </>
-          ) : (
-            <Space className="scalesBtnBox">
-              <Button
-                type="primary"
-                className="scalesBtn"
-                shape="round"
-                onClick={() => setMenuNum("AddDevice")}
-              >
-                Add New Scale
-              </Button>
-              <Button
-                type="primary"
-                className="scalesBtn"
-                shape="round"
-                onClick={() => onChangeScales()}
-              >
-                Combine Scales
-              </Button>
-            </Space>
-          )}
+                <Button
+                  type="primary"
+                  className="scalesBtn"
+                  shape="round"
+                  onClick={() => onChangeScales()}
+                >
+                  Combine Scales
+                </Button>
+              </Space>
+            )}
+          </div>
         </Content>
       </Layout>
     </>

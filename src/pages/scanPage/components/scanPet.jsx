@@ -372,7 +372,7 @@ const ScanPet = ({
   return (
     <>
       <Content className="scanContentBox">
-        <div className="scanImageBox" style={{ width: px(300), height: px(200), marginTop: px(40) }}>{changeImage()}</div>
+        <div className="scanImageBox">{changeImage()}</div>
         {/*选择单位框*/}
         <Radio.Group
           value={radioValue}
@@ -383,8 +383,8 @@ const ScanPet = ({
           <Radio.Button
             value="in"
             style={{
-              background: radioValue === "in" ? "#12ade4" : "#fff",
-              borderColorRight: radioValue === "in" ? "#12ade4" : "#fff",
+              background: radioValue === "in" ? "#e1206d" : "#fff",
+              borderColorRight: radioValue === "in" ? "#e1206d" : "#fff",
               borderRadius: "20px",
               borderTopRightRadius: "0px",
               borderBottomRightRadius: "0px",
@@ -396,8 +396,8 @@ const ScanPet = ({
             value="cm"
             className="cmButton"
             style={{
-              background: radioValue === "cm" ? "#12ade4" : "#fff",
-              borderColorRight: radioValue === "cm" ? "#12ade4" : "#fff",
+              background: radioValue === "cm" ? "#e1206d" : "#fff",
+              borderColorRight: radioValue === "cm" ? "#e1206d" : "#fff",
               borderRadius: "20px",
               borderTopLeftRadius: "0px",
               borderBottomLeftRadius: "0px",
@@ -533,19 +533,6 @@ const ScanPet = ({
           </Button>
         </div>
       </Content>
-      {/* <MyModal
-        visible={showModal}
-        element={
-          <div className='petUiModal'>
-            <img src={redjinggao} alt="" width={'45px'} style={{ margin: `${px(25)}px 0` }} />
-            <div className='bodyText' style={{ marginTop: px(30) }}>Patient Switched – select dimension to measure</div>
-            <div className="btns" style={{ marginTop: px(35) }}>
-              <div className="btn" onClick={() => { setShowModal(false) }}>Cancel</div>
-              <div className="btn" onClick={() => { onClickModal() }}>Confirm</div>
-            </div>
-          </div>
-        }
-      /> */}
     </>
   );
 };

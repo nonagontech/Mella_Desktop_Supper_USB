@@ -1158,18 +1158,18 @@ class App extends Component {
         } else {
           switch (selectHardwareType) {
             case "mellaPro":
-              measurePage = <TemperaturePage />;
+              measurePage = <TemperaturePage bodyHeight={bodyHeight}/>;
 
               break;
             case "biggie":
-              measurePage = <BiggiePage />;
+              measurePage = <BiggiePage bodyHeight={bodyHeight}/>;
               break;
 
             case "tape":
-              measurePage = <ScanPage />;
+              measurePage = <ScanPage bodyHeight={bodyHeight}/>;
               break;
             case "otterEQ":
-              measurePage = <OtterEQPage />;
+              measurePage = <OtterEQPage bodyHeight={bodyHeight}/>;
               break;
 
             default:
@@ -1189,7 +1189,7 @@ class App extends Component {
       case "2":
         return <AllPets bodyHeight={bodyHeight} />;
       case "CombineScales":
-        return <CombineScales />;
+        return <CombineScales bodyHeight={bodyHeight}/>;
       case "AddDevice":
         return <AddDevice bodyHeight={bodyHeight} />;
       case "3":

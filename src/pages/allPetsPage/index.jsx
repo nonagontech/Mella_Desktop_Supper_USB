@@ -21,17 +21,9 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
     const [petListArr, setPetListArr] = useState([])
     //定义宠物列表是否加载中
     const [loading, setLoading] = useState(true)
-
     const [spin, setSpin] = useState(false)
-
-    useEffect(() => {
-        //获取宠物列表
-        _getExam()
-    }, [])
     const _getExam = async () => {
         console.log('进来了');
-
-
         let params = {
             doctorId: storage.userId,
             offset: 0,
@@ -43,8 +35,6 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
         if (storage.lastOrganization) {
             params.organizationId = storage.lastOrganization
         }
-
-
         console.log('查询宠物的入参', params);
         const isUnKnow = (val) => {
             if (val) {
@@ -54,9 +44,7 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
             }
         }
         setLoading(true)
-
         fetchRequest('/user/listAllPetInfo', 'GET', params)
-
             .then(res => {
                 console.log('查询到的宠物列表,/user/listAllPetInfo', res);
                 if (res.flag === true && res.data) {
@@ -129,10 +117,6 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
                     setPetListArr(data)
                     setLoading(false)
                     setSpin(false)
-
-
-
-
                 } else {
                     setLoading(false)
                     setSpin(false)
@@ -148,10 +132,14 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
 
     }
     const _refresh = () => {
-        console.log('点击了');
         setSpin(true)
         _getExam()
     }
+
+    useEffect(() => {
+      //获取宠物列表
+      _getExam()
+  }, [])
 
     return (
         <div id='allPets' style={{ height: bodyHeight }}>

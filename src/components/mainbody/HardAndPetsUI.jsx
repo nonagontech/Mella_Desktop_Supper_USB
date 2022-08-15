@@ -75,10 +75,7 @@ const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow
       </div>
       <PetsUI
         bodyHeight={bodyHeight}
-
       />
-
-
     </div >
   )
 }

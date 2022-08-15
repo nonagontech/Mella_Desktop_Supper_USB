@@ -16,9 +16,10 @@ import {
 import _ from "lodash";
 import HeaderItem from "./components/headerItem";
 import { px } from "../../utils/px";
+import PropTypes from 'prop-types';
 import "./index.less";
 
-const TemperaturePage = ({ petMessage, hardwareMessage }) => {
+const TemperaturePage = ({ petMessage, hardwareMessage,bodyHeight }) => {
   let { mellaConnectStatus } = hardwareMessage;
   //测量温度中的页面变化
   const changePage = () => {
@@ -38,7 +39,7 @@ const TemperaturePage = ({ petMessage, hardwareMessage }) => {
   };
   return (
     <>
-      <Layout className="homeBox">
+      <Layout className="homeBox" style={{ height: bodyHeight }}>
         <div style={{ height: px(100), background: "#fff", position: 'relative' }}>
           <div style={{ height: '100%' }}>
             <HeaderItem />
@@ -55,6 +56,11 @@ const TemperaturePage = ({ petMessage, hardwareMessage }) => {
     </>
   );
 };
+
+TemperaturePage.propTypes = {
+  bodyHeight: PropTypes.number,
+  devicesTypeList: PropTypes.array
+}
 
 export default connect(
   (state) => ({

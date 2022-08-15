@@ -703,7 +703,7 @@ const ClinicalStudy = ({
         className="petChaeacteristics"
         style={{ paddingLeft: px(10), paddingRight: px(10), height: "100%" }}
       >
-        <div className="child" style={{ marginTop: mTop(30) }}>
+        <div className="child">
           <div
             style={{
               display: "flex",
@@ -869,7 +869,7 @@ const ClinicalStudy = ({
             />
           </div>
         </div>
-        <div className="child" style={{ marginBottom: px(40) }}>
+        <div className="child">
           <div
             style={{
               display: "flex",
@@ -1055,18 +1055,19 @@ const ClinicalStudy = ({
         render: (text, record, index) => {
           return (
             <div
+              className="activeImageBox"
               style={{
                 display: "flex",
                 justifyContent: "space-around",
                 alignItems: "center",
-                padding: `${px(18)}px 0`,
+                // padding: `${px(18)}px 0`,
               }}
             >
               <Popconfirm
                 title="Sure to delete?"
                 onConfirm={() => _del(record.historyId, record)}
               >
-                <img src={del} alt="" style={{ width: px(25) }} />
+                <img src={del} alt="" className="activeImages"/>
               </Popconfirm>
               {petDetailInfo.isWalkIn ? (
                 <div
@@ -1091,15 +1092,17 @@ const ClinicalStudy = ({
                   <img
                     src={edit}
                     alt=""
-                    style={{ width: px(25) }}
+                    // style={{ width: px(25) }}
                     onClick={() => _edit(record.historyId, record)}
+                    className="activeImages"
                   />
 
                   <img
                     src={start}
                     alt=""
-                    style={{ width: px(25) }}
+                    // style={{ width: px(25) }}
                     onClick={() => see(record.historyId, record)}
+                    className="activeImages"
                   />
                 </>
               )}
@@ -1435,6 +1438,7 @@ const ClinicalStudy = ({
           [] // 设置footer为空，去掉 取消 确定默认按钮
         }
         destroyOnClose={true}
+        className="editModalBox"
       >
         <div id="selectEmergenciesModal">
           <div className="selectEmergenciesModal">
@@ -1588,7 +1592,7 @@ const ClinicalStudy = ({
     }
     return (
       <div className="clinical_foot">
-        <div className="top" style={{ height: px(40) }}>
+        <div className="top">
           <div
             className="foot_l"
             style={{ backgroundColor: lbgc }}
@@ -1635,7 +1639,7 @@ const ClinicalStudy = ({
           notMerge={true}
           lazyUpdate={true}
           ref={echartsElement}
-          className={"charts"}
+          className="charts"
         />
         {_status()}
       </div>
@@ -1827,7 +1831,7 @@ const ClinicalStudy = ({
               >
                 <div
                   className="btn78"
-                  style={{ width: px(220), height: mTop(30), fontSize: px(16) }}
+                  // style={{ width: px(220), height: mTop(30), fontSize: px(16) }}
                   onClick={() => {
                     console.log("点击了切换按钮");
 
