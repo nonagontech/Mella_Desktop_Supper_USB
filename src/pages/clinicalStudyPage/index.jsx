@@ -793,12 +793,13 @@ const ClinicalStudy = ({
           <div className="furLength">
             <p style={{ width: "150px" }}>Fur Length: </p>
             <Select
+              className="inpSelect"
               placeholder
               onChange={handleChange}
               style={{
-                width: "105px",
+                // width: "105px",
                 borderRadius: "40px",
-                height: "33px",
+                // height: "33px",
                 outline: "none",
                 borderWidth: 0,
               }}
@@ -1067,7 +1068,7 @@ const ClinicalStudy = ({
                 title="Sure to delete?"
                 onConfirm={() => _del(record.historyId, record)}
               >
-                <img src={del} alt="" className="activeImages"/>
+                <img src={del} alt="" className="activeImages" />
               </Popconfirm>
               {petDetailInfo.isWalkIn ? (
                 <div
@@ -1321,7 +1322,8 @@ const ClinicalStudy = ({
           // pagination={{ pageSize: 3, showSizeChanger: false, showQuickJumper: true }}
           pagination={false}
           scroll={{
-            y: hisHe,
+            // y: hisHe,
+            y: '80%'
           }}
         />
       </div>
@@ -1629,7 +1631,7 @@ const ClinicalStudy = ({
   const echars = () => {
     return (
       <div id="myCharts"
-        style={{ marginTop: mTop(50), width: windowWidth, height: '380px' }}
+        style={{ width: windowWidth }}
         ref={chartsBox}
       >
         <ReactECharts

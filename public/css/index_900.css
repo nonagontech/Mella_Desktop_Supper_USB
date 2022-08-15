@@ -319,22 +319,30 @@
   font-size: 16px;
 }
 
-/* #clinical .clinicalBody .clinical_top .r #myCharts {
+#clinical .clinicalBody .clinical_top .r #myCharts {
   margin-top: 50px;
   height: 380px !important;
-} */
+}
 
-/* #clinical .clinicalBody .clinical_top .r #myCharts .charts {
+#clinical .clinicalBody .clinical_top .r #myCharts .charts {
   height: 380px !important;
 }
 
 #clinical .clinicalBody .clinical_top .r #myCharts .charts canvas {
+  height: 380px !important;
+}
+
+/* #clinical .clinicalBody .clinical_top .r #myCharts .charts div:nth-child(1) {
   height: 380px !important;
 } */
 
 #clinical .clinicalBody .clinical_top .clinical_foot .top {
   height: 40px;
   font-size: 16px;
+}
+
+.historyTable .ant-table-body{
+  max-height: 200px !important;
 }
 
 .historyTable .activeImageBox {
@@ -352,6 +360,16 @@
 #clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child {
   height: 33px;
   margin: 15px 0;
+}
+
+#clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child .inp{
+  width: 105px;
+  height: 33px;
+}
+
+#clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child .furLength .ant-select-selector {
+  width: 105px;
+  height: 33px;
 }
 
 #clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child:nth-child(1) {

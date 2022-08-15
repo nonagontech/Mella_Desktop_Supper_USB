@@ -90,8 +90,17 @@
     let winwidth = parseInt((400 / devHeight) * height);
     let winheight = parseInt((800 / devHeight) * height);
     let loadbody = document.getElementById('loadbody')
-    loadbody.style.width = 400 + 'px'
-    loadbody.style.height = 800 + 'px'
+
+
+
+    if (window.screen.height >= 900) {
+      loadbody.style.width = 400 + 'px'
+      loadbody.style.height = 800 + 'px'
+    }
+    else if (window.screen.height >= 768) {
+      loadbody.style.width = 300 + 'px'
+      loadbody.style.height = 640 + 'px'
+    }
 
   </script>
 
