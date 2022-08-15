@@ -14,11 +14,11 @@
   justify-content: center;
 }
 
-#home .text{
+#home .text {
   font-size: 16px;
 }
 
-#home .create .createBtn{
+#home .create .createBtn {
   width: 220px;
   font-size: 16px;
   height: 35px;
@@ -31,23 +31,23 @@
   width: 80px;
 }
 
-#signIn .text{
+#signIn .text {
   font-size: 18px;
   margin-bottom: 10px;
   margin-top: 15px;
 }
 
-#signIn .inpF .inp{
+#signIn .inpF .inp {
   width: 220px;
   height: 35px;
   font-size: 16px;
 }
 
-#signIn .button11{
+#signIn .button11 {
   padding: 16px 0;
 }
 
-#signIn .button11 .btn1{
+#signIn .button11 .btn1 {
   height: 30px;
   width: 60%;
 }
@@ -357,7 +357,7 @@
   font-size: 14px;
 }
 
-/* #clinical .clinicalBody .clinical_top .r #myCharts {
+#clinical .clinicalBody .clinical_top .r #myCharts {
   margin-top: 6px;
   height: 280px !important;
 }
@@ -367,12 +367,20 @@
 }
 
 #clinical .clinicalBody .clinical_top .r #myCharts .charts canvas {
-  height: 300px !important;
+  height: 280px !important;
+}
+
+/* #clinical .clinicalBody .clinical_top .r #myCharts .charts div:nth-child(1) {
+  height: 280px !important;
 } */
 
 #clinical .clinicalBody .clinical_top .clinical_foot .top {
   height: 26px;
   font-size: 14px;
+}
+
+.historyTable .ant-table-body {
+  max-height: 140px !important;
 }
 
 .historyTable .activeImageBox {
@@ -390,6 +398,16 @@
 #clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child {
   height: 24px;
   margin: 8px 0;
+}
+
+#clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child .inp {
+  width: 95px;
+  height: 24px;
+}
+
+#clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child .furLength .ant-select-selector {
+  width: 95px;
+  height: 24px;
 }
 
 /* #clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child:nth-child(1) {

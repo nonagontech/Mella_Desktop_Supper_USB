@@ -509,7 +509,7 @@ class DoctorAddPet extends Component {
                         spin: false,
                       })
                     } else {
-                      errPatientId = '',
+                      errPatientId = '';
                       message.success('This pet ID will work');
                       this.setState({
                         spin: false,
