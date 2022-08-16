@@ -724,7 +724,11 @@ class App extends Component {
           ) {
             setRulerConfirmCountFun(parseInt(confirmBtn[0], 16));
           }
-        } else if (bluName.indexOf("Biggie") !== -1 && bluData.length > 10) {
+        } else if (bluName.indexOf("Biggie") !== -1 && bluData.length > 13) {
+          // console.log("biggie", bluData);
+          if (bluData[0] !== "aa") {
+            return;
+          }
           function getVal(shi) {
             if (`${shi}`.length < 2) {
               return `0${shi}`;
@@ -1158,18 +1162,18 @@ class App extends Component {
         } else {
           switch (selectHardwareType) {
             case "mellaPro":
-              measurePage = <TemperaturePage bodyHeight={bodyHeight}/>;
+              measurePage = <TemperaturePage bodyHeight={bodyHeight} />;
 
               break;
             case "biggie":
-              measurePage = <BiggiePage bodyHeight={bodyHeight}/>;
+              measurePage = <BiggiePage bodyHeight={bodyHeight} />;
               break;
 
             case "tape":
-              measurePage = <ScanPage bodyHeight={bodyHeight}/>;
+              measurePage = <ScanPage bodyHeight={bodyHeight} />;
               break;
             case "otterEQ":
-              measurePage = <OtterEQPage bodyHeight={bodyHeight}/>;
+              measurePage = <OtterEQPage bodyHeight={bodyHeight} />;
               break;
 
             default:
@@ -1189,7 +1193,7 @@ class App extends Component {
       case "2":
         return <AllPets bodyHeight={bodyHeight} />;
       case "CombineScales":
-        return <CombineScales bodyHeight={bodyHeight}/>;
+        return <CombineScales bodyHeight={bodyHeight} />;
       case "AddDevice":
         return <AddDevice bodyHeight={bodyHeight} />;
       case "3":
