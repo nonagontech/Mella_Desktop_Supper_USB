@@ -563,7 +563,7 @@ export default class Unassigned extends Component {
 
       <Modal
         maskClosable={false}
-        wrapClassName={"web"} //对话框外部的类名，主要是用来修改这个modal的样式的
+        wrapClassName={"web1"} //对话框外部的类名，主要是用来修改这个modal的样式的
         destroyOnClose={true}
         title={
           <div
