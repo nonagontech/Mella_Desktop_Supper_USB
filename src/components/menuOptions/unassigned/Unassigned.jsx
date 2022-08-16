@@ -298,7 +298,6 @@ export default class Unassigned extends Component {
   };
   draggleRef = React.createRef();
   handleOk = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
       assignPatientId: "",
@@ -312,8 +311,25 @@ export default class Unassigned extends Component {
       assignPetImgUrl: "",
     });
   };
+  //新增宠物取消新增事件
   handleCancel = (e) => {
-    console.log("取消");
+    this.setState({
+      visible: false,
+      assignVisible: true,
+      assignPatientId: "",
+      assignPetName: "",
+      assignOwnerName: "",
+      assignBreed: "",
+      assignBreedId: "",
+      assignPetAge: "",
+      assignPetWeight: "",
+      assignPetId: "",
+      assignPetImgUrl: "",
+      imgId: -1,
+    });
+  };
+  //新增宠物弹窗关闭事件
+  closeHandleCancel = (e) => {
     this.setState({
       visible: false,
       assignPatientId: "",
@@ -325,8 +341,11 @@ export default class Unassigned extends Component {
       assignPetWeight: "",
       assignPetId: "",
       assignPetImgUrl: "",
+      search: '',
+      selectPetId: '',
+      imgId: -1,
     });
-  };
+  }
   onStart = (event, uiData) => {
     const { clientWidth, clientHeight } = window?.document?.documentElement;
     const targetRect = this.draggleRef?.current?.getBoundingClientRect();
@@ -348,14 +367,11 @@ export default class Unassigned extends Component {
   };
   _modal = () => {
     let that = this;
-
     function getPetInfoByPatientId() {
       switch (storage.identity) {
         case "1":
           console.log("我是vetspire查找");
-
           break;
-
         case "2":
           console.log("我是ezyVet查找");
           let params = {
@@ -374,7 +390,6 @@ export default class Unassigned extends Component {
           } else {
             url = url + "&" + paramsArray.join("&");
           }
-          console.log("ezyVet集成查找宠物入参-请求地址", params, url);
           fetch(url, {
             method: "GET",
             headers: {
@@ -415,77 +430,27 @@ export default class Unassigned extends Component {
           console.log("我是一般医生查找");
           let datas = {
             patientId: that.state.assignPatientId,
-            doctorId: storage.userId,
-          };
-          if (storage.lastWorkplaceId) {
-            datas.workplaceId = storage.lastWorkplaceId;
+            doctorId: storage.userId
           }
-          console.log("入参：", datas);
-          fetchRequest("/pet/getPetInfoByPatientIdAndPetId", "POST", datas)
+          if (storage.lastWorkplaceId) {
+            datas.workplaceId = storage.lastWorkplaceId
+          }
+          if (storage.lastOrganization) {
+            datas.organizationId = storage.lastOrganization
+          }
+
+          fetchRequest("/pet/checkPatientId", "GET", datas)
             .then((res) => {
               if (res.flag === true) {
-                //有宠物，进入1
-                let petArr = res.data;
-                if (petArr.length > 1) {
-                  petArr.sort(function (a, b) {
-                    return a.createTime > b.createTime ? 1 : -1;
-                  });
-                }
-
-                console.log("获取到宠物信息", petArr);
-
-                let {
-                  petId,
-                  petName,
-                  firstName,
-                  lastName,
-                  breedName,
-                  age,
-                  weight,
-                  url,
-                  birthday,
-                } = petArr[0];
-
-                let assignPetName = petName ? petName : "";
-                let assignOwnerName = lastName ? lastName : "";
-                assignOwnerName = firstName
-                  ? `${assignOwnerName} ${firstName}`
-                  : assignOwnerName;
-                let assignBreed = breedName ? breedName : "";
-                let assignPetAge = age ? age : "";
-                let assignPetWeight = weight ? weight : "";
-                let assignPetImgUrl = url ? url : "";
-
-                if (!assignPetAge) {
-                  let now = moment(new Date());
-                  let year = now.diff(moment(birthday), "years");
-                  assignPetAge = year;
-                }
-
                 that.setState({
-                  assignPetName,
-                  assignBreed,
-                  assignPetAge,
-                  assignPetWeight,
-                  assignPetId: petId,
-                  assignPetImgUrl,
-                  inputDisabled: true,
+                  assignPetId: that.state.assignPatientId,
                 });
-
-                // assign(petId)
+                message.success("This patientID will work");
               } else {
                 that.setState({
-                  inputDisabled: false,
-                  assignPetName: "",
-                  assignOwnerName: "",
-                  assignBreed: "",
-                  assignBreedId: "",
-                  assignPetAge: "",
-                  assignPetWeight: "",
-                  assignPetId: "",
-                  assignPetImgUrl: "",
+                  assignPetId: '',
                 });
-                message.error("There are no pets under this patientID");
+                message.error("The patientID already exists");
               }
             })
             .catch((err) => {
@@ -500,59 +465,103 @@ export default class Unassigned extends Component {
                 assignPetId: "",
                 assignPetImgUrl: "",
               });
-              message.error("There are no pets under this patientID");
               console.log(err);
             });
           break;
-
         default:
           break;
       }
     }
+    //将测量信息给分配宠物
     const assignPet = () => {
-      let parmes = {
-        petId: this.state.assignPetId,
-        clinicalDatagroupId: that.state.seleceEmergencies.clinicalDatagroupId,
-      };
-      console.log("分配的数据信息", parmes);
-      fetchRequest(
-        `/pet/addAndSavePetExam/${that.state.seleceEmergencies.historyId}`,
-        "POST",
-        parmes
-      )
+      let petMsg = {
+        petName: this.state.assignPetName,
+        age: this.state.assignPetAge,
+        petSpeciesBreedId: this.state.assignBreedId,
+        owner: this.state.assignOwnerName,
+        doctorId: storage.userId
+      }
+      if (this.state.imgId !== -1 && this.state.imgId) {
+        petMsg.imageId = this.state.imgId
+      }
+      if (this.state.assignPetWeight) {
+        petMsg.weight = parseFloat(this.state.assignPetWeight).toFixed(2)
+      }
+      if (storage.lastWorkplaceId) {
+        petMsg.workplaceId = storage.lastWorkplaceId
+      }
+      if (storage.lastOrganization) {
+        petMsg.organizationId = storage.lastOrganization
+      }
+      this.setState({
+        modalLoading: true,
+      })
+      fetchRequest(`/pet/addDeskPet/${this.state.assignPatientId}`, 'POST', petMsg)
         .then((res) => {
-          console.log("----------", res);
           if (res.flag === true) {
-            console.log("分配成功");
-            message.success("Assigned successfully");
-            that._getEmergencyHistory();
-            that.setState({
-              visible: false,
-              assignPatientId: "",
-              assignPetName: "",
-              assignOwnerName: "",
-              assignBreed: "",
-              assignBreedId: "",
-              assignPetAge: "",
-              assignPetWeight: "",
-              assignPetId: "",
-              assignPetImgUrl: "",
-            });
+            let parmes = {
+              petId: res.data.petId,
+              clinicalDatagroupId: that.state.seleceEmergencies.clinicalDatagroupId,
+            };
+            fetchRequest(
+              `/pet/addAndSavePetExam/${that.state.seleceEmergencies.historyId}`,
+              "POST",
+              parmes
+            )
+              .then((res) => {
+                this.setState({
+                  modalLoading: false,
+                })
+                if (res.flag === true) {
+                  message.success("Assigned successfully");
+                  that._getEmergencyHistory();
+                  that.setState({
+                    visible: false,
+                    assignPatientId: "",
+                    assignPetName: "",
+                    assignOwnerName: "",
+                    assignBreed: "",
+                    assignBreedId: "",
+                    assignPetAge: "",
+                    assignPetWeight: "",
+                    assignPetId: "",
+                    assignPetImgUrl: "",
+                    imgId: -1,
+                  });
+                } else {
+                  message.error("Assignment failed");
+                }
+              })
+              .catch((err) => {
+                this.setState({
+                  modalLoading: false,
+                })
+                console.log(err);
+                message.error("Assignment failed");
+              });
           } else {
-            message.error("Assignment failed");
+            this.setState({
+              modalLoading: false,
+            })
+            message.error('Failed to create a pet')
           }
         })
         .catch((err) => {
-          console.log(err);
-          message.error("Assignment failed");
-        });
+          this.setState({
+            modalLoading: false,
+          })
+          console.log('err: ', err);
+          message.error('Failed to create a pet')
+        })
     };
     let { disabled, bounds, visible } = this.state;
     let options = this.state.breedArr.map((d) => (
       <Option key={d.petSpeciesBreedId}>{d.breedName}</Option>
     ));
     return (
+
       <Modal
+        maskClosable={false}
         wrapClassName={"web"} //对话框外部的类名，主要是用来修改这个modal的样式的
         destroyOnClose={true}
         title={
@@ -581,9 +590,8 @@ export default class Unassigned extends Component {
           ></div>
         }
         visible={visible}
-        // visible={true}
         onOk={this.handleOk}
-        onCancel={this.handleCancel}
+        onCancel={this.closeHandleCancel}
         modalRender={(modal) => (
           <Draggable
             disabled={disabled}
@@ -595,158 +603,157 @@ export default class Unassigned extends Component {
         )}
         footer={[]} // 设置footer为空，去掉 取消 确定默认按钮
       >
-        <div id="unassignedModal">
-          <div className="title">
-            Assign <br />
-            Measurement to
-          </div>
+        <Spin spinning={this.state.modalLoading}>
+          <div id="unassignedModal">
+            <div className="title">
+              Assign <br />
+              Measurement to
+            </div>
 
-          <div className="addPhoto">
-            <UploadImg
-              getImg={(val) => {
-                console.log("hahahahahahah我获得了", val);
-                this.setState({
-                  imgId: val.imageId,
-                });
-              }}
-              imgUrl={this.state.assignPetImgUrl}
-              disable={this.state.inputDisabled}
-            />
-          </div>
-
-          <div className="item">
-            <p>Patient ID:</p>
-            <Input
-              value={this.state.assignPatientId}
-              bordered={false}
-              onChange={(item) => {
-                this.setState({
-                  assignPatientId: item.target.value,
-                });
-              }}
-              onKeyDown={(e) => {
-                if (e.keyCode === 13) {
-                  getPetInfoByPatientId();
-                }
-                if (e.keyCode === 27) {
-                  console.log("清空");
+            <div className="addPhoto">
+              <UploadImg
+                getImg={(val) => {
                   this.setState({
-                    assignPatientId: "",
+                    imgId: val.imageId,
                   });
-                }
-              }}
-              onBlur={() => {
-                if (this.state.assignPatientId.length > 0) {
-                  getPetInfoByPatientId();
-                }
-              }}
-            />
-          </div>
+                }}
+                imgUrl={this.state.assignPetImgUrl}
+                disable={this.state.inputDisabled}
+              />
+            </div>
 
-          <div className="item">
-            <p>Pet Name:</p>
-            <Input
-              disabled={this.state.inputDisabled}
-              value={this.state.assignPetName}
-              bordered={false}
-              onChange={(item) => {
-                this.setState({
-                  assignPetName: item.target.value,
-                });
-              }}
-            />
-          </div>
-
-          <div className="item">
-            <p>Owner Name:</p>
-            <Input
-              disabled={this.state.inputDisabled}
-              value={this.state.assignOwnerName}
-              bordered={false}
-              onChange={(item) => {
-                this.setState({
-                  assignOwnerName: item.target.value,
-                });
-              }}
-            />
-          </div>
-          <div className="item">
-            <p>Breed:</p>
-            <div className="infoInput">
-              {/* <Input bordered={false} /> */}
-              <Select
-                disabled={this.state.inputDisabled}
-                showSearch
-                style={{ width: "100%" }}
+            <div className="item">
+              <p>Patient ID:</p>
+              <Input
+                value={this.state.assignPatientId}
                 bordered={false}
-                value={this.state.assignBreed}
-                // size = {'small'}
-                placeholder="Search to Select"
-                optionFilterProp="children"
-                listHeight={256}
-                onSelect={(value, data) => this._select(value, data)}
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
-                }
-                filterSort={(optionA, optionB) =>
-                  optionA.children
-                    .toLowerCase()
-                    .localeCompare(optionB.children.toLowerCase())
-                }
+                onChange={(item) => {
+                  this.setState({
+                    assignPatientId: item.target.value,
+                  });
+                }}
+                onKeyDown={(e) => {
+                  if (e.keyCode === 13) {
+                    getPetInfoByPatientId();
+                  }
+                  if (e.keyCode === 27) {
+                    this.setState({
+                      assignPatientId: "",
+                    });
+                  }
+                }}
+                onBlur={() => {
+                  if (this.state.assignPatientId.length > 0) {
+                    getPetInfoByPatientId();
+                  }
+                }}
+              />
+            </div>
+
+            <div className="item">
+              <p>Pet Name:</p>
+              <Input
+                disabled={this.state.inputDisabled}
+                value={this.state.assignPetName}
+                bordered={false}
+                onChange={(item) => {
+                  this.setState({
+                    assignPetName: item.target.value,
+                  });
+                }}
+              />
+            </div>
+
+            <div className="item">
+              <p>Owner Name:</p>
+              <Input
+                disabled={this.state.inputDisabled}
+                value={this.state.assignOwnerName}
+                bordered={false}
+                onChange={(item) => {
+                  this.setState({
+                    assignOwnerName: item.target.value,
+                  });
+                }}
+              />
+            </div>
+            <div className="item">
+              <p>Breed:</p>
+              <div className="infoInput">
+                <Select
+                  disabled={this.state.inputDisabled}
+                  showSearch
+                  style={{ width: "100%" }}
+                  bordered={false}
+                  value={this.state.assignBreed}
+                  placeholder="Search to Select"
+                  optionFilterProp="children"
+                  listHeight={256}
+                  onSelect={(value, data) => this._select(value, data)}
+                  filterOption={(input, option) =>
+                    option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                    0
+                  }
+                  filterSort={(optionA, optionB) =>
+                    optionA.children
+                      .toLowerCase()
+                      .localeCompare(optionB.children.toLowerCase())
+                  }
+                >
+                  {options}
+                </Select>
+              </div>
+            </div>
+            <div className="item">
+              <p>Pet Age:</p>
+              <Input
+                disabled={this.state.inputDisabled}
+                value={this.state.assignPetAge}
+                bordered={false}
+                onChange={(item) => {
+                  this.setState({
+                    assignPetAge: item.target.value,
+                  });
+                }}
+              />
+            </div>
+            <div className="item">
+              <p>Pet Weight:</p>
+              <Input
+                disabled={this.state.inputDisabled}
+                value={this.state.assignPetWeight}
+                bordered={false}
+                onChange={(item) => {
+                  this.setState({
+                    assignPetWeight: item.target.value,
+                  });
+                }}
+              />
+
+              <div className="unit">{`kg`}</div>
+            </div>
+
+            <div className="btnF">
+              <div className="btn" onClick={this.handleCancel}>
+                Cancel
+              </div>
+              <div
+                className="btn"
+                onClick={() => {
+                  if (this.state.assignPatientId === '') {
+                    message.error('patientID can not be empty!');
+                  } else if (this.state.assignPetId === '') {
+                    message.error("The patientID already exists");
+                  } else if (this.state.assignPatientId !== '' && this.state.assignPetId !== '') {
+                    assignPet();
+                  }
+                }}
               >
-                {options}
-              </Select>
+                Apportion
+              </div>
             </div>
           </div>
-          <div className="item">
-            <p>Pet Age:</p>
-            <Input
-              disabled={this.state.inputDisabled}
-              value={this.state.assignPetAge}
-              bordered={false}
-              onChange={(item) => {
-                this.setState({
-                  assignPetAge: item.target.value,
-                });
-              }}
-            />
-          </div>
-          <div className="item">
-            <p>Pet Weight:</p>
-            <Input
-              disabled={this.state.inputDisabled}
-              value={this.state.assignPetWeight}
-              bordered={false}
-              onChange={(item) => {
-                this.setState({
-                  assignPetWeight: item.target.value,
-                });
-              }}
-            />
-
-            <div className="unit">{`kg`}</div>
-          </div>
-
-          <div className="btnF">
-            <div className="btn" onClick={this.handleCancel}>
-              Cancel
-            </div>
-            <div
-              className="btn"
-              onClick={() => {
-                console.log('qweqwe123123');
-                if (this.state.assignPetId) {
-                  assignPet();
-                } else {
-                  message.error("Did not find this pet");
-                }
-              }}
-            >
-              Confirm
-            </div>
-          </div>
-        </div>
+        </Spin>
       </Modal>
     );
   };
@@ -755,7 +762,7 @@ export default class Unassigned extends Component {
     const { search, petListData, searchPetList } = this.state;
     let data = search.length > 0 ? searchPetList : petListData;
     let option = data.map((item, index) => {
-      let male = item.gender === "F" ? "Female" : "Male";
+      let male = item.gender === 0 ? "Female" : "Male";
       return (
         <li
           key={item.petId}
@@ -767,19 +774,16 @@ export default class Unassigned extends Component {
         >
           <div className="item">
             <span className="petName" style={{ margin: `${px(5)}px 0` }}>
-              {item.petName}
-            </span>{" "}
-            &nbsp;&nbsp;
+              {item.petName ? item.petName : 'unknown'}
+            </span>
             <span
               className="petName"
               style={{ margin: `${px(5)}px 0` }}
-            >{`${item.age} yrs,`}</span>{" "}
-            &nbsp;&nbsp;
+            >{`,${item.age} yrs,`}</span>
             <span className="petName" style={{ margin: `${px(5)}px 0` }}>
               {male}
             </span>
           </div>
-
           {this.state.selectPetId === item.petId ? (
             <span className="search">&#xe614;</span>
           ) : null}
@@ -788,7 +792,6 @@ export default class Unassigned extends Component {
     });
     return <ul>{option}</ul>;
   };
-
 
   render() {
     let { loading, disabled, historyData, searchText, serchExamData } =
@@ -903,7 +906,6 @@ export default class Unassigned extends Component {
               }}
               onClick={() => {
                 this.setState({
-                  // visible: true,
                   assignVisible: true,
                   seleceEmergencies: record,
                 });
@@ -1031,16 +1033,15 @@ export default class Unassigned extends Component {
             <MyModal
               visible={this.state.assignVisible}
               element={
-                // <Spin spinning={this.state.modalLoading}>
                 <div className="myfindOrg">
                   <div className="orgHeard">
                     <div className="titleicon" style={{ marginTop: px(5) }}>
                       <div
                         onClick={() => {
                           this.setState({
-                            assignVisible: false ,
-                            search:'',
-                            selectPetId:'',
+                            assignVisible: false,
+                            search: '',
+                            selectPetId: '',
                           });
                         }}
                       >

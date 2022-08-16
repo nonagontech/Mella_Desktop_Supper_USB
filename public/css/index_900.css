@@ -14,11 +14,11 @@
   justify-content: center;
 }
 
-#home .text{
+#home .text {
   font-size: 20px;
 }
 
-#home .create .createBtn{
+#home .create .createBtn {
   width: 300px;
   font-size: 20px;
   height: 48px;
@@ -31,23 +31,23 @@
   width: 120px;
 }
 
-#signIn .text{
+#signIn .text {
   font-size: 28px;
   margin-bottom: 20px;
   margin-top: 30px;
 }
 
-#signIn .inpF .inp{
+#signIn .inpF .inp {
   width: 310px;
   height: 45px;
   font-size: 18px;
 }
 
-#signIn .button11{
+#signIn .button11 {
   padding: 32px 0;
 }
 
-#signIn .button11 .btn1{
+#signIn .button11 .btn1 {
   height: 40px;
   width: 70%;
 }
@@ -95,9 +95,9 @@
 }
 
 .temperatureContentBox .checkImages {
-  width: 200px;
-  /* height: 300px; */
-  margin-top: 0px;
+  /* width: 200px; */
+  height: 300px;
+  margin-top: 50px;
 }
 
 .temperatureContentBox .startBox .bottomTip1 {
@@ -341,7 +341,7 @@
   font-size: 16px;
 }
 
-.historyTable .ant-table-body{
+.historyTable .ant-table-body {
   max-height: 200px !important;
 }
 
@@ -362,7 +362,7 @@
   margin: 15px 0;
 }
 
-#clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child .inp{
+#clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child .inp {
   width: 105px;
   height: 33px;
 }

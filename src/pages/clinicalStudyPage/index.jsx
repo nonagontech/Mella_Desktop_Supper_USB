@@ -20,6 +20,8 @@ import { setTest } from "../../store/actions";
 import "./clinical.less";
 import { fetchRequest } from "../../utils/FetchUtil1";
 import { fetchRequest3 } from "../../utils/FetchUtil3";
+import MyModal from "../../utils/myModal/MyModal";
+import UnassignModal from './../../components/UnassignModal/UnassignModal'
 let resyncDeviceIsClick = true; //用于控制多次点击重新配对按钮
 let storage = window.localStorage;
 
@@ -87,9 +89,14 @@ const ClinicalStudy = ({
   const [memo, setMemo] = useState("");
   const [windowWidth, setWindowWidth] = useState(px(500));
   const [WeightValue, setWeightValue] = useState('');
-  const [isHua, setIsHua] = useState(true)
+
   const echartsElement = useRef(null);
   const clinicalRef = useRef(null);
+
+  const [assignVisible, setAssignVisible] = useState(false);
+  const [seleceEmergencies, setSeleceEmergencies] = useState({});
+
+  const [lastWorkplaceId, setLastLastWorkplaceId] = useState('');
 
   //分辨率变化
   const chartsBox = useCallback((node) => {
@@ -1061,9 +1068,6 @@ const ClinicalStudy = ({
               className="activeImageBox"
               style={{
                 display: "flex",
-                justifyContent: "space-around",
-                alignItems: "center",
-                // padding: `${px(18)}px 0`,
               }}
             >
               <Popconfirm
@@ -1081,10 +1085,10 @@ const ClinicalStudy = ({
                     fontSize: px(14),
                   }}
                   onClick={() => {
-                    // this.setState({
-                    //   visible: true,
-                    //   seleceEmergencies: record,
-                    // });
+                    setAssignVisible(true)
+                    setSeleceEmergencies(record)
+                    console.log('------', storage.lastOrganization);
+                    setLastLastWorkplaceId(storage.lastOrganization)
                   }}
                 >
                   Assign
@@ -1801,86 +1805,107 @@ const ClinicalStudy = ({
     return (() => { })
   }, [biggieBodyWeight])
 
+
   return (
-    <div
-      id="clinical"
-      style={{
-        height: bodyHeight,
-        minWidth: px(200),
-        minHeight: bodyHeight,
-        overflow: "hidden",
-      }}
-      ref={clinicalRef}
-    >
+    <>
       <div
-        className="clinicalTitle"
-        style={{ height: px(100), background: "#fff", position: "relative" }}
+        id="clinical"
+        style={{
+          height: bodyHeight,
+          minWidth: px(200),
+          minHeight: bodyHeight,
+          overflow: "hidden",
+        }}
+        ref={clinicalRef}
       >
-        <Layout style={{ height: "100%" }}>
-          <HeaderItem timeNum={60} />
-        </Layout>
-      </div>
-      <div
-        className="clinicalBody"
-        style={{ width: "100%", height: bodyHeight - px(100) }}
-      >
-        <div className="clinical_top">
-          <div className="r">
-            {/*顶部按钮Re-sync Base*/}
-            {mellaConnectStatus === "disconnected" && (
-              <div
-                className="bb1"
-              // style={{ left: px(150) }}
-              >
+        <UnassignModal
+          assignVisible={assignVisible}
+          onChangeVisible={(val) => {
+            console.log('返回的数据', val);
+            setAssignVisible(val);
+          }}
+          lastWorkplaceId={lastWorkplaceId}
+          seleceEmergencies={seleceEmergencies}
+          success={() => {
+            _getEmergencyHistory();
+          }}
+        />
+        <div
+          className="clinicalTitle"
+          style={{ height: px(100), background: "#fff", position: "relative" }}
+        >
+          <Layout style={{ height: "100%" }}>
+            <HeaderItem timeNum={60} />
+          </Layout>
+        </div>
+        <div
+          className="clinicalBody"
+          style={{ width: "100%", height: bodyHeight - px(100) }}
+        >
+          <div className="clinical_top">
+            <div className="r">
+              {/*顶部按钮Re-sync Base*/}
+              {mellaConnectStatus === "disconnected" && (
                 <div
-                  className="btn78"
-                  // style={{ width: px(220), height: mTop(30), fontSize: px(16) }}
-                  onClick={() => {
-                    console.log("点击了切换按钮");
-
-                    if (resyncDeviceIsClick === true) {
-                      resyncDeviceIsClick = false;
-                      console.log("发送给主进程切换按钮");
-                      let ipcRenderer = window.electron.ipcRenderer;
-                      ipcRenderer.send("qiehuan");
-                      const time = setTimeout(() => {
-                        resyncDeviceIsClick = true;
-                        clearTimeout(time);
-                      }, 2500);
-                    }
-                  }}
+                  className="bb1"
+                // style={{ left: px(150) }}
                 >
-                  Re-sync Base
-                </div>
-              </div>
-            )}
-            {echars()}
+                  <div
+                    className="btn78"
+                    // style={{ width: px(220), height: mTop(30), fontSize: px(16) }}
+                    onClick={() => {
+                      console.log("点击了切换按钮");
 
-            {/* 底部宠物信息 */}
-            {_foot()}
-            {_editModal()}
-
-            {tipSpin && (
-              // true &&
-              <div className="modal">
-                <div className="loadIcon" style={{ marginBottom: px(5) }}>
-                  <LoadingOutlined
-                    style={{
-                      fontSize: 30,
-                      color: "#fff",
-                      marginTop: mTop(-30),
+                      if (resyncDeviceIsClick === true) {
+                        resyncDeviceIsClick = false;
+                        console.log("发送给主进程切换按钮");
+                        let ipcRenderer = window.electron.ipcRenderer;
+                        ipcRenderer.send("qiehuan");
+                        const time = setTimeout(() => {
+                          resyncDeviceIsClick = true;
+                          clearTimeout(time);
+                        }, 2500);
+                      }
                     }}
-                  />
+                  >
+                    Re-sync Base
+                  </div>
                 </div>
-                <p>data is loading...</p>
-              </div>
-            )}
+              )}
+              {echars()}
+
+              {/* 底部宠物信息 */}
+              {_foot()}
+              {_editModal()}
+
+
+
+              {tipSpin && (
+                // true &&
+                <div className="modal">
+                  <div className="loadIcon" style={{ marginBottom: px(5) }}>
+                    <LoadingOutlined
+                      style={{
+                        fontSize: 30,
+                        color: "#fff",
+                        marginTop: mTop(-30),
+                      }}
+                    />
+                  </div>
+                  <p>data is loading...</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+
+    </>
   );
 };
+
+
 ClinicalStudy.propTypes = {
   bodyHeight: propTypes.number,
 };
