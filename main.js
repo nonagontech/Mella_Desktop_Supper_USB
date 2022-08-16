@@ -468,8 +468,8 @@ menu.append(
       {
         role: "about",
         label: "About Mella",
-        click: () => {
-          console.log("点击了关于");
+        click: (menuItem, browserWindow, event) => {
+          console.log("about");
         },
       },
       {
@@ -480,9 +480,7 @@ menu.append(
         role: "services",
         // label: 'Quit Mella',
 
-        click: () => {
-          console.log("点击了server");
-        },
+        click: () => { console.log("server"); },
       },
       {
         type: "separator",
@@ -492,7 +490,7 @@ menu.append(
         // accelerator: 'Cmd+Q',
         label: "Hide Mella",
         click: () => {
-          console.log("点击了hide");
+          console.log("hide");
         },
       },
       {
@@ -500,7 +498,7 @@ menu.append(
         // accelerator: 'Cmd+Q',
         // label: 'Quit Mella',
         click: () => {
-          console.log("点击了hideOthers");
+          console.log("hideOthers");
         },
       },
 
@@ -508,12 +506,12 @@ menu.append(
         type: "separator",
       },
       {
-        // role: 'hideOthers',
+        // role: 'quit',
+        enabled: true,
         accelerator: `Cmd+Q`,
         label: "Quit Mella",
         // type: 'separator',
         click: () => {
-          console.log("关闭USB插拔监控");
           windowOpen = false;
           console.log(1);
           usbDetect.stopMonitoring();
@@ -523,13 +521,12 @@ menu.append(
           device && device.close();
           console.log(4);
           fenbianlvTimer && clearInterval(fenbianlvTimer);
-          console.log("退出");
+          console.log("quit");
           app.quit();
         },
       },
     ],
-  })
-);
+  }));
 menu.append(
   new MenuItem({
     label: "Edit",
@@ -720,6 +717,7 @@ function wind(width1, height1, data, min = {}) {
   }
 
   mainWindow.setSize(width, height);
+  Menu.setApplicationMenu(menu);
 }
 
 ipcMain.on("big", (e, data) => {
@@ -763,7 +761,7 @@ ipcMain.on("small", (e, data) => {
   let size = require("electron").screen.getPrimaryDisplay().workAreaSize;
   if (size.height >= 728 && size.height < 1040) {
     wind(300, 640, data);
-  }else{
+  } else {
     wind(400, 830, data);
   }
   // let width = show(400).height
@@ -867,13 +865,15 @@ ipcMain.on("qiehuan", (event, data) => {
   device = null;
 });
 
+let writeTimer = null
 ipcMain.on("keyboardWriting", (event, data) => {
   if (data) {
-    const timer = setTimeout(() => {
+    writeTimer && clearTimeout(writeTimer)
+    writeTimer = setTimeout(() => {
       console.log(`'开始去写：${data}`);
       // keyboard.type(`${data}`)
       keyboardWritingFun(data);
-      clearTimeout(timer);
+      clearTimeout(writeTimer);
     }, 500);
   }
 });
