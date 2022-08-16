@@ -64,9 +64,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
   }, [])
 
   useEffect(() => {
-    //从本地获取宠物列表数据
-    // let petList = electronStore.get('petList') || [];
-    setPetList(petList)
     _getExam()
   }, [])
 
@@ -160,7 +157,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
 
   //获取宠物列表数据
   const _getExam = () => {
-
     let params = {
       doctorId: storage.userId,
       offset: 0,
@@ -172,8 +168,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     if (storage.lastOrganization) {
       params.organizationId = storage.lastOrganization
     }
-    console.log('查询宠物的入参', params);
-
     setLoading(true)
     fetchRequest('/user/listAllPetInfo', 'GET', params)
       .then(res => {
@@ -191,7 +185,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
       .catch(err => {
         setLoading(false)
         console.log(err);
-
       })
   }
   const dataSort = (data) => {
@@ -217,9 +210,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
         break;
     }
     return petList
-
-
-
   }
 
 

@@ -1053,7 +1053,6 @@ const ClinicalStudy = ({
         title: "",
         dataIndex: "operation",
         key: "operation",
-        width: "16%",
         className: `${isflog ? "operation" : ""}`,
 
         render: (text, record, index) => {
@@ -1077,16 +1076,15 @@ const ClinicalStudy = ({
                 <div
                   className="assign"
                   style={{
-                    width: mTop(60),
-                    height: mTop(28),
+                    // width: mTop(60),
+                    // height: mTop(28),
                     fontSize: px(14),
                   }}
                   onClick={() => {
-                    console.log(text, record, index);
-                    this.setState({
-                      visible: true,
-                      seleceEmergencies: record,
-                    });
+                    // this.setState({
+                    //   visible: true,
+                    //   seleceEmergencies: record,
+                    // });
                   }}
                 >
                   Assign
@@ -1118,7 +1116,6 @@ const ClinicalStudy = ({
         title: "Date",
         dataIndex: "date",
         key: "date",
-        width: "14%",
         className: `${isflog ? "operation" : ""}`,
         ellipsis: true,
         align: "center",
@@ -1130,7 +1127,6 @@ const ClinicalStudy = ({
         title: "Time",
         dataIndex: "time",
         key: "time",
-        width: "14%",
         className: `${isflog ? "operation" : ""}`,
         ellipsis: true,
         align: "center",
@@ -1144,7 +1140,6 @@ const ClinicalStudy = ({
         key: "temp",
         dataIndex: "temp",
         className: `${isflog ? "operation" : ""}`,
-        width: "14%",
         ellipsis: true,
         align: "center",
         render: (text, record, index) => {
@@ -1221,7 +1216,6 @@ const ClinicalStudy = ({
         title: `Rectal Temperature`,
         key: "referenceRectalTemperature",
         dataIndex: "referenceRectalTemperature",
-        width: "15%",
         className: `${isflog ? "operation" : ""}`,
         ellipsis: true,
         align: "center",
@@ -1254,7 +1248,6 @@ const ClinicalStudy = ({
         dataIndex: "placement",
         key: "placement",
         align: "center",
-        width: "15%",
         className: `${isflog ? "operation" : ""}`,
         ellipsis: true,
         align: "center",
@@ -1297,7 +1290,6 @@ const ClinicalStudy = ({
         title: "Note",
         dataIndex: "note",
         key: "note",
-        width: "12%",
         className: `${isflog ? "operation" : ""}`,
         ellipsis: true,
         align: "center",
@@ -1355,7 +1347,6 @@ const ClinicalStudy = ({
         ).toFixed(2);
       }
 
-      console.log("入参：", datas, editId);
       setEditVisible(false);
       setTip("Data is being modified");
       setTipSpin(true);

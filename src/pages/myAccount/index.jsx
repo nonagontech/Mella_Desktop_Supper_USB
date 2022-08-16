@@ -177,6 +177,8 @@ const MyAccount = ({bodyHeight}) => {
                   // onChange={onChange}
                   onSelect={(val) => { setCountry(val) }}
                   filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+                  // open
+                  // dropdownClassName="addressSelectBox"
                 >
                   {_.map(countryArr, (item, index) => (
                     <Option key={index} value={item}>{item}</Option>

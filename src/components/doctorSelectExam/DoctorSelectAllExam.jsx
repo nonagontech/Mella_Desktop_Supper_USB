@@ -351,19 +351,8 @@ export default class DoctorSelectAllExam extends Component {
           message.destroy()
           message.error('Data acquisition failed')
         })
-
-
-
-
       return
     }
-
-
-
-
-
-
-
 
     let params = {
       doctorId: storage.userId,
@@ -377,16 +366,6 @@ export default class DoctorSelectAllExam extends Component {
       params.organizationId = storage.lastOrganization
     }
 
-
-
-
-
-
-
-
-
-
-
     console.log('查询宠物的入参', params);
     const isUnKnow = (val) => {
       if (val) {
@@ -397,11 +376,7 @@ export default class DoctorSelectAllExam extends Component {
     }
 
     fetchRequest('/user/listAllPetInfo', 'GET', params)
-      // fetchRequest('/new/pet/subscribe/page', 'POST', params)
-
       .then(res => {
-        console.log('查询到的宠物列表,/user/listAllPetInfo', res);
-
         if (res.flag === true && res.data) {
           let data = []
           let oldList = res.data
@@ -467,17 +442,13 @@ export default class DoctorSelectAllExam extends Component {
           data.sort((a, b) => {
             return moment(parseInt(a.insertedAt) * 1000).format('YYYY-MM-DD HH:mm') > moment(parseInt(b.insertedAt) * 1000).format('YYYY-MM-DD HH:mm') ? -1 : 1
           })
-          console.log('列表的数据：', data);
           storage.doctorList = JSON.stringify(data)
           this.setState({
             data,
             loading: false,
             spin: false
           })
-
-          electronStore.set('doctorExam', data)
-
-
+          electronStore.set('doctorExam', data);
         } else {
           this.setState({
             loading: false,
