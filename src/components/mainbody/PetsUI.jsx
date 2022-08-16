@@ -286,7 +286,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     })
 
     return (
-      <div className="petList" style={{ marginTop: px(10), height: bodyHeight - px(100) - px(240) }}>
+      <div className="petList" style={{ marginTop: px(10), height: bodyHeight - px(100) - px(240) - px(100) }}>
         {loading ?
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', width: '100%', height: '100%' }}>
             <div className="loadIcon" style={{ marginBottom: px(5) }}>

@@ -406,41 +406,55 @@ class EditPetInfo extends Component {
   /**------------------顶部end------------------------ */
   selectWZ = (val) => {
     let { catBreed, dogBreed } = this.state
-    switch (val) {
-      case 'dog':
-        this.setState({
-          catImg: cat,
-          dogImg: redDog,
-          otherImg: other,
-          selectWZ: val,
-          breedArr: [].concat(dogBreed)
-        })
+    if (this.state.selectWZ !== val) {
+      switch (val) {
+        case 'dog':
+          this.setState({
+            catImg: cat,
+            dogImg: redDog,
+            otherImg: other,
+            selectWZ: val,
+            breedArr: [].concat(dogBreed),
+            confirmSelectBreedJson: {
+              name: "defaultdog",
+              petSpeciesBreedId: 12001
+            }
+          })
 
-        break;
+          break;
 
-      case 'cat':
-        this.setState({
-          catImg: redCat,
-          dogImg: dog,
-          otherImg: other,
-          selectWZ: val,
-          breedArr: [].concat(catBreed)
-        })
+        case 'cat':
+          this.setState({
+            catImg: redCat,
+            dogImg: dog,
+            otherImg: other,
+            selectWZ: val,
+            breedArr: [].concat(catBreed),
+            confirmSelectBreedJson: {
+              name: "defaultcat",
+              petSpeciesBreedId: 11001
+            }
+          })
 
-        break;
+          break;
 
-      case 'other':
-        this.setState({
-          catImg: cat,
-          dogImg: dog,
-          otherImg: redother,
-          selectWZ: val,
-          breedArr: []
-        })
-        break;
+        case 'other':
+          this.setState({
+            catImg: cat,
+            dogImg: dog,
+            otherImg: redother,
+            selectWZ: val,
+            breedArr: [],
+            confirmSelectBreedJson: {
+              name: "defaultother",
+              petSpeciesBreedId: 13001
+            }
+          })
+          break;
 
-      default:
-        break;
+        default:
+          break;
+      }
     }
   }
   _petSpecies = () => {
@@ -719,9 +733,11 @@ class EditPetInfo extends Component {
     })
   }
   _primaryBreed = () => {
+
     let options = null
     options = this.state.breedArr.map(d => <Option key={d.petSpeciesBreedId}>{d.breedName}</Option>);
     let { breedName, confirmSelectBreedJson } = this.state
+    console.log('=============', confirmSelectBreedJson);
     return (
       <div className="petName" style={{ marginTop: mTop(30), alignItems: 'flex-end', }}>
         <div className="l">
@@ -846,6 +862,7 @@ class EditPetInfo extends Component {
   render() {
     const { closeColor, closebgc, minbgc } = this.state
 
+
     return (
       <div id="editPetInfo">
         {/* 头部 */}
@@ -942,6 +959,7 @@ class EditPetInfo extends Component {
                 this.setState({
                   spin: true
                 })
+                // console.log('--------入参', data);
                 fetchRequest(`/pet/updatePetInfo/${petId}`, 'POST', data)
                   .then(res => {
                     this.setState({

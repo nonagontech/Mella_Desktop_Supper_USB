@@ -679,103 +679,103 @@ class DoctorAddPet extends Component {
     )
   }
   handleOk = () => {
-      let params = {
-        patientId: this.state.patientId,
-        doctorId: storage.userId
-      }
-      if (storage.lastWorkplaceId) {
-        params.workplaceId = storage.lastWorkplaceId
-      }
-      if (storage.lastOrganization) {
-        params.org = storage.lastOrganization
-      }
-      this.setState({
-        confirmLoading: true
-      });
-      fetchRequest(`/pet/getPetInfoByPatientIdAndPetId`, "POST", params)
-        .then((res) => {
-          this.setState({
-            confirmLoading: false,
-            isModalVisible: false
-          });
-          if (res.flag === true) {
-            let oldList = res.data[0];
-            let {
-              age, url, createTime, patientId, speciesId, petName, firstName, birthday, lastName, breedName, gender,
-              petId, weight, rfid, l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference, pethubId, macId,
-              h2tLength, torsoLength
-            } = oldList;
-            const isUnKnow = (val) => {
-              if (val) {
-                return val
-              } else {
-                return 'unknown'
-              }
-            }
-            let owner = ''
-            patientId = isUnKnow(patientId)
-            petName = isUnKnow(petName)
-            breedName = isUnKnow(breedName)
-            age = isUnKnow(age)
-            weight = isUnKnow(weight)
-            if (!firstName) {
-              firstName = ''
-            }
-            if (!lastName) {
-              lastName = ''
-            }
-            if (lastName === '' && firstName === '') {
-              owner = 'unknown'
+    let params = {
+      patientId: this.state.patientId,
+      doctorId: storage.userId
+    }
+    if (storage.lastWorkplaceId) {
+      params.workplaceId = storage.lastWorkplaceId
+    }
+    if (storage.lastOrganization) {
+      params.org = storage.lastOrganization
+    }
+    this.setState({
+      confirmLoading: true
+    });
+    fetchRequest(`/pet/getPetInfoByPatientIdAndPetId`, "POST", params)
+      .then((res) => {
+        this.setState({
+          confirmLoading: false,
+          isModalVisible: false
+        });
+        if (res.flag === true) {
+          let oldList = res.data[0];
+          let {
+            age, url, createTime, patientId, speciesId, petName, firstName, birthday, lastName, breedName, gender,
+            petId, weight, rfid, l2rarmDistance, neckCircumference, upperTorsoCircumference, lowerTorsoCircumference, pethubId, macId,
+            h2tLength, torsoLength
+          } = oldList;
+          const isUnKnow = (val) => {
+            if (val) {
+              return val
             } else {
-              owner = `${lastName} ${firstName}`
+              return 'unknown'
             }
-            createTime = moment(createTime).format('X')
-            let petGender = ''
-            switch (`${gender}`) {
-              case '1': petGender = 'F'
-                break;
-              case '0': petGender = "M"
-                break;
-              default: petGender = 'unknown'
-                break;
-            }
-            let petAge = 'unknown'
-            if (birthday) {
-              petAge = moment(new Date()).diff(moment(birthday), 'years')
-            }
-
-            let json = {
-              insertedAt: createTime,
-              patientId: this.state.patientId,
-              petName,
-              owner,
-              breed: breedName,
-              gender: petGender,
-              age: petAge,
-              petId,
-              weight,
-              rfid,
-              url,
-              speciesId,
-              l2rarmDistance,
-              neckCircumference,
-              upperTorsoCircumference,
-              lowerTorsoCircumference,
-              h2tLength,
-              torsoLength,
-              pethubId,
-              macId,
-            }
-            this.props.setMenuNum('1');
-            this.props.petDetailInfoFun(json);
-            this.props.history.push("/MainBody");
-          } else {
-            message.error(res.msg);
           }
-        })
-        .catch(err => {
-          message.error('Jump Failure');
-        })
+          let owner = ''
+          patientId = isUnKnow(patientId)
+          petName = isUnKnow(petName)
+          breedName = isUnKnow(breedName)
+          age = isUnKnow(age)
+          weight = isUnKnow(weight)
+          if (!firstName) {
+            firstName = ''
+          }
+          if (!lastName) {
+            lastName = ''
+          }
+          if (lastName === '' && firstName === '') {
+            owner = 'unknown'
+          } else {
+            owner = `${lastName} ${firstName}`
+          }
+          createTime = moment(createTime).format('X')
+          let petGender = ''
+          switch (`${gender}`) {
+            case '1': petGender = 'F'
+              break;
+            case '0': petGender = "M"
+              break;
+            default: petGender = 'unknown'
+              break;
+          }
+          let petAge = 'unknown'
+          if (birthday) {
+            petAge = moment(new Date()).diff(moment(birthday), 'years')
+          }
+
+          let json = {
+            insertedAt: createTime,
+            patientId: this.state.patientId,
+            petName,
+            owner,
+            breed: breedName,
+            gender: petGender,
+            age: petAge,
+            petId,
+            weight,
+            rfid,
+            url,
+            speciesId,
+            l2rarmDistance,
+            neckCircumference,
+            upperTorsoCircumference,
+            lowerTorsoCircumference,
+            h2tLength,
+            torsoLength,
+            pethubId,
+            macId,
+          }
+          this.props.setMenuNum('1');
+          this.props.petDetailInfoFun(json);
+          this.props.history.push("/MainBody");
+        } else {
+          message.error(res.msg);
+        }
+      })
+      .catch(err => {
+        message.error('Jump Failure');
+      })
   };
   handleCancel = () => {
     this.setState({
@@ -785,6 +785,7 @@ class DoctorAddPet extends Component {
 
   render() {
     const { closeColor, closebgc, minbgc, disabled, petSpeciesBreedId, isModalVisible, confirmLoading } = this.state
+    console.log('======-=====', this.state.petSpecies, this.state.selectWZ);
     return (
       <Spin spinning={this.state.spin} size="large">
         <div id="doctorAddPet">
@@ -837,15 +838,15 @@ class DoctorAddPet extends Component {
                         message.error('This patient ID is already occupied, please change to a new one')
                       })
                     } else {
-                      let { petSpecies, petName, birthday, petSpeciesBreedId, isMix, weight, gender, unit, imageId, confirmSelectBreedJson, owner, patientId } = this.state
+                      let { petSpecies, petName, birthday, petSpeciesBreedId, isMix, weight, gender, unit, imageId, confirmSelectBreedJson, owner, patientId, selectWZ } = this.state
                       let species = null
                       if (petSpeciesBreedId) {
                         species = petSpeciesBreedId
                       } else {
                         // 11001 是cat 12001是dog 13001是other
-                        switch (petSpecies) {
-                          case 1: species = 11001; break;
-                          case 2: species = 12001; break;
+                        switch (selectWZ) {
+                          case 'cat': species = 11001; break;
+                          case 'dog': species = 12001; break;
                           default: species = 13001;
                             break;
                         }

@@ -87,9 +87,10 @@ const ClinicalStudy = ({
   const [memo, setMemo] = useState("");
   const [windowWidth, setWindowWidth] = useState(px(500));
   const [WeightValue, setWeightValue] = useState('');
-
+  const [isHua, setIsHua] = useState(true)
   const echartsElement = useRef(null);
   const clinicalRef = useRef(null);
+
   //分辨率变化
   const chartsBox = useCallback((node) => {
     if (node !== null && echartsElement.current) {
@@ -159,9 +160,10 @@ const ClinicalStudy = ({
         datas.doctorId = storage.userId;
         datas.userId = storage.userId;
       }
-
+      let ubdateWeight = units === "℉" ? (WeightValue / 2).toFixed(2) : WeightValue.toFixed(2);
       let updatePetInfoData = {
-        weight: (WeightValue / 2.2046).toFixed(2)
+
+        weight: ubdateWeight
       }
       if (storage.lastOrganization) {
         updatePetInfoData.organizationId = storage.lastOrganization
@@ -697,6 +699,7 @@ const ClinicalStudy = ({
       default:
         break;
     }
+    // console.log('------', WeightValue);
 
     return (
       <div
@@ -909,7 +912,7 @@ const ClinicalStudy = ({
                 let str = item.target.value.replace(/[^\d^\.]+/g, '').replace(/\.{2,}/g, ".").replace(".", "$#$").replace(/\./g, "").replace("$#$", ".").replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3')
                 setWeightValue(str);
               }}
-              suffix={'Ibs'}
+              suffix={units === '℉' ? 'lb' : 'kg'}
               maxLength={8}
             />
           </div>
@@ -1793,9 +1796,16 @@ const ClinicalStudy = ({
     }
   }, [roomTemperature, referenceRectalTemperature, bodyConditionScore, furLength, heartRate, bloodPressure, respiratoryRate, WeightValue, petDetailInfo.petId])
 
+
   useEffect(() => {
     if (biggieBodyWeight !== 0) {
-      setWeightValue((biggieBodyWeight * 2.2046).toFixed(2));
+      if (units === '℉') {
+        setWeightValue((biggieBodyWeight * 2).toFixed(2));
+      } else {
+        setWeightValue(biggieBodyWeight.toFixed(2));
+      }
+
+
     }
     return (() => { })
   }, [biggieBodyWeight])
