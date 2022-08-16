@@ -21,7 +21,6 @@ import "./clinical.less";
 import { fetchRequest } from "../../utils/FetchUtil1";
 import { fetchRequest3 } from "../../utils/FetchUtil3";
 import MyModal from "../../utils/myModal/MyModal";
-import UnassignModal from './../../components/UnassignModal/UnassignModal'
 let resyncDeviceIsClick = true; //用于控制多次点击重新配对按钮
 let storage = window.localStorage;
 
@@ -89,15 +88,15 @@ const ClinicalStudy = ({
   const [memo, setMemo] = useState("");
   const [windowWidth, setWindowWidth] = useState(px(500));
   const [WeightValue, setWeightValue] = useState('');
+  const [assignVisible, setAssignVisible] = useState(false);//选择宠物列表弹窗
+  const [addPetVisible, setAddPetVisible] = useState(false);//新增宠物弹窗
+  const [search, setSearch] = useState('');
+  const [selectPetId, setSelectPetId] = useState('');
+
+
 
   const echartsElement = useRef(null);
   const clinicalRef = useRef(null);
-
-  const [assignVisible, setAssignVisible] = useState(false);
-  const [seleceEmergencies, setSeleceEmergencies] = useState({});
-
-  const [lastWorkplaceId, setLastLastWorkplaceId] = useState('');
-
   //分辨率变化
   const chartsBox = useCallback((node) => {
     if (node !== null && echartsElement.current) {
@@ -1080,15 +1079,13 @@ const ClinicalStudy = ({
                 <div
                   className="assign"
                   style={{
-                    // width: mTop(60),
-                    // height: mTop(28),
-                    fontSize: px(14),
+                    fontSize: px(13),
                   }}
                   onClick={() => {
-                    setAssignVisible(true)
-                    setSeleceEmergencies(record)
-                    console.log('------', storage.lastOrganization);
-                    setLastLastWorkplaceId(storage.lastOrganization)
+                    // this.setState({
+                    //   visible: true,
+                    //   seleceEmergencies: record,
+                    // });
                   }}
                 >
                   Assign
@@ -1818,18 +1815,6 @@ const ClinicalStudy = ({
         }}
         ref={clinicalRef}
       >
-        <UnassignModal
-          assignVisible={assignVisible}
-          onChangeVisible={(val) => {
-            console.log('返回的数据', val);
-            setAssignVisible(val);
-          }}
-          lastWorkplaceId={lastWorkplaceId}
-          seleceEmergencies={seleceEmergencies}
-          success={() => {
-            _getEmergencyHistory();
-          }}
-        />
         <div
           className="clinicalTitle"
           style={{ height: px(100), background: "#fff", position: "relative" }}
@@ -1878,8 +1863,6 @@ const ClinicalStudy = ({
               {_foot()}
               {_editModal()}
 
-
-
               {tipSpin && (
                 // true &&
                 <div className="modal">
@@ -1899,8 +1882,127 @@ const ClinicalStudy = ({
           </div>
         </div>
       </div>
+      {/* <MyModal
+        visible={assignVisible}
+        element={
+          <div className="myfindOrg">
+            <div className="orgHeard">
+              <div className="titleicon" style={{ marginTop: px(5) }}>
+                <div
+                  onClick={() => {
+                    this.setState({
+                      assignVisible: false,
+                      search: '',
+                      selectPetId: '',
+                    });
+                  }}
+                >
+                  <img src={Close} alt="" style={{ width: px(25) }} />
+                </div>
+              </div>
+              <div
+                className="text"
+                // onMouseOver={() => {
+                //   if (disabled) {
+                //     this.setState({
+                //       disabled: false,
+                //     });
+                //   }
+                // }}
+                // onMouseOut={() => {
+                //   this.setState({
+                //     disabled: true,
+                //   });
+                // }}
+              >
+                Assign Measurement
+              </div>
+              <div className="searchBox">
+                <Input
+                  placeholder=" &#xe61b; Search Pet"
+                  bordered={false}
+                  allowClear={true}
+                  value={search}
+                  onChange={(item) => {
+                    this.setState({
+                      search: item.target.value,
+                    });
+                    this._searchPet(item.target.value);
+                  }}
+                />
+              </div>
+            </div>
+            <div className="list">{this._list()}</div>
+            <div className="foot">
+              <div
+                className="btnn flex"
+                style={{ height: px(45) }}
+                onClick={() => {
+                  this.setState({
+                    assignVisible: false,
+                    visible: true,
+                  });
+                }}
+              >
+                <p>+Add New Pet</p>
+              </div>
+              <div
+                className="btnn flex"
+                style={{ height: px(45) }}
+                onClick={() => {
+                  if (!this.state.selectPetId) {
+                    message.error("Please select a pet to assign");
+                  } else {
+                    let { selectPetId, seleceEmergencies, historyData } =
+                      this.state;
+                    let parmes = {
+                      petId: selectPetId,
+                      clinicalDatagroupId:
+                        seleceEmergencies.clinicalDatagroupId,
+                    };
+                    console.log("分配的数据信息", parmes);
+                    fetchRequest(
+                      `/pet/addAndSavePetExam/${seleceEmergencies.historyId}`,
+                      "POST",
+                      parmes
+                    )
+                      .then((res) => {
+                        console.log("----------", res);
+                        if (res.flag === true) {
+                          console.log("分配成功");
+                          message.success("Assigned successfully");
+                          let arr = [];
+                          for (let i = 0; i < historyData.length; i++) {
+                            const element = historyData[i];
+                            if (
+                              seleceEmergencies.clinicalDatagroupId !==
+                              element.clinicalDatagroupId
+                            ) {
+                              arr.push(element);
+                            }
+                          }
 
-
+                          this.setState({
+                            assignVisible: false,
+                            historyData: arr,
+                          });
+                        } else {
+                          message.error("Assignment failed");
+                        }
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                        message.error("Assignment failed");
+                      });
+                  }
+                }}
+              >
+                <p>Confirm</p>
+              </div>
+            </div>
+          </div>
+        }
+      /> */}
     </>
   );
 };

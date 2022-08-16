@@ -274,6 +274,7 @@ export default class Unassigned extends Component {
       serchExamData: searchData,
     });
   };
+  //搜索宠物
   _searchPet = (value = "") => {
     let list = this.state.petListData;
     let searchData = [];
@@ -917,9 +918,7 @@ export default class Unassigned extends Component {
         },
       },
     ];
-
     let tableData = searchText.length > 0 ? serchExamData : historyData;
-
     return (
       <div id="unassigned">
         <Heard
