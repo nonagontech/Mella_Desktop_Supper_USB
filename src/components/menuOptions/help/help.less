@@ -162,8 +162,6 @@ p {
     align-items: center;
     justify-content: space-around;
     padding: 0 15%;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
 
     .l {
       display: flex;
@@ -182,6 +180,26 @@ p {
         color: #e1206d;
         -webkit-app-region: no-drag;
       }
+
+      p {
+        font-size: 14px;
+        color: #e1206d;
+        cursor: pointer;
+      }
     }
+  }
+}
+
+.opinionsModal {
+  -webkit-app-region: no-drag;
+  padding: 0px;
+  .ant-modal-content{
+    padding: 32px;
+  }
+  .bugSubmitBox{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin: 0px 90px;
   }
 }

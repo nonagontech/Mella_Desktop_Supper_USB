@@ -144,7 +144,7 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
     return (
         <div id='allPets' style={{ height: bodyHeight }}>
             <div className="allPetHeard">
-                <div className="addDeviceTitle flex" style={{ height: px(100), fontSize: 26, paddingLeft: px(20) }}>
+                <div className="addDeviceTitle flex" style={{ fontSize: 26, paddingLeft: px(20) }}>
                     <div className="title">Client Results</div>
                     <div className="refresh flex"
                         style={{ fontSize: px(25), marginLeft: px(10) }}

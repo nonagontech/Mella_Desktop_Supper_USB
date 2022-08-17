@@ -54,19 +54,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
   const [organizationName, setOrganizationName] = useState("")
   const [organizationId, setOrganizationId] = useState()
 
-  useEffect(() => {
-    //设置宠物列表数据
-    setPetList(petListArr)
-  }, [petListArr])
-  //获取组织列表
-  useEffect(() => {
-    getOrgList()
-  }, [])
-
-  useEffect(() => {
-    _getExam()
-  }, [])
-
   //获取组织列表
   const getOrgList = () => {
     let userWorkplace = [];
@@ -154,7 +141,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     setSelectRoleId(storage.roleId)
 
   }
-
   //获取宠物列表数据
   const _getExam = () => {
     let params = {
@@ -211,8 +197,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     }
     return petList
   }
-
-
   const menu = () => {
     let menuList = [
       // { value: 'Time' },
@@ -276,7 +260,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     })
 
     return (
-      <div className="petList" style={{ marginTop: px(10), height: bodyHeight - px(100) - px(240) - px(100) }}>
+      <div className="petList" style={{ marginTop: px(10) }}>
         {loading ?
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', width: '100%', height: '100%' }}>
             <div className="loadIcon" style={{ marginBottom: px(5) }}>
@@ -349,6 +333,19 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
 
   }
 
+  useEffect(() => {
+    //设置宠物列表数据
+    setPetList(petListArr)
+  }, [petListArr])
+  //获取组织列表
+  useEffect(() => {
+    getOrgList()
+  }, [])
+
+  useEffect(() => {
+    _getExam()
+  }, [])
+
 
   return (
     <div className="PetUI11" style={{ height: bodyHeight - px(100), }}>
@@ -367,7 +364,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
       />
       <div style={{ width: '100%', position: 'relative', height: bodyHeight - px(100), }}>
         <div className="selectOrg" style={{ width: '100%' }}>
-
           <div className="title" style={{ padding: `${px(10)}px 0px ${px(10)}px ${px(20)}px ` }}>
             <img src={orgicn} alt="" width={px(25)} style={{ marginRight: px(10) }} />
             <div className="titleText" >{`Organization`}</div>
@@ -389,22 +385,14 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
 
             </Tooltip>
           </div>
-
-
-
-
-
         </div>
-
         <div className="title" style={{ padding: `${px(20)}px 0px ${px(20)}px ${px(20)}px ` }}>
           <img src={petIcon} alt="" width={px(25)} style={{ marginRight: px(10) }} />
           <div className="titleText" >Pets</div>
         </div>
-
         <div className="sort" style={{ paddingLeft: px(20) }}>
           <Dropdown overlay={menu} trigger={['click']}>
             <div className="sortBox">
-
               <div className="sortText" >
                 {`Sort by: ${petSortType}`}
               </div>
@@ -413,7 +401,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
           </Dropdown>
         </div>
         {petListUI()}
-
         <div className="walkBtn">
           <div
             className="walkbtnBox"
@@ -435,10 +422,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
         </div>
         {/* <MyModal visible={loading} /> */}
       </div >
-
-
-
-
     </div >
   )
 }

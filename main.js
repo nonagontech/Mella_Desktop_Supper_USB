@@ -722,7 +722,7 @@ function wind(width1, height1, data, min = {}) {
 
 ipcMain.on("big", (e, data) => {
   let size = require("electron").screen.getPrimaryDisplay().workAreaSize;
-  if (size.height >= 728 && size.height < 1040) {
+  if (size.height >= 728 && size.height <= 860) {
     wind(800, 640, data, { width: 800, height: 640 });
   } else {
     wind(900, 900, data, { width: 810, height: 810 });
@@ -759,7 +759,7 @@ ipcMain.on("middle", (e, data) => {
 });
 ipcMain.on("small", (e, data) => {
   let size = require("electron").screen.getPrimaryDisplay().workAreaSize;
-  if (size.height >= 728 && size.height < 1040) {
+  if (size.height >= 728 && size.height <= 860) {
     wind(300, 640, data);
   } else {
     wind(400, 830, data);

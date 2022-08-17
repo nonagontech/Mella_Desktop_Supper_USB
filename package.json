@@ -1,6 +1,6 @@
 {
   "name": "supermella",
-  "version": "v1.1.12",
+  "version": "v1.1.14",
   "main": "main.js",
   "private": true,
   "author": {
@@ -108,7 +108,7 @@
       "oneClick": false,
       "perMachine": true,
       "allowToChangeInstallationDirectory": true,
-      "uninstallDisplayName": "Super Mella",
+      "uninstallDisplayName": "Mella Super",
       "createDesktopShortcut": true
     },
     "files": [

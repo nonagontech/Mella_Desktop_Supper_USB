@@ -1,16 +1,11 @@
 #heard {
   width: 100%;
-  height: 40px;
   background-color: #e1206d;
   display: flex;
-  // justify-content: flex-end;
   align-items: center;
   justify-content: space-between;
   -webkit-app-region: drag;
-  // border-top-left-radius: 20px;
-  // border-top-right-radius: 20px;
 
-  // position: relative;
   .l {
     display: flex;
     align-items: center;
@@ -18,26 +13,19 @@
     width: 60%;
     height: 100%;
 
-    // background-color: pink;
     .menuF {
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      // background-color: hotpink;
-      // width: 15%;
-
       height: 100%;
       flex-direction: column;
 
       .menu {
         -webkit-app-region: no-drag;
-        // margin-left: 7px;
-        // color: #FEFEFE;
         text-align: center;
         display: flex;
         justify-content: center;
         align-items: center;
-        // height: 100%;
         position: relative;
         flex-direction: column;
 
@@ -53,7 +41,6 @@
           color: #fefefe;
         }
 
-
         img {
           cursor: pointer;
         }
@@ -62,7 +49,6 @@
           position: absolute;
           z-index: 999;
           -webkit-app-region: no-drag;
-          // background-color: pink;
 
           .triangle {
             position: absolute;
@@ -75,7 +61,6 @@
             position: relative;
             width: 100%;
 
-            // width: 100px;
             ul {
               margin: 0;
               padding: 0;
@@ -92,7 +77,6 @@
 
                   p {
                     text-align: left;
-                    // background-color: pink;
                     white-space: nowrap;
                     margin: 0;
                   }
@@ -122,15 +106,10 @@
 
     .search {
       -webkit-app-region: no-drag;
-      // background-color: pink;
-      // width: 258px;
-      // height: 26px;
       height: 55%;
-      // width: 70%;
       display: flex;
       flex-direction: row;
       position: relative;
-      // background-color: hotpink;
       align-items: center;
       justify-content: space-between;
 
@@ -149,7 +128,6 @@
       }
 
       input::-webkit-input-placeholder {
-        /* WebKit browsers */
         color: #660a2f;
         font-size: 14px;
         font-family: 'iconfont';
@@ -169,7 +147,6 @@
         border-bottom-right-radius: 50px;
         border-top-right-radius: 50px;
         height: 100%;
-        // width: 40px;
         width: 15%;
         display: flex;
         justify-content: center;
@@ -202,11 +179,9 @@
       .searchPet {
         position: absolute;
         z-index: 999;
-        // background-color: pink;
       }
 
       .searchPetBody {
-        // background-color: pink;
         box-shadow: 0px 3px 6px #979797;
         background-color: #fff;
         z-index: 5;
@@ -238,25 +213,10 @@
             }
           }
         }
-
-        // .searchPetLoading::after {
-        //   position: absolute;
-        //   bottom: -9px;
-        //   left: 45px;
-        //   content: '';
-        //   border-left: 50px solid transparent;
-        //   border-right: 50px solid transparent;
-        //   border-top: 10px solid #ff8605;
-        //   filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
-        // }
-
-
-
       }
 
       .searchPetList {
         display: flex;
-        // background-color: pink;
 
         ul {
           margin: 0;
@@ -268,14 +228,12 @@
             padding: 0;
             width: 100%;
 
-            // background-color: pink;
             .item {
               width: 100%;
               display: flex;
               align-items: center;
               flex-direction: row;
 
-              // background-color: aqua;
               .img {
                 background-repeat: no-repeat;
                 background-position: center;
@@ -304,12 +262,9 @@
     align-items: center;
     justify-content: flex-end;
     height: 100%;
-    // padding-left: 50%;
-    // background-color: pink;
     width: 40%;
 
     .heardCenter {
-      // width: 30%;
       height: 100%;
       display: flex;
       align-items: center;
@@ -321,7 +276,6 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-
         -webkit-app-region: no-drag;
       }
 
@@ -335,14 +289,11 @@
     }
 
     .min_close {
-      // width: 30%;
-      // display: table;
       display: flex;
       height: 100%;
       align-items: center;
       justify-content: flex-end;
 
-      // background-color: pink;
       .max {
         text-align: center;
         font-size: 30px;
@@ -373,7 +324,6 @@
         justify-content: center;
         -webkit-app-region: no-drag;
         cursor: pointer;
-        // background-color: hotpink;
       }
     }
 
@@ -381,7 +331,6 @@
       width: 25px;
       height: 25px;
       border-radius: 25px;
-      // border: 1px solid pink;
       margin-right: 20px;
     }
   }

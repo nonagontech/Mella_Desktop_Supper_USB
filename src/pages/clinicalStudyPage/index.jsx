@@ -1831,8 +1831,8 @@ const ClinicalStudy = ({
           }}
         />
         <div
-          className="clinicalTitle"
-          style={{ height: px(100), background: "#fff", position: "relative" }}
+          className="headerContentBox"
+          style={{ background: "#fff", position: "relative" }}
         >
           <Layout style={{ height: "100%" }}>
             <HeaderItem timeNum={60} />

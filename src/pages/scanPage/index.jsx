@@ -25,7 +25,7 @@ const ScanPage = ({ petMessage, hardwareMessage, bodyHeight, }) => {
   return (
     <>
       <Layout className="scanHomeBox" style={{ height: bodyHeight }}>
-        <div style={{ height: px(100), background: "#fff", position: 'relative' }}>
+        <div className="headerContentBox" style={{ background: "#fff", position: 'relative' }}>
           <div style={{ height: '100%' }}>
             <HeaderItem />
           </div>

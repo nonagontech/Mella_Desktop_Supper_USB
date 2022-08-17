@@ -134,7 +134,7 @@ const Heard = ({
       petId: "f713a238-f5df-4c85-8c4f-5766b0770c07",
     },
   ];
-  const [size, setSize] = useState({ height: px(50) });
+  const [size, setSize] = useState({ height: px(47) });
   const [headerRef, setHeaderRef] = useState();
 
   const uploadMessage = (e, data) => {
@@ -1389,12 +1389,7 @@ const Heard = ({
   }, []);
   useEffect(() => {
     //监听屏幕窗口改变
-    // window.addEventListener("resize", resize());
-    console.log('====================================');
-    console.log('window.screen.availWidth', window.screen.availWidth);
-    console.log('====================================');
-    console.log(px(50));
-    setSize({ height: 50 });
+    setSize({ height: 47 });
   }, [window.screen.availWidth])
 
   return (

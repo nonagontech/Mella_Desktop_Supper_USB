@@ -37,8 +37,11 @@
 
     #root {
       overflow: hidden;
-      border-radius: 22px;
+      border-radius: 10px;
       background-color: #fff;
+      border-bottom: 1px #e7e7e7  solid;
+      border-left: 1px #e7e7e7  solid;
+      border-right: 1px #e7e7e7  solid;
     }
 
     .iconCode {
@@ -60,11 +63,11 @@
   <div id="root"></div>
   <script>
     window.electron = require('electron');
-    if(window.screen.height >= 900){
-        document.write('<link rel="stylesheet" href="css/index_900.css">');
+    if (window.screen.height > 900) {
+      document.write('<link rel="stylesheet" href="css/index_900.css">');
     }
-    else if(window.screen.height >= 768){
-        document.write('<link rel="stylesheet" href="css/index_768.css">');
+    else if (window.screen.height >= 768) {
+      document.write('<link rel="stylesheet" href="css/index_768.css">');
     }
   </script>
 </body>

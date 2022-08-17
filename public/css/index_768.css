@@ -52,10 +52,23 @@
   width: 60%;
 }
 
+/*中间头部*/
+#mainbody .deviceAndPets .deviceAndPets-title {
+  height: 70px;
+}
+
+/*中间宠物列表*/
+#mainbody .deviceAndPets .PetUI11 .petList {
+  height: 270px;
+}
 
 
 
-/*头部*/
+/*右侧头部*/
+.headerContentBox {
+  height: 70px;
+}
+
 .popBox {
   max-width: 296px;
 }
@@ -227,6 +240,10 @@
 
 
 /*体脂秤合并界面*/
+.mergePage .mergeHeaderBox {
+  height: 70px;
+}
+
 .mergePage .headerBox .headerTitle {
   font-size: 18px;
   line-height: 18px;
@@ -319,6 +336,16 @@
 .petTable .table .allPetTable .ant-table-body {
   max-height: 300px !important;
 }
+
+#allPets .allPetHeard .addDeviceTitle {
+  height: 70px;
+}
+
+/*预约宠物*/
+#scheduled .allPetHeard .addDeviceTitle {
+  height: 70px;
+}
+
 
 /*用户个人信息界面*/
 .myAccountBox .accountForm .ant-form-item {

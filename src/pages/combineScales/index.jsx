@@ -118,7 +118,7 @@ const CombineScales = ({
   return (
     <>
       <Layout className="mergePage">
-        <Header className="headerBox" style={{ height: px(100) }}>
+        <Header className="mergeHeaderBox">
           <span className="headerTitle">
             {confirmType ? "Scales Combined As One" : "Combine Scales"}
           </span>
