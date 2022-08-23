@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
 import { Layout } from "antd";
+
 import LinkEquipment from "./components/linkEquipment";
 import Measurement from "./components/measurement";
 import MeasuredData from "./components/measuredData";
+import HeaderItem from "./components/headerItem";
+import SelectPetBreed from "../../components/selectPetBreedModal";
+
+import { connect } from "react-redux";
 import {
   selectHardwareModalShowFun,
   petSortTypeFun,
@@ -13,13 +17,13 @@ import {
   setMellaPredictValueFun,
   setMellaMeasurePartFun,
 } from "../../store/actions";
-import _ from "lodash";
-import HeaderItem from "./components/headerItem";
 import { px } from "../../utils/px";
+import _ from "lodash";
 import PropTypes from 'prop-types';
+
 import "./index.less";
 
-const TemperaturePage = ({ petMessage, hardwareMessage,bodyHeight }) => {
+const TemperaturePage = ({ petMessage, hardwareMessage, bodyHeight }) => {
   let { mellaConnectStatus } = hardwareMessage;
   //测量温度中的页面变化
   const changePage = () => {
@@ -52,7 +56,9 @@ const TemperaturePage = ({ petMessage, hardwareMessage,bodyHeight }) => {
         ) : (
           changePage()
         )}
+        <SelectPetBreed visible={false} />
       </Layout>
+
     </>
   );
 };

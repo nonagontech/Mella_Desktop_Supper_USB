@@ -13,13 +13,12 @@ import redCat from './../../assets/images/redcat.png'
 import redother from './../../assets/images/redother.png'
 import other from './../../assets/images/other.png'
 import redJinggao from './../../assets/img/redjinggao.png'
-
 import MyModal from '../../utils/myModal/MyModal';
 import { mTop, px, MTop, pX } from '../../utils/px';
-import './addScheduledPet.less'
 import { setMenuNum } from '../../store/actions';
 import { fetchRequest } from '../../utils/FetchUtil1';
-import MYButton from './../../utils/button/Button'
+import MYButton from './../../utils/button/Button';
+import './index.less';
 
 const MyIcon = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_2326495_7b2bscbhvvt.js'

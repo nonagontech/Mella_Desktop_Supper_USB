@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-
 import { BrowserRouter, Switch, Route, HashRouter } from 'react-router-dom'
-
 import Home from './components/home/Home'
 import Choose from './components/choose/Choose'
 import EzyVetLogin from './components/ezyVetLogin/EzyVetLogin'
@@ -11,27 +9,21 @@ import APIkey from './components/apiKey/APIKey'
 import VerifyOrganizationInformation from './components/selectLocation/VerifyOrganizationInformation'
 import EzyVetSelectExam from './components/ezyVetSelectExam/EzyVetSelectExam'
 import DoctorSelectExam from './components/doctorSelectExam/DoctorSelectScheduledExam'
-
 import DoctorSelectAllExam from './components/doctorSelectExam/DoctorSelectAllExam'
 import Praviders from './components/praviders/Praviders'
 import SelectExam from "./components/selectExam/SelectExam";
-
 import Mesasure from "./components/measure/Mesasure";
 import NorMalMeasurement from "./components/measure/NorMalMeasurement";
-
 import MaxMinReturn from './utils/maxminreturn/MaxMinReturn'
 import EditPetInfo from './components/editPetInfo/EditPetInfo'
 import WorkPlace from './components/workPlace/WorkPlace'
-
 import DoctorAddPet from './components/doctorAddPet/DoctorAddPet'
 import AddYuding from './components/doctorSelectExam/AddYuding'
 //登录部分
 import SignIn from './components/signIn/SignIn'
 import ForgotPassword from './components/signIn/forgotPassword/ForgotPassword'
 import ResetPassword from './components/signIn/resetPassword/ResetPassword'
-
 import ScanCodeLogin from './components/signIn/scanCodeLogin/ScanCodeLogin'
-
 //邮箱注册的整体部分
 import VetPrifile from './components/createAccount/vetProfile/VetPrifile'
 import JoinOrganizationByOption from './components/createAccount/joinOrganizationByOption/JoinOrganizationByOption'
@@ -41,9 +33,7 @@ import IsHavePMS from './components/createAccount/ishavePMS/IsHavePMS'
 import VerifyEmail from './components/createAccount/verifyEmail/index'
 import NewOrganization from './components/createAccount/newOrganization/NewOrganization'
 import NewWorkplace from './components/createAccount/newWorkplace/NewWorkplace'
-
 import InviteTeam from './components/createAccount/inviteTeam/InviteTeam'
-
 //options
 import Help from './components/menuOptions/help/Help'
 import Unassigned from './components/menuOptions/unassigned/Unassigned'
@@ -59,11 +49,7 @@ import AddDevice from './components/menuOptions/addDevice/AddDevice'
 import ConnectWorkplace from './components/menuOptions/orgAndPractice/ConnectWorkplace'
 import NewOrg from './components/menuOptions/orgAndPractice/NewOrganization'
 import Team from './components/menuOptions/orgAndPractice/InviteTeam'
-
 import MainBody from './components/mainbody'
-
-
-
 import 'bootstrap/dist/css/bootstrap.min.css'
 class App extends Component {
   render() {
@@ -78,28 +64,18 @@ class App extends Component {
           <Route exact path="/page2" component={APIkey} />
           <Route exact path="/page3" component={VerifyOrganizationInformation} />
           <Route exact path="/page4" component={SelectMella} />
-
-
           <Route exact path="/VetSpireSelectExam" component={SelectExam} />
           <Route exact path="/page7" component={MaxMinReturn} />
-
           <Route exact path="/page8" component={Mesasure} />
           <Route exact path="/page9" component={EditPetInfo} />
           <Route exact path="/page10" component={NorMalMeasurement} />
-          {/* <Route exact path="/page10" component={MainBody} /> */}
           <Route exact path="/MainBody" component={MainBody} />
-
-
-
           <Route exact path="/page12" component={WorkPlace} />
           <Route exact path="/AddYuding" component={AddYuding} />
-
-
           <Route exact path="/page11" component={SignIn} />
           <Route exact path="/user/login/forgotPassword" component={ForgotPassword} />
           <Route exact path="/user/login/resetPassword" component={ResetPassword} />
           <Route exact path="/user/login/scanCodeLogin" component={ScanCodeLogin} />
-
           <Route exact path="/uesr/logUp/FindMyOrganization" component={FindMyOrganization} />
           <Route exact path="/uesr/logUp/FindMyWorkplace" component={FindMyWorkplace} />
           <Route exact path="/uesr/logUp/VetPrifile" component={VetPrifile} />
@@ -109,23 +85,9 @@ class App extends Component {
           <Route exact path="/uesr/logUp/NewOrganization" component={NewOrganization} />
           <Route exact path="/uesr/logUp/NewWorkplace" component={NewWorkplace} />
           <Route exact path="/uesr/logUp/InviteTeam" component={InviteTeam} />
-
-
-
-
-
           <Route exact path="/uesr/selectExam" component={DoctorSelectExam} />
           <Route exact path="/uesr/DoctorSelectAllExam" component={DoctorSelectAllExam} />
-
-
-
-
-
-
-
           <Route exact path="/pet/doctorAddPet" component={DoctorAddPet} />
-
-          {/* options */}
           <Route exact path="/menuOptions/help" component={Help} />
           <Route exact path="/menuOptions/unassigned" component={Unassigned} />
           <Route exact path="/menuOptions/settings" component={Settings} />
@@ -134,20 +96,11 @@ class App extends Component {
           <Route exact path="/menuOptions/petAndParents" component={PetAndParents} />
           <Route exact path="/menuOptions/editParent" component={EditParent} />
           <Route exact path="/MyAccount" component={MyAccount} />
-          {/* <Route exact path="/menuOptions/adminAddPet" component={AdminAddPet} /> */}
           <Route exact path="/menuOptions/veterinarians" component={Veterinarians} />
           <Route exact path="/menuOptions/AddDevice" component={AddDevice} />
           <Route exact path="/menuOptions/ConnectWorkplace" component={ConnectWorkplace} />
           <Route exact path="/menuOptions/NewOrg" component={NewOrg} />
           <Route exact path="/menuOptions/Team" component={Team} />
-
-
-
-
-
-
-
-
         </Switch>
       </HashRouter>
     )
