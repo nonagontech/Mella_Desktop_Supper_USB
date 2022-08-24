@@ -3,17 +3,15 @@ import React, { Component, } from 'react'
 import {
   Select,
   Button,
-  Modal,
-  message,
-  Spin
 } from 'antd';
-import { mTop, pX, px, win } from '../../utils/px';
+
+import logo from '../../assets/images/mellaLogo.png';
+
+import { px, win } from '../../utils/px';
 import MaxMin from './../../utils/maxminreturn/MaxMinReturn'
-import { createFromIconfontCN, SyncOutlined, LoadingOutlined } from '@ant-design/icons';
-import { fetchRequest } from './../../utils/FetchUtil1';
 import { fetchRequest4 } from '../../utils/FetchUtil4';
 import MyModal from '../../utils/myModal/MyModal';
-import logo from '../../assets/images/mellaLogo.png';
+
 import './index.less';
 
 const { Option } = Select;

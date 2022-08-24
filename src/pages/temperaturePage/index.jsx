@@ -56,7 +56,7 @@ const TemperaturePage = ({ petMessage, hardwareMessage, bodyHeight }) => {
         ) : (
           changePage()
         )}
-        <SelectPetBreed visible={false} />
+        <SelectPetBreed visible={true} />
       </Layout>
 
     </>

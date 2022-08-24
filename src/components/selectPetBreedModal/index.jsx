@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, Input, message, Select, Spin } from "antd";
+import {
+  Modal,
+  Input,
+  message,
+  Select,
+  Spin,
+} from "antd";
+import { SearchOutlined } from '@ant-design/icons';
+
 import _ from 'lodash';
+
 import './index.less';
 
 const SelectPetBreed = ({ visible, width, title, destroyOnClose, value, onSelect, onCancel }) => {
@@ -15,6 +24,14 @@ const SelectPetBreed = ({ visible, width, title, destroyOnClose, value, onSelect
     setIsModalVisible(false);
   };
 
+  const inputPlaceholder = () => {
+    return (
+      <>
+
+      </>
+    );
+  }
+
   useEffect(() => {
     if (visible === true || visible === false) {
       setIsModalVisible(visible);
@@ -27,7 +44,7 @@ const SelectPetBreed = ({ visible, width, title, destroyOnClose, value, onSelect
   return (
     <>
       <Modal
-        title="Basic Modal"
+        title="Choose Breed"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -35,9 +52,16 @@ const SelectPetBreed = ({ visible, width, title, destroyOnClose, value, onSelect
         maskClosable={false}
         className="selectPetBreedModal"
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <div className='modalContentBox'>
+          <div className="searchBox">
+            <Input
+              placeholder="Search Name"
+              bordered={false}
+              allowClear={true}
+              prefix={<SearchOutlined />}
+            />
+          </div>
+        </div>
       </Modal>
     </>
   );
