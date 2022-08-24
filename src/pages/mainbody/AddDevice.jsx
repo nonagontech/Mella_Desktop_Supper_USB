@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { Input, Button, message, Spin, BackTop } from 'antd';
-import { createFromIconfontCN, SyncOutlined, LoadingOutlined } from '@ant-design/icons';
+import {  message } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
-import { devicesTitleHeight } from '../../utils/InitDate'
-import electronStore from '../../utils/electronStore';
-import blueSearch from './../../assets/img/blueSerch.png'
 import biggieHome from './../../assets/img/searchType-biggieHome.png'
 import biggiePro from './../../assets/img/searchType-biggiePro.png'
 import mellaHome from './../../assets/img/searchType-home.png'
@@ -15,16 +10,16 @@ import maeBowl from './../../assets/img/searchType-maeBowl.png'
 import other from './../../assets/img/searchType-other.png'
 import possum from './../../assets/img/searchType-possum.png'
 import rfid from './../../assets/img/searchType-rfid.png'
-import MinClose from '../../utils/minClose/MinClose'
-import MouseDiv from '../../utils/mouseDiv/MouseDiv'
-import back_white from '../../assets/img/back-white.png'
-import back_hui from '../../assets/img/back-hui.png'
 import redclose from '../../assets/img/redclose.png'
-import MyModal from './../../utils/myModal/MyModal'
-import { mTop, px, MTop, pX } from '../../utils/px';
-import './mainbody.less'
-import { setReceiveBroadcastHardwareInfoFun, setHardwareList, changeselectHardwareIndex, setSelectHardwareType, selectHardwareList } from '../../store/actions';
 
+import electronStore from '../../utils/electronStore';
+import { mTop, px, MTop } from '../../utils/px';
+
+import { connect } from 'react-redux'
+import { setReceiveBroadcastHardwareInfoFun, setHardwareList, changeselectHardwareIndex, setSelectHardwareType, selectHardwareList } from '../../store/actions';
+import PropTypes from 'prop-types';
+
+import './mainbody.less';
 
 let storage = window.localStorage;
 const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadcastHardwareInfo, hardwareList, setReceiveBroadcastHardwareInfoFun, setHardwareList, changeselectHardwareIndex, setSelectHardwareType, selectHardwareList }) => {
@@ -275,7 +270,7 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
                         </div>
 
                         {/* <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', marginBottom: px(130) }}>
-                          
+
                             <p>
                                 {'searching...'}
                             </p>

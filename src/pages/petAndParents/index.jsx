@@ -1,24 +1,21 @@
 
 import React, { Component } from 'react'
 import {
-  Switch,
   Select,
 } from 'antd'
 
-import Heart from '../../../utils/heard/Heard'
-import Slider from '../../../utils/slider/Slider'
-import Button from '../../../utils/button/Button'
-import electronStore from '../../../utils/electronStore'
-import temporaryStorage from '../../../utils/temporaryStorage'
-import { mTop, px } from '../../../utils/px';
-import MyModal from '../../../utils/myModal/MyModal'
-import parent from './../../../assets/img/parent.png'
-import dog from '../../../assets/images/reddog.png'
-import cat from '../../../assets/images/redcat.png'
-import other from '../../../assets/images/redother.png'
-import { fetchRequest } from '../../../utils/FetchUtil1'
+import parent from '../../assets/img/parent.png'
+import dog from '../../assets/images/reddog.png'
+import cat from '../../assets/images/redcat.png'
+import other from '../../assets/images/redother.png'
+
+import Heart from '../../utils/heard/Heard'
+import { px } from '../../utils/px';
+import MyModal from '../../utils/myModal/MyModal'
+import { fetchRequest } from '../../utils/FetchUtil1'
+
 import moment from 'moment'
-import { parseGeoJSON } from 'echarts';
+
 import './index.less';
 
 const { Option } = Select;

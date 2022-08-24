@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { } from 'react'
 import PropTypes from 'prop-types';
-import { SyncOutlined, createFromIconfontCN } from '@ant-design/icons';
-import { SearchOutlined } from '@ant-design/icons';
-import { px, mTop } from './../../utils/px'
-import cir from './../../assets/images/cir.png'
-import xia from './../../assets/img/xia.png'
-
-//import 'antd/dist/antd.css';
+import { px, mTop } from '../../../utils/px'
+import cir from '../../../assets/images/cir.png'
+import xia from '../../../assets/img/xia.png'
 import './biggie.less'
-
 /**
  *
  * @param {string} weight   体重值
@@ -17,14 +12,9 @@ import './biggie.less'
  * @param {string} impedance   阻抗值
  * @param {boolean} issave   按钮文本，为true展示save，为false展示send to pms
  * @param {function} onPress   点击按钮调用的函数
- *
  * @returns
  */
-
 const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnPress, isIbs, isHaveSaveBtn = true }) => {
-
-  // let { weight, bodyFat, score } = this.props
-
   let lTColor = bodyFat !== null && bodyFat >= 0 ? '#87C563' : '#D8D9D9'
   let rTColor = score !== null && score >= 0 ? '#87C563' : '#D8D9D9'
   let lTtext = bodyFat !== null && bodyFat >= 0 ? `${bodyFat}%` : `Not Available`

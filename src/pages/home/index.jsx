@@ -4,15 +4,13 @@ import {
   message
 } from 'antd';
 
-import logo from './../../assets/images/mella.png'
-import temporaryStorage from './../../utils/temporaryStorage'
-import { px, mTop, win, timerFun } from './../../utils/px'
+import temporaryStorage from '../../utils/temporaryStorage'
+import { px, mTop, win, timerFun } from '../../utils/px'
 import MinClose from '../../utils/minClose/MinClose';
-import electronStore from './../../utils/electronStore'
-import SelectionBox from './../../utils/selectionBox/SelectionBox'
-import { addQRCode } from '../../utils/axios';
-import { fetchRequest2 } from '../../utils/FetchUtil2';
-import { version } from './../../utils/appversion';
+import { version } from '../../utils/appversion';
+
+import logo from '../../assets/images/mella.png'
+
 import './index.less';
 
 let storage = window.localStorage;
@@ -33,39 +31,8 @@ export default class Home extends Component {
     storage.measurepatientId = '';
     temporaryStorage.logupVetInfo = {}
     ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
-
-    // fetchRequest2('/user/getLoginQRcode', "GET", '')
-    //     // addQRCode()
-    //     .then(res => {
-    //         console.log('首页获取', res);
-
-
-    //     })
-    //     .catch(err => {
-
-    //         console.log(err);
-    //     })
-
-
-    // addQRCode()
-    //     .then(res => {
-    //         message.destroy()
-
-    //         console.log('---获取二维码', res);
-
-    //     })
-    //     .catch(err => {
-
-    //         console.log(err);
-    //     })
-
-
-
-
-
   }
   resize = (e) => {
-    // console.log('-------------监听的数据', e);
 
   }
   componentWillUnmount() {

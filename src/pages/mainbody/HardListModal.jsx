@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { px } from "../../utils/px";
-import {
-  selectHardwareInfoFun,
-  selectHardwareModalShowFun,
-  setMenuNum,
-} from "./../../store/actions";
-import electronStore from "../../utils/electronStore";
+
 
 import deviceBiggie from "./../../assets/img/deviceIcon-biggie.png";
 import nextImg from "./../../assets/img/nextImg.png";
@@ -18,8 +10,20 @@ import deviceMaeBowl from "./../../assets/img/deviceIcon-maeBowl.png";
 import deviceTape from "./../../assets/img/deviceIcon-tape.png";
 import deivceAdd from "./../../assets/img/hardList-add.png";
 import scales from "./../../assets/img/scales.png";
-import "./mainbody.less";
+
+import { px } from "../../utils/px";
 import { compareObject } from "../../utils/current";
+import electronStore from "../../utils/electronStore";
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import {
+  selectHardwareInfoFun,
+  selectHardwareModalShowFun,
+  setMenuNum,
+} from "./../../store/actions";
+
+import "./mainbody.less";
 
 let storage = window.localStorage;
 const HardAndPetsUI = ({

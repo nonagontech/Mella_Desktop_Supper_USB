@@ -2,8 +2,11 @@ import React, { Component } from 'react'
 import {
   Button,
 } from 'antd';
-import MaxMin from './../../utils/maxminreturn/MaxMinReturn'
+
 import dui from './../../assets/images/dui.png';
+
+import MaxMin from './../../utils/maxminreturn/MaxMinReturn'
+
 import './index.less';
 export default class SelectMella extends Component {
 

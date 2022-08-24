@@ -4,15 +4,18 @@ import {
   Button,
   message
 } from 'antd';
-import { createFromIconfontCN, SyncOutlined, LoadingOutlined } from '@ant-design/icons';
-import mellaLogo from '../../../assets/images/mellaLogo.png'
-import temporaryStorage from '../../../utils/temporaryStorage';
-import { fetchRequest } from '../../../utils/FetchUtil1';
-import { px, mTop, pX, MTop } from '../../../utils/px';
-import MouseDiv from '../../../utils/mouseDiv/MouseDiv'
-import MinClose from '../../../utils/minClose/MinClose'
-import back_white from '../../../assets/img/back-white.png';
-import back_hui from '../../../assets/img/back-hui.png';
+import { LoadingOutlined } from '@ant-design/icons';
+
+import mellaLogo from '../../assets/images/mellaLogo.png'
+import back_white from '../../assets/img/back-white.png';
+import back_hui from '../../assets/img/back-hui.png';
+
+import temporaryStorage from '../../utils/temporaryStorage';
+import { fetchRequest } from '../../utils/FetchUtil1';
+import { px, mTop, MTop } from '../../utils/px';
+import MouseDiv from '../../utils/mouseDiv/MouseDiv'
+import MinClose from '../../utils/minClose/MinClose'
+
 import './index.less';
 
 let storage = window.localStorage;

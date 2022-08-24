@@ -1,33 +1,34 @@
 import React, { Component } from 'react'
 import { Input, message, Select, Calendar, Col, Row, Spin, Modal } from 'antd';
-import moment from 'moment'
-import { createFromIconfontCN, LoadingOutlined } from '@ant-design/icons';
-import { fetchRequest } from './../../utils/FetchUtil1'
 
-import dog from './../../assets/images/pinkdog.png'
-import cat from './../../assets/images/pinkcat.png'
-import redDog from './../../assets/images/reddog.png'
-import redCat from './../../assets/images/redcat.png'
-import redother from './../../assets/images/redother.png'
-import other from './../../assets/images/other.png'
-import electronStore from '../../utils/electronStore';
+import dog from '../../assets/images/pinkdog.png'
+import cat from '../../assets/images/pinkcat.png'
+import redDog from '../../assets/images/reddog.png'
+import redCat from '../../assets/images/redcat.png'
+import redother from '../../assets/images/redother.png'
+import other from '../../assets/images/other.png'
 import Close from './../../assets/img/close.png'
-import nextImg from './../../assets/img/nextImg.png'
-import selectphoto from './../../assets/images/sel.png'
-import dui from './../../assets/images/dui.png'
-import female from './../../assets/images/female.png'
-import male from './../../assets/images/male.png'
+import nextImg from '../../assets/img/nextImg.png'
+import selectphoto from '../../assets/images/sel.png'
+import dui from '../../assets/images/dui.png'
+import female from '../../assets/images/female.png'
+import male from '../../assets/images/male.png'
 
-
+import { fetchRequest } from '../../utils/FetchUtil1'
+import electronStore from '../../utils/electronStore';
 import { mTop, px, win } from '../../utils/px';
-import Avatar from './../avatar/Avatar'
 import MyModal from '../../utils/myModal/MyModal';
 import Heard from '../../utils/heard/Heard';
 import PhoneBook from '../../utils/phoneBook/PhoneBook';
-import Button from './../../utils/button/Button';
+import Button from '../../utils/button/Button';
+import Avatar from '../../components/avatar/Avatar';
+
 import { connect } from 'react-redux';
 import { petDetailInfoFun, setMenuNum, } from '../../store/actions';
-import './index.less'
+import moment from 'moment';
+
+import './index.less';
+
 const { Option } = Select;
 let storage = window.localStorage;
 let errPatientId = ''

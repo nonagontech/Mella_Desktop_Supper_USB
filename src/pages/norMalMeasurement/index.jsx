@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import { Menu, Table, Popconfirm, Tooltip, message, Select, Progress, Input, Modal } from 'antd';
-import Draggable from "react-draggable";
-import moment from 'moment'
+import {
+  Menu,
+  Table,
+  Popconfirm,
+  message,
+  Select,
+  Progress,
+  Input,
+  Modal
+} from 'antd';
 import { createFromIconfontCN, LoadingOutlined, SyncOutlined } from '@ant-design/icons';
-
-import { fetchRequest } from './../../utils/FetchUtil1'
-import { fetchRequest1 } from './../../utils/FetchUtil'
-import { fetchRequest2 } from './../../utils/FetchUtil2'
-import { FetchEszVet } from './../../utils/FetchEszVet'
 
 import ye from './../../assets/images/ye1.png'
 import er from './../../assets/images/er3.png'
@@ -29,15 +31,23 @@ import redDog1 from './../../assets/images/reddog.png'
 import redCat1 from './../../assets/images/redcat.png'
 import redother from './../../assets/images/redother.png'
 
+
+import { fetchRequest } from './../../utils/FetchUtil1'
+import { fetchRequest1 } from './../../utils/FetchUtil'
+import { fetchRequest2 } from './../../utils/FetchUtil2'
 import electronStore from './../../utils/electronStore'
 import { fetchToken } from '../../utils/Fetch_token';
-import { mTop, px, pX, win } from '../../utils/px';
+import { mTop, px, win } from '../../utils/px';
 import { fetchRequest4 } from '../../utils/FetchUtil4';
 import temporaryStorage from '../../utils/temporaryStorage';
 import Biggie from './../../pages/biggiePage/Biggie.jsx'
 import MyModal from '../../utils/myModal/MyModal';
 import Heard from '../../utils/heard/Heard';
 import { fetchRhapsody } from '../../utils/FetchUtil5';
+
+import Draggable from "react-draggable";
+import moment from 'moment'
+
 import './index.less'
 
 const { SubMenu } = Menu;

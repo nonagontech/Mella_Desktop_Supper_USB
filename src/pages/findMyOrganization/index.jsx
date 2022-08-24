@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import {
   Input
 } from 'antd';
-import { createFromIconfontCN, SyncOutlined } from '@ant-design/icons';
-import MaxMin from '../../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest } from '../../../utils/FetchUtil1'
-import temporaryStorage from '../../../utils/temporaryStorage'
-import Button from '../../../utils/button/Button'
+import { createFromIconfontCN } from '@ant-design/icons';
+
+import MaxMin from '../../utils/maxminreturn/MaxMinReturn';
+import { fetchRequest } from '../../utils/FetchUtil1';
+import temporaryStorage from '../../utils/temporaryStorage';
+import Button from '../../utils/button/Button';
+
 import './index.less';
 
 const MyIcon = createFromIconfontCN({

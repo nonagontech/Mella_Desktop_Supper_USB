@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 import {
     Button,
 } from 'antd';
-//import 'antd/dist/antd.css';
-import MaxMin from './../../utils/maxminreturn/MaxMinReturn'
-
+import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
 import './index.less'
 let storage = window.localStorage;
 export default class Choose extends Component {

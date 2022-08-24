@@ -1,8 +1,5 @@
-import React, { Component, useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, {  useEffect } from "react";
 
-import { px } from "../../utils/px";
 import mellaPro from "./../../assets/img/hardList-mella.png";
 import biggie from "./../../assets/img/hardList-biggie.png";
 import rfid from "./../../assets/img/hardList-rfid.png";
@@ -10,12 +7,17 @@ import tape from "./../../assets/img/hardList-tape.png";
 import add from "./../../assets/img/hardList-add.png";
 import maeBowl from "./../../assets/img/hardList-maeBowl.png";
 import otterEQ from "./../../assets/img/hardList-otterEQ.png";
+
+import electronStore from "../../utils/electronStore";
+import { px } from "../../utils/px";
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import {
   selectHardwareInfoFun,
   setSelectHardwareType,
   setMenuNum,
 } from "./../../store/actions";
-import electronStore from "../../utils/electronStore";
 
 let storage = window.localStorage;
 //devicesTypeList是index传过来的硬件种类以及种类下的所有硬件

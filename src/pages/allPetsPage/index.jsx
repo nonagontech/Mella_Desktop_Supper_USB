@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Input, Button, message, Spin, BackTop } from 'antd';
-import { createFromIconfontCN, SyncOutlined, LoadingOutlined } from '@ant-design/icons';
-import { devicesTitleHeight } from '../../utils/InitDate'
-import { mTop, px, MTop, pX } from '../../utils/px';
+import { } from 'antd';
+import { SyncOutlined } from '@ant-design/icons';
+import {  px } from '../../utils/px';
 import PetTable from '../../components/petTable';
 import { petDetailInfoFun, setMenuNum, setPetListArrFun } from '../../store/actions';
 import moment from 'moment'
@@ -186,9 +184,7 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
     )
 }
 
-
 AllPet.propTypes = {
-
 }
 //默认值
 AllPet.defaultProps = {

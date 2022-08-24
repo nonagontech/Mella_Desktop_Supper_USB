@@ -1,40 +1,23 @@
 ////这是普通用户的选择界面，后期集成时候别忘了identity，进入测量界面的身份，是vetspire、ezyvet、普通医生
 import React, { Component } from 'react'
 import {
-  Table,
-  Input,
-  Button,
-  Space,
   message,
   Menu,
-  Modal,
-  Select,
-  ConfigProvider
-
 } from 'antd';
-import Draggable from "react-draggable";
-import Button1 from '../../utils/button/Button'
-import moment from 'moment'
-//import 'antd/dist/antd.css';
+import { createFromIconfontCN } from '@ant-design/icons';
 import Heard from '../../utils/heard/Heard'
-import { SyncOutlined, createFromIconfontCN } from '@ant-design/icons';
-import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
-import MYButton from './../../utils/button/Button'
-import './index.less'
-
-
+import MYButton from '../../utils/button/Button'
 import { fetchRequest } from '../../utils/FetchUtil1'
-import { MTop, mTop, pX, px, win } from '../../utils/px';
-
-import dog from './../../assets/images/pinkdog.png'
-import cat from './../../assets/images/pinkcat.png'
-import redDog from './../../assets/images/reddog.png'
-import redCat from './../../assets/images/redcat.png'
-import redother from './../../assets/images/redother.png'
-import other from './../../assets/images/other.png'
-import redJinggao from './../../assets/img/redjinggao.png'
-
+import { px, win } from '../../utils/px';
+import dog from '../../assets/images/pinkdog.png'
+import cat from '../../assets/images/pinkcat.png'
+import redDog from '../../assets/images/reddog.png'
+import redCat from '../../assets/images/redcat.png'
+import redother from '../../assets/images/redother.png'
+import other from '../../assets/images/other.png'
+import redJinggao from '../../assets/img/redjinggao.png'
 import MyModal from '../../utils/myModal/MyModal';
+import './index.less';
 
 const { SubMenu } = Menu;
 const MyIcon = createFromIconfontCN({

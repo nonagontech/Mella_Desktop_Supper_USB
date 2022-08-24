@@ -30,7 +30,7 @@ import Draggable from "react-draggable";
 import { fetchRequest } from "../../../utils/FetchUtil1";
 import { fetchRequest2 } from "../../../utils/FetchUtil2";
 import { fetchRequest4 } from "../../../utils/FetchUtil4";
-import { px, mTop } from "../../../utils/px.js";
+import { px, mTop } from "../../../utils/px";
 import moment from "moment";
 import electronStore from "../../../utils/electronStore";
 import "./measuredData.less";

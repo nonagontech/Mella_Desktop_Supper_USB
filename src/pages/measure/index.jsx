@@ -8,22 +8,8 @@ import {
   Tooltip,
   message,
   Select,
-  Spin
 } from 'antd';
-import Draggable from "react-draggable";
-import moment from 'moment'
 import { createFromIconfontCN, SyncOutlined, LoadingOutlined } from '@ant-design/icons';
-// 引入 ECharts 主模块
-import echarts from 'echarts/lib/echarts';
-import ReactECharts from 'echarts-for-react';
-// 引入柱状图
-import 'echarts/lib/chart/bar';
-// 引入提示框和标题组件
-import 'echarts/lib/component/tooltip';
-import 'echarts/lib/component/title';
-import { fetchRequest } from './../../utils/FetchUtil1'
-import { fetchRequest1 } from './../../utils/FetchUtil'
-import MyModal from './../../utils/myModal/MyModal'
 
 import ye from './../../assets/images/ye1.png'
 import er from './../../assets/images/er3.png'
@@ -40,10 +26,20 @@ import placement_er from './../../assets/images/placement_er.png'
 import palcement_ye from './../../assets/images/palcement_ye.png'
 import close from './../../assets/img/close.png'
 
+import { fetchRequest } from './../../utils/FetchUtil1'
+import MyModal from './../../utils/myModal/MyModal'
 import electronStore from './../../utils/electronStore'
-import { mTop, pX, px, MTop, win } from '../../utils/px';
+import { mTop, px, MTop, win } from '../../utils/px';
 import { fetchRequest3 } from '../../utils/FetchUtil3';
 import Heard from '../../utils/heard/Heard';
+
+import Draggable from "react-draggable";
+import moment from 'moment';
+import ReactECharts from 'echarts-for-react';// 引入 ECharts 主模块
+import 'echarts/lib/chart/bar';// 引入柱状图
+import 'echarts/lib/component/tooltip';// 引入提示框和标题组件
+import 'echarts/lib/component/title';
+
 import './index.less';
 
 const { SubMenu } = Menu;

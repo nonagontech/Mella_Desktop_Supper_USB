@@ -1,27 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import React, { useEffect } from 'react';
 import {
   Button,
 } from 'antd';
-//import 'antd/dist/antd.css';
 
-import PropTypes from 'prop-types';
+import MaxMin from '../../utils/maxminreturn/MaxMinReturn';
+
+import pms from '../../assets/images/pms.png';
+
+import { useHistory } from "react-router-dom";
 
 import './index.less'
-import pms from './../../../assets/images/pms.png'
-import MaxMin from '../../../utils/maxminreturn/MaxMinReturn'
-
-
-
 const IsHavePMS = () => {
-
   let history = useHistory();
+
   useEffect(() => {
-    console.log('hooks模拟componentDidMount');
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('big')
   }, [])
-
 
   return (
     <div id="isHavePMS">

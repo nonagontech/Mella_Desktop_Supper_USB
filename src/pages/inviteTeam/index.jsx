@@ -4,26 +4,20 @@ import {
     Input,
     Tooltip,
     message,
-    // Button
 } from 'antd';
-import Draggable from "react-draggable";
-import { createFromIconfontCN, CaretDownFilled, PlusOutlined } from '@ant-design/icons';
-//import 'antd/dist/antd.css';
+import { PlusOutlined } from '@ant-design/icons';
 
-import './index.less'
-import imgArray from './../../../utils/areaCode/imgArray'
-import MaxMin from './../../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest } from './../../../utils/FetchUtil1'
-import temporaryStorage from '../../../utils/temporaryStorage'
-import { fetchRequest2 } from '../../../utils/FetchUtil2';
-import { mTop, px } from '../../../utils/px';
-import Button from './../../../utils/button/Button'
-import MyModal from '../../../utils/myModal/MyModal';
+import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
+import { fetchRequest } from '../../utils/FetchUtil1'
+import temporaryStorage from '../../utils/temporaryStorage'
+import { fetchRequest2 } from '../../utils/FetchUtil2';
+import { px } from '../../utils/px';
+import Button from '../../utils/button/Button'
+import MyModal from '../../utils/myModal/MyModal';
 
+import './index.less';
 export default class InviteTeam extends Component {
-
     state = {
-
         tags: [],
         inputVisible: false,
         inputValue: '',
@@ -31,15 +25,11 @@ export default class InviteTeam extends Component {
         editInputValue: '',
         visible: false
     }
-
     componentDidMount () {
         let ipcRenderer = window.electron.ipcRenderer
         ipcRenderer.send('big')
-
         //监听屏幕分辩率是否变化，变化就去更改界面内容距离大小
         ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
-
-
     }
     componentWillUnmount () {
         let ipcRenderer = window.electron.ipcRenderer

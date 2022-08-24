@@ -6,20 +6,19 @@ import {
   message
 } from 'antd'
 
-import Heart from '../../../utils/heard/Heard'
-import Slider from '../../../utils/slider/Slider'
-import Button from './../../../utils/button/Button'
-import electronStore from './../../../utils/electronStore'
-import temporaryStorage from './../../../utils/temporaryStorage'
-import { mTop, px, win } from '../../../utils/px';
-import MyModal from './../../../utils/myModal/MyModal'
-import redJinggao from './../../../assets/img/redjinggao.png'
+import redJinggao from '../../assets/img/redjinggao.png'
+
+import Heart from '../../utils/heard/Heard'
+import Slider from '../../utils/slider/Slider'
+import Button from '../../utils/button/Button'
+import electronStore from '../../utils/electronStore'
+import { px, win } from '../../utils/px';
+import MyModal from '../../utils/myModal/MyModal'
+
 import './index.less'
 
-import SelectionBox from './../../../utils/selectionBox/SelectionBox'
 const { Option } = Select;
 let storage = window.localStorage
-
 export default class Settings extends Component {
 
   state = {

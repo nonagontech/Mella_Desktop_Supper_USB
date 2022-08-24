@@ -5,15 +5,17 @@ import {
   Modal,
   message
 } from 'antd';
-import Draggable from "react-draggable";
 import { CaretDownFilled } from '@ant-design/icons';
-import imgArray from './../../../utils/areaCode/imgArray'
-import MaxMin from './../../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest } from './../../../utils/FetchUtil1'
-import countryList from './../../../utils/areaCode/country';
-import temporaryStorage from '../../../utils/temporaryStorage'
-import { px } from './../../../utils/px'
-import MyModal from '../../../utils/myModal/MyModal';
+
+import imgArray from '../../utils/areaCode/imgArray'
+import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
+import { fetchRequest } from '../../utils/FetchUtil1'
+import countryList from '../../utils/areaCode/country';
+import { px } from '../../utils/px'
+import MyModal from '../../utils/myModal/MyModal';
+
+import Draggable from "react-draggable";
+
 import './index.less';
 
 let storage = window.localStorage;

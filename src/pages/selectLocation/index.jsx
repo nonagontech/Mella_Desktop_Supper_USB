@@ -1,14 +1,14 @@
 import React, { Component, } from 'react'
 import {
-    Table,
     Select,
     Button,
     message
-
 } from 'antd';
+
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn';
 import { fetchRequest1 } from '../../utils/FetchUtil';
 import { mTop, px } from '../../utils/px';
+
 import './index.less';
 
 const { Option } = Select;

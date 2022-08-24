@@ -1,6 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { } from "react";
+import { Layout } from "antd";
+
+import HeaderItem from "../temperaturePage/components/headerItem";
+import LinkEquipment from "./components/LinkEquipment";
+import ScanPet from "./components/scanPet";
+
+import PropTypes from 'prop-types';
+import _ from "lodash";
 import { connect } from "react-redux";
-import { Layout, Menu, PageHeader } from "antd";
 import {
   selectHardwareModalShowFun,
   petSortTypeFun,
@@ -10,12 +17,6 @@ import {
   setMellaPredictValueFun,
   setMellaMeasurePartFun,
 } from "../../store/actions";
-import _ from "lodash";
-import HeaderItem from "../temperaturePage/components/headerItem";
-import LinkEquipment from "./components/LinkEquipment";
-import ScanPet from "./components/scanPet";
-import PropTypes from 'prop-types';
-import { px } from "../../utils/px";
 
 import "./index.less";
 

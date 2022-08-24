@@ -8,36 +8,28 @@ import {
   message,
   Menu,
   Modal,
-  Select,
   ConfigProvider
-
 } from 'antd';
-import Draggable from "react-draggable";
-import Button1 from '../../utils/button/Button'
-import moment from 'moment'
-//import 'antd/dist/antd.css';
-import Heard from '../../utils/heard/Heard'
-import { SyncOutlined, createFromIconfontCN } from '@ant-design/icons';
-import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
-import './index.less'
+import { SyncOutlined, createFromIconfontCN,SearchOutlined } from '@ant-design/icons';
 
-import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
-import { FetchEszVet } from '../../utils/FetchEszVet'
+import jinggao from '../../assets/img/jinggao.png'
+import redclose from '../../assets/img/redclose.png'
+
+import Button1 from '../../utils/button/Button'
+import Heard from '../../utils/heard/Heard'
 import { fetchRequest } from '../../utils/FetchUtil1'
-import gender from '../../utils/gender'
 import temporaryStorage from '../../utils/temporaryStorage';
-import { MTop, mTop, pX, px, win } from '../../utils/px';
-import { stopBubble } from '../../utils/current'
+import { pX, px, win } from '../../utils/px';
 import { fetchRequest4 } from '../../utils/FetchUtil4';
 import { fetchRhapsody } from '../../utils/FetchUtil5';
-import jinggao from './../../assets/img/jinggao.png'
-import redclose from './../../assets/img/redclose.png'
-import blackTriangle from './../../assets/img/blackTriangle.png'
-import refresh from './../../assets/img/Refresh.png'
 import SelectionBox from '../../utils/selectionBox/SelectionBox'
-
 import electronStore from '../../utils/electronStore';
+
+import moment from 'moment';
+import Draggable from "react-draggable";
+import Highlighter from 'react-highlight-words';
+
+import './index.less';
 
 const { SubMenu } = Menu;
 const MyIcon = createFromIconfontCN({

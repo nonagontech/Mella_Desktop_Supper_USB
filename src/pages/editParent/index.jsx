@@ -1,23 +1,20 @@
 import React, { Component } from 'react'
-import { Input, Button, Menu, message, Select, Calendar, Col, Row, Spin } from 'antd';
-import Draggable from "react-draggable";
-import moment from 'moment'
-//import 'antd/dist/antd.css';
-import { createFromIconfontCN, LoadingOutlined } from '@ant-design/icons';
-import { fetchRequest } from './../../../utils/FetchUtil1'
-import dog from './../../../assets/images/reddog.png'
-import cat from './../../../assets/images/redcat.png'
-import other from '../../../assets/images/redother.png'
-import horse from './../../../assets/images/horse.png'
-import rabbit from './../../../assets/images/rabbit.png'
-import selectphoto from './../../../assets/images/sel.png'
-import dui from './../../../assets/images/dui.png'
-import female from './../../../assets/images/female.png'
-import male from './../../../assets/images/male.png'
-import { mTop, px } from '../../../utils/px';
-import Avatar from './../../avatar/Avatar'
-import MyModal from '../../../utils/myModal/MyModal';
-import Heard from '../../../utils/heard/Heard';
+import { Menu, message, Select } from 'antd';
+import { createFromIconfontCN } from '@ant-design/icons';
+
+import dog from '../../assets/images/reddog.png'
+import cat from '../../assets/images/redcat.png'
+import other from '../../assets/images/redother.png'
+import selectphoto from '../../assets/images/sel.png'
+
+import { fetchRequest } from '../../utils/FetchUtil1'
+import { mTop, px } from '../../utils/px';
+import MyModal from '../../utils/myModal/MyModal';
+import Heard from '../../utils/heard/Heard';
+import Avatar from '../../components/avatar/Avatar'
+
+import moment from 'moment';
+
 import './index.less';
 
 const { SubMenu } = Menu;
@@ -31,7 +28,6 @@ let url = 'https://www.mellaserver.com/api/mellaserver'
 // let url = 'http://192.168.0.36:8080/mellaserver'
 export default class EditParent extends Component {
   state = {
-
     lastName: '',       //宠物主人性
     firstName: '',      //宠物主人名
     email: '',          //邮箱号
@@ -40,10 +36,7 @@ export default class EditParent extends Component {
     imageId: null,      //图片的ID值
     petList: [],         //当前这个宠物主人下的所有宠物
     userId: '',          //当前这个宠物主人的userId
-
     userImageUrl: '',
-
-
   }
 
   componentDidMount() {

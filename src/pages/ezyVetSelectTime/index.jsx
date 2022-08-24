@@ -1,16 +1,14 @@
 import React, { Component, } from 'react'
 import {
-  Select,
   DatePicker, Space,
   message,
   Button,
   Input
 } from 'antd';
-import { createFromIconfontCN } from '@ant-design/icons';
-import moment from 'moment';
+
 import MaxMin from './../../utils/maxminreturn/MaxMinReturn';
-import dui from './../../assets/images/dui.png';
-import { FetchEszVet } from './../../utils/FetchEszVet';
+import moment from 'moment';
+
 import './index.less';
 
 let storage = window.localStorage;

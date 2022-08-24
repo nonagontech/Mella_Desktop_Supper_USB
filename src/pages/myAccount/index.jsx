@@ -10,20 +10,21 @@ import {
   Col,
   Row,
   Checkbox,
-  Upload,
   Select,
   message,
 } from "antd";
-import { UserOutlined } from '@ant-design/icons';
-import Avatar from '../../components/avatar/Avatar'
-import _ from "lodash";
-import { px, mTop } from "../../utils/px";
+
 import changePhoto from '../../assets/images/changePhoto.png';
+
+import { px, mTop } from "../../utils/px";
 import countryList from '../../utils/areaCode/country';
 import { fetchRequest } from '../../utils/FetchUtil1';
-import PropTypes from 'prop-types';
-import "./index.less";
+import Avatar from '../../components/avatar/Avatar'
 
+import PropTypes from 'prop-types';
+import _ from "lodash";
+
+import "./index.less";
 
 const MyAccount = ({bodyHeight}) => {
   let storage = window.localStorage;

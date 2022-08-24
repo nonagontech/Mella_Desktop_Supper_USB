@@ -1,12 +1,10 @@
 
 import React, { Component } from 'react'
 import { message } from 'antd';
-import Heart from '../../../utils/heard/Heard'
-import { px, win } from './../../../utils/px'
-import MyModal from './../../../utils/myModal/MyModal.jsx'
-
+import Heart from '../../utils/heard/Heard'
+import { px, win } from '../../utils/px'
+import MyModal from '../../utils/myModal/MyModal.jsx'
 import './index.less';
-
 
 let ipcRenderer = window.electron.ipcRenderer
 let storage = window.localStorage;

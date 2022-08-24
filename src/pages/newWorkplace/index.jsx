@@ -8,16 +8,17 @@ import {
   Modal,
   message
 } from 'antd';
-import Draggable from "react-draggable";
-import { createFromIconfontCN, CaretDownFilled } from '@ant-design/icons';
-import imgArray from './../../../utils/areaCode/imgArray'
-import MaxMin from './../../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest2 } from './../../../utils/FetchUtil2'
-import { fetchRequest } from './../../../utils/FetchUtil1'
-import countryList from './../../../utils/areaCode/country';
-import temporaryStorage from '../../../utils/temporaryStorage';
-import './index.less';
+import {  CaretDownFilled } from '@ant-design/icons';
 
+import imgArray from '../../utils/areaCode/imgArray'
+import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
+import { fetchRequest } from '../../utils/FetchUtil1'
+import countryList from '../../utils/areaCode/country';
+import temporaryStorage from '../../utils/temporaryStorage';
+
+import Draggable from "react-draggable";
+
+import './index.less';
 
 const { Option } = Select;
 export default class NewWorkplace extends Component {

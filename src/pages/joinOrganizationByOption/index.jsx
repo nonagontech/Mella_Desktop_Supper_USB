@@ -4,18 +4,20 @@ import {
   Modal,
   Input
 } from 'antd';
-import MaxMin from '../../../utils/maxminreturn/MaxMinReturn'
-import { createFromIconfontCN, SyncOutlined } from '@ant-design/icons';
-import Button from './../../../utils/button/Button'
-import Close from './../../../assets/img/close.png'
-import left1 from './../../../assets/img/left1.png'
-import { fetchRequest } from '../../../utils/FetchUtil1';
-import temporaryStorage from '../../../utils/temporaryStorage';
-import { px } from '../../../utils/px'
-import MyModal from '../../../utils/myModal/MyModal';
-import { fetchRequest2 } from '../../../utils/FetchUtil2';
-import './index.less';
+import { createFromIconfontCN } from '@ant-design/icons';
 
+import Close from '../../assets/img/close.png'
+import left1 from '../../assets/img/left1.png'
+
+import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
+import Button from '../../utils/button/Button'
+import { fetchRequest } from '../../utils/FetchUtil1';
+import temporaryStorage from '../../utils/temporaryStorage';
+import { px } from '../../utils/px'
+import MyModal from '../../utils/myModal/MyModal';
+import { fetchRequest2 } from '../../utils/FetchUtil2';
+
+import './index.less';
 
 const MyIcon = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2326495_7b2bscbhvvt.js'

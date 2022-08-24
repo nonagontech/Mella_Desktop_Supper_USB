@@ -4,33 +4,30 @@ import {
   Menu,
   Select,
   Tooltip,
-
-} from 'antd'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import moment from 'moment'
+} from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import { useHistory } from "react-router-dom";
-import { px } from '../../utils/px'
-import { petSortTypeFun, petDetailInfoFun, setPetListArrFun } from '../../store/actions'
-import electronStore from '../../utils/electronStore'
+
 import petIcon from './../../assets/img/petIcon.png'
 import xia from './../../assets/img/xia.png'
 import MyModal from './../../utils/myModal/MyModal'
 import redjinggao from './../../assets/img/redjinggao.png'
 import orgicn from './../../assets/img/orgicn.png'
 import deivceAdd from "./../../assets/img/hardList-add.png";
-import { devicesTitleHeight } from '../../utils/InitDate'
 
+import { px } from '../../utils/px'
+import { fetchRequest } from '../../utils/FetchUtil1';
 
+import { connect } from 'react-redux'
+import { petSortTypeFun, petDetailInfoFun, setPetListArrFun } from '../../store/actions'
+import { useHistory } from "react-router-dom";
+import PropTypes from 'prop-types'
+import moment from 'moment'
 
 import './mainbody.less'
-import { fetchRequest } from '../../utils/FetchUtil1';
 
 let storage = window.localStorage;
 
 const { Option } = Select;
-
 
 const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, petDetailInfo, setPetListArrFun, petListArr, selectHardwareType, rulerConnectStatus }) => {
   const history = useHistory();

@@ -5,10 +5,12 @@ import {
     Form,
     Select
 } from 'antd';
-import { createFromIconfontCN } from '@ant-design/icons';
-import MaxMin from './../../utils/maxminreturn/MaxMinReturn'
-import dui from './../../assets/images/dui.png'
-import { fetchRequest2 } from './../../utils/FetchUtil2'
+
+import dui from '../../assets/images/dui.png'
+
+import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
+import { fetchRequest2 } from '../../utils/FetchUtil2'
+
 import './index.less';
 
 let storage = window.localStorage;

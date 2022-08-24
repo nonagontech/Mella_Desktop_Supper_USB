@@ -1,55 +1,55 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Switch, Route, HashRouter } from 'react-router-dom'
-import Home from './components/home/Home'
-import Choose from './components/choose/Choose'
-import EzyVetLogin from './components/ezyVetLogin/EzyVetLogin'
-import EzyVetSelectTime from './components/ezyVetSelectTime/EzyVetSelectTime'
-import SelectMella from './components/selectMella/SelectMella'
-import APIkey from './components/apiKey/APIKey'
-import VerifyOrganizationInformation from './components/selectLocation/VerifyOrganizationInformation'
-import EzyVetSelectExam from './components/ezyVetSelectExam/EzyVetSelectExam'
-import DoctorSelectExam from './components/doctorSelectExam/DoctorSelectScheduledExam'
-import DoctorSelectAllExam from './components/doctorSelectExam/DoctorSelectAllExam'
-import Praviders from './components/praviders/Praviders'
-import SelectExam from "./components/selectExam/SelectExam";
-import Mesasure from "./components/measure/Mesasure";
-import NorMalMeasurement from "./components/measure/NorMalMeasurement";
+import Home from './pages/home/index'
+import Choose from './pages/choose/index'
+import EzyVetLogin from './pages/ezyVetLogin/index'
+import EzyVetSelectTime from './pages/ezyVetSelectTime/index'
+import SelectMella from './pages/selectMella/index'
+import APIkey from './pages/apiKey/index'
+import VerifyOrganizationInformation from './pages/selectLocation/index'
+import EzyVetSelectExam from './pages/ezyVetSelectExam/index'
+import DoctorSelectScheduledExam from './pages/doctorSelectScheduledExam/index'
+import DoctorSelectAllExam from './pages/doctorSelectAllExam/index'
+import SelectExam from "./pages/selectExam/index";
+import Mesasure from "./pages/measure/index";
+import NorMalMeasurement from "./pages/norMalMeasurement/index";
 import MaxMinReturn from './utils/maxminreturn/MaxMinReturn'
-import EditPetInfo from './components/editPetInfo/EditPetInfo'
-import WorkPlace from './components/workPlace/WorkPlace'
-import DoctorAddPet from './components/doctorAddPet/DoctorAddPet'
-import AddYuding from './components/doctorSelectExam/AddYuding'
+
+import EditPetInfo from './pages/editPetInfo/index'
+import WorkPlace from './pages/workPlace/index'
+import DoctorAddPet from './pages/doctorAddPet/index'
+import AddYuding from './pages/addYuding/index'
 //登录部分
-import SignIn from './components/signIn/SignIn'
-import ForgotPassword from './components/signIn/forgotPassword/ForgotPassword'
-import ResetPassword from './components/signIn/resetPassword/ResetPassword'
-import ScanCodeLogin from './components/signIn/scanCodeLogin/ScanCodeLogin'
+import SignIn from './pages/signIn/index'
+import ForgotPassword from './pages/forgotPassword/index'
+import ResetPassword from './pages//resetPassword/index'
+import ScanCodeLogin from './pages/scanCodeLogin/index'
 //邮箱注册的整体部分
-import VetPrifile from './components/createAccount/vetProfile/VetPrifile'
-import JoinOrganizationByOption from './components/createAccount/joinOrganizationByOption/JoinOrganizationByOption'
-import FindMyOrganization from './components/createAccount/findMyOrganization/FindMyOrganization'
-import FindMyWorkplace from './components/createAccount/findMyWorkplace/FindMyWorkplace'
-import IsHavePMS from './components/createAccount/ishavePMS/IsHavePMS'
-import VerifyEmail from './components/createAccount/verifyEmail/index'
-import NewOrganization from './components/createAccount/newOrganization/NewOrganization'
-import NewWorkplace from './components/createAccount/newWorkplace/NewWorkplace'
-import InviteTeam from './components/createAccount/inviteTeam/InviteTeam'
+import VetPrifile from './pages/vetProfile/index'
+import JoinOrganizationByOption from './pages/joinOrganizationByOption/index'
+import FindMyOrganization from './pages/findMyOrganization/index'
+import FindMyWorkplace from './pages/findMyWorkplace/index'
+import IsHavePMS from './pages/ishavePMS/index'
+import VerifyEmail from './pages/verifyEmail/index'
+import NewOrganization from './pages/newOrganization/index'
+import NewWorkplace from './pages/newWorkplace/index'
+import InviteTeam from './pages/inviteTeam/index'
 //options
-import Help from './components/menuOptions/help/Help'
-import Unassigned from './components/menuOptions/unassigned/Unassigned'
-import Settings from './components/menuOptions/settings/Settings'
-import AdvancedSettings from './components/menuOptions/advancedSettings/AdvancedSettings'
-import Invite from './components/menuOptions/invite/Invite'
-import PetAndParents from './components/menuOptions/petAndParents/PetAndParents'
-import EditParent from './components/menuOptions/editParent/EditParent'
-import MyAccount from './pages/myAccount'
-// import AdminAddPet from './components/menuOptions/adminAddPet/AdminAddPet'
-import Veterinarians from './components/menuOptions/admin_VetProfile/Veterinarians'
-import AddDevice from './components/menuOptions/addDevice/AddDevice'
-import ConnectWorkplace from './components/menuOptions/orgAndPractice/ConnectWorkplace'
-import NewOrg from './components/menuOptions/orgAndPractice/NewOrganization'
-import Team from './components/menuOptions/orgAndPractice/InviteTeam'
-import MainBody from './components/mainbody'
+import Help from './pages/help/index'
+import Unassigned from './pages/unassigned/index'
+import Settings from './pages/settings/index'
+import AdvancedSettings from './pages/advancedSettings/index'
+import Invite from './pages/invite/index'
+import PetAndParents from './pages/petAndParents/index'
+import EditParent from './pages/editParent/index'
+import MyAccount from './pages/myAccount/index'
+import Veterinarians from './pages/admin_VetProfile/index'
+import AddDevice from './pages/addDevice/index'
+import ConnectWorkplace from './pages/ConnectWorkplace/index'
+import NewOrg from './pages/newOrg/index'
+import Team from './pages/team/index'
+
+import MainBody from './pages/mainbody'
 import 'bootstrap/dist/css/bootstrap.min.css'
 class App extends Component {
   render() {
@@ -85,7 +85,7 @@ class App extends Component {
           <Route exact path="/uesr/logUp/NewOrganization" component={NewOrganization} />
           <Route exact path="/uesr/logUp/NewWorkplace" component={NewWorkplace} />
           <Route exact path="/uesr/logUp/InviteTeam" component={InviteTeam} />
-          <Route exact path="/uesr/selectExam" component={DoctorSelectExam} />
+          <Route exact path="/uesr/selectExam" component={DoctorSelectScheduledExam} />
           <Route exact path="/uesr/DoctorSelectAllExam" component={DoctorSelectAllExam} />
           <Route exact path="/pet/doctorAddPet" component={DoctorAddPet} />
           <Route exact path="/menuOptions/help" component={Help} />

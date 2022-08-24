@@ -1,10 +1,29 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
+import { Modal,message } from "antd";
+
 import Heard from "../../utils/heard/Heard";
-import { mTop, px, pX, win, timerFun } from "../../utils/px";
+import {  px, win, timerFun } from "../../utils/px";
+import electronStore from "../../utils/electronStore";
+import { compareObject } from "../../utils/current";
+import { compareArray } from "../../utils/current";
+
 import HardAndPetsUI from "./HardAndPetsUI";
 import HardWareTypeUI from "./hardWareTypeUI";
+import AddDevice from "./AddDevice";
+
+import BiggiePage from "../../pages/biggiePage";
+import ScanPage from "../../pages/scanPage";
+import AllPets from "../../pages/allPetsPage";
+import ScheduledPetPage from "../../pages/scheduledPetsPage";
+import AddScheduledPet from "../../pages/addScheduledPet";
+import ClininalStudy from "../../pages/clinicalStudyPage";
+import CombineScales from "../../pages/combineScales";
+import OtterEQPage from '../../pages/otterEQ';
+import MyAccount from "../../pages/myAccount";
 import TemperaturePage from "../../pages/temperaturePage";
+
+
+import { connect } from "react-redux";
 import {
   setHardwareList,
   selectHardwareModalShowFun,
@@ -26,22 +45,9 @@ import {
   setRulerConfirmCountFun,
   setReceiveBroadcastHardwareInfoFun,
 } from "../../store/actions";
+
 import "./mainbody.less";
-import { message } from "antd";
-import electronStore from "../../utils/electronStore";
-import AddDevice from "./AddDevice";
-import BiggiePage from "../../pages/biggiePage";
-import ScanPage from "../../pages/scanPage";
-import { compareObject } from "../../utils/current";
-import { compareArray } from "../../utils/current";
-import AllPets from "../../pages/allPetsPage";
-import ScheduledPetPage from "../../pages/scheduledPetsPage";
-import AddScheduledPet from "../../pages/addScheduledPet";
-import ClininalStudy from "../../pages/clinicalStudyPage";
-import CombineScales from "../../pages/combineScales";
-import OtterEQPage from '../../pages/otterEQ';
-import MyAccount from "../../pages/myAccount";
-import { Modal } from "antd";
+
 
 let ipcRenderer = window.require("electron").ipcRenderer;
 let isMeasure = false; //是否正在测量,用于判断是否需要发送指定指令给USB,查看硬件是否连接

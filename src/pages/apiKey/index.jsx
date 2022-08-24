@@ -3,18 +3,18 @@ import {
     Button,
     Input,
     Spin,
-    Alert,
     Form,
     Modal
 } from 'antd';
-import { InfoCircleOutlined, UserOutlined, createFromIconfontCN } from '@ant-design/icons';
+import { createFromIconfontCN } from '@ant-design/icons';
 
-//import 'antd/dist/antd.css';
-import MaxMin from './../../utils/maxminreturn/MaxMinReturn'
-import dui from './../../assets/images/dui.png'
-import './index.less'
-import { fetchRequest1 } from './../../utils/FetchUtil'
+import dui from '../../assets/images/dui.png'
+
+import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
+import { fetchRequest1 } from '../../utils/FetchUtil'
 import { mTop } from '../../utils/px';
+
+import './index.less';
 
 const MyIcon = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_2326495_ryrpg35knb.js'

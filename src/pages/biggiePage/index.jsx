@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Layout, message } from "antd";
-import Biggie from "./Biggie";
-import _ from "lodash";
+
 import { connect } from "react-redux";
 import { setBiggieConnectStatusFun } from "../../store/actions";
+
 import HeaderItem from "./../temperaturePage/components/headerItem";
 import HistoryTable from "../../components/historyTable";
 import LinkEquipment from "./components/linkEquipment";
+import Biggie from "./components/Biggie";
+
 import { px } from "../../utils/px";
 import { fetchRequest } from "../../utils/FetchUtil1";
 import { fetchRequest4 } from "../../utils/FetchUtil4";
 import MyModal from "../../utils/myModal/MyModal";
+
 import PropTypes from 'prop-types';
-import "./biggiePage.less";
+import _ from "lodash";
+
+import "./index.less";
 
 
 const { Header, Content, Footer, Sider } = Layout;

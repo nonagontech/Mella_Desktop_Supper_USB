@@ -1,22 +1,22 @@
 import React, { Component } from "react";
-import { Input, Button, message, Spin, BackTop } from "antd";
+import { Input, message, Spin } from "antd";
 import {
   createFromIconfontCN,
-  SyncOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
+
 import mellaLogo from "./../../assets/images/mellaLogo.png";
 import dui from "./../../assets/images/dui.png";
 import back_white from "./../../assets/img/back-white.png";
 import back_hui from "./../../assets/img/back-hui.png";
-import { fetchRequest } from "./../../utils/FetchUtil1";
+
 import { fetchRequest2 } from "./../../utils/FetchUtil2";
 import temporaryStorage from "../../utils/temporaryStorage";
-import { fetchRequest1 } from "../../utils/FetchUtil";
-import { mTop, px, MTop, pX, win } from "../../utils/px";
+import { px, win } from "../../utils/px";
 import MinClose from "./../../utils/minClose/MinClose";
 import MouseDiv from "./../../utils/mouseDiv/MouseDiv";
-import { addLogin, addQRCode } from "../../utils/axios";
+import { addLogin } from "../../utils/axios";
+
 import "./index.less";
 
 let storage = window.localStorage;
@@ -441,11 +441,11 @@ export default class SignIn extends Component {
           <div className="body" style={{ position: "relative" }}>
             <div
               className="text"
-              // style={{
-              //   fontSize: px(28),
-              //   marginBottom: px(20),
-              //   marginTop: px(30),
-              // }}
+            // style={{
+            //   fontSize: px(28),
+            //   marginBottom: px(20),
+            //   marginTop: px(30),
+            // }}
             >
               Please enter email <br />
               and password
@@ -497,12 +497,12 @@ export default class SignIn extends Component {
 
               <div
                 className="text"
-                // style={{
-                //   fontSize: px(28),
-                //   lineHeight: px(1),
-                //   marginTop: px(10),
-                //   marginBottom: px(20),
-                // }}
+              // style={{
+              //   fontSize: px(28),
+              //   lineHeight: px(1),
+              //   marginTop: px(10),
+              //   marginBottom: px(20),
+              // }}
               >
                 {"Or scan QR Code"}
               </div>
@@ -569,7 +569,7 @@ export default class SignIn extends Component {
           <div
             className="btn1 flex"
             onClick={this._continue}
-            // style={{ height: px(40) }}
+          // style={{ height: px(40) }}
           >
             <p>{`CONTINUE`}</p>
           </div>

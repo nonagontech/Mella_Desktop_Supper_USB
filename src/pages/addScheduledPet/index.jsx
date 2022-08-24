@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { Input, Button, message, Spin, BackTop, } from 'antd';
-import { createFromIconfontCN, SyncOutlined, LoadingOutlined } from '@ant-design/icons';
+import { message } from 'antd';
+import { createFromIconfontCN } from '@ant-design/icons';
 
-import { devicesTitleHeight } from '../../utils/InitDate'
-import electronStore from '../../utils/electronStore';
-import dog from './../../assets/images/pinkdog.png'
-import cat from './../../assets/images/pinkcat.png'
-import redDog from './../../assets/images/reddog.png'
-import redCat from './../../assets/images/redcat.png'
-import redother from './../../assets/images/redother.png'
-import other from './../../assets/images/other.png'
-import redJinggao from './../../assets/img/redjinggao.png'
-import MyModal from '../../utils/myModal/MyModal';
-import { mTop, px, MTop, pX } from '../../utils/px';
+import dog from '../../assets/images/pinkdog.png'
+import cat from '../../assets/images/pinkcat.png'
+import redDog from '../../assets/images/reddog.png'
+import redCat from '../../assets/images/redcat.png'
+import redother from '../../assets/images/redother.png'
+import other from '../../assets/images/other.png'
+import redJinggao from '../../assets/img/redjinggao.png'
+
 import { setMenuNum } from '../../store/actions';
+import MyModal from '../../utils/myModal/MyModal';
+import { px } from '../../utils/px';
 import { fetchRequest } from '../../utils/FetchUtil1';
-import MYButton from './../../utils/button/Button';
+import MYButton from '../../utils/button/Button';
 import './index.less';
 
 const MyIcon = createFromIconfontCN({

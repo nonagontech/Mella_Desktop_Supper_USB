@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
 import {
-  Input,
   Button,
-  message
 } from 'antd';
-import mellaLogo from '../../../assets/images/mellaLogo.png'
-import temporaryStorage from '../../../utils/temporaryStorage';
-import { fetchRequest } from '../../../utils/FetchUtil1';
-import { fetchRequest2 } from '../../../utils/FetchUtil2';
-import { px } from './../../../utils/px'
-import './index.less';
 
+import temporaryStorage from '../../utils/temporaryStorage';
+import { fetchRequest2 } from '../../utils/FetchUtil2';
+import { px } from '../../utils/px'
+
+import './index.less';
 
 let storage = window.localStorage;
 let flog = false

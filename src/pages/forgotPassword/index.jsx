@@ -3,19 +3,20 @@ import {
   Input,
   Button,
   message,
-  Spin
-
 } from 'antd';
-import { createFromIconfontCN, SyncOutlined, LoadingOutlined } from '@ant-design/icons';
-import temporaryStorage from '../../../utils/temporaryStorage';
-import { fetchRequest } from '../../../utils/FetchUtil1';
-import { px, mTop, pX, MTop } from '../../../utils/px';
-import MouseDiv from '../../../utils/mouseDiv/MouseDiv'
-import MinClose from '../../../utils/minClose/MinClose'
-import back_white from '../../../assets/img/back-white.png'
-import back_hui from '../../../assets/img/back-hui.png'
-import mellaLogo from '../../../assets/images/mellaLogo.png'
-import errorIcon from '../../../assets/images/errorIcon.png'
+import { LoadingOutlined } from '@ant-design/icons';
+
+import back_white from '../../assets/img/back-white.png'
+import back_hui from '../../assets/img/back-hui.png'
+import mellaLogo from '../../assets/images/mellaLogo.png'
+import errorIcon from '../../assets/images/errorIcon.png'
+
+import temporaryStorage from '../../utils/temporaryStorage';
+import { fetchRequest } from '../../utils/FetchUtil1';
+import { px, mTop, pX, MTop } from '../../utils/px';
+import MouseDiv from '../../utils/mouseDiv/MouseDiv'
+import MinClose from '../../utils/minClose/MinClose'
+
 import './index.less';
 
 //num做超时处理

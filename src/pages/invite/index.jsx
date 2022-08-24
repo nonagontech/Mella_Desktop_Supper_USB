@@ -4,21 +4,19 @@ import {
   Input,
   Tooltip,
   message,
-  // Button
 } from 'antd';
-import Draggable from "react-draggable";
-import { createFromIconfontCN, CaretDownFilled, PlusOutlined } from '@ant-design/icons';
-//import 'antd/dist/antd.css';
+import { PlusOutlined } from '@ant-design/icons';
 
-import './index.less'
-import imgArray from './../../../utils/areaCode/imgArray'
-import MaxMin from './../../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest } from './../../../utils/FetchUtil1'
-import temporaryStorage from '../../../utils/temporaryStorage'
-import { fetchRequest2 } from '../../../utils/FetchUtil2';
-import { mTop, px } from '../../../utils/px';
-import Button from './../../../utils/button/Button'
-import MyModal from '../../../utils/myModal/MyModal';
+
+import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
+import { fetchRequest } from '../../utils/FetchUtil1'
+import { fetchRequest2 } from '../../utils/FetchUtil2';
+import { px } from '../../utils/px';
+import Button from '../../utils/button/Button'
+import MyModal from '../../utils/myModal/MyModal';
+
+import './index.less';
+
 let storage = window.localStorage;
 
 export default class Invite extends Component {

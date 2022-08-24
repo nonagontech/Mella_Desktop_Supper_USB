@@ -7,22 +7,26 @@ import {
   Button,
   Upload,
 } from "antd";
-import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router-dom'
-import Heard from './../../../utils/heard/Heard'
-import using from './../../../assets/images/using.png'
-import measuring from './../../../assets/images/measuring.png'
-import unassigned from './../../../assets/images/unassigned.png'
-import adding from './../../../assets/images/adding.png'
-import email from './../../../assets/images/email.png'
-import phone from './../../../assets/images/phone.png'
-import complaint from './../../../assets/images/complaint.png'
-import { px } from './../../../utils/px'
-import _ from 'lodash';
-import { fetchRequest } from './../../../utils/FetchUtil1';
-import './index.less';
-let storage = window.localStorage;
+import { PlusOutlined } from '@ant-design/icons';
 
+import { px } from '../../utils/px';
+import Heard from '../../utils/heard/Heard'
+import { fetchRequest } from '../../utils/FetchUtil1';
+
+import using from '../../assets/images/using.png'
+import measuring from '../../assets/images/measuring.png'
+import unassigned from '../../assets/images/unassigned.png'
+import adding from '../../assets/images/adding.png'
+import email from '../../assets/images/email.png'
+import phone from '../../assets/images/phone.png'
+import complaint from '../../assets/images/complaint.png'
+
+import { useHistory } from 'react-router-dom';
+import _ from 'lodash';
+
+import './index.less';
+
+let storage = window.localStorage;
 const Help = () => {
   const [form] = Form.useForm();
   const { TextArea } = Input;

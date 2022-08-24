@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { Input, Button, message, Spin, BackTop } from 'antd';
-import { createFromIconfontCN, SyncOutlined, LoadingOutlined } from '@ant-design/icons';
+import { } from 'antd';
+import { SyncOutlined } from '@ant-design/icons';
 
-import { devicesTitleHeight } from '../../utils/InitDate'
-
-import { mTop, px, MTop, pX } from '../../utils/px';
+import { px } from '../../utils/px';
 import PetTable from '../../components/petTable';
-import './scheduled.less'
-import { petDetailInfoFun, setMenuNum, setPetListArrFun } from '../../store/actions';
-import moment from 'moment'
 import { fetchRequest } from '../../utils/FetchUtil1';
 
+import moment from 'moment'
+import { connect } from 'react-redux'
+import {
+  petDetailInfoFun,
+  setMenuNum,
+  setPetListArrFun
+} from '../../store/actions';
+
+import './index.less'
 
 let storage = window.localStorage;
 const ScheduledPetPage = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) => {

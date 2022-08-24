@@ -7,23 +7,20 @@ import {
   Button,
   Space,
   message
-
 } from 'antd';
-import moment from 'moment'
-//import 'antd/dist/antd.css';
-import { SyncOutlined } from '@ant-design/icons';
-import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
-import './ezyVetSelectExam.less'
+import { SearchOutlined ,SyncOutlined} from '@ant-design/icons';
 
-import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
+import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
 import { FetchEszVet } from '../../utils/FetchEszVet'
 import { fetchRequest2 } from '../../utils/FetchUtil2'
-import gender from './../../utils/gender'
+import gender from '../../utils/gender'
+
+import Highlighter from 'react-highlight-words';
+import moment from 'moment';
+
+import './index.less'
 
 let storage = window.localStorage;
-
-
 export default class EzyVetSelectExam extends Component {
   state = {
     loading: false,

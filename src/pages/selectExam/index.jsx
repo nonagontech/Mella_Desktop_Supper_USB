@@ -6,13 +6,14 @@ import {
   Button,
   Space
 } from 'antd';
-import moment from 'moment'
-import { SyncOutlined } from '@ant-design/icons';
-import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
-import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
-import { fetchRequest1 } from '../../utils/FetchUtil';
+import { SyncOutlined ,SearchOutlined} from '@ant-design/icons';
+
 import { fetchRequest2 } from '../../utils/FetchUtil2';
+import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
+
+import moment from 'moment'
+import Highlighter from 'react-highlight-words';
+
 import './index.less';
 
 let storage = window.localStorage;

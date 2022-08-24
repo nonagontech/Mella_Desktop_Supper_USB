@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
-import { Input, Button, message, Spin, BackTop } from 'antd';
-import { createFromIconfontCN, SyncOutlined, LoadingOutlined } from '@ant-design/icons';
+import { message } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
-import MinClose from '../../../utils/minClose/MinClose'
-import MouseDiv from '../../../utils/mouseDiv/MouseDiv'
-import back_white from '../../../assets/img/back-white.png'
-import back_hui from '../../../assets/img/back-hui.png'
-import redclose from '../../../assets/img/redclose.png'
-import MyModal from './../../../utils/myModal/MyModal'
-import { mTop, px, MTop, pX } from '../../../utils/px';
-import electronStore from '../../../utils/electronStore';
+import MinClose from '../../utils/minClose/MinClose'
+import MouseDiv from '../../utils/mouseDiv/MouseDiv'
+import { mTop, px, MTop, } from '../../utils/px';
+import electronStore from '../../utils/electronStore';
+
+import back_white from '../../assets/img/back-white.png';
+import back_hui from '../../assets/img/back-hui.png';
+import redclose from '../../assets/img/redclose.png';
+
 import './index.less';
 
 let storage = window.localStorage;
@@ -265,8 +266,8 @@ export default class AddDevice extends Component {
             />
           </div>
           <div className="text" style={{ fontSize: px(18) }}>* We recommend naming based
-          on the Exam Room. Write the name
-          on the sticker provided so it is easy
+            on the Exam Room. Write the name
+            on the sticker provided so it is easy
             to select your device in the future.</div>
         </div>
         <div className="addDeviceFoot flex">

@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { px } from '../../utils/px'
-import { devicesTitleHeight } from '../../utils/InitDate'
+
 import xia from './../../assets/img/xia.png'
-import { selectHardwareModalShowFun } from './../../store/actions'
+
+import { px } from '../../utils/px'
+
 import PetsUI from './PetsUI.jsx'
-import electronStore from '../../utils/electronStore'
-
-
-import './mainbody.less'
 import HardListModal from './HardListModal'
+
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux';
+import { selectHardwareModalShowFun } from './../../store/actions';
+
+import './mainbody.less';
+
 let storage = window.localStorage
-
-
 const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow, hardwareList, selectHardwareModalShowFun,hardwareInfo }) => {
   //定义选择的硬件详细信息
   const [selectHardwareDetail, setSelectHardwareDetail] = useState({})
