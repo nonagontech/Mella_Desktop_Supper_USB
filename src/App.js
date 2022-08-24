@@ -45,7 +45,7 @@ import EditParent from './pages/editParent/index'
 import MyAccount from './pages/myAccount/index'
 import Veterinarians from './pages/admin_VetProfile/index'
 import AddDevice from './pages/addDevice/index'
-import ConnectWorkplace from './pages/ConnectWorkplace/index'
+import ConnectWorkplace from './pages/connectWorkplace'
 import NewOrg from './pages/newOrg/index'
 import Team from './pages/team/index'
 

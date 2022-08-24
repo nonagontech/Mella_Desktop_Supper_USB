@@ -6,16 +6,16 @@ import {
 } from 'antd';
 import Draggable from "react-draggable";
 import { createFromIconfontCN, CaretDownFilled } from '@ant-design/icons';
-import imgArray from './../../../utils/areaCode/imgArray'
-import MaxMin from './../../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest2 } from './../../../utils/FetchUtil2'
-import { fetchRequest } from './../../../utils/FetchUtil1'
-import countryList from './../../../utils/areaCode/country';
+import imgArray from './../../utils/areaCode/imgArray'
+import MaxMin from './../../utils/maxminreturn/MaxMinReturn'
+import { fetchRequest2 } from './../../utils/FetchUtil2'
+import { fetchRequest } from './../../utils/FetchUtil1'
+import countryList from './../../utils/areaCode/country';
 import moment from 'moment';
-import temporaryStorage from '../../../utils/temporaryStorage'
-import { mTop, pX, px } from '../../../utils/px';
-import MyModal from './../../../utils/myModal/MyModal'
-import { fetchRequest3 } from './../../../utils/FetchUtil3';
+import temporaryStorage from './../../utils/temporaryStorage'
+import { mTop, pX, px } from './../../utils/px';
+import MyModal from './../../utils/myModal/MyModal'
+import { fetchRequest3 } from './../../utils/FetchUtil3';
 import './index.less';
 
 

@@ -14,7 +14,7 @@ import { fetchRequest } from './../../utils/FetchUtil1';
 import { fetchRequest4 } from '../../utils/FetchUtil4';
 import MyModal from '../../utils/myModal/MyModal';
 import logo from '../../assets/images/mellaLogo.png';
-import './indx.less';
+import './index.less';
 
 const { Option } = Select;
 let storage = window.localStorage;

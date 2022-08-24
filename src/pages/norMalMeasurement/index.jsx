@@ -40,7 +40,7 @@ import { fetchToken } from '../../utils/Fetch_token';
 import { mTop, px, win } from '../../utils/px';
 import { fetchRequest4 } from '../../utils/FetchUtil4';
 import temporaryStorage from '../../utils/temporaryStorage';
-import Biggie from './../../pages/biggiePage/Biggie.jsx'
+import Biggie from './../../pages/biggiePage/components/Biggie'
 import MyModal from '../../utils/myModal/MyModal';
 import Heard from '../../utils/heard/Heard';
 import { fetchRhapsody } from '../../utils/FetchUtil5';
