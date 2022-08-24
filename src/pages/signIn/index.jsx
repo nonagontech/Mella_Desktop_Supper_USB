@@ -11,6 +11,8 @@ import back_white from "./../../assets/img/back-white.png";
 import back_hui from "./../../assets/img/back-hui.png";
 
 import { fetchRequest2 } from "./../../utils/FetchUtil2";
+import { mellaLogin } from "./../../api"
+
 import temporaryStorage from "../../utils/temporaryStorage";
 import { px, win } from "../../utils/px";
 import MinClose from "./../../utils/minClose/MinClose";
@@ -198,7 +200,7 @@ export default class SignIn extends Component {
       spin: true,
     });
     // fetchRequest('/user/mellaLogin', 'POST', params)
-    addLogin(params)
+    mellaLogin(params)
       .then((res) => {
         console.log(res);
         this.setState({

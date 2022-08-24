@@ -4,7 +4,15 @@ import './unassignModal.less'
 import Draggable from "react-draggable";
 import { LoadingOutlined } from '@ant-design/icons';
 
-import { fetchRequest } from "../../utils/FetchUtil1";
+import {
+    getPetExamByDoctorId,
+    selectBreedBySpeciesId,
+    checkPatientId,
+    addDeskPet,
+    addAndSavePetExam,
+    deletePetExamByExamId,
+    listAllPetInfo
+} from './../../api'
 
 import Close from "./../../assets/img/close.png";
 
@@ -57,11 +65,7 @@ export default class UnassignModal extends Component {
     };
 
     componentDidMount() {
-        // this.setState({
-        //     workplaceId: storage.lastWorkplaceId
-        // })
 
-        // console.log('----99999999--------', this.props);
         if (this.props.assignVisible) {
             this.setState({
                 assignVisible: this.props.assignVisible
@@ -128,7 +132,8 @@ export default class UnassignModal extends Component {
         this.setState({
             loading: true,
         });
-        fetchRequest(`/pet/getPetExamByDoctorId/${storage.userId}`, "GET", "") //userID要自动的
+
+        getPetExamByDoctorId(storage.userId)
             .then((res) => {
                 console.log("---res", res);
                 if (res.flag === true) {
@@ -213,7 +218,7 @@ export default class UnassignModal extends Component {
     };
     //获取宠物类别
     _getBreed = () => {
-        fetchRequest(`/pet/selectBreedBySpeciesId`, "POST", { speciesId: 1 })
+        selectBreedBySpeciesId({ speciesId: 1 })
             .then((res) => {
                 if (res.code === 0) {
                     let arr = [];
@@ -226,8 +231,7 @@ export default class UnassignModal extends Component {
 
                         arr.push(data);
                     });
-
-                    fetchRequest(`/pet/selectBreedBySpeciesId`, "POST", { speciesId: 2 })
+                    selectBreedBySpeciesId({ speciesId: 2 })
                         .then((res) => {
                             if (res.code === 0) {
                                 res.petlist.map((item, index) => {
@@ -272,9 +276,9 @@ export default class UnassignModal extends Component {
         this.setState({
             loadingPets: true,
         })
-        fetchRequest('/user/listAllPetInfo', 'GET', params)
+        listAllPetInfo(params)
             .then((res) => {
-                console.log('res: ', res);
+                console.log('res33: ', res);
                 this.setState({
                     loadingPets: false,
                 })
@@ -471,7 +475,7 @@ export default class UnassignModal extends Component {
                         datas.organizationId = storage.lastOrganization
                     }
 
-                    fetchRequest("/pet/checkPatientId", "GET", datas)
+                    checkPatientId(datas)
                         .then((res) => {
                             if (res.flag === true) {
                                 that.setState({
@@ -528,18 +532,16 @@ export default class UnassignModal extends Component {
             this.setState({
                 modalLoading: true,
             })
-            fetchRequest(`/pet/addDeskPet/${this.state.assignPatientId}`, 'POST', petMsg)
+
+            addDeskPet(this.state.assignPatientId, petMsg)
                 .then((res) => {
                     if (res.flag === true) {
                         let parmes = {
                             petId: res.data.petId,
                             clinicalDatagroupId: that.state.seleceEmergencies.clinicalDatagroupId,
                         };
-                        fetchRequest(
-                            `/pet/addAndSavePetExam/${that.state.seleceEmergencies.historyId}`,
-                            "POST",
-                            parmes
-                        )
+
+                        addAndSavePetExam(that.state.seleceEmergencies.historyId, parmes)
                             .then((res) => {
                                 this.setState({
                                     modalLoading: false,
@@ -830,20 +832,21 @@ export default class UnassignModal extends Component {
         let { loading, disabled, historyData, searchText, serchExamData } =
             this.state;
         const _del = (key, record) => {
-            fetchRequest(`/pet/deletePetExamByExamId/${key}`, "DELETE").then(
-                (res) => {
-                    if (res.flag === true) {
-                        console.log("删除成功");
-                        const historyData = [...this.state.historyData];
-                        console.log(historyData);
-                        this.setState({
-                            historyData: historyData.filter((item) => item.historyId !== key),
-                        });
-                    } else {
-                        console.log("删除失败");
+            deletePetExamByExamId(key, '')
+                .then(
+                    (res) => {
+                        if (res.flag === true) {
+                            console.log("删除成功");
+                            const historyData = [...this.state.historyData];
+                            console.log(historyData);
+                            this.setState({
+                                historyData: historyData.filter((item) => item.historyId !== key),
+                            });
+                        } else {
+                            console.log("删除失败");
+                        }
                     }
-                }
-            );
+                );
         };
 
 
@@ -944,11 +947,8 @@ export default class UnassignModal extends Component {
                                                             seleceEmergencies.clinicalDatagroupId,
                                                     };
                                                     console.log("分配的数据信息", parmes);
-                                                    fetchRequest(
-                                                        `/pet/addAndSavePetExam/${seleceEmergencies.historyId}`,
-                                                        "POST",
-                                                        parmes
-                                                    )
+
+                                                    addAndSavePetExam(seleceEmergencies.historyId, parmes)
                                                         .then((res) => {
                                                             console.log("----------", res);
                                                             if (res.flag === true) {

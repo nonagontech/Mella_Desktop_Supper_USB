@@ -30,7 +30,7 @@ service.interceptors.request.use(
 //响应拦截器,在响应之后做处理
 service.interceptors.response.use(
     response => {
-        return response
+        return response.data
     }
     ,
     error => {

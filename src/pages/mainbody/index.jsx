@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Modal,message } from "antd";
+import { Modal, message } from "antd";
 
 import Heard from "../../utils/heard/Heard";
-import {  px, win, timerFun } from "../../utils/px";
+import { px, win, timerFun } from "../../utils/px";
 import electronStore from "../../utils/electronStore";
 import { compareObject } from "../../utils/current";
 import { compareArray } from "../../utils/current";
@@ -127,6 +127,7 @@ class App extends Component {
     ipcRenderer.removeListener("noUSB", this._noUSB);
     this.detectTimer && clearInterval(this.detectTimer);
     this.rulerTimer && clearTimeout(this.rulerTimer);
+    message.destroy();
   }
   //检测到props里的hardwareList更新
   UNSAFE_componentWillReceiveProps(prevProps) {
