@@ -11,7 +11,9 @@ import electronStore from "./../../utils/electronStore";
 import MyModal from "./../../utils/myModal/MyModal";
 import Button from "./../../utils/button/Button";
 import "./index.less";
-import { getPetExamByDoctorId, selectBreedBySpeciesId, listAllPetInfo, checkPatientId, addDeskPet, addAndSavePetExam, deletePetExamByExamId } from './../../api'
+import {
+  getPetExamByDoctorId, selectBreedBySpeciesId, listAllPetInfo, checkPatientId, addDeskPet, addAndSavePetExam, deletePetExamByExamId
+} from './../../api'
 
 let storage = window.localStorage;
 const { Option } = Select;
