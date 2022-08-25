@@ -10,17 +10,15 @@ import {
   Modal,
   ConfigProvider
 } from 'antd';
-import { SyncOutlined, createFromIconfontCN,SearchOutlined } from '@ant-design/icons';
+import { SyncOutlined, createFromIconfontCN, SearchOutlined } from '@ant-design/icons';
 
 import jinggao from '../../assets/img/jinggao.png'
 import redclose from '../../assets/img/redclose.png'
 
 import Button1 from '../../utils/button/Button'
 import Heard from '../../utils/heard/Heard'
-import { fetchRequest } from '../../utils/FetchUtil1'
 import temporaryStorage from '../../utils/temporaryStorage';
 import { pX, px, win } from '../../utils/px';
-import { fetchRequest4 } from '../../utils/FetchUtil4';
 import { fetchRhapsody } from '../../utils/FetchUtil5';
 import SelectionBox from '../../utils/selectionBox/SelectionBox'
 import electronStore from '../../utils/electronStore';
@@ -30,6 +28,9 @@ import Draggable from "react-draggable";
 import Highlighter from 'react-highlight-words';
 
 import './index.less';
+import { pet_subscribe_page } from '../../api/mellaserver/new';
+import { listPetsLike } from '../../api/mellaserver/pet';
+import { getPetInfoByRFID } from '../../api';
 
 const { SubMenu } = Menu;
 const MyIcon = createFromIconfontCN({
@@ -68,7 +69,7 @@ export default class DoctorSelecScheduledtExam extends Component {
     sortBy: 'Time',
     showsortBy: false
   }
-  componentWillMount () {
+  componentWillMount() {
     // console.log('------------', this.props.location.listDate);
     try {
       if ((this.props.location.listDate && this.props.location.listDate !== 'undefined')) {
@@ -83,7 +84,7 @@ export default class DoctorSelecScheduledtExam extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     let { height, width } = window.screen
     let windowsHeight = height > width ? width : height
@@ -130,7 +131,7 @@ export default class DoctorSelecScheduledtExam extends Component {
     }
 
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     message.destroy()
     let ipcRenderer = window.electron.ipcRenderer
 
@@ -392,9 +393,8 @@ export default class DoctorSelecScheduledtExam extends Component {
       }
     }
 
-    // fetchRequest('/user/listAllPetInfo', 'GET', params)
-    fetchRequest('/new/pet/subscribe/page', 'POST', params)
 
+    pet_subscribe_page(params)
       .then(res => {
         console.log('查询到的宠物列表,/new/pet/subscribe/page', res);
 
@@ -655,7 +655,7 @@ export default class DoctorSelecScheduledtExam extends Component {
       }
     }
     console.log('搜索的数据', params);
-    fetchRequest('/pet/listPetsLike', "POST", params)
+    listPetsLike(params)
       .then(res => {
         console.log(res);
 
@@ -783,7 +783,9 @@ export default class DoctorSelecScheduledtExam extends Component {
     this.setState({
       loading: true
     })
-    fetchRequest4(`/pet/getPetInfoByRFID/${this.state.heardSearchText}/${storage.lastOrganization}`, 'GET')
+    getPetInfoByRFID(this.state.heardSearchText, storage.lastOrganization)
+
+
       .then(res => {
         console.log('----RFID搜索结果', res);
 
@@ -885,7 +887,7 @@ export default class DoctorSelecScheduledtExam extends Component {
   };
 
 
-  render () {
+  render() {
     const columns = [
       {
         title: 'Time',

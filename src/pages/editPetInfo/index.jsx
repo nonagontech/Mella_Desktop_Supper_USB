@@ -15,7 +15,6 @@ import dui from '../../assets/images/dui.png'
 import female from '../../assets/images/female.png'
 import male from '../../assets/images/male.png'
 
-import { fetchRequest } from '../../utils/FetchUtil1'
 import { mTop, px, win } from '../../utils/px';
 import MyModal from '../../utils/myModal/MyModal';
 import electronStore from '../../utils/electronStore';
@@ -28,6 +27,8 @@ import { petDetailInfoFun } from '../../store/actions';
 import moment from 'moment';
 
 import './index.less';
+import { checkPatientId, getPetInfoByPatientIdAndPetId, selectBreedBySpeciesId, updatePetInfo } from '../../api/mellaserver/pet';
+import { listDoctorsByAdmin } from '../../api/mellaserver/organization';
 
 const { SubMenu } = Menu;
 const { Option } = Select;
@@ -164,7 +165,7 @@ class EditPetInfo extends Component {
         data.speciesId = 1; break;
     }
 
-    fetchRequest(`/pet/selectBreedBySpeciesId`, 'POST', data)
+    selectBreedBySpeciesId(data)
       .then(res => {
         // console.log('---', res);
         if (res.code === 0) {
@@ -208,7 +209,7 @@ class EditPetInfo extends Component {
     console.log('查询宠物的入参', params);
 
 
-    fetchRequest(`/organization/listDoctorsByAdmin/${storage.lastOrganization}`, 'GET', params)
+    listDoctorsByAdmin(storage.lastOrganization, params)
       .then(res => {
         console.log('人员列表', res);
 
@@ -269,7 +270,8 @@ class EditPetInfo extends Component {
       spin: true
     })
     console.log('入参：', datas);
-    fetchRequest('/pet/getPetInfoByPatientIdAndPetId', 'POST', datas)
+    getPetInfoByPatientIdAndPetId(datas)
+    getPetInfoByPatientIdAndPetId(datas)
       .then(res => {
         this.setState({
           spin: false
@@ -689,7 +691,7 @@ class EditPetInfo extends Component {
                   params.organizationId = storage.lastOrganization
                 }
 
-                fetchRequest(`/pet/checkPatientId`, "GET", params)
+                checkPatientId(params)
                   .then(res => {
                     if (res.flag === false) {
                       errPatientId = params.patientId
@@ -961,7 +963,7 @@ class EditPetInfo extends Component {
                   spin: true
                 })
                 // console.log('--------入参', data);
-                fetchRequest(`/pet/updatePetInfo/${petId}`, 'POST', data)
+                updatePetInfo(petId, data)
                   .then(res => {
                     this.setState({
                       spin: false

@@ -27,13 +27,19 @@ import {
   setMellaMeasurePartFun,
 } from "../../../store/actions";
 import Draggable from "react-draggable";
-import { fetchRequest } from "../../../utils/FetchUtil1";
 import { fetchRequest2 } from "../../../utils/FetchUtil2";
-import { fetchRequest4 } from "../../../utils/FetchUtil4";
 import { px, mTop } from "../../../utils/px";
 import moment from "moment";
 import electronStore from "../../../utils/electronStore";
 import "./measuredData.less";
+import {
+  addClamantPetExam,
+  deletePetExamByExamId,
+  ezyvetGetPetLatestExam,
+  getPetExamByPetId,
+  updatePetExam,
+  vetspireGetPetLatestExam
+} from "../../../api";
 
 
 const MeasuredData = ({
@@ -188,9 +194,11 @@ const MeasuredData = ({
   };
   //获取历史宠物温度数据
   const getPetTemperatureData = () => {
-    fetchRequest(`/pet/getPetExamByPetId/${petId}`, "GET", "")
+
+    getPetExamByPetId(petId)
+
       .then((res) => {
-        console.log("历史温度记录", res);
+        console.log("历史温度记录1", res);
         if (res.flag === true) {
           let arr = [];
           for (let i = 0; i < res.data.length; i++) {
@@ -238,7 +246,8 @@ const MeasuredData = ({
       petVitalTypeId: petVitalId,
       memo: "",
     };
-    fetchRequest("/exam/addClamantPetExam", "POST", params)
+
+    addClamantPetExam(params)
       .then((res) => {
         if (res.flag === true) {
           switch (storage.lastOrganization) {
@@ -264,7 +273,7 @@ const MeasuredData = ({
     let datas = {
       memo: newMemo,
     };
-    fetchRequest(`/pet/updatePetExam/${petMessages.examId}`, "POST", datas)
+    updatePetExam(petMessages.examId, datas)
       .then((res) => {
         setVisible(false);
         getPetTemperatureData();
@@ -276,16 +285,18 @@ const MeasuredData = ({
   };
   //删除历史温度记录
   const deletePetMessage = (examId) => {
-    fetchRequest(`/pet/deletePetExamByExamId/${examId}`, "DELETE").then(
-      (res) => {
-        if (res.flag === true) {
-          message.success("Successfully Delete");
-          getPetTemperatureData();
-        } else {
-          message.error("Fail To Delete");
+
+    deletePetExamByExamId(examId, '')
+      .then(
+        (res) => {
+          if (res.flag === true) {
+            message.success("Successfully Delete");
+            getPetTemperatureData();
+          } else {
+            message.error("Fail To Delete");
+          }
         }
-      }
-    );
+      );
   };
   //关闭弹窗
   const handleCancel = (e) => {
@@ -315,7 +326,8 @@ const MeasuredData = ({
     let params = {
       id: patientId
     }
-    fetchRequest4('/EzyVet/ezyvetGetPetLatestExam', "GET", params, `Bearer ${storage.connectionKey}`)
+
+    ezyvetGetPetLatestExam(params)
       .then(res => {
         if (res.code === 10004 && res.msg === 'ezyvet token失效') {
           storage.connectionKey = res.newToken;
@@ -364,7 +376,8 @@ const MeasuredData = ({
     let params = {
       id: patientId
     }
-    fetchRequest4('/EzyVet/ezyvetGetPetLatestExam', "GET", params, `Bearer ${storage.connectionKey}`)
+
+    ezyvetGetPetLatestExam(params)
       .then(res => {
         if (res.flag && res.data && res.data.items.length > 0) {
           let data = res.data.items[0]
@@ -406,7 +419,7 @@ const MeasuredData = ({
       APIkey: storage.connectionKey,
       patientId: patientId
     }
-    fetchRequest4('/VetSpire/vetspireGetPetLatestExam', "POST", datas)
+    vetspireGetPetLatestExam(datas)
       .then(res => {
         if (res.flag) {
           let data = res.data.encounters[0].vitals

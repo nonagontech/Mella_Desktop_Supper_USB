@@ -43,6 +43,8 @@ import moment from "moment";
 import _ from "lodash";
 
 import "./headerItem.less";
+import { px } from "../../../utils/px";
+import { catv12Predict } from "../../../api";
 
 const { Header } = Layout;
 const HeaderItem = ({
@@ -161,15 +163,15 @@ const HeaderItem = ({
             </div>
           </div>
         </Menu.Item>
-          <Menu.Item key={"editPetInfo"} style={{ paddingLeft: '8px' }}>
-            <p className="itemList">Edit Pet Profile</p>
-          </Menu.Item>
-          <Menu.Item style={{ paddingLeft: '8px' }}>
-            <p className="itemList">Export Temperature History</p>
-          </Menu.Item>
-          <Menu.Item style={{ paddingLeft: '8px' }}>
-            <p className="itemList">Export All Vitals History</p>
-          </Menu.Item>
+        <Menu.Item key={"editPetInfo"} style={{ paddingLeft: '8px' }}>
+          <p className="itemList">Edit Pet Profile</p>
+        </Menu.Item>
+        <Menu.Item style={{ paddingLeft: '8px' }}>
+          <p className="itemList">Export Temperature History</p>
+        </Menu.Item>
+        <Menu.Item style={{ paddingLeft: '8px' }}>
+          <p className="itemList">Export All Vitals History</p>
+        </Menu.Item>
       </Menu>
     );
   };
@@ -189,8 +191,7 @@ const HeaderItem = ({
       sampling_rate: "135ms",
     };
     let url = "/clinical/catv12Predict";
-    console.log("-----调用接口入参", parame);
-    fetchRequest(url, "POST", parame)
+    catv12Predict(parame)
       .then((res) => {
         console.log("res", res);
         let ipcRenderer = window.electron.ipcRenderer;

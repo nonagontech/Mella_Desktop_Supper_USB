@@ -4,7 +4,6 @@ import { SyncOutlined } from '@ant-design/icons';
 
 import { px } from '../../utils/px';
 import PetTable from '../../components/petTable';
-import { fetchRequest } from '../../utils/FetchUtil1';
 
 import moment from 'moment'
 import { connect } from 'react-redux'
@@ -15,6 +14,7 @@ import {
 } from '../../store/actions';
 
 import './index.less'
+import { pet_subscribe_page } from '../../api';
 
 let storage = window.localStorage;
 const ScheduledPetPage = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) => {
@@ -63,7 +63,7 @@ const ScheduledPetPage = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetList
     }
     setLoading(true)
 
-    fetchRequest('/new/pet/subscribe/page', 'POST', params)
+    pet_subscribe_page(params)
 
       .then(res => {
         if (res.flag === true && res.data) {

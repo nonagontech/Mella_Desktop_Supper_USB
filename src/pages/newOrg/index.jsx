@@ -9,7 +9,6 @@ import { CaretDownFilled } from '@ant-design/icons';
 
 import imgArray from '../../utils/areaCode/imgArray'
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest } from '../../utils/FetchUtil1'
 import countryList from '../../utils/areaCode/country';
 import { px } from '../../utils/px'
 import MyModal from '../../utils/myModal/MyModal';
@@ -17,6 +16,7 @@ import MyModal from '../../utils/myModal/MyModal';
 import Draggable from "react-draggable";
 
 import './index.less';
+import { addOrganization } from '../../api';
 
 let storage = window.localStorage;
 const { Option } = Select;
@@ -46,7 +46,7 @@ export default class NewOrg extends Component {
 
   }
 
-  componentDidMount () {
+  componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('big')
     let arr = countryList.map(item => item.locale)
@@ -62,7 +62,7 @@ export default class NewOrg extends Component {
 
 
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.removeListener('changeFenBianLv', this.changeFenBianLv)
   }
@@ -145,7 +145,8 @@ export default class NewOrg extends Component {
     })
 
     console.log('入参信息：', params, storage.userId);
-    fetchRequest(`/organization/addOrganization/${storage.userId}`, "POST", params)
+
+    addOrganization(storage.userId, params)
 
       .then(res => {
         console.log('添加组织返回的信息', res);
@@ -187,7 +188,7 @@ export default class NewOrg extends Component {
 
 
 
-  render () {
+  render() {
 
     let { disabled, visible, bounds, address1, address2, phone, organizationName, practiceName, city, state, zipcode, workplaceTypeId, email } = this.state
     return (

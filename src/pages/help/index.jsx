@@ -11,7 +11,6 @@ import { PlusOutlined } from '@ant-design/icons';
 
 import { px } from '../../utils/px';
 import Heard from '../../utils/heard/Heard'
-import { fetchRequest } from '../../utils/FetchUtil1';
 
 import using from '../../assets/images/using.png'
 import measuring from '../../assets/images/measuring.png'
@@ -25,6 +24,7 @@ import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
 
 import './index.less';
+import { savefeedback } from '../../api';
 
 let storage = window.localStorage;
 const Help = () => {
@@ -75,7 +75,7 @@ const Help = () => {
       imageIds: _.toString(imageIds),
       userId: storage.userId
     };
-    fetchRequest(`/userfeedback/savefeedback`, 'POST', data)
+    savefeedback(data)
       .then((res) => {
         setLoading(false);
         if (res.msg === 'success') {

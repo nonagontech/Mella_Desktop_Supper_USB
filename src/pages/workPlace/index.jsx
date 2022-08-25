@@ -9,10 +9,11 @@ import logo from '../../assets/images/mellaLogo.png';
 
 import { px, win } from '../../utils/px';
 import MaxMin from './../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest4 } from '../../utils/FetchUtil4';
+import { createFromIconfontCN, SyncOutlined, LoadingOutlined } from '@ant-design/icons';
 import MyModal from '../../utils/myModal/MyModal';
 
 import './index.less';
+import { changeLatestWorkplace } from '../../api';
 
 const { Option } = Select;
 let storage = window.localStorage;
@@ -160,32 +161,13 @@ export default class WorkPlace extends Component {
     let { workplaceId, organizationId, connectionKey, selectRoleId } = this.state
     console.log({ workplaceId, organizationId, connectionKey, selectRoleId });
 
-    // this.setState({
-    //   spin: true
-    // })
-    // fetchRequest(`/organization/updateLastWorkplace/${storage.userId}/${workplaceId}`)
-    //   .then(res => {
-    //     console.log(res);
-    //     this.setState({
-    //       spin: false
-    //     })
-    //     if (res.msg === 'success') {
-    //       storage.lastWorkplaceId = workplaceId
-    //       this.props.history.goBack()
-    //     }
-    //   })
-    //   .catch(err => {
-    //     this.setState({
-    //       spin: false
-    //     })
-    //     console.log(err);
-    //   })
 
     this.setState({
       spin: true
     })
     console.log('入参', { userId: storage.userId, roleId: storage.roleId, workplaceId });
-    fetchRequest4(`/user/changeLatestWorkplace/${storage.userId}/${2}/${workplaceId}`, "GET")
+
+    changeLatestWorkplace(storage.userId, workplaceId)
       .then(res => {
         console.log('切换成功', res);
         storage.lastWorkplaceId = `${workplaceId}`

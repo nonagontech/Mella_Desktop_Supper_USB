@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
-import {  px } from '../../utils/px';
+import { px } from '../../utils/px';
 import PetTable from '../../components/petTable';
 import { petDetailInfoFun, setMenuNum, setPetListArrFun } from '../../store/actions';
 import moment from 'moment'
-import { fetchRequest } from '../../utils/FetchUtil1';
 import './index.less';
+import { listAllPetInfo } from '../../api';
 
 let storage = window.localStorage;
 const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) => {
@@ -39,7 +39,7 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
             }
         }
         setLoading(true)
-        fetchRequest('/user/listAllPetInfo', 'GET', params)
+        listAllPetInfo(params)
             .then(res => {
                 console.log('查询到的宠物列表,/user/listAllPetInfo', res);
                 if (res.flag === true && res.data) {
@@ -132,9 +132,9 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
     }
 
     useEffect(() => {
-      //获取宠物列表
-      _getExam()
-  }, [])
+        //获取宠物列表
+        _getExam()
+    }, [])
 
     return (
         <div id='allPets' style={{ height: bodyHeight }}>

@@ -7,7 +7,6 @@ import {
 import { createFromIconfontCN } from '@ant-design/icons';
 import Heard from '../../utils/heard/Heard'
 import MYButton from '../../utils/button/Button'
-import { fetchRequest } from '../../utils/FetchUtil1'
 import { px, win } from '../../utils/px';
 import dog from '../../assets/images/pinkdog.png'
 import cat from '../../assets/images/pinkcat.png'
@@ -18,6 +17,7 @@ import other from '../../assets/images/other.png'
 import redJinggao from '../../assets/img/redjinggao.png'
 import MyModal from '../../utils/myModal/MyModal';
 import './index.less';
+import { petall_subscribe } from '../../api/mellaserver/new';
 
 const { SubMenu } = Menu;
 const MyIcon = createFromIconfontCN({
@@ -125,7 +125,7 @@ export default class DoctorSelectExam extends Component {
       params.workplaceId = storage.lastWorkplaceId
     }
     console.log('入参', params);
-    fetchRequest('/new/petall/subscribe', "POST", params)
+    petall_subscribe(params)
       .then(res => {
         console.log(res);
         if (res.flag) {

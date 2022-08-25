@@ -27,11 +27,11 @@ import {
   setMellaMeasurePartFun,
 } from "../../store/actions";
 import Draggable from "react-draggable";
-import { fetchRequest } from "../../utils/FetchUtil1";
 import { px, mTop } from "../../utils/px";
 import electronStore from "../../utils/electronStore";
 import moment from "moment";
 import "./index.less";
+import { deletePetExamByExamId, getPetExamByPetId, updatePetExam } from "../../api";
 
 const HistoryTable = ({
   petMessage,
@@ -265,7 +265,7 @@ const HistoryTable = ({
   //获取历史宠物数据
   const getPetTemperatureData = () => {
     setLoading(true);
-    fetchRequest(`/pet/getPetExamByPetId/${petId}`, "GET", "")
+    getPetExamByPetId(petId)
       .then((res) => {
         setLoading(false);
         console.log("历史记录", res);
@@ -300,7 +300,7 @@ const HistoryTable = ({
     let datas = {
       memo: newMemo,
     };
-    fetchRequest(`/pet/updatePetExam/${petMessages.examId}`, "POST", datas)
+    updatePetExam(petMessages.examId, datas)
       .then((res) => {
         setVisible(false);
         getPetTemperatureData();
@@ -312,16 +312,17 @@ const HistoryTable = ({
   };
   //删除历史记录
   const deletePetMessage = (examId) => {
-    fetchRequest(`/pet/deletePetExamByExamId/${examId}`, "DELETE").then(
-      (res) => {
-        if (res.flag === true) {
-          message.success("Successfully Delete");
-          getPetTemperatureData();
-        } else {
-          message.error("Fail To Delete");
+    deletePetExamByExamId(examId, '')
+      .then(
+        (res) => {
+          if (res.flag === true) {
+            message.success("Successfully Delete");
+            getPetTemperatureData();
+          } else {
+            message.error("Fail To Delete");
+          }
         }
-      }
-    );
+      );
   };
   //关闭弹窗
   const handleCancel = (e) => {

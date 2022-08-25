@@ -11,6 +11,7 @@ import { fetchRequest3 } from './../../utils/FetchUtil3';
 import { useHistory } from 'react-router-dom'
 
 import './index.less';
+import { activateUserByEmailCode } from '../../api';
 
 const VerifyEmail = () => {
   let history = useHistory()
@@ -76,7 +77,7 @@ const VerifyEmail = () => {
     }
     else {
       setVisible(true)
-      fetchRequest3(`/user/activateUserByEmailCode/${code}`, "GET", '')
+      activateUserByEmailCode(code)
         .then(res => {
           setVisible(false)
           console.log('验证码验证返回信息：', res);

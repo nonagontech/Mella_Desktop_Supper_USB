@@ -6,11 +6,12 @@ import {
 import { createFromIconfontCN } from '@ant-design/icons';
 
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest } from '../../utils/FetchUtil1'
 import temporaryStorage from '../../utils/temporaryStorage'
 import Button from '../../utils/button/Button'
 
 import './index.less'
+import { listAllWorkplaceByOrganizationId } from '../../api/mellaserver/workplace';
+import { mellaLogin, updateUserInfo } from '../../api/mellaserver/user';
 
 const MyIcon = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2326495_7b2bscbhvvt.js'
@@ -24,10 +25,11 @@ export default class JoinworkplaceByName extends Component {
     selectId: {}
 
   }
-  componentDidMount () {
+  componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('small')
-    fetchRequest(`/workplace/listAllWorkplaceByOrganizationId/${temporaryStorage.logupSelectOrganization.organizationId}`, "GET", '')
+
+    listAllWorkplaceByOrganizationId(temporaryStorage.logupSelectOrganization.organizationId)
       .then((res) => {
         console.log(res);
         if (res.msg === 'success') {
@@ -74,7 +76,7 @@ export default class JoinworkplaceByName extends Component {
             workplaceId: item.workplaceId,
             organizationId: item.organizationId
           }
-          fetchRequest('/user/updateUserInfo', 'POST', params)
+          updateUserInfo(params)
             .then(res => {
               console.log(res);
               if (res.flag === true) {
@@ -109,7 +111,7 @@ export default class JoinworkplaceByName extends Component {
       hash,
       identityTypeId: '1'
     }
-    fetchRequest('/user/mellaLogin', 'POST', params)
+    mellaLogin(params)
       .then(res => {
         console.log(res);
         if (res.status && res.status === 404) {
@@ -173,7 +175,7 @@ export default class JoinworkplaceByName extends Component {
         console.log(err);
       })
   }
-  render () {
+  render() {
     return (
       <div id="findMyWorkplace">
         {/* 关闭缩小 */}

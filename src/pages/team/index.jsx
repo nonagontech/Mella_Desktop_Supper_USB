@@ -8,7 +8,6 @@ import {
 import { PlusOutlined } from '@ant-design/icons';
 
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest } from '../../utils/FetchUtil1'
 import temporaryStorage from '../../utils/temporaryStorage'
 import { fetchRequest2 } from '../../utils/FetchUtil2';
 import { px } from '../../utils/px';
@@ -16,6 +15,7 @@ import Button from '../../utils/button/Button';
 import MyModal from '../../utils/myModal/MyModal';
 
 import './index.less';
+import { checkUser, mellaLogin } from '../../api';
 
 export default class Team extends Component {
 
@@ -72,7 +72,7 @@ export default class Team extends Component {
     if (inputValue && tags.indexOf(inputValue) === -1) {
       console.log('输入的内容为：', inputValue);
       message.destroy()
-      fetchRequest(`/user/checkUser/${inputValue}`, 'GET', '')
+      checkUser(inputValue)
         .then(res => {
 
 
@@ -190,7 +190,7 @@ export default class Team extends Component {
       identityTypeId: '1'
     }
     console.log('登录入参:', params);
-    fetchRequest('/user/mellaLogin', 'POST', params)
+    mellaLogin(params)
       .then(res => {
         console.log(res);
         this.setState({

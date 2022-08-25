@@ -26,11 +26,9 @@ import placement_er from './../../assets/images/placement_er.png'
 import palcement_ye from './../../assets/images/palcement_ye.png'
 import close from './../../assets/img/close.png'
 
-import { fetchRequest } from './../../utils/FetchUtil1'
 import MyModal from './../../utils/myModal/MyModal'
 import electronStore from './../../utils/electronStore'
 import { mTop, px, MTop, win } from '../../utils/px';
-import { fetchRequest3 } from '../../utils/FetchUtil3';
 import Heard from '../../utils/heard/Heard';
 
 import Draggable from "react-draggable";
@@ -41,6 +39,9 @@ import 'echarts/lib/component/tooltip';// 引入提示框和标题组件
 import 'echarts/lib/component/title';
 
 import './index.less';
+import { addAndSavePetExam, addDeskPet, deletePetExamByExamId, getPetExamAndClinicalByPetId, getPetExamByDoctorId, getPetInfoByPatientIdAndPetId, updatePetExam } from '../../api/mellaserver/pet';
+import { addAllClinical } from '../../api/mellaserver/clinical';
+import { getClinicalDataByExamId } from '../../api';
 
 const { SubMenu } = Menu;
 const { Option } = Select;
@@ -154,7 +155,7 @@ export default class Mesasure extends Component {
     tempHeight: false,           //第一次温度过高,需要冷却一下
   }
 
-  componentWillMount () {
+  componentWillMount() {
     try {
       console.log('-----------------===============-------------', this.props.location.isconnected);
       if (this.props.location.isconnected === false || this.props.location.isconnected === true) {
@@ -173,7 +174,7 @@ export default class Mesasure extends Component {
 
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     firstMeasure = true
 
 
@@ -273,7 +274,7 @@ export default class Mesasure extends Component {
 
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     ipcRenderer.removeListener('sned', this._send)
     ipcRenderer.removeListener('usbDetect', this.usbDetect)
     ipcRenderer.removeListener('noUSB', this._noUSB)
@@ -1066,7 +1067,7 @@ export default class Mesasure extends Component {
 
               console.log('临床测试入参：', datas);
               //把数据保存进入云端
-              fetchRequest(`/clinical/addAllClinical`, 'POST', datas)
+              addAllClinical(datas)
                 .then(res => {
                   console.log(res);
                   meetCondition = false
@@ -1102,7 +1103,7 @@ export default class Mesasure extends Component {
 
               console.log('温度数据保存入参：', datas);
 
-              fetchRequest(`/clinical/addAllClinical`, 'POST', datas)
+              addAllClinical(datas)
                 .then(res => {
                   console.log(res);
                   meetCondition = false
@@ -1354,7 +1355,7 @@ export default class Mesasure extends Component {
   _getEmergencyHistory = () => {
 
     //封装的日期排序方法
-    function ForwardRankingDate (data, p) {
+    function ForwardRankingDate(data, p) {
       for (let i = 0; i < data.length - 1; i++) {
         for (let j = 0; j < data.length - 1 - i; j++) {
           if (Date.parse(data[j][p]) < Date.parse(data[j + 1][p])) {
@@ -1370,7 +1371,8 @@ export default class Mesasure extends Component {
     this.setState({
       loading: true
     })
-    fetchRequest(`/pet/getPetExamByDoctorId/${storage.userId}`, 'GET', '')  //userID要自动的
+
+    getPetExamByDoctorId(storage.userId)
       .then(res => {
         // console.log('获取的宠物记录列表1', res);
         this.setState({
@@ -1429,7 +1431,8 @@ export default class Mesasure extends Component {
     this.setState({
       loading: true
     })
-    fetchRequest(`/pet/getPetExamAndClinicalByPetId/${petId}`, 'GET', '')  //userID要自动的
+
+    getPetExamAndClinicalByPetId(petId)
       .then(res => {
         console.log('获取历史记录', res);
         this.setState({
@@ -1662,7 +1665,8 @@ export default class Mesasure extends Component {
           datas.org = storage.lastOrganization
         }
         console.log('入参：', datas);
-        fetchRequest('/pet/getPetInfoByPatientIdAndPetId', 'POST', datas)
+
+        getPetInfoByPatientIdAndPetId(datas)
           .then(res => {
             console.log(res);
             this.setState({
@@ -1792,7 +1796,7 @@ export default class Mesasure extends Component {
     }
 
     console.log(datas);
-    fetchRequest(`/pet/addDeskPet/${patientId}`, 'POST', datas)
+    addDeskPet(patientId, datas)
       .then((res) => {
         console.log(res);
         if (res.flag === true) {
@@ -2466,7 +2470,7 @@ export default class Mesasure extends Component {
 
 
       /**------------这里还要删除后台的数据------------ */
-      fetchRequest(`/pet/deletePetExamByExamId/${key}`, 'DELETE')
+      deletePetExamByExamId(key)
         .then(res => {
           if (res.flag === true) {
             console.log('删除成功');
@@ -2523,7 +2527,7 @@ export default class Mesasure extends Component {
         tipSpin: true
       })
 
-      fetchRequest3(`/exam/getClinicalDataByExamId/${id}`, 'GET')
+      getClinicalDataByExamId(id)
         .then(res => {
           console.log('此条记录的全部数据：', res);
           this.setState({
@@ -2927,7 +2931,7 @@ export default class Mesasure extends Component {
   _modal = () => {
     let that = this
 
-    function save () {
+    function save() {
 
 
       switch (storage.identity) {
@@ -3002,7 +3006,8 @@ export default class Mesasure extends Component {
             datas.workplaceId = storage.lastWorkplaceId
           }
           console.log('入参：', datas);
-          fetchRequest('/pet/getPetInfoByPatientIdAndPetId', 'POST', datas)
+
+          getPetInfoByPatientIdAndPetId(datas)
             .then(res => {
 
               if (res.flag === true) {
@@ -3038,7 +3043,8 @@ export default class Mesasure extends Component {
           petId,
           clinicalDatagroupId: that.state.seleceEmergencies.clinicalDatagroupId
         }
-        fetchRequest(`/pet/addAndSavePetExam/${that.state.seleceEmergencies.historyId}`, 'POST', parmes)
+
+        addAndSavePetExam(that.state.seleceEmergencies.historyId, parmes)
           .then(res => {
             console.log('----------', res);
             if (res.flag === true) {
@@ -3148,7 +3154,7 @@ export default class Mesasure extends Component {
   _editModal = () => {
     let that = this
 
-    function save () {
+    function save() {
       let { editBodyConditionScore, editFurLength, editHeartRate, editBloodPressure, editRespiratoryRate } = that.state
       let datas = {
         memo: that.state.memo,
@@ -3174,7 +3180,7 @@ export default class Mesasure extends Component {
         tipSpin: true,
 
       })
-      fetchRequest(`/pet/updatePetExam/${that.state.editId}`, 'POST', datas)
+      updatePetExam(that.state.editId, datas)
         .then(res => {
           console.log(res);
           that.setState({
@@ -3454,7 +3460,7 @@ export default class Mesasure extends Component {
 
   }
 
-  render () {
+  render() {
     console.log('-----', this.state.Temp);
     return (
       <div id="clinicalMeasure11">

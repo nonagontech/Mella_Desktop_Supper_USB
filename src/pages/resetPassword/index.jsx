@@ -11,12 +11,12 @@ import back_white from '../../assets/img/back-white.png';
 import back_hui from '../../assets/img/back-hui.png';
 
 import temporaryStorage from '../../utils/temporaryStorage';
-import { fetchRequest } from '../../utils/FetchUtil1';
 import { px, mTop, MTop } from '../../utils/px';
 import MouseDiv from '../../utils/mouseDiv/MouseDiv'
 import MinClose from '../../utils/minClose/MinClose'
 
 import './index.less';
+import { resetPWD } from '../../api';
 
 let storage = window.localStorage;
 export default class ResetPassword extends Component {
@@ -26,12 +26,12 @@ export default class ResetPassword extends Component {
     hash1: '',
     spin: false
   }
-  componentDidMount () {
+  componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('small')
     ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     message.destroy()
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.removeListener('changeFenBianLv', this.changeFenBianLv)
@@ -63,7 +63,8 @@ export default class ResetPassword extends Component {
       spin: true
     })
 
-    fetchRequest(`/user/resetPWD/${temporaryStorage.forgotUserId}/${hash}`, "GET", '')
+
+    resetPWD(temporaryStorage.forgotUserId, hash)
       .then(res => {
         console.log('修改密码返回结果', res);
         this.setState({
@@ -102,7 +103,7 @@ export default class ResetPassword extends Component {
 
   }
 
-  render () {
+  render() {
     return (
       <div id="resetPassword">
         {/* <div className="iconfont icon-left heard return" onClick={() => { this.props.history.goBack() }} />

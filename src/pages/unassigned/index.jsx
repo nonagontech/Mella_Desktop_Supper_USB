@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { Table, Popconfirm, Modal, Input, message, Select, Spin } from "antd";
-
+import moment from "moment";
+import Draggable from "react-draggable";
+import Heard from "./../../utils/heard/Heard";
 import del from "./../../assets/images/del.png";
 import Close from "./../../assets/img/close.png";
-
-import Heard from "./../../utils/heard/Heard";
-import { fetchRequest } from "./../../utils/FetchUtil1";
 import UploadImg from "./../../utils/uploadImg/UploadImg";
 import { px, MTop } from "./../../utils/px";
 import electronStore from "./../../utils/electronStore";
@@ -106,7 +105,7 @@ export default class Unassigned extends Component {
     this.setState({
       loading: true,
     });
-    fetchRequest(`/pet/getPetExamByDoctorId/${storage.userId}`, "GET", "") //userID要自动的
+    getPetExamByDoctorId(storage.userId)
       .then((res) => {
         console.log("---res", res);
         if (res.flag === true) {
@@ -191,7 +190,7 @@ export default class Unassigned extends Component {
   };
   //获取宠物类别
   _getBreed = () => {
-    fetchRequest(`/pet/selectBreedBySpeciesId`, "POST", { speciesId: 1 })
+    selectBreedBySpeciesId({ speciesId: 1 })
       .then((res) => {
         if (res.code === 0) {
           let arr = [];
@@ -205,7 +204,7 @@ export default class Unassigned extends Component {
             arr.push(data);
           });
 
-          fetchRequest(`/pet/selectBreedBySpeciesId`, "POST", { speciesId: 2 })
+          selectBreedBySpeciesId({ speciesId: 2 })
             .then((res) => {
               if (res.code === 0) {
                 res.petlist.map((item, index) => {
@@ -246,7 +245,7 @@ export default class Unassigned extends Component {
     if (storage.lastOrganization) {
       params.organizationId = storage.lastOrganization
     }
-    fetchRequest('/user/listAllPetInfo', 'GET', params)
+    listAllPetInfo(params)
       .then((res) => {
         console.log('res: ', res);
         if (res.flag === true && res.data) {
@@ -440,7 +439,7 @@ export default class Unassigned extends Component {
             datas.organizationId = storage.lastOrganization
           }
 
-          fetchRequest("/pet/checkPatientId", "GET", datas)
+          checkPatientId(datas)
             .then((res) => {
               if (res.flag === true) {
                 that.setState({
@@ -497,18 +496,14 @@ export default class Unassigned extends Component {
       this.setState({
         modalLoading: true,
       })
-      fetchRequest(`/pet/addDeskPet/${this.state.assignPatientId}`, 'POST', petMsg)
+      addDeskPet(this.state.assignPatientId, petMsg)
         .then((res) => {
           if (res.flag === true) {
             let parmes = {
               petId: res.data.petId,
               clinicalDatagroupId: that.state.seleceEmergencies.clinicalDatagroupId,
             };
-            fetchRequest(
-              `/pet/addAndSavePetExam/${that.state.seleceEmergencies.historyId}`,
-              "POST",
-              parmes
-            )
+            addAndSavePetExam(that.state.seleceEmergencies.historyId, parmes)
               .then((res) => {
                 this.setState({
                   modalLoading: false,
@@ -798,20 +793,21 @@ export default class Unassigned extends Component {
     let { loading, disabled, historyData, searchText, serchExamData } =
       this.state;
     const _del = (key, record) => {
-      fetchRequest(`/pet/deletePetExamByExamId/${key}`, "DELETE").then(
-        (res) => {
-          if (res.flag === true) {
-            console.log("删除成功");
-            const historyData = [...this.state.historyData];
-            console.log(historyData);
-            this.setState({
-              historyData: historyData.filter((item) => item.historyId !== key),
-            });
-          } else {
-            console.log("删除失败");
+      deletePetExamByExamId(key, '')
+        .then(
+          (res) => {
+            if (res.flag === true) {
+              console.log("删除成功");
+              const historyData = [...this.state.historyData];
+              console.log(historyData);
+              this.setState({
+                historyData: historyData.filter((item) => item.historyId !== key),
+              });
+            } else {
+              console.log("删除失败");
+            }
           }
-        }
-      );
+        );
     };
 
     const columns = [
@@ -1108,11 +1104,7 @@ export default class Unassigned extends Component {
                               seleceEmergencies.clinicalDatagroupId,
                           };
                           console.log("分配的数据信息", parmes);
-                          fetchRequest(
-                            `/pet/addAndSavePetExam/${seleceEmergencies.historyId}`,
-                            "POST",
-                            parmes
-                          )
+                          addAndSavePetExam(seleceEmergencies.historyId, parmes)
                             .then((res) => {
                               console.log("----------", res);
                               if (res.flag === true) {

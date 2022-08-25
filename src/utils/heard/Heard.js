@@ -34,8 +34,8 @@ import rMin_white from "./../../assets/img/min-white.png";
 import rClose_white from "./../../assets/img/close-white.png";
 import mellaLogo from "./../../assets/images/mellaLogo.png";
 import { version, updateTime } from "./../appversion";
-import { fetchRequest4 } from "../FetchUtil4";
 import Button1 from "../button/Button";
+import { getPetInfoByRFID } from "../../api";
 
 const { SubMenu } = Menu;
 const MyIcon = createFromIconfontCN({
@@ -453,10 +453,8 @@ const Heard = ({
 
       if (search.length === 15 && isNumber(search)) {
         //这是RFID扫描后的搜索
-        fetchRequest4(
-          `/pet/getPetInfoByRFID/${search}/${storage.lastOrganization}`,
-          "GET"
-        )
+
+        getPetInfoByRFID(search, storage.lastOrganization)
           .then((res) => {
             console.log("----RFID搜索结果", res);
 
@@ -624,7 +622,7 @@ const Heard = ({
       { name: "All Patients", index: "2" },
       { name: "Scheduled Patients", index: "3" },
       { name: "My Account", index: "4" },
-      {name:"Org & Practice Profiles" ,index:"10"},
+      { name: "Org & Practice Profiles", index: "10" },
       { name: "Settings", index: "5" },
       { name: name, index: "6" },
       { name: `Billing & Subscriptions`, index: "7" },

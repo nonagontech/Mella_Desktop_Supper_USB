@@ -5,11 +5,11 @@ import {
 import { createFromIconfontCN } from '@ant-design/icons';
 
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn';
-import { fetchRequest } from '../../utils/FetchUtil1';
 import temporaryStorage from '../../utils/temporaryStorage';
 import Button from '../../utils/button/Button';
 
 import './index.less';
+import { listAll } from '../../api';
 
 const MyIcon = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2326495_7b2bscbhvvt.js'
@@ -23,10 +23,10 @@ export default class JoinworkplaceByName extends Component {
     selectId: {}
 
   }
-  componentDidMount () {
+  componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('small')
-    fetchRequest(`/organization/listAll`, "GET", '')
+    listAll()
       .then((res) => {
         console.log(res);
         if (res.msg === 'success') {
@@ -83,7 +83,7 @@ export default class JoinworkplaceByName extends Component {
     )
   }
 
-  render () {
+  render() {
     return (
       <div id="findMyOrganization">
         {/* 关闭缩小 */}

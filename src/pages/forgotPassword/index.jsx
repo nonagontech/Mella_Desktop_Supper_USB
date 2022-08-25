@@ -12,12 +12,13 @@ import mellaLogo from '../../assets/images/mellaLogo.png'
 import errorIcon from '../../assets/images/errorIcon.png'
 
 import temporaryStorage from '../../utils/temporaryStorage';
-import { fetchRequest } from '../../utils/FetchUtil1';
 import { px, mTop, pX, MTop } from '../../utils/px';
 import MouseDiv from '../../utils/mouseDiv/MouseDiv'
 import MinClose from '../../utils/minClose/MinClose'
 
+
 import './index.less';
+import { checkForgetPassword, checkUser, forgetPwd, sendActivateEmail } from '../../api';
 
 //num做超时处理
 let num = 0
@@ -31,7 +32,7 @@ export default class ForgotPassword extends Component {
     isLimit: false,      //账号被限制、注册未激活状态
 
   }
-  componentDidMount () {
+  componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('small')
     if (temporaryStorage.forgotPassword_email) {
@@ -41,7 +42,7 @@ export default class ForgotPassword extends Component {
     }
     ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.timer && clearInterval(this.timer)
     message.destroy()
     let ipcRenderer = window.electron.ipcRenderer
@@ -69,7 +70,7 @@ export default class ForgotPassword extends Component {
       spin: true
     })
     console.log('开始去检测邮箱');
-    fetchRequest(`/user/checkUser/${email}`, 'GET', '')
+    checkUser(email)
       .then(res => {
         console.log('检测邮箱存不存在', res);
         if (res.code) {
@@ -116,7 +117,7 @@ export default class ForgotPassword extends Component {
 
   }
   _sendEmail = () => {
-    fetchRequest(`/user/forgetPwd/${this.state.email}`, "GET", '')
+    forgetPwd(this.state.email)
       .then(res => {
         console.log('调用验证邮箱返回的数据', res);
         this.setState({
@@ -150,7 +151,8 @@ export default class ForgotPassword extends Component {
   }
   _validation = () => {
 
-    fetchRequest(`/user/checkForgetPassword/${this.state.email}`, "GET", '')
+
+    checkForgetPassword(this.state.email)
       .then(res => {
         console.log('验证结果', res);
         if (res.flag === true) {
@@ -184,7 +186,7 @@ export default class ForgotPassword extends Component {
 
   }
 
-  render () {
+  render() {
     return (
       <div id="forgotPassword">
 
@@ -365,7 +367,7 @@ export default class ForgotPassword extends Component {
                       spin: true
                     })
 
-                    fetchRequest(`/user/sendActivateEmail/${this.state.email}`, "GET", "")
+                    sendActivateEmail(this.state.email)
                       .then(res => {
                         console.log(res);
                         this.setState({

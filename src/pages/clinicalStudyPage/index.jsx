@@ -18,10 +18,9 @@ import placement_er from "./../../assets/images/placement_er.png";
 import palcement_ye from "./../../assets/images/palcement_ye.png";
 import { setTest } from "../../store/actions";
 import "./clinical.less";
-import { fetchRequest } from "../../utils/FetchUtil1";
-import { fetchRequest3 } from "../../utils/FetchUtil3";
 import MyModal from "../../utils/myModal/MyModal";
 import UnassignModal from './../../components/UnassignModal/UnassignModal'
+import { addAllClinical, deletePetExamByExamId, getClinicalDataByExamId, getPetExamAndClinicalByPetId, getPetExamByDoctorId, updatePetExam, updatePetInfo } from "../../api";
 let resyncDeviceIsClick = true; //用于控制多次点击重新配对按钮
 let storage = window.localStorage;
 
@@ -180,7 +179,7 @@ const ClinicalStudy = ({
       if (petId && !isWalkIn) {
         datas.petId = petId;
         console.log("入参数据:", datas);
-        fetchRequest(`/clinical/addAllClinical`, "POST", datas)
+        addAllClinical(datas)
           .then((res) => {
             console.log(res);
 
@@ -201,7 +200,7 @@ const ClinicalStudy = ({
       } else if (isWalkIn) {
         console.log("温度数据保存入参：", datas);
 
-        fetchRequest(`/clinical/addAllClinical`, "POST", datas)
+        addAllClinical(datas)
           .then((res) => {
             if (res.flag === true) {
               message.success("Uploaded successfully");
@@ -218,7 +217,8 @@ const ClinicalStudy = ({
           });
       }
       if (WeightValue !== '') {
-        fetchRequest(`/pet/updatePetInfo/${petId}`, 'POST', updatePetInfoData)
+
+        updatePetInfo(petId, updatePetInfoData)
           .then((res) => {
             if (res.flag === true) {
 
@@ -235,7 +235,8 @@ const ClinicalStudy = ({
   const _getHistory11 = (petId) => {
     let historys = [];
     setLoading(true);
-    fetchRequest(`/pet/getPetExamAndClinicalByPetId/${petId}`, "GET", "") //userID要自动的
+
+    getPetExamAndClinicalByPetId(petId)
       .then((res) => {
         // console.log("获取历史记录", res);
         setLoading(false);
@@ -372,7 +373,8 @@ const ClinicalStudy = ({
     }
     let historys = [];
     setLoading(true);
-    fetchRequest(`/pet/getPetExamByDoctorId/${storage.userId}`, "GET", "") //userID要自动的
+
+    getPetExamByDoctorId(storage.userId)
       .then((res) => {
         setLoading(false);
         if (res.flag === true) {
@@ -931,19 +933,20 @@ const ClinicalStudy = ({
     const _del = (key, record) => {
       // console.log("删除", key, record);
       /**------------这里还要删除后台的数据------------ */
-      fetchRequest(`/pet/deletePetExamByExamId/${key}`, "DELETE").then(
-        (res) => {
-          if (res.flag === true) {
-            const historyData1 = [...historyData];
-            console.log("删除成功", historyData1);
-            setHistoryData(
-              historyData1.filter((item) => item.historyId !== key)
-            );
-          } else {
-            console.log("删除失败");
+      deletePetExamByExamId(key)
+        .then(
+          (res) => {
+            if (res.flag === true) {
+              const historyData1 = [...historyData];
+              console.log("删除成功", historyData1);
+              setHistoryData(
+                historyData1.filter((item) => item.historyId !== key)
+              );
+            } else {
+              console.log("删除失败");
+            }
           }
-        }
-      );
+        );
     };
     const _edit = (key, record) => {
       let {
@@ -1013,7 +1016,7 @@ const ClinicalStudy = ({
       console.log(id, record);
       setTip("data is loading");
       setTipSpin(true);
-      fetchRequest3(`/exam/getClinicalDataByExamId/${id}`, "GET")
+      getClinicalDataByExamId(id)
         .then((res) => {
           console.log("此条记录的全部数据：", res);
           setTip("");
@@ -1355,7 +1358,8 @@ const ClinicalStudy = ({
       setTip("Data is being modified");
       setTipSpin(true);
 
-      fetchRequest(`/pet/updatePetExam/${editId}`, "POST", datas)
+
+      updatePetExam(editId, datas)
         .then((res) => {
           console.log(res);
           setTipSpin(false);

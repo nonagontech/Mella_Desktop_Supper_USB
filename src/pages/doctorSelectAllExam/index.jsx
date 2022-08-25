@@ -10,17 +10,15 @@ import {
   Modal,
   ConfigProvider
 } from 'antd';
-import { SyncOutlined, createFromIconfontCN,SearchOutlined } from '@ant-design/icons';
+import { SyncOutlined, createFromIconfontCN, SearchOutlined } from '@ant-design/icons';
 
 import jinggao from '../../assets/img/jinggao.png'
 import redclose from '../../assets/img/redclose.png'
 
 import Button1 from '../../utils/button/Button'
 import Heard from '../../utils/heard/Heard'
-import { fetchRequest } from '../../utils/FetchUtil1'
 import temporaryStorage from '../../utils/temporaryStorage';
 import { pX, px, win } from '../../utils/px';
-import { fetchRequest4 } from '../../utils/FetchUtil4';
 import { fetchRhapsody } from '../../utils/FetchUtil5';
 import SelectionBox from '../../utils/selectionBox/SelectionBox'
 import electronStore from '../../utils/electronStore';
@@ -30,6 +28,7 @@ import Draggable from "react-draggable";
 import moment from 'moment';
 
 import './index.less';
+import { listAllPetInfo, listPetsLike } from '../../api';
 
 const { SubMenu } = Menu;
 const MyIcon = createFromIconfontCN({
@@ -68,7 +67,7 @@ export default class DoctorSelectAllExam extends Component {
     sortBy: 'Time',
     showsortBy: false
   }
-  componentWillMount () {
+  componentWillMount() {
     // console.log('------------', this.props.location.listDate);
     try {
       if ((this.props.location.listDate && this.props.location.listDate !== 'undefined')) {
@@ -83,7 +82,7 @@ export default class DoctorSelectAllExam extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     let { height, width } = window.screen
     let windowsHeight = height > width ? width : height
@@ -130,7 +129,7 @@ export default class DoctorSelectAllExam extends Component {
     }
 
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     message.destroy()
     let ipcRenderer = window.electron.ipcRenderer
 
@@ -367,7 +366,7 @@ export default class DoctorSelectAllExam extends Component {
       }
     }
 
-    fetchRequest('/user/listAllPetInfo', 'GET', params)
+    listAllPetInfo(params)
       .then(res => {
         if (res.flag === true && res.data) {
           let data = []
@@ -622,7 +621,7 @@ export default class DoctorSelectAllExam extends Component {
       }
     }
     console.log('搜索的数据', params);
-    fetchRequest('/pet/listPetsLike', "POST", params)
+    listPetsLike(params)
       .then(res => {
         console.log(res);
 
@@ -750,7 +749,7 @@ export default class DoctorSelectAllExam extends Component {
     this.setState({
       loading: true
     })
-    fetchRequest4(`/pet/getPetInfoByRFID/${this.state.heardSearchText}/${storage.lastOrganization}`, 'GET')
+    getPetInfoByRFID(this.state.heardSearchText, storage.lastOrganization)
       .then(res => {
         console.log('----RFID搜索结果', res);
 
@@ -852,7 +851,7 @@ export default class DoctorSelectAllExam extends Component {
   };
 
 
-  render () {
+  render() {
     const columns = [
       {
         title: 'Time',
