@@ -13,6 +13,9 @@ import moment from "moment";
 import Draggable from "react-draggable";
 
 import "./index.less";
+import {
+  getPetExamByDoctorId, selectBreedBySpeciesId, listAllPetInfo, checkPatientId, addDeskPet, addAndSavePetExam, deletePetExamByExamId
+} from './../../api'
 
 let storage = window.localStorage;
 const { Option } = Select;

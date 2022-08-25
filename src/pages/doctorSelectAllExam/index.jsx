@@ -26,7 +26,7 @@ import electronStore from '../../utils/electronStore';
 import Highlighter from 'react-highlight-words';
 import Draggable from "react-draggable";
 import moment from 'moment';
-
+import { getPetInfoByRFID } from './../../api'
 import './index.less';
 import { listAllPetInfo, listPetsLike } from '../../api';
 
@@ -35,6 +35,7 @@ const MyIcon = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2326495_7b2bscbhvvt.js'
 })
 let storage = window.localStorage;
+
 
 
 
