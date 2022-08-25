@@ -5,7 +5,8 @@ import LinkEquipment from "./components/linkEquipment";
 import Measurement from "./components/measurement";
 import MeasuredData from "./components/measuredData";
 import HeaderItem from "./components/headerItem";
-import SelectPetBreed from "../../components/selectPetBreedModal";
+import SelectPet from "../../components/selectPetModal";
+import AddPetModal from "../../components/addPetModal";
 
 import { connect } from "react-redux";
 import {
@@ -56,9 +57,9 @@ const TemperaturePage = ({ petMessage, hardwareMessage, bodyHeight }) => {
         ) : (
           changePage()
         )}
-        <SelectPetBreed visible={true} />
+        <SelectPet visible={false} destroyOnClose width={400}  />
+        <AddPetModal visible={true} destroyOnClose width={400} />
       </Layout>
-
     </>
   );
 };

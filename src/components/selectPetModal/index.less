@@ -1,6 +1,7 @@
-.selectPetBreedModal {
+.selectPetModal {
   .ant-modal-content {
     border-radius: 20px;
+
     .ant-modal-header {
       text-align: center;
       padding: 42px 24px 24px 24px;
@@ -11,6 +12,7 @@
       }
     }
   }
+
   .modalContentBox {
     .searchBox {
       align-items: center;
@@ -20,11 +22,33 @@
     }
 
     .list {
-      margin-top: 16px;
+      margin: 16px;
       height: 450px;
+      overflow: hidden;
+      overflow-y: scroll;
+
+      .petListItemTitle {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .search {
+        font-family: 'iconfont';
+        margin-right: 10px;
+      }
     }
 
-    .foot{
+    .list .ant-list-item:hover {
+      background-color: rgba(10, 10, 10, 0.02);
+      transition: background-color .3s;
+      cursor: pointer;
+    }
+
+    .list::-webkit-scrollbar {
+      width: 0 !important
+    }
+
+    .foot {
       height: 130px;
       width: 100%;
       display: flex;
@@ -32,10 +56,15 @@
       align-items: center;
       background-color: #e7e7e7;
       justify-content: center;
-      border-bottom-left-radius:20px;
+      border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;
-      .btnBox{
-        width: 60%;
+
+      .btnBox {
+        display: flex;
+        width: 80%;
+        button:nth-child(1){
+          margin-right: 16px;
+        }
       }
     }
   }

@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useHistory } from "react-router-dom";
 import {
   Image,
   Layout,
@@ -13,18 +12,23 @@ import {
   Progress,
 } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+
 import Charlie from "./../../../assets/img/Charlie.png";
 import BluetoothNotConnected from "./../../../assets/img/BluetoothNotConnected.png";
 import AxillaryBluetooth from "./../../../assets/img/AxillaryBluetooth.png"; //腋温图片
 import RectalBluetoothIcon from "./../../../assets/img/RectalBluetoothIcon.png"; //肛温图片
 import EarBluetoothIcon from "./../../../assets/img/EarBluetoothIcon.png"; //耳温图片
-
 import connectBle from "./../../../assets/img/connectBle.png";
 import redcat from "./../../../assets/images/redcat.png";
 import reddog from "./../../../assets/images/reddog.png";
 import redother from "./../../../assets/images/redother.png";
-import { connect } from "react-redux";
+
+import { fetchRequest } from "../../../utils/FetchUtil1";
+import { px } from "../../../utils/px";
 import { devicesTitleHeight } from "../../../utils/InitDate";
+
+import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 import {
   selectHardwareModalShowFun,
   petSortTypeFun,
@@ -36,13 +40,11 @@ import {
   setMellaPredictReturnValueFun,
 } from "../../../store/actions";
 import moment from "moment";
-import { fetchRequest } from "../../../utils/FetchUtil1";
 import _ from "lodash";
+
 import "./headerItem.less";
-import { px } from "../../../utils/px";
 
 const { Header } = Layout;
-
 const HeaderItem = ({
   petMessage,
   hardwareMessage,

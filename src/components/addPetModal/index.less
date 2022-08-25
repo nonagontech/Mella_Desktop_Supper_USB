@@ -1,0 +1,80 @@
+.addPetModal {
+  .ant-modal-content {
+    border-radius: 20px;
+
+    .ant-modal-header {
+      text-align: center;
+      padding: 42px 24px 24px 24px;
+      border-radius: 20px;
+
+      .ant-modal-title {
+        font-size: 24px;
+      }
+    }
+  }
+
+  .modalContentBox {
+    .petMsgBox {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      .item {
+        width: 65%;
+        position: relative;
+        flex-direction: row;
+        display: flex;
+        align-items: center;
+        margin-top: 18px;
+
+        p {
+          margin: 0;
+          padding: 0;
+          width: 40%;
+          display: inline-block;
+          font-size: 16px;
+          color: #4a4a4a;
+        }
+
+        Input {
+          width: 60%;
+          height: 33px;
+          background-color: rgba(118, 118, 128, 0.12);
+          border-width: 0;
+          border-radius: 40px;
+          text-align: center;
+          border: none;
+          outline: medium;
+        }
+
+        .unit {
+          position: absolute;
+          right: 13px;
+          color: rgba(60, 60, 60, 0.67);
+        }
+      }
+
+    }
+
+    .foot {
+      height: 130px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #e7e7e7;
+      justify-content: center;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+
+      .btnBox {
+        display: flex;
+        width: 80%;
+
+        button:nth-child(1) {
+          margin-right: 16px;
+        }
+      }
+    }
+  }
+}
