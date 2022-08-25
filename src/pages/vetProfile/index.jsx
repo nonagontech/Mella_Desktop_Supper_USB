@@ -13,7 +13,6 @@ import countryList from './../../utils/areaCode/country';
 import temporaryStorage from './../../utils/temporaryStorage'
 import { px } from './../../utils/px';
 import MyModal from './../../utils/myModal/MyModal'
-import { fetchRequest3 } from './../../utils/FetchUtil3';
 
 import { checkUser, registByAWSSES } from '../../api';
 

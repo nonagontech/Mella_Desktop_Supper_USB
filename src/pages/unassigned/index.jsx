@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Table, Popconfirm, Modal, Input, message, Select, Spin } from "antd";
-import moment from "moment";
-import Draggable from "react-draggable";
+
 import Heard from "./../../utils/heard/Heard";
 import del from "./../../assets/images/del.png";
 import Close from "./../../assets/img/close.png";

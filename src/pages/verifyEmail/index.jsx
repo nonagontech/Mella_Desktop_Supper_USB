@@ -6,7 +6,6 @@ import temporaryStorage from './../../utils/temporaryStorage';
 import { fetchRequest2 } from './../../utils/FetchUtil2';
 import { px } from './../../utils/px';
 import MyModal from './../../utils/myModal/MyModal';
-import { fetchRequest3 } from './../../utils/FetchUtil3';
 
 import { useHistory } from 'react-router-dom'
 

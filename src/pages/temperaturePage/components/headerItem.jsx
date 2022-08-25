@@ -13,7 +13,6 @@ import {
 } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 
-import Charlie from "./../../../assets/img/Charlie.png";
 import BluetoothNotConnected from "./../../../assets/img/BluetoothNotConnected.png";
 import AxillaryBluetooth from "./../../../assets/img/AxillaryBluetooth.png"; //腋温图片
 import RectalBluetoothIcon from "./../../../assets/img/RectalBluetoothIcon.png"; //肛温图片
@@ -22,10 +21,6 @@ import connectBle from "./../../../assets/img/connectBle.png";
 import redcat from "./../../../assets/images/redcat.png";
 import reddog from "./../../../assets/images/reddog.png";
 import redother from "./../../../assets/images/redother.png";
-
-import { fetchRequest } from "../../../utils/FetchUtil1";
-import { px } from "../../../utils/px";
-import { devicesTitleHeight } from "../../../utils/InitDate";
 
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
@@ -43,7 +38,6 @@ import moment from "moment";
 import _ from "lodash";
 
 import "./headerItem.less";
-import { px } from "../../../utils/px";
 import { catv12Predict } from "../../../api";
 
 const { Header } = Layout;
