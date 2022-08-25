@@ -13,10 +13,11 @@ import dui from '../../assets/images/dui.png'
 import Heart from '../../utils/heard/Heard'
 import { mTop, px } from '../../utils/px';
 import MyModal from '../../utils/myModal/MyModal'
-import { fetchRequest } from '../../utils/FetchUtil1'
 import Avatar from '../../components/avatar/Avatar'
 import moment from 'moment'
 import './index.less';
+import { listDoctorsByAdmin } from '../../api/mellaserver/organization'
+import { admin_users } from '../../api/mellaserver/new'
 
 const { Option } = Select;
 let storage = window.localStorage;
@@ -83,7 +84,7 @@ export default class Veterinarians extends Component {
     console.log('查询宠物的入参', params);
 
 
-    fetchRequest(`/organization/listDoctorsByAdmin/${storage.lastOrganization}`, 'GET', params)
+    listDoctorsByAdmin(storage.lastOrganization, params)
       .then(res => {
         console.log('人员列表', res);
         this.setState({
@@ -444,7 +445,7 @@ export default class Veterinarians extends Component {
       loading: true
     })
     console.log('入参', params);
-    fetchRequest(`/new/admin/users/${userId}`, 'PATCH', params, storage.token)
+    admin_users(userId, params)
       .then(res => {
         console.log(res);
         if (res.flag && res.code === 20000) {

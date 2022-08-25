@@ -7,7 +7,7 @@ import cat from '../../assets/images/redcat.png'
 import other from '../../assets/images/redother.png'
 import selectphoto from '../../assets/images/sel.png'
 
-import { fetchRequest } from '../../utils/FetchUtil1'
+
 import { mTop, px } from '../../utils/px';
 import MyModal from '../../utils/myModal/MyModal';
 import Heard from '../../utils/heard/Heard';
@@ -16,6 +16,7 @@ import Avatar from '../../components/avatar/Avatar'
 import moment from 'moment';
 
 import './index.less';
+import { getUserInfoByUserId, updateUserInfo } from '../../api/mellaserver/user';
 
 const { SubMenu } = Menu;
 const { Option } = Select;
@@ -78,7 +79,7 @@ export default class EditParent extends Component {
     this.setState({
       spin: true
     })
-    fetchRequest(`/user/getUserInfoByUserId/${data}`, "GET", '')
+    getUserInfoByUserId(data)
       .then(res => {
         console.log('获取到了用户信息', res);
         if (res.msg === 'success') {
@@ -358,7 +359,7 @@ export default class EditParent extends Component {
               })
               message.destroy()
               console.log('修改的宠物信息:', parames);
-              fetchRequest('/user/updateUserInfo', 'POST', parames,)
+              updateUserInfo(parames)
                 .then(res => {
                   console.log('保存所有信息', res);
                   this.setState({

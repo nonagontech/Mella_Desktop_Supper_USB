@@ -15,7 +15,6 @@ import orgicn from './../../assets/img/orgicn.png'
 import deivceAdd from "./../../assets/img/hardList-add.png";
 
 import { px } from '../../utils/px'
-import { fetchRequest } from '../../utils/FetchUtil1';
 
 import { connect } from 'react-redux'
 import { petSortTypeFun, petDetailInfoFun, setPetListArrFun } from '../../store/actions'
@@ -24,6 +23,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 import './mainbody.less'
+import { listAllPetInfo } from '../../api';
 
 let storage = window.localStorage;
 
@@ -152,7 +152,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
       params.organizationId = storage.lastOrganization
     }
     setLoading(true)
-    fetchRequest('/user/listAllPetInfo', 'GET', params)
+    listAllPetInfo(params)
       .then(res => {
         setLoading(false)
         console.log('查询所有宠物', res);

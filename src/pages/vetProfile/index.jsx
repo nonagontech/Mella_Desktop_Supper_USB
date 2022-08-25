@@ -9,14 +9,13 @@ import { createFromIconfontCN, CaretDownFilled } from '@ant-design/icons';
 import imgArray from './../../utils/areaCode/imgArray'
 import MaxMin from './../../utils/maxminreturn/MaxMinReturn'
 import { fetchRequest2 } from './../../utils/FetchUtil2'
-import { fetchRequest } from './../../utils/FetchUtil1'
 import countryList from './../../utils/areaCode/country';
 import moment from 'moment';
 import temporaryStorage from './../../utils/temporaryStorage'
 import { mTop, pX, px } from './../../utils/px';
 import MyModal from './../../utils/myModal/MyModal'
-import { fetchRequest3 } from './../../utils/FetchUtil3';
 import './index.less';
+import { checkUser, registByAWSSES } from '../../api';
 
 
 const options = [
@@ -142,7 +141,7 @@ export default class VetPrifile extends Component {
     this.setState({
       loadVisible: true
     })
-    fetchRequest(`/user/checkUser/${email}`, 'GET', '')
+    checkUser(email)
       .then(res => {
         console.log(res);
         if (!res.flag) {
@@ -258,7 +257,7 @@ export default class VetPrifile extends Component {
       params.phone = `+${code}${phone}`
     }
     console.log('注册接口的入参：', params);
-    fetchRequest3('/user/registByAWSSES', "POST", params)
+    registByAWSSES(params)
       .then(res => {
         this.setState({
           loadVisible: false

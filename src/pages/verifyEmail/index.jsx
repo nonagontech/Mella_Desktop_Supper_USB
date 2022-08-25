@@ -6,8 +6,8 @@ import temporaryStorage from './../../utils/temporaryStorage';
 import { fetchRequest2 } from './../../utils/FetchUtil2';
 import { mTop, px } from './../../utils/px';
 import MyModal from './../../utils/myModal/MyModal';
-import { fetchRequest3 } from './../../utils/FetchUtil3';
 import './index.less';
+import { activateUserByEmailCode } from '../../api';
 
 const VerifyEmail = () => {
   let history = useHistory()
@@ -73,7 +73,7 @@ const VerifyEmail = () => {
     }
     else {
       setVisible(true)
-      fetchRequest3(`/user/activateUserByEmailCode/${code}`, "GET", '')
+      activateUserByEmailCode(code)
         .then(res => {
           setVisible(false)
           console.log('验证码验证返回信息：', res);

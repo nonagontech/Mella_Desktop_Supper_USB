@@ -8,17 +8,17 @@ import {
   Modal,
   message
 } from 'antd';
-import {  CaretDownFilled } from '@ant-design/icons';
+import { CaretDownFilled } from '@ant-design/icons';
 
 import imgArray from '../../utils/areaCode/imgArray'
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest } from '../../utils/FetchUtil1'
 import countryList from '../../utils/areaCode/country';
 import temporaryStorage from '../../utils/temporaryStorage';
 
 import Draggable from "react-draggable";
 
 import './index.less';
+import { addWorkplace } from '../../api/mellaserver/workplace';
 
 const { Option } = Select;
 export default class NewWorkplace extends Component {
@@ -43,7 +43,7 @@ export default class NewWorkplace extends Component {
 
   }
 
-  componentDidMount () {
+  componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('middle')
 
@@ -110,7 +110,7 @@ export default class NewWorkplace extends Component {
 
     console.log('入参信息：', params);
     let { userId } = temporaryStorage.logupSuccessData
-    fetchRequest(`/workplace/addWorkplace/${userId}`, "POST", params)
+    addWorkplace(userId, params)
       .then(res => {
         console.log(res);
         if (res.code === 20000) {
@@ -141,7 +141,7 @@ export default class NewWorkplace extends Component {
 
 
 
-  render () {
+  render() {
 
     let { disabled, visible, bounds, address1, address2, phone, practiceName, country, city, state, zipcode, workplaceTypeId, email } = this.state
     return (

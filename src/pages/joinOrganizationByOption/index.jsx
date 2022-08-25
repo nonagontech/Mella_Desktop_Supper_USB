@@ -11,13 +11,14 @@ import left1 from '../../assets/img/left1.png'
 
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
 import Button from '../../utils/button/Button'
-import { fetchRequest } from '../../utils/FetchUtil1';
 import temporaryStorage from '../../utils/temporaryStorage';
 import { px } from '../../utils/px'
 import MyModal from '../../utils/myModal/MyModal';
 import { fetchRequest2 } from '../../utils/FetchUtil2';
 
 import './index.less';
+import { listAll, mellaLogin, updateUserInfo } from '../../api';
+import { listAllWorkplaceByOrganizationId } from '../../api/mellaserver/workplace';
 
 const MyIcon = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2326495_7b2bscbhvvt.js'
@@ -36,10 +37,10 @@ export default class FindWorkplace extends Component {
     bounds: { left: 0, top: 0, bottom: 0, right: 0 },
     selectworkplace: {}
   }
-  componentDidMount () {
+  componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('big')
-    fetchRequest(`/organization/listAll`, "GET", '')
+    listAll()
       .then((res) => {
         console.log(res);
         if (res.msg === 'success') {
@@ -62,7 +63,7 @@ export default class FindWorkplace extends Component {
 
 
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.removeListener('changeFenBianLv', this.changeFenBianLv)
   }
@@ -97,7 +98,7 @@ export default class FindWorkplace extends Component {
       identityTypeId: '1'
     }
     console.log('---登录入参', params);
-    fetchRequest('/user/mellaLogin', 'POST', params)
+    mellaLogin(params)
       .then(res => {
         console.log(res);
         this.setState({
@@ -285,8 +286,8 @@ export default class FindWorkplace extends Component {
     this.props.history.push('/uesr/logUp/NewWorkplace')
   }
   _goWorkplace = () => {
-    console.log('前往工作场所');
-    fetchRequest(`/workplace/listAllWorkplaceByOrganizationId/${temporaryStorage.logupSelectOrganization.organizationId}`, "GET", '')
+    listAllWorkplaceByOrganizationId(temporaryStorage.logupSelectOrganization.organizationId)
+
       .then((res) => {
         console.log(res);
         if (res.msg === 'success') {
@@ -321,7 +322,7 @@ export default class FindWorkplace extends Component {
       isOrg: false
     })
 
-    fetchRequest('/user/updateUserInfo', 'POST', params)
+    updateUserInfo(params)
       .then(res => {
         console.log(res);
 
@@ -346,7 +347,7 @@ export default class FindWorkplace extends Component {
       })
   }
 
-  render () {
+  render() {
     let { disabled, bounds, isOrg, isWorkplace } = this.state
     return (
       <div id="joinOrganizationByOption">

@@ -12,11 +12,11 @@ import other from '../../assets/images/redother.png'
 import Heart from '../../utils/heard/Heard'
 import { px } from '../../utils/px';
 import MyModal from '../../utils/myModal/MyModal'
-import { fetchRequest } from '../../utils/FetchUtil1'
 
 import moment from 'moment'
 
 import './index.less';
+import { pet_petall } from '../../api'
 
 const { Option } = Select;
 let storage = window.localStorage;
@@ -77,7 +77,8 @@ export default class PetAndParents extends Component {
       }
     }
 
-    fetchRequest(`/petall/pet/${storage.lastOrganization}/petall`, 'POST', params)
+
+    pet_petall(storage.lastOrganization, params)
       .then(res => {
         console.log('查询到的宠物列表', res);
         this.setState({

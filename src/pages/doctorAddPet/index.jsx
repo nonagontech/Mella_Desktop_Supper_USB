@@ -14,7 +14,6 @@ import dui from '../../assets/images/dui.png'
 import female from '../../assets/images/female.png'
 import male from '../../assets/images/male.png'
 
-import { fetchRequest } from '../../utils/FetchUtil1'
 import electronStore from '../../utils/electronStore';
 import { mTop, px, win } from '../../utils/px';
 import MyModal from '../../utils/myModal/MyModal';
@@ -28,6 +27,7 @@ import { petDetailInfoFun, setMenuNum, } from '../../store/actions';
 import moment from 'moment';
 
 import './index.less';
+import { addDeskPet, checkPatientId, getPetInfoByPatientIdAndPetId, selectBreedBySpeciesId } from '../../api';
 
 const { Option } = Select;
 let storage = window.localStorage;
@@ -111,7 +111,7 @@ class DoctorAddPet extends Component {
         data.speciesId = 1; break;
     }
 
-    fetchRequest(`/pet/selectBreedBySpeciesId`, 'POST', data)
+    selectBreedBySpeciesId(data)
       .then(res => {
         console.log('---', res);
         if (res.code === 0) {
@@ -149,7 +149,7 @@ class DoctorAddPet extends Component {
     let data = {
       speciesId: val
     }
-    fetchRequest(`/pet/selectBreedBySpeciesId`, 'POST', data)
+    selectBreedBySpeciesId(data)
       .then(res => {
         console.log('--获取品种返回的数据-', res);
         if (res.code === 0) {
@@ -501,7 +501,7 @@ class DoctorAddPet extends Component {
                 if (storage.lastOrganization) {
                   params.organizationId = storage.lastOrganization
                 }
-                fetchRequest(`/pet/checkPatientId`, "GET", params)
+                checkPatientId(params)
                   .then(res => {
                     if (res.flag === false) {
                       errPatientId = params.patientId;
@@ -693,7 +693,7 @@ class DoctorAddPet extends Component {
     this.setState({
       confirmLoading: true
     });
-    fetchRequest(`/pet/getPetInfoByPatientIdAndPetId`, "POST", params)
+    getPetInfoByPatientIdAndPetId(params)
       .then((res) => {
         this.setState({
           confirmLoading: false,
@@ -828,7 +828,7 @@ class DoctorAddPet extends Component {
                 this.setState({
                   spin: true
                 })
-                fetchRequest(`/pet/checkPatientId`, "GET", params)
+                checkPatientId(params)
                   .then(res => {
                     console.log(res);
                     if (res.flag === false) {
@@ -875,7 +875,7 @@ class DoctorAddPet extends Component {
                       if (storage.lastOrganization) {
                         data.organizationId = storage.lastOrganization
                       }
-                      fetchRequest(`/pet/addDeskPet/${patientId}`, 'POST', data)
+                      addDeskPet(patientId, data)
                         .then(res => {
                           this.setState({
                             spin: false

@@ -12,7 +12,6 @@ import DoctorSelectScheduledExam from './pages/doctorSelectScheduledExam/index'
 import DoctorSelectAllExam from './pages/doctorSelectAllExam/index'
 import SelectExam from "./pages/selectExam/index";
 import Mesasure from "./pages/measure/index";
-import NorMalMeasurement from "./pages/norMalMeasurement/index";
 import MaxMinReturn from './utils/maxminreturn/MaxMinReturn'
 
 import EditPetInfo from './pages/editPetInfo/index'
@@ -68,7 +67,6 @@ class App extends Component {
           <Route exact path="/page7" component={MaxMinReturn} />
           <Route exact path="/page8" component={Mesasure} />
           <Route exact path="/page9" component={EditPetInfo} />
-          <Route exact path="/page10" component={NorMalMeasurement} />
           <Route exact path="/MainBody" component={MainBody} />
           <Route exact path="/page12" component={WorkPlace} />
           <Route exact path="/AddYuding" component={AddYuding} />

@@ -199,7 +199,6 @@ export default class SignIn extends Component {
     this.setState({
       spin: true,
     });
-    // fetchRequest('/user/mellaLogin', 'POST', params)
     mellaLogin(params)
       .then((res) => {
         console.log(res);

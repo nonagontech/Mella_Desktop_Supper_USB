@@ -18,15 +18,15 @@ import changePhoto from '../../assets/images/changePhoto.png';
 
 import { px, mTop } from "../../utils/px";
 import countryList from '../../utils/areaCode/country';
-import { fetchRequest } from '../../utils/FetchUtil1';
 import Avatar from '../../components/avatar/Avatar'
+import { getUserInfoByUserId, update } from '../../api'
 
 import PropTypes from 'prop-types';
 import _ from "lodash";
 
 import "./index.less";
 
-const MyAccount = ({bodyHeight}) => {
+const MyAccount = ({ bodyHeight }) => {
   let storage = window.localStorage;
   const [form] = Form.useForm();
   const { Option } = Select;
@@ -42,15 +42,15 @@ const MyAccount = ({bodyHeight}) => {
     for (let index = 0; index < _.size(values.domain); index++) {
       array[_.toNumber(values.domain[index])] = '1';
     }
-    let reg = new RegExp(',',"g");
-    let res = _.toString(array).replace(reg,'');
+    let reg = new RegExp(',', "g");
+    let res = _.toString(array).replace(reg, '');
     let data = {
       ...values,
       imageId: imageId,
       domain: res,
       userId: storage.userId
     };
-    fetchRequest(`/user/update`, "POST", data)
+    update(data)
       .then((res) => {
         if (res.msg === 'success') {
           message.success('The user information is updated successfully');
@@ -69,7 +69,7 @@ const MyAccount = ({bodyHeight}) => {
   }, []);
 
   useEffect(() => {
-    fetchRequest(`/user/getUserInfoByUserId/${storage.userId}`, "GET")
+    getUserInfoByUserId(storage.userId)
       .then((res) => {
         if (res.flag === true) {
           let newData = {
@@ -178,8 +178,8 @@ const MyAccount = ({bodyHeight}) => {
                   // onChange={onChange}
                   onSelect={(val) => { setCountry(val) }}
                   filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
-                  // open
-                  // dropdownClassName="addressSelectBox"
+                // open
+                // dropdownClassName="addressSelectBox"
                 >
                   {_.map(countryArr, (item, index) => (
                     <Option key={index} value={item}>{item}</Option>

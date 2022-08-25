@@ -11,10 +11,10 @@ import { createFromIconfontCN } from '@ant-design/icons';
 import dui from '../../assets/images/dui.png'
 
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest1 } from '../../utils/FetchUtil'
 import { mTop } from '../../utils/px';
 
 import './index.less';
+import { selectLocationsByOrganization } from './../../api/mellaserver/vetSpire';
 
 const MyIcon = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_2326495_ryrpg35knb.js'
@@ -32,11 +32,11 @@ export default class APIKey extends Component {
         api: '',
         selectApi: false
     }
-    componentDidMount () {
+    componentDidMount() {
         let ipcRenderer = window.electron.ipcRenderer
         ipcRenderer.send('big')
     }
-    componentWillMount () {
+    componentWillMount() {
         if (storage.selectApi === `true`) {
             if (`${storage.API}` !== `undefined`) {
                 this.setState({
@@ -62,7 +62,7 @@ export default class APIKey extends Component {
             }
             console.log('传入的数据：', params);
 
-            fetchRequest1('/VetSpire/selectLocationsByOrganization', 'POST', params)
+            selectLocationsByOrganization(params)
                 .then(res => {
                     console.log('接收到的数据', res);
                     this.setState({
@@ -109,7 +109,7 @@ export default class APIKey extends Component {
     onFinishFailed = errorInfo => {
         console.log("Failed:", errorInfo);
     };
-    render () {
+    render() {
         const { api, id } = this.state
         return (
             <div id="inputAPI">

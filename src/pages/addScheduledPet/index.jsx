@@ -14,9 +14,9 @@ import redJinggao from '../../assets/img/redjinggao.png'
 import { setMenuNum } from '../../store/actions';
 import MyModal from '../../utils/myModal/MyModal';
 import { px } from '../../utils/px';
-import { fetchRequest } from '../../utils/FetchUtil1';
 import MYButton from '../../utils/button/Button';
 import './index.less';
+import { petall_subscribe } from '../../api/mellaserver/new';
 
 const MyIcon = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_2326495_7b2bscbhvvt.js'
@@ -76,7 +76,7 @@ const AddScheduledPet = ({ bodyHeight, setMenuNum }) => {
             params.workplaceId = storage.lastWorkplaceId
         }
         console.log('入参', params);
-        fetchRequest('/new/petall/subscribe', "POST", params)
+        petall_subscribe(params)
             .then(res => {
                 console.log(res);
                 if (res.flag) {

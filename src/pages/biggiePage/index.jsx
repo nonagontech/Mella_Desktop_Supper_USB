@@ -10,14 +10,14 @@ import LinkEquipment from "./components/linkEquipment";
 import Biggie from "./components/Biggie";
 
 import { px } from "../../utils/px";
-import { fetchRequest } from "../../utils/FetchUtil1";
-import { fetchRequest4 } from "../../utils/FetchUtil4";
 import MyModal from "../../utils/myModal/MyModal";
 
 import PropTypes from 'prop-types';
 import _ from "lodash";
 
 import "./index.less";
+import { ezyvetGetPetLatestExam, ezyvetUpdateWeight, vetspireGetPetLatestExam, vetspireUpdateWeight } from "../../api";
+import { addClamantPetExam } from '../../api/mellaserver/exam'
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -52,7 +52,7 @@ const BiggirPage = ({
     };
     setSaveLoad(true);
     console.log("---体重保存入参--：", params);
-    fetchRequest("/exam/addClamantPetExam", "POST", params)
+    addClamantPetExam(params)
       .then((res) => {
         setSaveLoad(false);
         if (res.flag === true) {
@@ -81,7 +81,7 @@ const BiggirPage = ({
       APIkey: storage.connectionKey,
       patientId: petDetailInfo.patientId,
     }
-    fetchRequest4('/VetSpire/vetspireGetPetLatestExam', "POST", datas)
+    vetspireGetPetLatestExam(datas)
       .then(res => {
         if (res.flag) {
           let data = res.data.encounters[0].vitals
@@ -91,7 +91,7 @@ const BiggirPage = ({
             APIkey: storage.connectionKey,
             weight: unit === 'kg' ? (weight * 2.2046).toFixed(1) : weight
           }
-          fetchRequest4(`/VetSpire/vetspireUpdateWeight`, "POST", params)
+          vetspireUpdateWeight(params)
             .then(res => {
               if (res.flag) {
                 message.success('Data successfully saved in Vetspire')
@@ -115,7 +115,9 @@ const BiggirPage = ({
     let params = {
       id: petDetailInfo.patientId
     }
-    fetchRequest4('/EzyVet/ezyvetGetPetLatestExam', "GET", params, `Bearer ${storage.connectionKey}`)
+
+
+    ezyvetGetPetLatestExam(params)
       .then(res => {
         if (res.code === 10004 && res.msg === 'ezyvet token失效') {
           storage.connectionKey = res.newToken;
@@ -134,7 +136,8 @@ const BiggirPage = ({
             consult_id,
             weight: unit === 'kg' ? weight : (weight / 2.2046).toFixed(2)
           }
-          fetchRequest4(`/EzyVet/ezyvetUpdateWeight/${paramId}`, "PATCH", parames1, `Bearer ${storage.connectionKey}`)
+
+          ezyvetUpdateWeight(paramId, parames1)
             .then(res => {
               if (res.code === 10004 && res.msg === 'ezyvet token失效') {
                 storage.connectionKey = res.newToken;
@@ -163,7 +166,8 @@ const BiggirPage = ({
     let params = {
       id: petDetailInfo.patientId
     }
-    fetchRequest4('/EzyVet/ezyvetGetPetLatestExam', "GET", params, `Bearer ${storage.connectionKey}`)
+
+    ezyvetGetPetLatestExam(params)
       .then(res => {
         if (res.flag && res.data && res.data.items.length > 0) {
           let data = res.data.items[0]
@@ -177,7 +181,7 @@ const BiggirPage = ({
             consult_id,
             weight: unit === 'kg' ? weight : (weight / 2.2046).toFixed(2)
           }
-          fetchRequest4(`/EzyVet/ezyvetUpdateWeight/${paramId}`, "PATCH", parames1, `Bearer ${storage.connectionKey}`)
+          ezyvetUpdateWeight(paramId, parames1)
             .then(res => {
               if (res.flag) {
                 message.success('Data successfully saved in EzyVet')

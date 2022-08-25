@@ -24,7 +24,6 @@ import {
 } from "../../../store/actions";
 import _ from "lodash";
 import NumericInput from "./numericInput";
-import { fetchRequest } from "../../../utils/FetchUtil1";
 import head from "./../../../assets/img/head.png";
 import neck from "./../../../assets/img/neck.png";
 import upper from "./../../../assets/img/upper.png";
@@ -41,6 +40,7 @@ import redjinggao from './../../../assets/img/redjinggao.png'
 import "./scanPet.less";
 import { px } from "../../../utils/px";
 import MyModal from '../../../utils/myModal/MyModal'
+import { updatePetInfo1 } from "../../../api";
 
 const { Content, Header } = Layout;
 const ScanPet = ({
@@ -117,8 +117,9 @@ const ScanPet = ({
       h2tLength: newNum(headValue) || null,
       torsoLength: newNum(torsoValue) || null,
     };
-    let url = `/pet/updatePetInfo/${storage.userId}/${petId}`;
-    fetchRequest(url, "POST", prams)
+
+    updatePetInfo1(storage.userId, petId, prams)
+
       .then((res) => {
         if (res.flag) {
           petDetailInfoFun({
@@ -309,23 +310,23 @@ const ScanPet = ({
     // if (rulerConnectStatus === 'isMeasuring') {
     //   setShowModal(true);
     // } else {
-      setInputIndex(0);
-      setCarouselIndex(1);
-      let {
-        torsoLength,
-        l2rarmDistance,
-        upperTorsoCircumference,
-        lowerTorsoCircumference,
-        h2tLength,
-        neckCircumference,
-      } = petMessage;
+    setInputIndex(0);
+    setCarouselIndex(1);
+    let {
+      torsoLength,
+      l2rarmDistance,
+      upperTorsoCircumference,
+      lowerTorsoCircumference,
+      h2tLength,
+      neckCircumference,
+    } = petMessage;
 
-      setBodyValue(petLengthDataConvert(l2rarmDistance));
-      setLowerValue(petLengthDataConvert(lowerTorsoCircumference));
-      setUpperValue(petLengthDataConvert(upperTorsoCircumference));
-      setNeckValue(petLengthDataConvert(neckCircumference));
-      setHeadValue(petLengthDataConvert(h2tLength));
-      setTorsoValue(petLengthDataConvert(torsoLength));
+    setBodyValue(petLengthDataConvert(l2rarmDistance));
+    setLowerValue(petLengthDataConvert(lowerTorsoCircumference));
+    setUpperValue(petLengthDataConvert(upperTorsoCircumference));
+    setNeckValue(petLengthDataConvert(neckCircumference));
+    setHeadValue(petLengthDataConvert(h2tLength));
+    setTorsoValue(petLengthDataConvert(torsoLength));
     // }
     return () => { };
   }, [petId]);
