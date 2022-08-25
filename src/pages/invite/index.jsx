@@ -9,13 +9,13 @@ import { PlusOutlined } from '@ant-design/icons';
 
 
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest2 } from '../../utils/FetchUtil2';
 import { px } from '../../utils/px';
 import Button from '../../utils/button/Button'
 import MyModal from '../../utils/myModal/MyModal';
 
 import './index.less';
 import { checkUser } from '../../api';
+import { inviteUserByEmail } from '../../api/melladesk/user';
 
 let storage = window.localStorage;
 
@@ -128,7 +128,8 @@ export default class Invite extends Component {
     this.setState({
       visible: true
     })
-    fetchRequest2(`/user/inviteUserByEmail/${userId}/${organizationId}`, "POST", tags)
+
+    inviteUserByEmail(userId, organizationId, tags)
       .then(res => {
         console.log(res);
         this.setState({

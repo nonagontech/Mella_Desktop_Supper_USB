@@ -10,8 +10,7 @@ import dui from "./../../assets/images/dui.png";
 import back_white from "./../../assets/img/back-white.png";
 import back_hui from "./../../assets/img/back-hui.png";
 
-import { fetchRequest2 } from "./../../utils/FetchUtil2";
-import { mellaLogin } from "./../../api"
+import { getLoginQRcode, loginWithQRcode, mellaLogin } from "./../../api"
 
 import temporaryStorage from "../../utils/temporaryStorage";
 import { px, win } from "../../utils/px";
@@ -88,7 +87,8 @@ export default class SignIn extends Component {
       isLoadQrCode: true,
     });
     num = 0;
-    fetchRequest2("/user/getLoginQRcode", "GET", "")
+
+    getLoginQRcode()
       // addQRCode()
       .then((res) => {
         message.destroy();
@@ -134,7 +134,8 @@ export default class SignIn extends Component {
   };
   //轮询
   _polling = () => {
-    fetchRequest2(`/user/loginWithQRcode/${this.state.QRToken}`)
+
+    loginWithQRcode(this.state.QRToken)
       .then((res) => {
         console.log("轮询结果：", res);
         if (res.flag === true) {

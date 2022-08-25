@@ -14,12 +14,13 @@ import redcat from "../../assets/images/redcat.png";
 import reddog from "../../assets/images/reddog.png";
 import redother from "../../assets/images/redother.png";
 
-import { fetchRequest } from '../../utils/FetchUtil1';
+
 import { calculateAge, petPicture } from '../../utils/commonFun'
 
 import _ from 'lodash';
 
 import './index.less';
+import { listAllPetInfo } from '../../api';
 
 const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onCancel }) => {
   let storage = window.localStorage;
@@ -47,7 +48,8 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
     if (storage.lastOrganization) {
       params.organizationId = storage.lastOrganization
     }
-    fetchRequest('/user/listAllPetInfo', 'GET', params)
+
+    listAllPetInfo(params)
       .then((res) => {
         setLoading(false);
         if (res.flag === true) {

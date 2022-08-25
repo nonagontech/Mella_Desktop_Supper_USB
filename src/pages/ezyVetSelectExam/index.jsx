@@ -8,17 +8,17 @@ import {
   Space,
   message
 } from 'antd';
-import { SearchOutlined ,SyncOutlined} from '@ant-design/icons';
+import { SearchOutlined, SyncOutlined } from '@ant-design/icons';
 
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
 import { FetchEszVet } from '../../utils/FetchEszVet'
-import { fetchRequest2 } from '../../utils/FetchUtil2'
 import gender from '../../utils/gender'
 
 import Highlighter from 'react-highlight-words';
 import moment from 'moment';
 
 import './index.less'
+import { checkAndSaveAnimalList, ezyvetauth } from '../../api/melladesk/EzyVet';
 
 let storage = window.localStorage;
 export default class EzyVetSelectExam extends Component {
@@ -36,7 +36,7 @@ export default class EzyVetSelectExam extends Component {
     ezyVetToken: '',
     current: 1
   }
-  componentWillMount () {
+  componentWillMount() {
     try {
       if ((this.props.location.listDate)) {
         console.log('------------', this.props.location);
@@ -50,7 +50,7 @@ export default class EzyVetSelectExam extends Component {
       console.log(error);
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     if (window.screen.height < 950) {
       ipcRenderer.send('table')
@@ -86,7 +86,7 @@ export default class EzyVetSelectExam extends Component {
 
 
   }
-  componentWillUnmount () {
+  componentWillUnmount() {
     message.destroy()
   }
 
@@ -355,8 +355,8 @@ export default class EzyVetSelectExam extends Component {
                 clientSecret: client_secret,
                 partnerId: partner_id
               }
-              let url = '/EzyVet/ezyvetauth'
-              fetchRequest2(url, "GET", prams)
+
+              ezyvetauth(prams)
                 .then(res => {
                   console.log('重新获取token', res);
                   if (res.flag === true && res.data) {
@@ -481,7 +481,7 @@ export default class EzyVetSelectExam extends Component {
     // this._getData()
     this._getExam()
   }
-  render () {
+  render() {
     const columns = [
       {
         title: 'Pet Name',
@@ -668,7 +668,8 @@ export default class EzyVetSelectExam extends Component {
                     }
                   }]
                   console.log('入参：', params);
-                  fetchRequest2('/EzyVet/checkAndSaveAnimalList', 'POST', params)
+
+                  checkAndSaveAnimalList(params)
                     .then(res => {
                       console.log('====', res);
                       if (res.flag === true) {

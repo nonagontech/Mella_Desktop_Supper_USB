@@ -9,11 +9,11 @@ import {
 import { SearchOutlined } from '@ant-design/icons';
 
 import PhoneBook from '../../utils/phoneBook/PhoneBook';
-import { fetchRequest } from '../../utils/FetchUtil1'
 
 import _ from 'lodash';
 
 import './index.less';
+import { selectBreedBySpeciesId } from '../../api';
 
 const SelectPetBreed = ({ visible, width, title, destroyOnClose, value, onSelect, onCancel }) => {
 
@@ -31,7 +31,8 @@ const SelectPetBreed = ({ visible, width, title, destroyOnClose, value, onSelect
       speciesId: null,//null是获取所有宠物品种不分猫和狗
     }
     setLoading(true);
-    fetchRequest(`/pet/selectBreedBySpeciesId`, 'POST', data)
+
+    selectBreedBySpeciesId(data)
       .then((res) => {
         setLoading(false);
         if (res.msg === 'success') {

@@ -14,11 +14,11 @@ import Button from '../../utils/button/Button'
 import temporaryStorage from '../../utils/temporaryStorage';
 import { px } from '../../utils/px'
 import MyModal from '../../utils/myModal/MyModal';
-import { fetchRequest2 } from '../../utils/FetchUtil2';
 
 import './index.less';
 import { listAll, mellaLogin, updateUserInfo } from '../../api';
 import { listAllWorkplaceByOrganizationId } from '../../api/mellaserver/workplace';
+// import { updateUserInfo } from '../../api/melladesk/user'
 
 const MyIcon = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2326495_7b2bscbhvvt.js'
@@ -417,7 +417,7 @@ export default class FindWorkplace extends Component {
                   isLoading: true
                 })
                 console.log('搜索id加入', params);
-                fetchRequest2('/user/updateUserInfo', 'POST', params)
+                updateUserInfo(params)
                   .then(res => {
                     console.log(res);
                     if (res.flag === true) {

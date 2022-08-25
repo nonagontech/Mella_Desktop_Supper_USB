@@ -57,8 +57,7 @@ const TemperaturePage = ({ petMessage, hardwareMessage, bodyHeight }) => {
         ) : (
           changePage()
         )}
-        <SelectPet visible={false} destroyOnClose width={400}  />
-        <AddPetModal visible={true} destroyOnClose width={400} />
+        <SelectPet visible={false} destroyOnClose width={400} />
       </Layout>
     </>
   );

@@ -9,7 +9,6 @@ import {
 } from "antd";
 import { SearchOutlined } from '@ant-design/icons';
 
-import { fetchRequest } from '../../utils/FetchUtil1';
 import UploadImg from "../../utils/uploadImg/UploadImg";
 
 import {
@@ -27,7 +26,7 @@ const AddPetModal = ({ visible, width, title, destroyOnClose, value, onSelect, o
   const [isdestroyOnClose, setIsdestroyOnClose] = useState(false);//是否清除弹窗里面的内容
   const [isWidth, setIsWidth] = useState(520);//弹窗的宽度
   const [loading, setLoading] = useState(false);//加载
-  const [breedList,setBreedList] = useState([]);//
+  const [breedList, setBreedList] = useState([]);//
   const [imageId, setImageId] = useState('');//上传后图片id
   const [patientId, setPatientId] = useState('');//用户输入的病人id
   const [petName, setPetName] = useState('');//用户输入的宠物名字
@@ -166,7 +165,7 @@ const AddPetModal = ({ visible, width, title, destroyOnClose, value, onSelect, o
                     }
                   >
                     {
-                      _.map(breedList,(item,index) => {
+                      _.map(breedList, (item, index) => {
                         <Option key={item.petSpeciesBreedId}>{item.breedName}</Option>
                       })
                     }

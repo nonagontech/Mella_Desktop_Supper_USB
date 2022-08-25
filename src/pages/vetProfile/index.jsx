@@ -8,13 +8,12 @@ import { CaretDownFilled } from '@ant-design/icons';
 
 import imgArray from './../../utils/areaCode/imgArray'
 import MaxMin from './../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest2 } from './../../utils/FetchUtil2'
 import countryList from './../../utils/areaCode/country';
 import temporaryStorage from './../../utils/temporaryStorage'
 import { px } from './../../utils/px';
 import MyModal from './../../utils/myModal/MyModal'
 
-import { checkUser, registByAWSSES } from '../../api';
+import { checkUser, deskRegistAWSSNS, registByAWSSES } from '../../api';
 
 import moment from 'moment';
 
@@ -174,7 +173,7 @@ export default class VetPrifile extends Component {
             params.phone = `+${code}${phone}`
           }
           console.log('注册接口的入参：', params);
-          fetchRequest2('/user/deskRegistAWSSNS', "POST", params)
+          deskRegistAWSSNS(params)
             .then(res => {
               this.setState({
                 loadVisible: false

@@ -9,9 +9,9 @@ import {
 import dui from '../../assets/images/dui.png'
 
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
-import { fetchRequest2 } from '../../utils/FetchUtil2'
 
 import './index.less';
+import { ezyvetauth } from '../../api/melladesk/EzyVet';
 
 let storage = window.localStorage;
 const { Option } = Select;
@@ -24,12 +24,12 @@ export default class EzyNetLogin extends Component {
         partner_id: ''
     }
 
-    componentDidMount () {
+    componentDidMount() {
         let ipcRenderer = window.electron.ipcRenderer
         ipcRenderer.send('middle')
         storage.ezyVetToken = ''
     }
-    componentWillMount () {
+    componentWillMount() {
         console.log(storage.ezyVetLogin1, storage.ezyVetLogin1 !== '', storage.ezyVetToken1 !== undefined, `${storage.ezyVetToken1}` !== 'undefined');
         console.log(storage.ezyVetLogin1, storage.ezyVetLogin !== '', storage.ezyVetToken !== undefined, `${storage.ezyVetToken}` !== 'undefined');
         if (storage.ezyVetLogin !== '' && storage.ezyVetToken !== undefined && `${storage.ezyVetToken}` !== 'undefined') {
@@ -50,7 +50,7 @@ export default class EzyNetLogin extends Component {
     }
 
 
-    render () {
+    render() {
         const formItemLayout = {
             labelCol: {
                 xs: { span: 10 },
@@ -82,7 +82,7 @@ export default class EzyNetLogin extends Component {
                 partnerId: values.partner_id,
             }
             console.log(parames);
-            fetchRequest2('/EzyVet/ezyvetauth', 'GET', parames, '')
+            ezyvetauth(parames)
                 .then((res) => {
                     console.log(res);
                     if (res && res.msg === 'success') {
