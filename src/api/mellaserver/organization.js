@@ -41,5 +41,5 @@ export const listAll = () => {
  * @returns 
  */
 export const addOrganization = (userId, params) => {
-    return postJson(`${baseURL}/listAll/${userId}`, params)
+    return postJson(`${baseURL}/addOrganization/${userId}`, params)
 }

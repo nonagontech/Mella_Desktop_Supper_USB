@@ -494,11 +494,7 @@ export default class Veterinarians extends Component {
     return (
       <div id="veterinarians">
         <div className="heard">
-          <Heart
-            onReturn={() => {
-              this.props.history.goBack()
-            }}
-          />
+          <Heart />
         </div>
 
 

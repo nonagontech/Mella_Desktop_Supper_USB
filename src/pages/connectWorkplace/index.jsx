@@ -139,26 +139,7 @@ export default class ConnectWorkplace extends Component {
     return (
       <div id="connectworkplace">
         <div className="heard">
-          <Heart
-            onReturn={() => {
-              this.props.history.goBack();
-            }}
-            onSearch={(data) => {
-              storage.doctorExam = JSON.stringify(data);
-
-              storage.doctorList = JSON.stringify(this.state.data);
-              if (storage.isClinical === "true") {
-                this.props.history.push({
-                  pathname: "/page8",
-                  identity: storage.identity,
-                  patientId: data.patientId,
-                });
-              } else {
-                this.props.history.push({ pathname: "/page10" });
-              }
-            }}
-
-          />
+          <Heart />
         </div>
 
         <div className="body">

@@ -6,6 +6,7 @@
  * @desc 对axios的封装
  */
 import axios from 'axios'
+let storage = window.localStorage;
 
 //创建axios实例
 const service = axios.create({
@@ -16,8 +17,8 @@ const service = axios.create({
 service.interceptors.request.use(
     config => {
         //本地如果有token,则每次请求都带上token
-        if (localStorage.getItem('token')) {
-            config.headers['Authorization'] = localStorage.getItem('token')
+        if (storage.token) {
+            config.headers['Authorization'] = storage.token
         }
 
         return config

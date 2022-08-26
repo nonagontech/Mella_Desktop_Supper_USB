@@ -61,15 +61,6 @@ export default class NewOrganization extends Component {
 
   }
 
-  changeFenBianLv = (e) => {
-    console.log(e);
-    let ipcRenderer = window.electron.ipcRenderer
-    ipcRenderer.send('big')
-    this.setState({
-
-    })
-  }
-
 
 
   _next = () => {

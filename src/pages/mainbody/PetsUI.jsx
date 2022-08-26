@@ -162,7 +162,8 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
           setPetList(petArr)
           setPetListArrFun(petArr)
         } else {
-
+          setPetList([])
+          setPetListArrFun(petArr)
         }
       })
       .catch(err => {
@@ -370,7 +371,9 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
             <Tooltip placement='bottom' title='Add an organization'>
               <div
                 className="addImgBox"
+                // onClick={() => history.push("/uesr/logUp/JoinOrganizationByOption")}
                 onClick={() => history.push("/menuOptions/NewOrg")}
+
               >
                 <img
                   src={deivceAdd}

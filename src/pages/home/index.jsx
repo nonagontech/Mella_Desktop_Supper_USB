@@ -53,12 +53,7 @@ export default class Home extends Component {
   }
 
 
-  _quickStart = () => {
-    console.log('dianji2')
-    this.props.history.push('/page1')
-    // this.props.history.push('/menuOptions/advancedsettings')
 
-  }
   _createAccount = () => {
     this.props.history.push('/uesr/logUp/VetPrifile')
 
@@ -119,7 +114,7 @@ export default class Home extends Component {
             <img
               src={logo}
               alt=""
-              // style={{ marginTop: mTop(100), marginBottom: mTop(100), width: px(300) }}
+            // style={{ marginTop: mTop(100), marginBottom: mTop(100), width: px(300) }}
             />
           </div>
 

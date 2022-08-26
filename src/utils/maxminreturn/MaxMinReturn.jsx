@@ -1,46 +1,46 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import './maxminreturn.less'
 
-export default class MaxMin extends Component{
+export default class MaxMin extends Component {
     state = {
-        closebgc:'',
-        minbgc:'',
-        closeColor:'',
+        closebgc: '',
+        minbgc: '',
+        closeColor: '',
     }
     _close = () => {
-        let ipcRenderer =  window.electron.ipcRenderer
+        let ipcRenderer = window.electron.ipcRenderer
         console.log('关闭程序');
         ipcRenderer.send('window-close')
     }
     _min = () => {
-        let ipcRenderer =  window.electron.ipcRenderer
+        let ipcRenderer = window.electron.ipcRenderer
         console.log('最小化程序');
         ipcRenderer.send('window-min')
         this.setState({
-            minbgc:'',
+            minbgc: '',
         })
     }
     _minMove = () => {
-        
+
         this.setState({
-            minbgc:'rgb(229,229,229)'
+            minbgc: 'rgb(229,229,229)'
         })
     }
     _minLeave = () => {
         this.setState({
-            minbgc:''
+            minbgc: ''
         })
     }
     _closeMove = () => {
         this.setState({
-            closeColor:'red',
-            closebgc:'#fff'
+            closeColor: 'red',
+            closebgc: '#fff'
         })
     }
     _closeLeave = () => {
         this.setState({
-            closeColor:' rgb(245, 145, 145)',
-            closebgc:''
+            closeColor: ' rgb(245, 145, 145)',
+            closebgc: ''
         })
     }
     _home = () => {
@@ -48,38 +48,37 @@ export default class MaxMin extends Component{
         // this.props.history.push('/')
     }
 
-    render(){
-        const {closeColor,closebgc,minbgc} = this.state
-        return(
-            <div className = "maxminreturn">
-                <div className = "heard1">
-                    <div 
-                        className=" iconfont icon-left heard" 
-                        // onClick = {()=> this.props.history.push('/page3')}
-                        onClick = {this.props.onClick1}
+    render() {
+        const { closeColor, closebgc, minbgc } = this.state
+        return (
+            <div className="maxminreturn">
+                <div className="heard1">
+                    <div
+                        className=" iconfont icon-left heard"
+                        onClick={this.props.onClick1}
                     />
                 </div>
                 <div className="close123">
                     <div className="home iconfont icon-zhuye3"
-                        onClick = {this.props.onClick}
+                        onClick={this.props.onClick}
                     />
-                    <div 
-                        className="min iconfont icon-64" 
-                        onClick= {this._min}
-                        onMouseEnter  = {this._minMove}
-                        onMouseLeave  = {this._minLeave}
-                        style = {{backgroundColor:minbgc}}
+                    <div
+                        className="min iconfont icon-64"
+                        onClick={this._min}
+                        onMouseEnter={this._minMove}
+                        onMouseLeave={this._minLeave}
+                        style={{ backgroundColor: minbgc }}
                     ></div>
-                    
-                    <div 
-                        className="max iconfont icon-guanbi2" 
-                        onClick= {this._close}
-                        onMouseEnter  = {this._closeMove}
-                        onMouseLeave  = {this._closeLeave}
-                        style = {{backgroundColor:closebgc,color:closeColor}}
+
+                    <div
+                        className="max iconfont icon-guanbi2"
+                        onClick={this._close}
+                        onMouseEnter={this._closeMove}
+                        onMouseLeave={this._closeLeave}
+                        style={{ backgroundColor: closebgc, color: closeColor }}
                     ></div>
                 </div>
             </div>
         )
-     }
+    }
 }

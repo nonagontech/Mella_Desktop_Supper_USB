@@ -57,7 +57,6 @@ export default class Settings extends Component {
     valueD: "", //四
     valueE: "", //5
     valueF: "", //6
-    isClicleStudyModal: false
   }
   componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
@@ -351,7 +350,7 @@ export default class Settings extends Component {
 
 
   render() {
-    let { isClicleStudy, isBacklight, isBeep, backlightTimer, valueA, valueB, valueC, valueD, isClicleStudyModal, valueE, valueF, maxLength, sortBy, showsortBy } = this.state
+    let { isBacklight, isBeep, backlightTimer, } = this.state
 
     let bodyHeight = '90%'
     try {
@@ -364,10 +363,7 @@ export default class Settings extends Component {
     return (
       <div id="settings">
         <div className="heard">
-          <Heart
-            onReturn={this._goback}
-
-          />
+          <Heart />
         </div>
 
 
@@ -418,38 +414,7 @@ export default class Settings extends Component {
               </div>
 
               <div className="item" style={{ marginBottom: px(10) }}>
-                {/* <div className="l">
-                  <div className="text">Clinical Study Mode</div>
-                  <div className="switch">
-                    <Switch
-                      checked={isClicleStudy}
-                      onClick={() => {
-                        if (isClicleStudy === false) {
-                          this.setState({
-                            isClicleStudy: !isClicleStudy,
-                            isClicleStudyModal: true
-                          })
-                        } else {
-                          this.setState({
-                            isClicleStudy: !isClicleStudy
-                          })
-                          // temporaryStorage.isClicleStudy = false
-                          storage.isClinical = `${false}`
 
-                          this.props.history.push({ pathname: '/page10' })
-                        }
-
-                      }}
-                      size='small'
-                    />
-                  </div>
-
-                </div> */}
-
-                {/*
-                <div className="l" style={{ height: '50px' }}>
-
-                </div> */}
               </div>
 
             </div>
@@ -468,7 +433,10 @@ export default class Settings extends Component {
                   </div>
 
 
-                  <div className="l" onClick={() => { this.props.history.push('/menuOptions/invite') }}>
+                  <div className="l" onClick={() => {
+                    this.props.history.push({ pathname: '/uesr/logUp/InviteTeam', isAddDoctor: true })
+                    // this.props.history.push('/uesr/logUp/InviteTeam')
+                  }}>
                     <div className="text">Invite Your Team</div>
                     <div className="rightIcon">&#xe60c;</div>
                   </div>
@@ -658,138 +626,7 @@ export default class Settings extends Component {
         />
 
 
-        <MyModal
-          visible={isClicleStudyModal}
-          element={
-            <div className='isSave'
-              style={{ width: '40%' }}
-            >
 
-              <div className="title" style={{ marginTop: px(60) }}>
-                Are you sure you want to enter<br />
-                Clinical Study Mode?<br />
-                Please enter code to enter.
-              </div>
-
-
-
-              <div className='verify' style={{ margin: `${px(20)}px 0` }}>
-
-                <input
-
-                  ref={ref => {
-                    this.firstFoucs = ref;
-                  }}
-                  value={valueA}
-                  maxLength={maxLength}
-                  onKeyDown={maxLength ? this.handleDel : null}
-                  onChange={e => this.handleInputValue(e, "A")}
-                  autoFocus={'autofocus'}
-                />
-                <input
-
-                  ref={ref => {
-                    this.secondFoucs = ref;
-                  }}
-                  value={valueB}
-                  maxLength={maxLength}
-                  onKeyDown={maxLength ? this.handleDel : null}
-                  onChange={e => this.handleInputValue(e, "B")}
-                />
-                <input
-                  foucs
-
-                  ref={ref => {
-                    this.tridFoucs = ref;
-                  }}
-                  value={valueC}
-                  maxLength={maxLength}
-                  onKeyDown={maxLength ? this.handleDel : null}
-                  onChange={e => this.handleInputValue(e, "C")}
-                />
-                <input
-
-                  ref={ref => {
-                    this.fourFoucs = ref;
-                  }}
-                  value={valueD}
-                  maxLength={maxLength}
-                  onKeyDown={maxLength ? this.handleDel : null}
-                  onChange={e => this.handleInputValue(e, "D")}
-                />
-
-
-
-                <input
-
-                  ref={ref => {
-                    this.fiveFoucs = ref;
-                  }}
-                  value={valueE}
-                  maxLength={maxLength}
-                  onKeyDown={maxLength ? this.handleDel : null}
-                  onChange={e => this.handleInputValue(e, "E")}
-                />
-                <input
-
-                  ref={ref => {
-                    this.sixFoucs = ref;
-                  }}
-                  value={valueF}
-                  maxLength={maxLength}
-                  onKeyDown={maxLength ? this.handleDel : null}
-                  onChange={e => this.handleInputValue(e, "F")}
-                />
-              </div>
-
-
-
-
-              <div className="btn" style={{ margin: `${px(30)}px 0` }} >
-                <Button
-                  text={'Cancel'}
-                  onClick={() => {
-                    this.setState({
-                      isClicleStudyModal: false,
-                      isClicleStudy: false,
-                      valueA: '',
-                      valueB: '',
-                      valueC: '',
-                      valueD: '',
-                      valueE: '',
-                      valueF: ''
-                    })
-                  }}
-                  textBoxStyle={{
-                    width: '40%',
-                    height: px(40)
-                  }}
-                />
-                <Button
-                  text={'OK'}
-                  onClick={() => {
-                    if (valueA && valueB && valueC && valueD && valueE && valueF) {
-                      this.setState({
-                        isClicleStudyModal: false
-                      })
-                      // temporaryStorage.isClicleStudy = true
-
-                      // let storage = window.localStorage;
-                      storage.isClinical = `${true}`
-                      this.props.history.push({ pathname: '/page8', identity: storage.identity });
-                    }
-
-
-                  }}
-                  textBoxStyle={{
-                    width: '40%',
-                    height: px(40)
-                  }}
-                />
-              </div>
-            </div>
-          }
-        />
 
 
       </div>

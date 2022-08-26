@@ -149,14 +149,14 @@ export default class VetPrifile extends Component {
     if (phone) {
       params.phone = `+${code}${phone}`
     }
-    console.log('注册接口的入参：', params);
+
     registByAWSSES(params)
       .then(res => {
-        console.log('========------========', res);
+
         this.setState({
           loadVisible: false
         })
-        console.log('注册接口返回数据：', res);
+        // console.log('注册接口返回数据：', res);
         switch (res.code) {
           case 11011:
             console.log('用户已存在，应该跳出弹框')
@@ -180,17 +180,6 @@ export default class VetPrifile extends Component {
           default:
             break;
         }
-        // if (res.flag) {
-        //   console.log('注册成功了，去验证验证码');
-        //   temporaryStorage.logupEmailCode = res.data
-        //   params.code = code
-        //   params.initPhone = phone
-        //   params.imgArrayIndex = this.state.imgArrayIndex
-        //   temporaryStorage.logupVetInfo = params
-        //   this.props.history.push('/uesr/logUp/VerifyEmail')
-        // } else {
-        //   message.error('registration failed', 3)
-        // }
       })
       .catch(err => {
         this.setState({

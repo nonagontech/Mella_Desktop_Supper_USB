@@ -19,7 +19,7 @@ const baseURL = `${mellaserverBaseUrl}/petall`
  * @returns 
  */
 export const pet_petall = (lastOrganization, params) => {
-    return postJson(`${baseURL}/pet${lastOrganization}/petall`, params)
+    return postJson(`${baseURL}/pet/${lastOrganization}/petall`, params)
 }
 
 

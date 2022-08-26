@@ -240,10 +240,7 @@ export default class AdvancedSettings extends Component {
     return (
       <div id='advancedsettings'>
         <div className="heard">
-          <Heart
-            onReturn={() => { this.props.history.goBack() }}
-
-          />
+          <Heart />
           <div className="title">
             <h2>Advanced Settings</h2>
           </div>

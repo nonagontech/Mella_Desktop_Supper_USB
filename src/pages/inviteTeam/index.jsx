@@ -1,3 +1,8 @@
+
+/**
+ * 
+ * this.props.location.isAddDoctor是上个组件传过来的标志,为true代表从设置里面的邀请跳转过来的
+ */
 import React, { Component, } from 'react'
 import {
     Tag,
@@ -16,6 +21,7 @@ import MyModal from '../../utils/myModal/MyModal';
 import './index.less';
 import { checkUser, mellaLogin } from '../../api';
 import { inviteUserByEmail } from '../../api/melladesk/user';
+let storage = window.localStorage;
 export default class InviteTeam extends Component {
     state = {
         tags: [],
@@ -28,21 +34,10 @@ export default class InviteTeam extends Component {
     componentDidMount() {
         let ipcRenderer = window.electron.ipcRenderer
         ipcRenderer.send('big')
-        //监听屏幕分辩率是否变化，变化就去更改界面内容距离大小
-        ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
-    }
-    componentWillUnmount() {
-        let ipcRenderer = window.electron.ipcRenderer
-        ipcRenderer.removeListener('changeFenBianLv', this.changeFenBianLv)
-    }
-    changeFenBianLv = (e) => {
-        console.log(e);
-        let ipcRenderer = window.electron.ipcRenderer
-        ipcRenderer.send('big')
-        this.setState({
 
-        })
     }
+
+
 
 
     handleClose = removedTag => {
@@ -132,13 +127,15 @@ export default class InviteTeam extends Component {
     };
 
     _next = () => {
+        let { isAddDoctor } = this.props.location
         message.destroy()
         let { tags } = this.state
-        let { userId } = temporaryStorage.logupSuccessData
-        let { organizationId } = temporaryStorage.logupOrganization
+        let { userId } = !isAddDoctor ? temporaryStorage.logupSuccessData : storage
+        let organizationId = !isAddDoctor ? temporaryStorage.logupOrganization.organizationId : storage.lastOrganization
         console.log({ tags, userId, organizationId });
         if (tags.length === 0) {
-            this._logIn()
+            message.error('Please enter the invitation email')
+            return
         }
         this.setState({
             visible: true
@@ -151,7 +148,15 @@ export default class InviteTeam extends Component {
                 if (res.flag === true) {
                     console.log('成功，跳转');
                     message.success('Invitation successful', 3)
-                    this._logIn()
+                    if (!isAddDoctor) {
+                        this._logIn()
+                    } else {
+                        this.setState({
+                            visible: false
+                        })
+                        this.props.history.goBack()
+                    }
+
                 } else {
                     this.setState({
                         visible: false
@@ -206,6 +211,13 @@ export default class InviteTeam extends Component {
                     storage.token = token
                     storage.userId = ''
 
+                    let data = {
+                        email: email.replace(/(^\s*)/g, ""),
+                        hash,
+                    };
+                    data = JSON.stringify(data);
+                    storage.saveSign = data;
+
                     storage.userId = res.success.userId
                     storage.roleId = res.success.roleId
 
@@ -215,31 +227,50 @@ export default class InviteTeam extends Component {
 
 
 
+                    //由于后台接口原因，导致这里的最后工作场所可能不是自己的，因此下面全注释掉。改成如果有多个工作场所则跳转到选择工作场所界面，不是多个则跳转到选择宠物界面
+                    if (res.success.lastWorkplaceId) {
+                        storage.lastWorkplaceId = res.success.lastWorkplaceId;
+                    } else {
+                        storage.lastWorkplaceId = "";
+                    }
+
+                    if (res.success.lastOrganization) {
+                        storage.lastOrganization = res.success.lastOrganization;
+                    } else {
+                        storage.lastOrganization = "";
+                    }
 
                     if (userWorkplace) {
                         storage.userWorkplace = JSON.stringify(userWorkplace)
                         let connectionKey = ''
-                        const element = userWorkplace[0];
-                        storage.lastOrganization = element.organizationEntity.organizationId
-                        storage.lastWorkplaceId = element.workplaceEntity.workplaceId
-                        if (element.organizationEntity.connectionKey) {
-                            connectionKey = element.organizationEntity.connectionKey
-                        }
-                        if (element.roleId) {
-                            console.log(element.roleId);
-                            storage.roleId = element.roleId
-                        }
-                        if (userWorkplace.length === 1) {
-                            this.props.history.push('/uesr/selectExam')
 
-                        } else {
-                            this.props.history.push('/page12')
+                        for (let i = 0; i < userWorkplace.length; i++) {
+                            const element = userWorkplace[i];
+                            if (element.organizationEntity) {
+                                if (
+                                    element.organizationEntity.organizationId === lastOrganization
+                                ) {
+                                    if (element.organizationEntity.connectionKey) {
+                                        connectionKey = element.organizationEntity.connectionKey;
+                                    }
+                                    if (element.roleId) {
+                                        console.log(element.roleId);
+                                        storage.roleId = element.roleId;
+                                    }
+
+                                    break;
+                                }
+                            }
                         }
+                        console.log("----------key值为：", connectionKey);
+                        storage.connectionKey = connectionKey;
+
                     } else {
                         storage.userWorkplace = ''
                         storage.connectionKey = ''
-                        this.props.history.push('/uesr/selectExam')
+
                     }
+                    this.props.history.push("/MainBody");
 
 
                 }
@@ -252,6 +283,11 @@ export default class InviteTeam extends Component {
             })
     }
 
+    _food = () => {
+        if (!this.props.location.isAddDoctor) {
+
+        }
+    }
 
 
 
@@ -323,16 +359,19 @@ export default class InviteTeam extends Component {
                 <div className="btn"
                     style={{ padding: `${px(40)}px 0` }}
                 >
-                    <Button
-                        type="primary"
-                        shape="round"
-                        size='large'
-                        htmlType="submit"
-                        onClick={this._logIn}
-                        text={'Skip'}
-                    >
-                        Skip
-                    </Button>
+                    {
+                        !this.props.location.isAddDoctor && <Button
+                            type="primary"
+                            shape="round"
+                            size='large'
+                            htmlType="submit"
+                            onClick={this._logIn}
+                            text={'Skip'}
+                        >
+                            Skip
+                        </Button>
+                    }
+
                     <Button
                         type="primary"
                         shape="round"

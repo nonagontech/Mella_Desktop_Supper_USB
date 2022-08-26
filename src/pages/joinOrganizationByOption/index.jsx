@@ -16,13 +16,14 @@ import { px } from '../../utils/px'
 import MyModal from '../../utils/myModal/MyModal';
 
 import './index.less';
-import { listAll, mellaLogin, updateUserInfo } from '../../api';
+import { listAll, mellaLogin, } from '../../api';
 import { listAllWorkplaceByOrganizationId } from '../../api/mellaserver/workplace';
-// import { updateUserInfo } from '../../api/melladesk/user'
+import { updateUserInfo } from '../../api/mellaserver'
 
 const MyIcon = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2326495_7b2bscbhvvt.js'
 })
+let storage = window.localStorage;
 export default class FindWorkplace extends Component {
 
   state = {
@@ -38,6 +39,7 @@ export default class FindWorkplace extends Component {
     selectworkplace: {}
   }
   componentDidMount() {
+
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('big')
     listAll()
@@ -124,6 +126,10 @@ export default class FindWorkplace extends Component {
           message.error('You do not have the authority of a doctor, please contact the administrator or customer service', 10)
           return
         }
+        if (res.code === 10000 && res.msg === '系统内部错误') {
+          message.error('system error')
+          return
+        }
 
         if (res.code === 0 && res.msg === 'success') {
           console.log('账号密码正确，登录进去了');
@@ -131,48 +137,67 @@ export default class FindWorkplace extends Component {
           storage.token = token
           storage.userId = ''
 
+          let data = {
+            email: email.replace(/(^\s*)/g, ""),
+            hash,
+          };
+          data = JSON.stringify(data);
+          storage.saveSign = data;
+
           storage.userId = res.success.userId
           storage.roleId = res.success.roleId
 
-          //每次登陆后清空宠物列表缓存的数据
-          storage.doctorList = ''
-          storage.defaultCurrent = ''
           this.setState({
             isOrg: false,
             isWorkplace: false
           })
+          //由于后台接口原因，导致这里的最后工作场所可能不是自己的，因此下面全注释掉。改成如果有多个工作场所则跳转到选择工作场所界面，不是多个则跳转到选择宠物界面
+          if (res.success.lastWorkplaceId) {
+            storage.lastWorkplaceId = res.success.lastWorkplaceId;
+          } else {
+            storage.lastWorkplaceId = "";
+          }
+
+          if (res.success.lastOrganization) {
+            storage.lastOrganization = res.success.lastOrganization;
+          } else {
+            storage.lastOrganization = "";
+          }
+
 
           if (userWorkplace) {
             storage.userWorkplace = JSON.stringify(userWorkplace)
             let connectionKey = ''
-            const element = userWorkplace[0];
-            storage.lastOrganization = element.organizationEntity.organizationId
-            storage.lastWorkplaceId = element.workplaceEntity.workplaceId
-            if (element.organizationEntity.connectionKey) {
-              connectionKey = element.organizationEntity.connectionKey
-            }
-            if (element.roleId) {
-              console.log(element.roleId);
-              storage.roleId = element.roleId
-            }
-            if (userWorkplace.length === 1) {
-              this.props.history.push("/MainBody");
 
-            } else {
-              this.props.history.push('/page12')
+            for (let i = 0; i < userWorkplace.length; i++) {
+              const element = userWorkplace[i];
+              if (element.organizationEntity) {
+                if (
+                  element.organizationEntity.organizationId === lastOrganization
+                ) {
+                  if (element.organizationEntity.connectionKey) {
+                    connectionKey = element.organizationEntity.connectionKey;
+                  }
+                  if (element.roleId) {
+                    console.log(element.roleId);
+                    storage.roleId = element.roleId;
+                  }
+
+                  break;
+                }
+              }
             }
+            console.log("----------key值为：", connectionKey);
+            storage.connectionKey = connectionKey;
+
           } else {
             storage.userWorkplace = ''
             storage.connectionKey = ''
-            this.props.history.push("/MainBody");
-            storage.lastOrganization = ''
-            storage.lastWorkplaceId = ''
-          }
 
+          }
+          this.props.history.push("/MainBody");
         }
-        if (res.code === 10000 && res.msg === '系统内部错误') {
-          message.error('system error')
-        }
+
       })
       .catch(err => {
         console.log(err);
@@ -240,6 +265,39 @@ export default class FindWorkplace extends Component {
         {option}
       </ul>
     )
+  }
+  _updateUserInfo = (params) => {
+    updateUserInfo(params)
+      .then(res => {
+        console.log(res);
+
+        if (res.flag === true) {
+          message.success('Join successfully', 3)
+
+          console.log('成功',);
+          if (!this.props.location.isSettingIn) {
+            this._logIn()
+          } else {
+            this.setState({
+              isLoading: false
+            })
+            this.props.history.goBack()
+          }
+
+        } else {
+          this.setState({
+            isLoading: false
+          })
+          message.error('Identity update failed', 3)
+        }
+      })
+      .catch(err => {
+        this.setState({
+          isLoading: false
+        })
+        console.log(err);
+        message.error(err.message, 3)
+      })
   }
 
   _list1 = () => {
@@ -309,8 +367,9 @@ export default class FindWorkplace extends Component {
       })
   }
   _addworkplaced = () => {
+    let userId = this.props.location.isSettingIn ? storage.userId : temporaryStorage.logupSuccessData.userId
     let params = {
-      userId: temporaryStorage.logupSuccessData.userId,
+      userId,
       roleId: 2,
       workplaceId: this.state.selectworkplace.workplaceId,
       organizationId: this.state.selectworkplace.organizationId
@@ -321,30 +380,9 @@ export default class FindWorkplace extends Component {
       isWorkplace: false,
       isOrg: false
     })
+    this._updateUserInfo(params)
 
-    updateUserInfo(params)
-      .then(res => {
-        console.log(res);
 
-        if (res.flag === true) {
-          message.success('Join successfully', 3)
-
-          console.log('成功',);
-          this._logIn()
-        } else {
-          this.setState({
-            isLoading: false
-          })
-          message.error('Join failed', 3)
-        }
-      })
-      .catch(err => {
-        this.setState({
-          isLoading: false
-        })
-        console.log(err);
-        message.error(err.message, 3)
-      })
   }
 
   render() {
@@ -355,7 +393,9 @@ export default class FindWorkplace extends Component {
           {/* 关闭缩小 */}
           <MaxMin
             onClick={() => { this.props.history.push('/') }}
-            onClick1={() => this.props.history.push('/uesr/logUp/VetPrifile')}
+            // onClick1={() => this.props.history.push('/uesr/logUp/VetPrifile')}
+            onClick1={() => this.props.history.goBack()}
+
           />
         </div>
 
@@ -407,34 +447,24 @@ export default class FindWorkplace extends Component {
 
             <div className="item" style={{ paddingTop: px(60) }}
               onClick={() => {
-
-                let params = {
-                  userId: temporaryStorage.logupSuccessData.userId,
-                  roleId: 2,
+                if (this.props.location.isSettingIn) {
+                  this.props.history.goBack()
+                } else {
+                  let params = {
+                    userId: temporaryStorage.logupSuccessData.userId,
+                    roleId: 2,
+                  }
+                  message.destroy()
+                  this.setState({
+                    isLoading: true
+                  })
+                  console.log('搜索id加入', params);
+                  this._updateUserInfo(params)
                 }
-                message.destroy()
-                this.setState({
-                  isLoading: true
-                })
-                console.log('搜索id加入', params);
-                updateUserInfo(params)
-                  .then(res => {
-                    console.log(res);
-                    if (res.flag === true) {
 
-                      console.log('成功',);
-                      this._logIn()
-                    } else {
-                      this.setState({
-                        isLoading: false
-                      })
-                      message.error('Identity update failed')
-                    }
-                  })
-                  .catch(err => {
-                    console.log(err);
-                    message.error(err.message, 3)
-                  })
+
+
+
               }}>
               <div className="iconBox">
                 <MyIcon type='icon-guanbi2' className="icon" />

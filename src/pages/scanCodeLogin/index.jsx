@@ -122,7 +122,7 @@ export default class ScanCodeLogin extends Component {
                 storage.userWorkplace = ''
                 storage.connectionKey = ''
               }
-              this.props.history.push('/uesr/selectExam')
+              this.props.history.push('/MainBody')
 
 
 
