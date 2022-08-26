@@ -21,6 +21,7 @@ import {
   selectHardwareInfoFun,
   selectHardwareModalShowFun,
   setMenuNum,
+  setSelectHardwareType
 } from "./../../store/actions";
 
 import "./mainbody.less";
@@ -34,6 +35,7 @@ const HardAndPetsUI = ({
   setInfo,
   setMenuNum,
   hardwareMessage,
+  setSelectHardwareType
 }) => {
   let { selectHardwareInfo } = hardwareMessage;
   //定义数组hardwareList
@@ -179,10 +181,16 @@ const HardAndPetsUI = ({
         <div
           className="addNewDevice"
           style={{ paddingTop: px(10), paddingBottom: px(10) }}
+          onClick={() => {
+            setMenuNum("1");
+            setSelectHardwareType('add');
+          }}
         >
           <div
             className="addNewDeviceText"
-            style={{ paddingLeft: px(25) }}
+            style={{ paddingLeft: px(25), }}
+
+
           >{`Add New ${deviceTypeStr}`}</div>
           <div className="addNewDeviceImg">
             <img
@@ -254,7 +262,7 @@ HardAndPetsUI.propTypes = {
 };
 //默认值
 HardAndPetsUI.defaultProps = {
-  setInfo: () => {},
+  setInfo: () => { },
 };
 export default connect(
   (state) => ({
@@ -263,5 +271,5 @@ export default connect(
     userMessage: state.userReduce,
     hardwareMessage: state.hardwareReduce,
   }),
-  { selectHardwareInfoFun, selectHardwareModalShowFun, setMenuNum }
+  { selectHardwareInfoFun, selectHardwareModalShowFun, setMenuNum, setSelectHardwareType }
 )(HardAndPetsUI);

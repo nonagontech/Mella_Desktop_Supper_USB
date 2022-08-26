@@ -10,7 +10,7 @@ import dui from "./../../assets/images/dui.png";
 import back_white from "./../../assets/img/back-white.png";
 import back_hui from "./../../assets/img/back-hui.png";
 
-import { getLoginQRcode, loginWithQRcode, mellaLogin } from "./../../api"
+import { getLoginQRcode, loginWithQRcode, mellaLogin } from "../../api"
 
 import temporaryStorage from "../../utils/temporaryStorage";
 import { px, win } from "../../utils/px";

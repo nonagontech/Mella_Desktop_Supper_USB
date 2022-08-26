@@ -18,11 +18,13 @@ import redother from "../../assets/images/redother.png";
 import { calculateAge, petPicture } from '../../utils/commonFun'
 
 import _ from 'lodash';
+import moment from 'moment';
 
 import './index.less';
 import { listAllPetInfo } from '../../api';
 
-const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onCancel }) => {
+const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onCancel, onLoading, onAddPet }) => {
+  console.log('value: ', value);
   let storage = window.localStorage;
   const [isModalVisible, setIsModalVisible] = useState(false);//控制弹窗的显隐
   const [isdestroyOnClose, setIsdestroyOnClose] = useState(false);//是否清除弹窗里面的内容
@@ -31,8 +33,9 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
   const [searchPetList, setSearchPetList] = useState([]);//搜索宠物列表
   const [searchValue, setSearchValue] = useState('');//搜索框的值
   const [selePetValue, setSelePetValue] = useState();//选中的宠物值
-  const [selePetIndex, setSelePetIndex] = useState(-1);//选中的宠物下标
-  const [loading, setLoading] = useState(false);//加载
+  const [selePetId, setSelePetId] = useState('');//选中的宠物id
+  const [loading, setLoading] = useState(false);//数据加载
+  const [btnLoading, setBtnLoading] = useState(false);//按钮加载
 
   //获取所有宠物
   const getAllPet = () => {
@@ -48,7 +51,6 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
     if (storage.lastOrganization) {
       params.organizationId = storage.lastOrganization
     }
-
     listAllPetInfo(params)
       .then((res) => {
         setLoading(false);
@@ -56,6 +58,7 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
           let newData = [];
           _.map(res.data, (item, index) => {
             newData.push({
+              petId: item.petId,
               petIndex: index,
               birthday: item.birthday,
               breedName: item.breedName,
@@ -66,7 +69,7 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
               url: item.url,
             })
           });
-          setPetList(newData);
+          setPetList(_.orderBy(newData, ['petIndex'], ['desc']));
         }
       })
       .catch((err) => {
@@ -109,9 +112,9 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
     }
   }
   //选择宠物事件
-  const selectPet = (index, item) => {
+  const selectPet = (petId, item) => {
     setSelePetValue(item);
-    setSelePetIndex(index);
+    setSelePetId(petId);
   }
   //搜索宠物名字或patientId
   const searchPetByPetNameOrPatientId = () => {
@@ -128,6 +131,11 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
       }
     }
     setSearchPetList(searchData);
+  }
+  //取消或添加宠物
+  const handleCancelOrAddPet = () => {
+    onAddPet(false);
+    setIsModalVisible(visible);
   }
 
   useEffect(() => {
@@ -161,6 +169,23 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
     return (() => { })
   }, []);
 
+  useEffect(() => {
+    if (onLoading === true || onLoading === false) {
+      setBtnLoading(onLoading);
+    } else {
+      setBtnLoading(false);
+    }
+    return (() => { })
+  }, [onLoading]);
+
+  useEffect(() => {
+    if (_.find(petList, ['petId', value]) !== undefined) {
+      setSelePetId(_.toString(value));
+      setSelePetValue(_.find(petList, ['petId', value]));
+    }
+    return (() => { })
+  }, [value, petList]);
+
   return (
     <>
       <Modal
@@ -191,8 +216,8 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
                 dataSource={searchValue.length > 0 ? searchPetList : petList}
                 renderItem={(item, index) => (
                   <List.Item
-                    extra={selePetIndex === index ? <span className="search">&#xe614;</span> : null}
-                    onClick={() => selectPet(item.petIndex, item)}
+                    extra={selePetId === item.petId ? <span className="search">&#xe614;</span> : null}
+                    onClick={() => selectPet(item.petId, item)}
                   >
                     <List.Item.Meta
                       avatar={<Avatar src={shoePetPicture(item.petSpeciesBreedId, item.url)} />}
@@ -221,7 +246,7 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
                   shape="round"
                   size="large"
                   block
-                  onClick={handleOk}
+                  onClick={handleCancelOrAddPet}
                 >
                   +Add New Pet
                 </Button>
@@ -231,6 +256,7 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
                   size="large"
                   block
                   onClick={handleOk}
+                  loading={btnLoading}
                 >
                   Confirm
                 </Button>

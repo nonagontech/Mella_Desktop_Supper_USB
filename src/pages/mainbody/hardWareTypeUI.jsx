@@ -1,4 +1,4 @@
-import React, {  useEffect } from "react";
+import React, { useEffect } from "react";
 
 import mellaPro from "./../../assets/img/hardList-mella.png";
 import biggie from "./../../assets/img/hardList-biggie.png";
@@ -74,7 +74,7 @@ const HardWareTypeUI = ({
         style={{ padding: `${px(10)}px 0` }}
         onClick={() => {
           console.log(item.type);
-          if (menuNum !== "6"&&!electronStore.get(`${storage.userId}-isClical`)) {
+          if (menuNum !== "6" && !electronStore.get(`${storage.userId}-isClical`)) {
             setMenuNum("1");
             setSelectHardwareType(item.type);
             if (item.type === "add") {

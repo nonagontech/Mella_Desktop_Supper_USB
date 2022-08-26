@@ -1118,12 +1118,12 @@ class App extends Component {
       devicesTypeList.push({
         type: "tape",
         devices: [
-          {
-            name: "tape",
-            mac: "45264",
-            deviceType: "tape",
-            examRoom: "",
-          },
+          // {
+          //   name: "tape",
+          //   mac: "45264",
+          //   deviceType: "tape",
+          //   examRoom: "",
+          // },
         ],
       });
       devicesTypeList.push({

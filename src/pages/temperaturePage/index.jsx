@@ -5,8 +5,6 @@ import LinkEquipment from "./components/linkEquipment";
 import Measurement from "./components/measurement";
 import MeasuredData from "./components/measuredData";
 import HeaderItem from "./components/headerItem";
-import SelectPet from "../../components/selectPetModal";
-import AddPetModal from "../../components/addPetModal";
 
 import { connect } from "react-redux";
 import {
@@ -26,6 +24,8 @@ import "./index.less";
 
 const TemperaturePage = ({ petMessage, hardwareMessage, bodyHeight }) => {
   let { mellaConnectStatus } = hardwareMessage;
+  const [vibible, setVibible] = useState(false);
+
   //测量温度中的页面变化
   const changePage = () => {
     // return <MeasuredData />
@@ -57,7 +57,6 @@ const TemperaturePage = ({ petMessage, hardwareMessage, bodyHeight }) => {
         ) : (
           changePage()
         )}
-        <SelectPet visible={false} destroyOnClose width={400} />
       </Layout>
     </>
   );

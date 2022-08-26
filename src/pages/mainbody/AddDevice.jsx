@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {  message } from 'antd';
+import { message } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import biggieHome from './../../assets/img/searchType-biggieHome.png'

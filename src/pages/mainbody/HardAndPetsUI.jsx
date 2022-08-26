@@ -14,7 +14,7 @@ import { selectHardwareModalShowFun } from './../../store/actions';
 import './mainbody.less';
 
 let storage = window.localStorage
-const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow, hardwareList, selectHardwareModalShowFun,hardwareInfo }) => {
+const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow, hardwareList, selectHardwareModalShowFun, hardwareInfo }) => {
   //定义选择的硬件详细信息
   const [selectHardwareDetail, setSelectHardwareDetail] = useState({})
   useEffect(() => {
@@ -53,6 +53,7 @@ const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow
   }, [selectHardwareType, hardwareList,])
 
 
+  console.log('=====----===', selectHardwareDetail);
 
   return (
     <div className='deviceAndPets' style={{ width: px(200), height: bodyHeight }}>
@@ -63,8 +64,8 @@ const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow
           selectHardwareModalShowFun(!selectHardwareModalShow)
         }}
       >
-        <div className="devicesName" style={{ fontSize: px(26) }}>
-          {selectHardwareDetail.name}
+        <div className="devicesName" style={{ fontSize: px(22) }}>
+          {selectHardwareDetail.name || "No Equipment"}
         </div>
         <div className="imgBox" style={{ marginLeft: px(7) }}>
           <img src={xia} alt="" width={px(32)} />

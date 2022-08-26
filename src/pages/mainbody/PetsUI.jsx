@@ -29,7 +29,7 @@ let storage = window.localStorage;
 
 const { Option } = Select;
 
-const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, petDetailInfo, setPetListArrFun, petListArr, selectHardwareType, rulerConnectStatus }) => {
+const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, petDetailInfo, setPetListArrFun, petListArr, selectHardwareType, rulerConnectStatus, selectHardwareInfo, receiveBroadcastHardwareInfo }) => {
   const history = useHistory();
   //定义宠物列表数组
   const [petList, setPetList] = useState([])
@@ -155,7 +155,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     listAllPetInfo(params)
       .then(res => {
         setLoading(false)
-        console.log('查询所有宠物', res);
         if (res.flag === true && res.data) {
           let oldList = res.data
           let petArr = dataSort(oldList)
@@ -163,12 +162,14 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
           setPetListArrFun(petArr)
         } else {
           setPetList([])
-          setPetListArrFun(petArr)
+          setPetListArrFun([])
         }
       })
       .catch(err => {
         setLoading(false)
         console.log(err);
+        setPetList([])
+        setPetListArrFun([])
       })
   }
   const dataSort = (data) => {
@@ -242,7 +243,8 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
             onClick={() => {
               //当硬件是尺子且尺子还在测量的时候,要做出提示
               setSelectPetDetail(item)
-              if (selectHardwareType === 'tape' && rulerConnectStatus !== 'disconnected') {
+              let { deviceType, mac } = selectHardwareInfo
+              if ((mac && receiveBroadcastHardwareInfo.deviceType === 'tape' && receiveBroadcastHardwareInfo.macId === mac) && selectHardwareType === 'tape' && rulerConnectStatus !== 'disconnected') {
                 setShowModal(true)
               } else {
                 petDetailInfoFun(item)
@@ -252,7 +254,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
           >
             {`${item.patientId}, ${item.petName}`}
           </div>
-        </li>
+        </li >
       )
 
     })
@@ -296,9 +298,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     }
 
     let options = orgArr.map((item, index) => {
-      // console.log('item', item);
       if (index === 1) {
-        console.log('+++++++', item);
       }
       return (
         <Option
@@ -441,6 +441,8 @@ export default connect(
     petListArr: state.petReduce.petListArr,
     selectHardwareType: state.hardwareReduce.selectHardwareType,
     rulerConnectStatus: state.hardwareReduce.rulerConnectStatus,
+    selectHardwareInfo: state.hardwareReduce.selectHardwareInfo,
+    receiveBroadcastHardwareInfo: state.hardwareReduce.receiveBroadcastHardwareInfo
   }),
   { petSortTypeFun, petDetailInfoFun, setPetListArrFun }
 )(PetsUI)

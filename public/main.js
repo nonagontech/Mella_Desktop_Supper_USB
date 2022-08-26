@@ -10,7 +10,7 @@ let isOpening = false, portPath = null
 app.allowRendererProcessReuse = false
 
 /**
- * 
+ *
  * isHaveSerialported 用来判断充电桩有没有插入
  * 如果isHaveSerialported为false则下一次就要去初始化一个串口，
  * 如果为true则不去初始化串口
@@ -156,7 +156,6 @@ function isHaveSerialport () {
 
 
             } else if (flag === true && ports[index].path !== portPath) {
-                console.log('++++++++++++++++++++我进来了：');
                 isHaveSerialported = true
                 // },)
                 port = new SerialPort(ports[index].path, {

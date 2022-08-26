@@ -53,7 +53,7 @@ const ScanPet = ({
   setRulerConnectStatusFun
 }) => {
   let { petSpeciesBreedId, patientId, petId } = petMessage;
-  let { rulerMeasureValue, rulerConfirmCount, rulerUnit, rulerConnectStatus } = ruleMessage;
+  let { rulerMeasureValue, rulerConfirmCount, rulerUnit, rulerConnectStatus, selectHardwareInfo, receiveBroadcastHardwareInfo } = ruleMessage;
   let storage = window.localStorage;
   const [radioValue, setRadioValue] = useState("in");
   const [inputIndex, setInputIndex] = useState(-1);
@@ -241,28 +241,7 @@ const ScanPet = ({
     }
   };
 
-  //尺子正在测量中切换宠物清空数据
-  const onClickModal = () => {
-    setShowModal(false);
-    // petDetailInfoFun(selectPetDetail);
-    setInputIndex(0);
-    setCarouselIndex(1);
-    let {
-      torsoLength,
-      l2rarmDistance,
-      upperTorsoCircumference,
-      lowerTorsoCircumference,
-      h2tLength,
-      neckCircumference,
-    } = petMessage;
 
-    setBodyValue(petLengthDataConvert(l2rarmDistance));
-    setLowerValue(petLengthDataConvert(lowerTorsoCircumference));
-    setUpperValue(petLengthDataConvert(upperTorsoCircumference));
-    setNeckValue(petLengthDataConvert(neckCircumference));
-    setHeadValue(petLengthDataConvert(h2tLength));
-    setTorsoValue(petLengthDataConvert(torsoLength));
-  }
 
   //监听点击界面中下一步按钮
   useEffect(() => {
@@ -333,41 +312,68 @@ const ScanPet = ({
   //监听用户点击了硬件中的下一步按钮和拉动皮尺
   useEffect(() => {
     if (inputIndex < 6) {
-      switch (inputIndex) {
-        case 0:
-          setHeadValue(rulerMeasureValue);
-          break;
-        case 1:
-          setNeckValue(rulerMeasureValue);
-          break;
-        case 2:
-          setUpperValue(rulerMeasureValue);
-          break;
-        case 3:
-          setLowerValue(rulerMeasureValue);
-          break;
-        case 4:
-          setTorsoValue(rulerMeasureValue);
-          break;
-        case 5:
-          setBodyValue(rulerMeasureValue);
-          break;
-        default:
-          break;
+      let { deviceType, mac } = selectHardwareInfo
+
+      if (deviceType === 'tape') {
+        if (mac === '45264' || (mac && receiveBroadcastHardwareInfo.deviceType === 'tape' && receiveBroadcastHardwareInfo.macId === mac)) {
+
+          switch (inputIndex) {
+            case 0:
+              setHeadValue(rulerMeasureValue);
+              break;
+            case 1:
+              setNeckValue(rulerMeasureValue);
+              break;
+            case 2:
+              setUpperValue(rulerMeasureValue);
+              break;
+            case 3:
+              setLowerValue(rulerMeasureValue);
+              break;
+            case 4:
+              setTorsoValue(rulerMeasureValue);
+              break;
+            case 5:
+              setBodyValue(rulerMeasureValue);
+              break;
+            default:
+              break;
+          }
+          if (rulerUnit !== radioValue) {
+            setRadioValue(rulerUnit);
+            setHeadValue(headValue && changeUnit(headValue));
+            setNeckValue(neckValue && changeUnit(neckValue));
+            setUpperValue(upperValue && changeUnit(upperValue));
+            setLowerValue(lowerValue && changeUnit(lowerValue));
+            setTorsoValue(torsoValue && changeUnit(torsoValue));
+            setBodyValue(bodyValue && changeUnit(bodyValue));
+          }
+        }
       }
+
     }
   }, [rulerConfirmCount, rulerMeasureValue]);
-  //监听单位改变
-  useEffect(() => {
-    setRadioValue(rulerUnit);
-    setHeadValue(headValue && changeUnit(headValue));
-    setNeckValue(neckValue && changeUnit(neckValue));
-    setUpperValue(upperValue && changeUnit(upperValue));
-    setLowerValue(lowerValue && changeUnit(lowerValue));
-    setTorsoValue(torsoValue && changeUnit(torsoValue));
-    setBodyValue(bodyValue && changeUnit(bodyValue));
-    return () => { };
-  }, [rulerUnit]);
+  // //监听单位改变
+  // useEffect(() => {
+  //   let { deviceType, mac } = selectHardwareInfo
+
+  //   console.log('=====', receiveBroadcastHardwareInfo.macId);
+  //   if (deviceType === 'tape') {
+  //     if (mac === '45264' || (mac && receiveBroadcastHardwareInfo.deviceType === 'tape' && receiveBroadcastHardwareInfo.macId === mac)) {
+  //       console.log('初始化====', rulerUnit, radioValue);
+
+  //       setRadioValue(rulerUnit);
+  //       setHeadValue(headValue && changeUnit(headValue));
+  //       setNeckValue(neckValue && changeUnit(neckValue));
+  //       setUpperValue(upperValue && changeUnit(upperValue));
+  //       setLowerValue(lowerValue && changeUnit(lowerValue));
+  //       setTorsoValue(torsoValue && changeUnit(torsoValue));
+  //       setBodyValue(bodyValue && changeUnit(bodyValue));
+
+  //     }
+  //   }
+
+  // }, [rulerUnit]);
 
 
   return (
