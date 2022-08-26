@@ -366,23 +366,7 @@ export default class Settings extends Component {
         <div className="heard">
           <Heart
             onReturn={this._goback}
-            // onSearch={(val) => { console.log(val); }}
-            menu8Click={() => {
-              switch (storage.identity) {   //1是vetspire   2是ezyvet   3是医生
-                case '1': this.props.history.push('/VetSpireSelectExam')
 
-                  break;
-                case '2': this.props.history.push({ pathname: '/EzyVetSelectExam', listDate: storage.ezyVetList, defaultCurrent: storage.defaultCurrent })
-
-                  break;
-
-                case '3': this.props.history.push({ pathname: '/uesr/selectExam', listDate: storage.doctorList, defaultCurrent: storage.defaultCurrent })
-
-                  break;
-                default:
-                  break;
-              }
-            }}
           />
         </div>
 

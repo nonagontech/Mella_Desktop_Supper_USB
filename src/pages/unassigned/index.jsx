@@ -919,52 +919,7 @@ export default class Unassigned extends Component {
     let tableData = searchText.length > 0 ? serchExamData : historyData;
     return (
       <div id="unassigned">
-        <Heard
-          onReturn={() => {
-            this.props.history.goBack();
-          }}
-          onSearch={(data) => {
-            storage.doctorExam = JSON.stringify(data);
-            storage.doctorList = JSON.stringify(this.state.data);
-            if (storage.isClinical === "true") {
-              this.props.history.push({
-                pathname: "/page8",
-                identity: storage.identity,
-                patientId: data.patientId,
-              });
-            } else {
-              this.props.history.push({ pathname: "/page10" });
-            }
-          }}
-          menu8Click={() => {
-            console.log("--", storage.identity);
-            switch (storage.identity) {
-              case "2":
-                this.props.history.push({
-                  pathname: "/EzyVetSelectExam",
-                  listDate: storage.ezyVetList,
-                  defaultCurrent: storage.defaultCurrent,
-                });
-
-                break;
-              case "1":
-                this.props.history.push("/VetSpireSelectExam");
-
-                break;
-              case "3":
-                this.props.history.push({
-                  pathname: "/uesr/selectExam",
-                  listDate: storage.doctorList,
-                  defaultCurrent: storage.defaultCurrent,
-                });
-
-                break;
-
-              default:
-                break;
-            }
-          }}
-        />
+        <Heard />
         <div className="body">
           <div
             className="title"

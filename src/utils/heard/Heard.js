@@ -59,15 +59,7 @@ let matchingTimer = null;
 const Heard = ({
   onReturn,
   onSearch,
-  menu1Click,
-  menu2Click,
-  menu3Click,
-  menu4Click,
-  menu5Click,
-  menu6Click,
-  menu7Click,
-  menu8Click,
-  menu9Click,
+
   blueSearch,
   setMenuNum,
   menuNum,
@@ -359,7 +351,8 @@ const Heard = ({
                 setVisible(false)
                 setPetList([])
                 petDetailInfoFun(item)
-                onSearch(item)
+                // onSearch(item)
+                history.push('/MainBody')
               }}
             >
               <div className="item" style={{ paddingLeft: px(40) }}>
@@ -371,10 +364,9 @@ const Heard = ({
                     marginRight: px(40),
                     borderRadius: px(60),
                     backgroundImage: images,
-                    // backgroundColor: 'hotpink',
                   }}
                 >
-                  {/* <img src={images} style={{ width: px(40) }} /> */}
+
                 </div>
 
                 <div className="petInfo">
@@ -1631,29 +1623,14 @@ const Heard = ({
 Heard.propTypes = {
   onReturn: PropTypes.func,
   onSearch: PropTypes.func,
-  menu1Click: PropTypes.func,
-  menu2Click: PropTypes.func,
-  menu3Click: PropTypes.func,
-  menu4Click: PropTypes.func,
-  menu5Click: PropTypes.func,
-  menu6Click: PropTypes.func,
-  menu7Click: PropTypes.func,
-  menu8Click: PropTypes.func,
-  menu9Click: PropTypes.func,
+
   blueSearch: PropTypes.bool,
 };
+// let userHistory = useHistory()
 Heard.defaultProps = {
   onSearch: () => { },
   onReturn: () => { },
-  menu1Click: () => { },
-  menu2Click: () => { },
-  menu3Click: () => { },
-  menu4Click: () => { },
-  menu5Click: () => { },
-  menu6Click: () => { },
-  menu7Click: () => { },
-  menu8Click: () => { },
-  menu9Click: () => { },
+
   blueSearch: false,
 };
 

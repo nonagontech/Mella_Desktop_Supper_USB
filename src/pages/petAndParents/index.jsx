@@ -340,23 +340,7 @@ export default class PetAndParents extends Component {
                 this.props.history.push({ pathname: '/page10', })
               }
             }}
-            menu8Click={() => {
-              console.log('--', storage.identity, storage.doctorList);
-              switch (storage.identity) {
-                case '2': this.props.history.push({ pathname: '/EzyVetSelectExam', listDate: storage.ezyVetList, defaultCurrent: storage.defaultCurrent })
 
-                  break;
-                case '1': this.props.history.push('/VetSpireSelectExam')
-
-                  break;
-                case '3': this.props.history.push({ pathname: '/uesr/selectExam', listDate: storage.doctorList, defaultCurrent: storage.defaultCurrent })
-
-                  break;
-
-                default:
-                  break;
-              }
-            }}
           />
         </div>
 

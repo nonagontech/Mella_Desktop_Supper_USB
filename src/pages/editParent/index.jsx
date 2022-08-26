@@ -314,11 +314,7 @@ export default class EditParent extends Component {
       <div id="editParent">
 
         <div className="heard">
-          <Heard
-            onReturn={() => {
-              this.props.history.goBack()
-            }}
-          />
+          <Heard />
         </div>
         <div className="editPetInfo_top" >
           <div className="parentInfo">

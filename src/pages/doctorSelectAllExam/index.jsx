@@ -164,7 +164,6 @@ export default class DoctorSelectAllExam extends Component {
 
           let { vitals } = item.data.patient
           let vitalData = vitals.data
-          console.log('-----------', vitalData);
           let weight = ''
           if (vitalData.length > 0) {
             vitalData.sort((a, b) => {
@@ -995,26 +994,7 @@ export default class DoctorSelectAllExam extends Component {
         })
       }}>
         {/* 关闭缩小 */}
-        <Heard
-          onReturn={() => {
-            this.props.history.push('/page11')
-          }}
-          onSearch={(data) => {
-
-            storage.doctorExam = JSON.stringify(data)
-
-            storage.doctorList = JSON.stringify(this.state.data)
-            if (storage.isClinical === 'true') {
-              this.props.history.push({ pathname: '/page8', identity: storage.identity, patientId: data.patientId })
-            } else {
-              this.props.history.push({ pathname: '/page10', })
-            }
-          }}
-          menu8Click={() => {
-            this.props.history.push({ pathname: '/uesr/selectExam', })
-          }}
-          blueSearch={true}
-        />
+        <Heard blueSearch={true} />
 
 
         <div className="hread flex">

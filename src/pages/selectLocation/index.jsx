@@ -6,10 +6,11 @@ import {
 } from 'antd';
 
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn';
-import { fetchRequest1 } from '../../utils/FetchUtil';
+
 import { mTop, px } from '../../utils/px';
 
 import './index.less';
+import { selectLocations, selectProvidersByLocationId } from '../../api';
 
 const { Option } = Select;
 let storage = window.localStorage;
@@ -27,7 +28,7 @@ export default class Location extends Component {
         selectvetName: ''
 
     }
-    componentDidMount () {
+    componentDidMount() {
         let ipcRenderer = window.electron.ipcRenderer
         ipcRenderer.send('big')
         this.setState({
@@ -39,7 +40,9 @@ export default class Location extends Component {
         }
         console.log('发送的数据：', params);
         this.setState({ loading: true });
-        fetchRequest1('/VetSpire/selectLocations', 'POST', params)
+
+        selectLocations(params)
+
             .then(res => {
                 console.log('接收到的数据', res, res.data.Locations);
                 let locations = res.data.Locations
@@ -76,8 +79,8 @@ export default class Location extends Component {
                 locationId: storage.locationKey
             }
             console.log('发送的数据：', params);
-            // this.setState({ loading: true });
-            fetchRequest1('/VetSpire/selectProvidersByLocationId', 'POST', params)
+
+            selectProvidersByLocationId(params)
                 .then(res => {
                     console.log('接收到的数据', res);
                     if (res.code === 14002) {
@@ -127,8 +130,8 @@ export default class Location extends Component {
                 locationId: value
             }
             console.log('发送的数据：', params);
-            // this.setState({ loading: true });
-            fetchRequest1('/VetSpire/selectProvidersByLocationId', 'POST', params)
+
+            selectProvidersByLocationId(params)
                 .then(res => {
                     console.log('接收到的数据', res);
                     if (res.code === 14002) {
@@ -252,7 +255,7 @@ export default class Location extends Component {
 
     }
 
-    render () {
+    render() {
         return (
             <div id="location223">
                 {/* 关闭缩小 */}

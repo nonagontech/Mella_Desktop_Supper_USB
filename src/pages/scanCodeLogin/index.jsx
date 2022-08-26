@@ -4,10 +4,10 @@ import {
 } from 'antd';
 
 import temporaryStorage from '../../utils/temporaryStorage';
-import { fetchRequest2 } from '../../utils/FetchUtil2';
 import { px } from '../../utils/px'
 
 import './index.less';
+import { loginWithQRcode } from '../../api/melladesk/user';
 
 let storage = window.localStorage;
 let flog = false
@@ -34,7 +34,7 @@ export default class ScanCodeLogin extends Component {
     this.timer && clearInterval(this.timer)
   }
   _getUser = () => {
-    fetchRequest2(`/user/loginWithQRcode/${temporaryStorage.QRToken}`)
+    loginWithQRcode(temporaryStorage.QRToken)
       .then(res => {
         console.log('-----：', res);
         if (res.flag === true) {
@@ -129,19 +129,6 @@ export default class ScanCodeLogin extends Component {
 
 
 
-              // storage.userId = res.data.userId
-              // storage.roleId = res.data.roleId
-              // if (res.data.lastWorkplaceId) {
-              //   storage.lastWorkplaceId = res.data.lastWorkplaceId
-              // } else {
-              //   storage.lastWorkplaceId = ''
-              // }
-              // if (res.data.lastOrganization) {
-              //   storage.lastOrganization = res.data.lastOrganization
-              // } else {
-              //   storage.lastOrganization = ''
-              // }
-              // this.props.history.push('/uesr/selectExam')
 
 
               break;

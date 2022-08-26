@@ -9,13 +9,13 @@ import { PlusOutlined } from '@ant-design/icons';
 
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
 import temporaryStorage from '../../utils/temporaryStorage'
-import { fetchRequest2 } from '../../utils/FetchUtil2';
 import { px } from '../../utils/px';
 import Button from '../../utils/button/Button'
 import MyModal from '../../utils/myModal/MyModal';
 
 import './index.less';
 import { checkUser, mellaLogin } from '../../api';
+import { inviteUserByEmail } from '../../api/melladesk/user';
 export default class InviteTeam extends Component {
     state = {
         tags: [],
@@ -144,7 +144,8 @@ export default class InviteTeam extends Component {
             visible: true
         })
         console.log('入参:', tags);
-        fetchRequest2(`/user/inviteUserByEmail/${userId}/${organizationId}`, "POST", tags)
+
+        inviteUserByEmail(userId, organizationId, tags)
             .then(res => {
                 console.log(res);
                 if (res.flag === true) {

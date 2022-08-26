@@ -27,7 +27,6 @@ import {
   setMellaMeasurePartFun,
 } from "../../../store/actions";
 import Draggable from "react-draggable";
-import { fetchRequest2 } from "../../../utils/FetchUtil2";
 import { px, mTop } from "../../../utils/px";
 import moment from "moment";
 import electronStore from "../../../utils/electronStore";
@@ -37,7 +36,9 @@ import {
   deletePetExamByExamId,
   ezyvetGetPetLatestExam,
   getPetExamByPetId,
+  healthstatus,
   updatePetExam,
+  updateVitalsTemperatureByVitalId,
   vetspireGetPetLatestExam
 } from "../../../api";
 
@@ -347,7 +348,8 @@ const MeasuredData = ({
             consult_id,
             temperature
           }
-          fetchRequest2(`/EzyVet/healthstatus/${paramId}/${petVitalId}`, "PATCH", parames1, `Bearer ${storage.connectionKey}`)
+
+          healthstatus(paramId, petVitalId, parames1)
             .then(res => {
               if (res.code === 10004 && res.msg === 'ezyvet token失效') {
                 storage.connectionKey = res.newToken;
@@ -392,7 +394,8 @@ const MeasuredData = ({
             consult_id,
             temperature
           }
-          fetchRequest2(`/EzyVet/healthstatus/${paramId}/${petVitalId}`, "PATCH", parames1, `Bearer ${storage.connectionKey}`)
+
+          healthstatus(paramId, petVitalId, parames1)
             .then(res => {
               if (res.flag) {
                 message.success('Data successfully saved in EzyVet')
@@ -427,7 +430,8 @@ const MeasuredData = ({
             APIkey: storage.connectionKey,
             temp: temperature
           }
-          fetchRequest2(`/VetSpire/updateVitalsTemperatureByVitalId`, "POST", params)
+
+          updateVitalsTemperatureByVitalId(params)
             .then(res => {
               if (res.flag) {
                 message.success('Data successfully saved in Vetspire')

@@ -755,11 +755,7 @@ class DoctorAddPet extends Component {
       <Spin spinning={this.state.spin} size="large">
         <div id="doctorAddPet">
           <div className="heard">
-            <Heard
-              onReturn={() => {
-                this.props.history.goBack()
-              }}
-            />
+            <Heard />
           </div>
           <div className="editPetInfo_top" >
             <div className="title" style={{ marginBottom: px(20), marginTop: px(20) }}>{`New Pet`}</div>

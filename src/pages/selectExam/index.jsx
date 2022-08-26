@@ -6,15 +6,16 @@ import {
   Button,
   Space
 } from 'antd';
-import { SyncOutlined ,SearchOutlined} from '@ant-design/icons';
+import { SyncOutlined, SearchOutlined } from '@ant-design/icons';
 
-import { fetchRequest2 } from '../../utils/FetchUtil2';
+
 import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
 
 import moment from 'moment'
 import Highlighter from 'react-highlight-words';
 
 import './index.less';
+import { selectExamByPatientId } from '../../api';
 
 let storage = window.localStorage;
 export default class SelectExam extends Component {
@@ -31,7 +32,7 @@ export default class SelectExam extends Component {
 
   }
 
-  componentDidMount () {
+  componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     if (window.screen.height < 1000) {
       ipcRenderer.send('table')
@@ -125,7 +126,7 @@ export default class SelectExam extends Component {
       }
       console.log('发送获取exam数据', sendData);
 
-      fetchRequest2('/VetSpire/selectExamByPatientId', 'POST', sendData)
+      selectExamByPatientId(sendData)
         .then(res => {
           console.log('接收exam数据', i, res);
           this.setState({ loading: false, spin: false });
@@ -278,7 +279,7 @@ export default class SelectExam extends Component {
     })
     this._getData()
   }
-  render () {
+  render() {
     const columns = [
       {
         title: 'Pet Name',
