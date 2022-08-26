@@ -1,26 +1,43 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { connect } from "react-redux";
 import { Layout, message, Input, Modal, Table, Popconfirm, Select } from "antd";
-import ReactECharts from "echarts-for-react";
-import propTypes from "prop-types";
-import moment from "moment";
 import { LoadingOutlined } from "@ant-design/icons";
-import Draggable from "react-draggable";
-import { px, mTop } from "../../utils/px";
-import HeaderItem from "./../temperaturePage/components/headerItem";
-import electronStore from "../../utils/electronStore";
-import _ from "lodash";
+
 import edit from "./../../assets/images/edit.png";
 import del from "./../../assets/images/del.png";
 import start from "./../../assets/img/start.png";
 import placement_gang from "./../../assets/images/placement_gang.png";
 import placement_er from "./../../assets/images/placement_er.png";
 import palcement_ye from "./../../assets/images/palcement_ye.png";
+
+import HeaderItem from "./../temperaturePage/components/headerItem";
+import { px, mTop } from "../../utils/px";
+import electronStore from "../../utils/electronStore";
+import UnassignModal from './../../components/UnassignModal/UnassignModal';
+import SelectPet from "../../components/selectPetModal";
+import AddPetModal from "../../components/addPetModal";
+import {
+  addAllClinical,
+  deletePetExamByExamId,
+  getClinicalDataByExamId,
+  getPetExamAndClinicalByPetId,
+  getPetExamByDoctorId,
+  updatePetExam,
+  updatePetInfo,
+  addAndSavePetExam,
+  addDeskPet,
+} from "../../api";
+
+import { connect } from "react-redux";
 import { setTest } from "../../store/actions";
-import "./clinical.less";
-import MyModal from "../../utils/myModal/MyModal";
-import UnassignModal from './../../components/UnassignModal/UnassignModal'
-import { addAllClinical, deletePetExamByExamId, getClinicalDataByExamId, getPetExamAndClinicalByPetId, getPetExamByDoctorId, updatePetExam, updatePetInfo } from "../../api";
+import ReactECharts from "echarts-for-react";
+import propTypes from "prop-types";
+import moment from "moment";
+import Draggable from "react-draggable";
+import _ from "lodash";
+
+import "./index.less";
+
+
 let resyncDeviceIsClick = true; //用于控制多次点击重新配对按钮
 let storage = window.localStorage;
 
@@ -88,14 +105,15 @@ const ClinicalStudy = ({
   const [memo, setMemo] = useState("");
   const [windowWidth, setWindowWidth] = useState(px(500));
   const [WeightValue, setWeightValue] = useState('');
-
   const echartsElement = useRef(null);
   const clinicalRef = useRef(null);
-
   const [assignVisible, setAssignVisible] = useState(false);
   const [seleceEmergencies, setSeleceEmergencies] = useState({});
-
   const [lastWorkplaceId, setLastLastWorkplaceId] = useState('');
+  const [selectPetVisible, setSelectPetVisible] = useState(false);//选择宠物弹窗显隐
+  const [addPetVisible, setAddPetVisible] = useState(false);//添加新宠物弹窗显隐
+  const [selectPetModalLoading, setSelectPetModalLoading] = useState(false);//分配宠物后调用接口加载
+  const [addPetModalLoading, setAddPetModalLoading] = useState(false);//添加新宠物调用接口加载
 
   //分辨率变化
   const chartsBox = useCallback((node) => {
@@ -235,15 +253,11 @@ const ClinicalStudy = ({
   const _getHistory11 = (petId) => {
     let historys = [];
     setLoading(true);
-
     getPetExamAndClinicalByPetId(petId)
       .then((res) => {
-        // console.log("获取历史记录", res);
         setLoading(false);
-
         if (res.flag === true) {
           let datas = res.data;
-          console.log("-------", datas);
           for (let i = datas.length - 1; i >= 0; i--) {
             let data = datas[i];
 
@@ -274,7 +288,6 @@ const ClinicalStudy = ({
             if (clinicalDataEntity) {
               Tem = Tem || clinicalDataEntity.data0;
             }
-            // console.log('==============', Tem);
             Tem = Tem ? Tem : 0;
 
             let time = null;
@@ -305,7 +318,6 @@ const ClinicalStudy = ({
             };
             historys.push(json);
           }
-          console.log("---", historys);
           let historyData = [];
           for (let i = 0; i < historys.length; i++) {
             let history = historys[i];
@@ -931,19 +943,16 @@ const ClinicalStudy = ({
   };
   const _history = () => {
     const _del = (key, record) => {
-      // console.log("删除", key, record);
-      /**------------这里还要删除后台的数据------------ */
       deletePetExamByExamId(key)
         .then(
           (res) => {
             if (res.flag === true) {
               const historyData1 = [...historyData];
-              console.log("删除成功", historyData1);
               setHistoryData(
                 historyData1.filter((item) => item.historyId !== key)
               );
             } else {
-              console.log("删除失败");
+              message.error('fail to delete!');
             }
           }
         );
@@ -959,7 +968,6 @@ const ClinicalStudy = ({
         furLength,
         note,
       } = record;
-      console.log("转换前：", record);
       let editHeartRate =
         heartRate !== null && heartRate !== undefined ? heartRate : "";
       let editBloodPressure =
@@ -1018,7 +1026,6 @@ const ClinicalStudy = ({
       setTipSpin(true);
       getClinicalDataByExamId(id)
         .then((res) => {
-          console.log("此条记录的全部数据：", res);
           setTip("");
           setTipSpin(false);
           if (res.flag) {
@@ -1043,7 +1050,6 @@ const ClinicalStudy = ({
                 }
               }
               let Temp = datas[datas.length - 1].data0 || "";
-              console.log("----------------", Temp);
               setEcharsData(echarsData);
               setTemp(Temp);
               setShowHistoryEchart(true);
@@ -1057,7 +1063,6 @@ const ClinicalStudy = ({
         });
     };
     const isflog = window.screen.height < 1000 ? true : false;
-
     const columns = [
       {
         title: "",
@@ -1083,15 +1088,12 @@ const ClinicalStudy = ({
                 <div
                   className="assign"
                   style={{
-                    // width: mTop(60),
-                    // height: mTop(28),
                     fontSize: px(14),
                   }}
                   onClick={() => {
-                    setAssignVisible(true)
-                    setSeleceEmergencies(record)
-                    console.log('------', storage.lastOrganization);
-                    setLastLastWorkplaceId(storage.lastOrganization)
+                    setSelectPetVisible(true);
+                    setSeleceEmergencies(record);
+                    setLastLastWorkplaceId(storage.lastOrganization);
                   }}
                 >
                   Assign
@@ -1649,6 +1651,63 @@ const ClinicalStudy = ({
       </div>
     );
   };
+  //分配宠物walk-in信息
+  const assignPet = (value) => {
+    setSelectPetModalLoading(true);
+    let parmes = {
+      petId: value.petId,
+      clinicalDatagroupId: seleceEmergencies.clinicalDatagroupId,
+    };
+    addAndSavePetExam(seleceEmergencies.historyId, parmes)
+      .then((res) => {
+        setSelectPetModalLoading(false);
+        if (res.flag === true) {
+          setSelectPetVisible(false);
+          message.success("Assigned successfully");
+        } else {
+          message.error("Assignment failed");
+        }
+      })
+      .catch((err) => {
+        setSelectPetModalLoading(false);
+        message.error("Assignment failed");
+      });
+  }
+  //添加宠物弹窗显示
+  const onAddPet = () => {
+    setSelectPetVisible(false);
+    setAddPetVisible(true);
+  }
+  //添加宠物
+  const addNewPet = (value) => {
+    let data = {
+      ...value,
+      weight: parseFloat(value.weight).toFixed(2),
+    };
+    if (storage.lastWorkplaceId) {
+      data.workplaceId = storage.lastWorkplaceId
+    }
+    if (storage.lastOrganization) {
+      data.organizationId = storage.lastOrganization
+    }
+    if (storage.userId) {
+      data.doctorId = storage.userId
+    }
+    setAddPetModalLoading(true);
+    addDeskPet(value.patientId, data)
+      .then((res) => {
+        setAddPetModalLoading(false);
+        if (res.flag === true) {
+
+        } else {
+          message.error('')
+        }
+        console.log('res: ', res);
+      })
+      .catch((err) => {
+        setAddPetModalLoading(false);
+      })
+  }
 
   useEffect(() => {
     if (petDetailInfo.petId) {
@@ -1727,11 +1786,6 @@ const ClinicalStudy = ({
   }, [mellaMeasureNum]);
 
   useEffect(() => {
-    // console.log(
-    //   "=======监听mellaConnectStatus",
-    //   mellaConnectStatus,
-    //   echarsData.Eci.length
-    // );
     if (mellaConnectStatus === "complete" && echarsData.Eci.length > 10) {
       addClinical();
     }
@@ -1795,7 +1849,6 @@ const ClinicalStudy = ({
     }
   }, [roomTemperature, referenceRectalTemperature, bodyConditionScore, furLength, heartRate, bloodPressure, respiratoryRate, WeightValue, petDetailInfo.petId])
 
-
   useEffect(() => {
     if (biggieBodyWeight !== 0) {
       if (units === '℉') {
@@ -1822,18 +1875,6 @@ const ClinicalStudy = ({
         }}
         ref={clinicalRef}
       >
-        <UnassignModal
-          assignVisible={assignVisible}
-          onChangeVisible={(val) => {
-            console.log('返回的数据', val);
-            setAssignVisible(val);
-          }}
-          lastWorkplaceId={lastWorkplaceId}
-          seleceEmergencies={seleceEmergencies}
-          success={() => {
-            _getEmergencyHistory();
-          }}
-        />
         <div
           className="headerContentBox"
           style={{ background: "#fff", position: "relative" }}
@@ -1850,19 +1891,12 @@ const ClinicalStudy = ({
             <div className="r">
               {/*顶部按钮Re-sync Base*/}
               {mellaConnectStatus === "disconnected" && (
-                <div
-                  className="bb1"
-                // style={{ left: px(150) }}
-                >
+                <div className="bb1">
                   <div
                     className="btn78"
-                    // style={{ width: px(220), height: mTop(30), fontSize: px(16) }}
                     onClick={() => {
-                      console.log("点击了切换按钮");
-
                       if (resyncDeviceIsClick === true) {
                         resyncDeviceIsClick = false;
-                        console.log("发送给主进程切换按钮");
                         let ipcRenderer = window.electron.ipcRenderer;
                         ipcRenderer.send("qiehuan");
                         const time = setTimeout(() => {
@@ -1877,13 +1911,9 @@ const ClinicalStudy = ({
                 </div>
               )}
               {echars()}
-
               {/* 底部宠物信息 */}
               {_foot()}
               {_editModal()}
-
-
-
               {tipSpin && (
                 // true &&
                 <div className="modal">
@@ -1902,13 +1932,43 @@ const ClinicalStudy = ({
             </div>
           </div>
         </div>
+        {
+          selectPetVisible && (
+            <SelectPet
+              visible={selectPetVisible}
+              destroyOnClose
+              width={400}
+              onCancel={() => setSelectPetVisible(false)}
+              onSelect={(value) => {
+                assignPet(value);
+              }}
+              onAddPet={() => onAddPet()}
+              onLoading={selectPetModalLoading}
+            />
+          )
+        }
+        {
+          addPetVisible && (
+            <AddPetModal
+              visible={addPetVisible}
+              destroyOnClose
+              width={400}
+              onCancel={() => {
+                setAddPetVisible(false);
+                setSelectPetVisible(true);
+              }}
+              onConfirm={(value) => {
+                console.log('value: ', value);
+                addNewPet(value);
+              }}
+              onLoading={addPetModalLoading}
+            />
+          )
+        }
       </div>
-
-
     </>
   );
 };
-
 
 ClinicalStudy.propTypes = {
   bodyHeight: propTypes.number,

@@ -371,7 +371,6 @@ const MeasuredData = ({
         message.error('Failed to obtain the latest medical record, the data is saved in Mella')
       })
   }
-
   const reupdataEzyvet = (Temp, petVitalId) => {
     let params = {
       id: patientId
@@ -412,8 +411,6 @@ const MeasuredData = ({
         message.error('Failed to obtain the latest medical record, the data is saved in Mella')
       })
   }
-
-
   const updataVetspire = (Temp) => {
     let datas = {
       APIkey: storage.connectionKey,
@@ -449,7 +446,6 @@ const MeasuredData = ({
         message.error('Failed to obtain the latest medical record, the data is saved in Mella')
       })
   }
-
 
   useEffect(() => {
     getPetTemperatureData();

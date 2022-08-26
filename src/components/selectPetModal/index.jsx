@@ -21,7 +21,7 @@ import _ from 'lodash';
 
 import './index.less';
 
-const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onCancel }) => {
+const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onCancel, onLoading, onAddPet }) => {
   let storage = window.localStorage;
   const [isModalVisible, setIsModalVisible] = useState(false);//控制弹窗的显隐
   const [isdestroyOnClose, setIsdestroyOnClose] = useState(false);//是否清除弹窗里面的内容
@@ -31,7 +31,8 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
   const [searchValue, setSearchValue] = useState('');//搜索框的值
   const [selePetValue, setSelePetValue] = useState();//选中的宠物值
   const [selePetIndex, setSelePetIndex] = useState(-1);//选中的宠物下标
-  const [loading, setLoading] = useState(false);//加载
+  const [loading, setLoading] = useState(false);//数据加载
+  const [btnLoading, setBtnLoading] = useState(false);//按钮加载
 
   //获取所有宠物
   const getAllPet = () => {
@@ -54,6 +55,7 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
           let newData = [];
           _.map(res.data, (item, index) => {
             newData.push({
+              petId: item.petId,
               petIndex: index,
               birthday: item.birthday,
               breedName: item.breedName,
@@ -127,6 +129,11 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
     }
     setSearchPetList(searchData);
   }
+  //取消或添加宠物
+  const handleCancelOrAddPet = () => {
+    onAddPet(false);
+    setIsModalVisible(visible);
+  }
 
   useEffect(() => {
     if (visible === true || visible === false) {
@@ -158,6 +165,15 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
     }
     return (() => { })
   }, []);
+
+  useEffect(() => {
+    if (onLoading === true || onLoading === false) {
+      setBtnLoading(onLoading);
+    } else {
+      setBtnLoading(false);
+    }
+    return(() => {})
+  }, [onLoading]);
 
   return (
     <>
@@ -219,7 +235,7 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
                   shape="round"
                   size="large"
                   block
-                  onClick={handleOk}
+                  onClick={handleCancelOrAddPet}
                 >
                   +Add New Pet
                 </Button>
@@ -229,6 +245,7 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
                   size="large"
                   block
                   onClick={handleOk}
+                  loading={btnLoading}
                 >
                   Confirm
                 </Button>
