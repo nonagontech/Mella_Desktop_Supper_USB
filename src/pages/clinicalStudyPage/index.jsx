@@ -114,6 +114,7 @@ const ClinicalStudy = ({
   const [addPetVisible, setAddPetVisible] = useState(false);//添加新宠物弹窗显隐
   const [selectPetModalLoading, setSelectPetModalLoading] = useState(false);//分配宠物后调用接口加载
   const [addPetModalLoading, setAddPetModalLoading] = useState(false);//添加新宠物调用接口加载
+  const [addPetId, setAddPetId] = useState('');//添加宠物成功后返回的宠物id
 
   //分辨率变化
   const chartsBox = useCallback((node) => {
@@ -392,7 +393,7 @@ const ClinicalStudy = ({
         if (res.flag === true) {
           let datas = res.data;
           for (let i = datas.length - 1; i >= 0; i--) {
-            if (datas[i].petId === null) {
+            if (datas[i].petId === null && datas[i].clinicalDatagroupId !== null && datas[i].temperature !== null) {
               let {
                 petId,
                 examId,
@@ -445,7 +446,6 @@ const ClinicalStudy = ({
           //把所有数据拿完后做个排序
 
           let historyData = ForwardRankingDate(historys, "createTime");
-          console.log("historyData:", historyData);
           setHistoryData(historyData);
         }
       })
@@ -1662,8 +1662,10 @@ const ClinicalStudy = ({
       .then((res) => {
         setSelectPetModalLoading(false);
         if (res.flag === true) {
-          setSelectPetVisible(false);
           message.success("Assigned successfully");
+          setSelectPetVisible(false);
+          setAddPetId('');
+          _getEmergencyHistory();
         } else {
           message.error("Assignment failed");
         }
@@ -1675,6 +1677,7 @@ const ClinicalStudy = ({
   }
   //添加宠物弹窗显示
   const onAddPet = () => {
+    setAddPetId('');
     setSelectPetVisible(false);
     setAddPetVisible(true);
   }
@@ -1682,7 +1685,7 @@ const ClinicalStudy = ({
   const addNewPet = (value) => {
     let data = {
       ...value,
-      weight: parseFloat(value.weight).toFixed(2),
+      weight: value.weight === '' ? '' : parseFloat(value.weight).toFixed(2),
     };
     if (storage.lastWorkplaceId) {
       data.workplaceId = storage.lastWorkplaceId
@@ -1698,11 +1701,13 @@ const ClinicalStudy = ({
       .then((res) => {
         setAddPetModalLoading(false);
         if (res.flag === true) {
-
+          message.success('Adding pets successfully');
+          setAddPetId(res.data.petId);
+          setAddPetVisible(false);
+          setSelectPetVisible(true);
         } else {
-          message.error('')
+          message.error('patientId already exists');
         }
-        console.log('res: ', res);
       })
       .catch((err) => {
         setAddPetModalLoading(false);
@@ -1736,6 +1741,7 @@ const ClinicalStudy = ({
   useEffect(() => {
     mellaMeasureNumCopy = mellaMeasureNum;
     // setTest(echartsElement);
+    return (() => { })
   }, []);
 
   useEffect(() => {
@@ -1856,8 +1862,6 @@ const ClinicalStudy = ({
       } else {
         setWeightValue(biggieBodyWeight.toFixed(2));
       }
-
-
     }
     return (() => { })
   }, [biggieBodyWeight])
@@ -1938,7 +1942,11 @@ const ClinicalStudy = ({
               visible={selectPetVisible}
               destroyOnClose
               width={400}
-              onCancel={() => setSelectPetVisible(false)}
+              value={addPetId}
+              onCancel={() => {
+                setAddPetId('');
+                setSelectPetVisible(false);
+              }}
               onSelect={(value) => {
                 assignPet(value);
               }}
@@ -1958,7 +1966,6 @@ const ClinicalStudy = ({
                 setSelectPetVisible(true);
               }}
               onConfirm={(value) => {
-                console.log('value: ', value);
                 addNewPet(value);
               }}
               onLoading={addPetModalLoading}

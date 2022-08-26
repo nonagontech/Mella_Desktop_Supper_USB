@@ -155,7 +155,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     listAllPetInfo(params)
       .then(res => {
         setLoading(false)
-        console.log('查询所有宠物', res);
         if (res.flag === true && res.data) {
           let oldList = res.data
           let petArr = dataSort(oldList)
@@ -295,9 +294,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     }
 
     let options = orgArr.map((item, index) => {
-      // console.log('item', item);
       if (index === 1) {
-        console.log('+++++++', item);
       }
       return (
         <Option

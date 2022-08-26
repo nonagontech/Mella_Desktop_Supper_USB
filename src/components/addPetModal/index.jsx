@@ -7,7 +7,6 @@ import {
   Button,
   Select,
 } from "antd";
-import { SearchOutlined } from '@ant-design/icons';
 
 import UploadImg from "../../utils/uploadImg/UploadImg";
 
@@ -21,7 +20,6 @@ import _ from 'lodash';
 import './index.less';
 
 const AddPetModal = ({ visible, width, title, destroyOnClose, value, onConfirm, onCancel, onLoading }) => {
-  console.log('onLoading: ', onLoading);
   const { Option } = Select;
   let storage = window.localStorage;
   const [isModalVisible, setIsModalVisible] = useState(false);//控制弹窗的显隐
@@ -33,9 +31,9 @@ const AddPetModal = ({ visible, width, title, destroyOnClose, value, onConfirm, 
   const [patientId, setPatientId] = useState('');//用户输入的病人id
   const [petName, setPetName] = useState('');//用户输入的宠物名字
   const [ownerName, setOwnerName] = useState('');//用户输入的主人名字
-  const [breedId, setBreedId] = useState();//用户选择的宠物品种id
-  const [petAge, setPetAge] = useState();//用户输入的宠物年龄
-  const [petWeight, setPetWeight] = useState();//用户输入的宠物体重
+  const [breedId, setBreedId] = useState('');//用户选择的宠物品种id
+  const [petAge, setPetAge] = useState('');//用户输入的宠物年龄
+  const [petWeight, setPetWeight] = useState('');//用户输入的宠物体重
   const [btnLoading, setBtnLoading] = useState(false);//按钮加载
 
 
