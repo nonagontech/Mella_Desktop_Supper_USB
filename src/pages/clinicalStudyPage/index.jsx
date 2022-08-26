@@ -185,9 +185,9 @@ const ClinicalStudy = ({
         datas.doctorId = storage.userId;
         datas.userId = storage.userId;
       }
-      let ubdateWeight = units === "℉" ? (WeightValue / 2).toFixed(2) : WeightValue.toFixed(2);
+      console.log('----====---', WeightValue);
+      let ubdateWeight = units === "℉" ? (parseFloat(WeightValue / 2)).toFixed(2) : parseFloat(WeightValue).toFixed(2);
       let updatePetInfoData = {
-
         weight: ubdateWeight
       }
       if (storage.lastOrganization) {
