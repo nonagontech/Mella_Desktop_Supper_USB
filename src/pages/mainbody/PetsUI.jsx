@@ -390,7 +390,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
           <img src={petIcon} alt="" width={px(25)} style={{ marginRight: px(10) }} />
           <div className="titleText" >Pets</div>
         </div>
-        <div className="sort" style={{ paddingLeft: px(20) }}>
+        <div className="sort" style={{ paddingLeft: px(15), display: 'flex' }}>
           <Dropdown overlay={menu} trigger={['click']}>
             <div className="sortBox">
               <div className="sortText" >
@@ -399,6 +399,20 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
               <img src={xia} alt="" width={px(15)} style={{ marginLeft: px(10) }} />
             </div>
           </Dropdown>
+          <Tooltip placement='bottom' title='Add a Pet'>
+            <div
+              className="addImgBox"
+              onClick={() => history.push("/pet/doctorAddPet")}
+            >
+              <img
+                src={deivceAdd}
+                alt=""
+                width={px(20)}
+                style={{ marginLeft: px(12) }}
+              />
+            </div>
+          </Tooltip>
+
         </div>
         {petListUI()}
         <div className="walkBtn">

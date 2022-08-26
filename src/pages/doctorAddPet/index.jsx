@@ -7,7 +7,6 @@ import redDog from '../../assets/images/reddog.png'
 import redCat from '../../assets/images/redcat.png'
 import redother from '../../assets/images/redother.png'
 import other from '../../assets/images/other.png'
-import Close from './../../assets/img/close.png'
 import nextImg from '../../assets/img/nextImg.png'
 import selectphoto from '../../assets/images/sel.png'
 import dui from '../../assets/images/dui.png'
@@ -16,10 +15,7 @@ import male from '../../assets/images/male.png'
 
 import electronStore from '../../utils/electronStore';
 import { mTop, px, win } from '../../utils/px';
-import MyModal from '../../utils/myModal/MyModal';
 import Heard from '../../utils/heard/Heard';
-import PhoneBook from '../../utils/phoneBook/PhoneBook';
-import Button from '../../utils/button/Button';
 import Avatar from '../../components/avatar/Avatar';
 import SelectPetBreed from "../../components/selectPetBreedModal";
 

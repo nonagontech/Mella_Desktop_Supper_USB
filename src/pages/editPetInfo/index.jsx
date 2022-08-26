@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Input, Menu, message, Select, Calendar, Col, Row } from 'antd';
-import { createFromIconfontCN } from '@ant-design/icons';
+import { Input, Menu, message, Select, Calendar, Col, Row, Spin, Modal } from 'antd';
+import { createFromIconfontCN, ExclamationCircleOutlined } from '@ant-design/icons';
 
 import dog from '../../assets/images/pinkdog.png'
 import cat from '../../assets/images/pinkcat.png'
@@ -21,14 +21,24 @@ import electronStore from '../../utils/electronStore';
 import PhoneBook from '../../utils/phoneBook/PhoneBook';
 import Button from '../../utils/button/Button';
 import Avatar from '../../components/avatar/Avatar';
+import SelectPetBreed from "../../components/selectPetBreedModal";
 
 import { connect } from 'react-redux';
 import { petDetailInfoFun } from '../../store/actions';
 import moment from 'moment';
 
+import {
+  checkPatientId,
+  getPetInfoByPatientIdAndPetId,
+  selectBreedBySpeciesId,
+  updatePetInfo,
+  deletePetByPetId
+} from '../../api/mellaserver/pet';
+import {
+  listDoctorsByAdmin
+} from '../../api/mellaserver/organization';
+
 import './index.less';
-import { checkPatientId, getPetInfoByPatientIdAndPetId, selectBreedBySpeciesId, updatePetInfo } from '../../api/mellaserver/pet';
-import { listDoctorsByAdmin } from '../../api/mellaserver/organization';
 
 const { SubMenu } = Menu;
 const { Option } = Select;
@@ -37,8 +47,6 @@ const MyIcon = createFromIconfontCN({
 })
 let storage = window.localStorage;
 let errPatientId = ''
-let url = 'https://www.mellaserver.com/api/mellaserver'
-// let url = 'http://192.168.0.36:8080/mellaserver'
 class EditPetInfo extends Component {
   state = {
     dogImg: dog,
@@ -89,29 +97,13 @@ class EditPetInfo extends Component {
     selectUserJson: {},
     selectUserId: '',
     confirmSelectUserJson: {},
-    petUrl: ''
-
-
+    petUrl: '',
+    deletePetModalVisible: false,
   }
 
   componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('big', win())
-    // if (this.props.location.participate) {
-    //   let props = this.props.location.participate
-    //   console.log(props);
-    //   this.setState({
-    //     patientId: props.patientId,
-    //     petId: props.petId,
-    //     oldPatientId: props.patientId,
-
-    //   }, () => {
-    //     this._getPetInfo()
-    //   })
-    //   console.log(props);
-    // } else {
-    //   this._getPetInfo()
-    // }
     let { petDetailInfo } = this.props
     let { petId, patientId, petName, lastName, firstName, breedName, isWalkIn } = petDetailInfo
     if (!isWalkIn) {
@@ -123,13 +115,10 @@ class EditPetInfo extends Component {
         petId,
         oldPatientId: patientId,
         breedName: breedName
-
       }, () => {
         this._getPetInfo()
       })
     }
-
-
     let dogBreed = electronStore.get('dogBreed') || []
     let catBreed = electronStore.get('catBreed') || []
     this.setState({
@@ -139,7 +128,6 @@ class EditPetInfo extends Component {
     this.getBreed('cat')
     this.getBreed('dog')
     this.getUser()
-
     ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
   }
   componentWillUnmount() {
@@ -167,7 +155,6 @@ class EditPetInfo extends Component {
 
     selectBreedBySpeciesId(data)
       .then(res => {
-        // console.log('---', res);
         if (res.code === 0) {
           let arr = []
           res.petlist.map((item, index) => {
@@ -205,19 +192,12 @@ class EditPetInfo extends Component {
     if (storage.lastOrganization) {
       params.organizationId = storage.lastOrganization
     }
-
-    console.log('查询宠物的入参', params);
-
-
     listDoctorsByAdmin(storage.lastOrganization, params)
       .then(res => {
-        console.log('人员列表', res);
-
         if (res.flag === true && res.code === 20000) {
           let data = []
           for (let i = 0; i < res.data.length; i++) {
             let { birthday, email, firstName, lastName, isLimit, isDeleted, phone, url, userId, createTime, roleId } = res.data[i]
-
             let json = {
               insertedAt: createTime,
               breedName: `${lastName} ${firstName}`,
@@ -237,18 +217,14 @@ class EditPetInfo extends Component {
           })
           this.setState({
             doctorArr: data,
-            // parentList: data //这里只是测试，后期删除
-
           })
 
         }
       })
       .catch(err => {
         console.log(err);
-
       })
   }
-
   _getPetInfo = () => {
     let { patientId, petId } = this.state
     let datas = {
@@ -269,16 +245,13 @@ class EditPetInfo extends Component {
     this.setState({
       spin: true
     })
-    console.log('入参：', datas);
     getPetInfoByPatientIdAndPetId(datas)
     getPetInfoByPatientIdAndPetId(datas)
       .then(res => {
         this.setState({
           spin: false
         })
-        console.log('>>>>>>>>>>>>>>', res);
         if (res.flag === true) {
-          //有宠物，进入1
           let datas = []
           for (let i = 0; i < res.data.length; i++) {
             if (res.data[i].petId === this.state.petId) {
@@ -286,17 +259,12 @@ class EditPetInfo extends Component {
               break
             }
           }
-          console.log('获取到宠物', datas);
           let { petId, petName, lastName, firstName, breedName, isMix, birthday, weight, url, gender, speciesId, petSpeciesBreedId } = datas
-
           if (isMix !== true) {
             isMix = false
           }
-          // petName = isNull(petName)
           lastName = isNull(lastName)
           firstName = isNull(firstName)
-          // breedName = isNull(breedName)
-
           let confirmSelectBreedJson = {}
           if (petSpeciesBreedId || petSpeciesBreedId === 0) {
             confirmSelectBreedJson = {
@@ -304,7 +272,6 @@ class EditPetInfo extends Component {
               petSpeciesBreedId
             }
           }
-
           url = isNull(url)
           if (birthday != null) {
             birthday = moment(birthday).format('MMMM D, YYYY')
@@ -365,9 +332,7 @@ class EditPetInfo extends Component {
         return value
       }
     }
-
   }
-
   /**------------------顶部start------------------------ */
   _close = () => {
     let ipcRenderer = window.electron.ipcRenderer
@@ -405,7 +370,6 @@ class EditPetInfo extends Component {
       closebgc: ''
     })
   }
-
   /**------------------顶部end------------------------ */
   selectWZ = (val) => {
     let { catBreed, dogBreed } = this.state
@@ -690,7 +654,6 @@ class EditPetInfo extends Component {
                 if (storage.lastOrganization) {
                   params.organizationId = storage.lastOrganization
                 }
-
                 checkPatientId(params)
                   .then(res => {
                     if (res.flag === false) {
@@ -713,7 +676,6 @@ class EditPetInfo extends Component {
           <div className="infoInput flex"
             style={{ marginTop: px(8), flexDirection: 'row', justifyContent: 'space-between', cursor: 'pointer', }}
             onClick={() => {
-
               this.setState({
                 // selectUser: true
               })
@@ -861,11 +823,36 @@ class EditPetInfo extends Component {
 
     )
   }
+  //确认删除弹窗
+  confirm = () => {
+    Modal.confirm({
+      title: 'Delete',
+      icon: <ExclamationCircleOutlined />,
+      content: 'Deleting this pet also deletes all health records associated with this pet. Are you sure?',
+      centered: 'true',
+      onOk: this.deletPet
+    });
+  };
+  //删除宠物
+  deletPet = () => {
+    let data = {
+      petId: this.state.petId
+    }
+    deletePetByPetId(data)
+      .then(ref => {
+        if (ref.flag === true) {
+          message.success('Successfully Delete');
+          this.props.petDetailInfoFun({});
+          this.props.history.goBack();
+        } else {
+          message.error('Fail to Delete!');
+        }
+      })
+  }
+
 
   render() {
     const { closeColor, closebgc, minbgc } = this.state
-
-
     return (
       <div id="editPetInfo">
         {/* 头部 */}
@@ -909,6 +896,12 @@ class EditPetInfo extends Component {
           {this._weight()}
         </div>
         <div className="editPetInfo_foot">
+          <div className='deletePet'
+            onClick={this.confirm}
+          >
+            Delete Pet
+          </div>
+
           <div className="save"
             onClick={() => {
               let { petName, birthday, firstName, lastName, petSpeciesBreedId, isMix, weight, gender, unit, imageId, breedName, petId, confirmSelectBreedJson, confirmSelectUserJson } = this.state
@@ -1008,88 +1001,33 @@ class EditPetInfo extends Component {
             }}
 
           >Save Changes</div>
-
         </div>
         <MyModal
           visible={this.state.spin}
         />
-        <MyModal
-          // visible={true}
-          visible={this.state.selectBreed}
-          element={
-            <div className='myfindOrg' >
-              <div className="orgHeard">
-                <div className="titleicon" style={{ marginTop: px(5) }}>
-                  <div>
-
-                  </div>
-                  <div
-                    onClick={() => {
-                      this.setState({
-                        selectBreed: false,
-                        selectBreedJson: {}
-                      })
-                    }}
-                  >
-                    <img src={Close} alt="" style={{ width: px(25) }} />
-                  </div>
-                </div>
-                <div className="text" >Choose Breed</div>
-
-                <div className="searchBox">
-
-                  <Input
-                    placeholder=" &#xe61b; Search name"
-                    bordered={false}
-                    allowClear={true}
-                    value={this.state.searchBreed}
-                    onChange={(item) => {
-
-                      this.setState({
-                        searchBreed: item.target.value
-                      })
-                    }}
-
-                  />
-
-                </div>
-              </div>
-
-
-              <div className="list" >
-                <PhoneBook
-                  listDate={this.state.breedArr}
-                  confirmSelectBreed={this.state.petSpeciesBreedId}
-                  selectFun={(val) => {
-                    // console.log('从子组件传来的数据', val);
-                    this.setState({
-                      selectBreedJson: val,
-                      petSpeciesBreedId: val.petSpeciesBreedId
-                    })
-
-
-                  }}
-                  searchText={this.state.searchBreed}
-                />
-              </div>
-
-              <div className="foot">
-                <Button
-                  text={'Select'}
-                  onClick={() => {
-                    this.setState({
-                      confirmSelectBreedJson: this.state.selectBreedJson,
-                      selectBreed: false
-                    })
-                  }}
-                />
-
-              </div>
-
-            </div>
-          }
-        />
-
+        {
+          this.state.selectBreed && (
+            <SelectPetBreed
+              visible={this.state.selectBreed}
+              destroyOnClose
+              width={400}
+              value={this.state.petSpeciesBreedId}
+              onSelect={(value) => {
+                this.setState({
+                  selectBreed: false,
+                  selectBreedJson: value,
+                  petSpeciesBreedId: value.petSpeciesBreedId,
+                  confirmSelectBreedJson: value,
+                })
+              }}
+              onCancel={() => {
+                this.setState({
+                  selectBreed: false,
+                })
+              }}
+            />
+          )
+        }
         <MyModal
           visible={this.state.selectUser}
           element={
@@ -1097,7 +1035,6 @@ class EditPetInfo extends Component {
               <div className="orgHeard">
                 <div className="titleicon" style={{ marginTop: px(5) }}>
                   <div>
-
                   </div>
                   <div
                     onClick={() => {
@@ -1111,9 +1048,7 @@ class EditPetInfo extends Component {
                   </div>
                 </div>
                 <div className="text" >Choose Parents</div>
-
                 <div className="searchBox">
-
                   <Input
                     placeholder=" &#xe61b; Search name"
                     bordered={false}
@@ -1125,30 +1060,22 @@ class EditPetInfo extends Component {
                         searchBreed: item.target.value
                       })
                     }}
-
                   />
-
                 </div>
               </div>
-
-
               <div className="list" >
                 <PhoneBook
                   listDate={this.state.doctorArr}
                   confirmSelectBreed={this.state.selectUserId}
                   selectFun={(val) => {
-
                     this.setState({
                       selectUserJson: val,
                       selectUserId: val.petSpeciesBreedId
                     })
-
-
                   }}
                   searchText={this.state.searchBreed}
                 />
               </div>
-
               <div className="foot">
                 <Button
                   text={'Select'}
@@ -1159,13 +1086,10 @@ class EditPetInfo extends Component {
                     })
                   }}
                 />
-
               </div>
-
             </div>
           }
         />
-
       </div>
     )
   }

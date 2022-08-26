@@ -7,7 +7,6 @@
  */
 import axios from 'axios'
 let storage = window.localStorage;
-
 //创建axios实例
 const service = axios.create({
     baseURL: "",
