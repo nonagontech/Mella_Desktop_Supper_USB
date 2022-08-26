@@ -6,12 +6,12 @@ import {
 } from 'antd';
 import { CaretDownFilled } from '@ant-design/icons';
 
-import imgArray from './../../utils/areaCode/imgArray'
-import MaxMin from './../../utils/maxminreturn/MaxMinReturn'
-import countryList from './../../utils/areaCode/country';
-import temporaryStorage from './../../utils/temporaryStorage'
-import { px } from './../../utils/px';
-import MyModal from './../../utils/myModal/MyModal'
+import imgArray from '../../utils/areaCode/imgArray'
+import MaxMin from '../../utils/maxminreturn/MaxMinReturn'
+import countryList from '../../utils/areaCode/country';
+import temporaryStorage from '../../utils/temporaryStorage'
+import { px } from '../../utils/px';
+import MyModal from '../../utils/myModal/MyModal'
 
 import { checkUser, deskRegistAWSSNS, registByAWSSES } from '../../api';
 
@@ -55,6 +55,7 @@ export default class VetPrifile extends Component {
   }
 
   componentDidMount() {
+    console.log('_________________config', process.env, process.env.REACT_APP_MELLASERVER_BASE_URL,);
     //发送指令让main.js创建一个big窗口
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('big')
@@ -103,111 +104,6 @@ export default class VetPrifile extends Component {
     })
   }
 
-
-  _next1 = () => {
-    let { name, lastName, email, code, phone, password1, password, } = this.state
-    message.destroy()
-    console.log({ name, email, code, phone, password1, password, });
-    email = email.toLocaleLowerCase()
-    if (name.length <= 0) {
-      message.error('Please enter your first name', 3)
-      return
-    }
-    if (lastName.length <= 0) {
-      message.error('Please enter your last name', 3)
-      return
-    }
-    if (!email) {
-      message.error('Please enter the mailbox number', 3)
-      return
-    } else {
-      if (email.indexOf('@') === -1 || email.indexOf('@') === 0 || email.indexOf('@') === email.length - 1) {
-        message.error('E-mail format is incorrect', 3)
-        return
-      }
-    }
-    // if (!phone) {
-    //   message.error('Please enter the phone number', 3)
-    //   return
-    // }
-    if (password.length <= 0 || password1.length <= 0) {
-      message.error('Please enter the password', 3)
-      return
-    }
-
-    if (password !== password1) {
-      message.error('The password entered twice is incorrect, please re-enter', 3)
-      return
-    }
-    this.setState({
-      loadVisible: true
-    })
-    checkUser(email)
-      .then(res => {
-        console.log(res);
-        if (!res.flag) {
-          console.log('邮箱号以被注册，是否忘记密码');
-          this.setState({
-            loadVisible: false,
-            visible: true
-          })
-        }
-        else {
-          console.log('邮箱号可以使用');
-          if (res.code === 11011 || res.code === 11012) {
-            this.setState({
-              loadVisible: false,
-              visible: true
-            })
-            return
-          }
-
-          let params = {
-            firstName: name,
-            lastName,
-            email,
-            // phone: `+${code}${phone}`,
-            hash: password,
-          }
-          if (phone) {
-            params.phone = `+${code}${phone}`
-          }
-          console.log('注册接口的入参：', params);
-          deskRegistAWSSNS(params)
-            .then(res => {
-              this.setState({
-                loadVisible: false
-              })
-              console.log('注册接口返回数据：', res);
-              if (res.flag) {
-                console.log('注册成功了，去验证验证码');
-                temporaryStorage.logupEmailCode = res.data
-                params.code = code
-                params.initPhone = phone
-                params.imgArrayIndex = this.state.imgArrayIndex
-                temporaryStorage.logupVetInfo = params
-                this.props.history.push('/uesr/logUp/VerifyEmail')
-              } else {
-                message.error('registration failed', 3)
-              }
-            })
-            .catch(err => {
-              this.setState({
-                loadVisible: false
-              })
-              message.error(`Error:${err.message}`)
-              console.log('注册接口抛出错误：', err);
-            })
-        }
-      })
-      .catch(err => {
-        this.setState({
-          loadVisible: false
-        })
-        message.error(`Error:${err.message}`)
-        console.log('检测邮箱号的接口出错了', err);
-      })
-  }
   _next = () => {
     let { name, lastName, email, code, phone, password1, password, } = this.state
     message.destroy()
@@ -230,10 +126,6 @@ export default class VetPrifile extends Component {
         return
       }
     }
-    // if (!phone) {
-    //   message.error('Please enter the phone number', 3)
-    //   return
-    // }
     if (password.length <= 0 || password1.length <= 0) {
       message.error('Please enter the password', 3)
       return
@@ -260,6 +152,7 @@ export default class VetPrifile extends Component {
     console.log('注册接口的入参：', params);
     registByAWSSES(params)
       .then(res => {
+        console.log('========------========', res);
         this.setState({
           loadVisible: false
         })
@@ -274,6 +167,7 @@ export default class VetPrifile extends Component {
             break;
 
           case 20000:
+          case 200:
             console.log('可以注册，跳转到下一页');
             temporaryStorage.logupEmailCode = res.data
             params.code = code

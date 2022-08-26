@@ -301,28 +301,7 @@ export default class DoctorSelectExam extends Component {
       }}>
         {/* 关闭缩小 */}
         <Heard
-          onReturn={() => {
-            let { patientId } = this.state
-            if (!patientId) {
-              this.props.history.goBack()
-            } else {
-              this.setState({
-                isSave: true
-              })
-            }
 
-          }}
-          onSearch={(data) => {
-
-            storage.doctorExam = JSON.stringify(data)
-
-            storage.doctorList = JSON.stringify(this.state.data)
-            if (storage.isClinical === 'true') {
-              this.props.history.push({ pathname: '/page8', identity: storage.identity, patientId: data.patientId })
-            } else {
-              this.props.history.push({ pathname: '/page10', })
-            }
-          }}
           blueSearch={true}
         />
         <div style={{ width: '100%', marginTop: px(80), height: px(650), overflowY: 'auto', paddingLeft: '5%', paddingRight: '5%' }}>

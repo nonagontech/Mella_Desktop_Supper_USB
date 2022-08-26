@@ -173,23 +173,7 @@ const Help = () => {
     <>
       <div id="help">
         <div className="heard">
-          <Heard
-            menu8Click={() => {
-              switch (storage.identity) {
-                case '2': history.push({ pathname: '/EzyVetSelectExam', listDate: storage.ezyVetList, defaultCurrent: storage.defaultCurrent })
-                  break;
-                case '1': history.push('/VetSpireSelectExam')
-                  break;
-                case '3': history.push({ pathname: '/uesr/selectExam', listDate: storage.doctorList, defaultCurrent: storage.defaultCurrent })
-                  break;
-                default:
-                  break;
-              }
-            }}
-            onReturn={() => {
-              history.goBack()
-            }}
-          />
+          <Heard />
         </div>
         <div className="body">
           <div className="title">How can we help you?</div>

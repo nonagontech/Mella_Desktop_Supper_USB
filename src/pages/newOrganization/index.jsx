@@ -57,15 +57,10 @@ export default class NewOrganization extends Component {
       countryArr: arr
     })
 
-    //监听屏幕分辩率是否变化，变化就去更改界面内容距离大小
-    ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
 
 
   }
-  componentWillUnmount() {
-    let ipcRenderer = window.electron.ipcRenderer
-    ipcRenderer.removeListener('changeFenBianLv', this.changeFenBianLv)
-  }
+
   changeFenBianLv = (e) => {
     console.log(e);
     let ipcRenderer = window.electron.ipcRenderer

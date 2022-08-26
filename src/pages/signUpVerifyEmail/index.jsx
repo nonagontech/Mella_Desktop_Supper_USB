@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { message, Button } from 'antd'
 
-import MaxMin from './../../utils/maxminreturn/MaxMinReturn';
-import temporaryStorage from './../../utils/temporaryStorage';
-import { px } from './../../utils/px';
-import MyModal from './../../utils/myModal/MyModal';
+import MaxMin from '../../utils/maxminreturn/MaxMinReturn';
+import temporaryStorage from '../../utils/temporaryStorage';
+import { px } from '../../utils/px';
+import MyModal from '../../utils/myModal/MyModal';
 
 import { useHistory } from 'react-router-dom'
 
@@ -95,7 +95,7 @@ const VerifyEmail = () => {
           console.log('验证码验证错误：', err);
         })
     }
-    // history.push('/uesr/logUp/FindWorkplace')
+
   }
 
 

@@ -242,22 +242,7 @@ export default class AdvancedSettings extends Component {
         <div className="heard">
           <Heart
             onReturn={() => { this.props.history.goBack() }}
-            menu8Click={() => {
-              switch (storage.identity) {
-                case '2': this.props.history.push({ pathname: '/EzyVetSelectExam', listDate: storage.ezyVetList, defaultCurrent: storage.defaultCurrent })
 
-                  break;
-                case '1': this.props.history.push('/VetSpireSelectExam')
-
-                  break;
-                case '3': this.props.history.push({ pathname: '/uesr/selectExam', listDate: storage.doctorList, defaultCurrent: storage.defaultCurrent })
-
-                  break;
-
-                default:
-                  break;
-              }
-            }}
           />
           <div className="title">
             <h2>Advanced Settings</h2>

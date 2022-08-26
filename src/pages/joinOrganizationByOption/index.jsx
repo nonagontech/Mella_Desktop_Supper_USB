@@ -283,7 +283,7 @@ export default class FindWorkplace extends Component {
       isOrg: false,
       isWorkplace: false
     })
-    this.props.history.push('/uesr/logUp/NewWorkplace')
+    this.props.history.push('/uesr/logUp/NewOrganization')
   }
   _goWorkplace = () => {
     listAllWorkplaceByOrganizationId(temporaryStorage.logupSelectOrganization.organizationId)
@@ -365,7 +365,7 @@ export default class FindWorkplace extends Component {
           <div className="way" style={{ marginTop: px(20), marginBottom: px(60) }}>
             <div className="item" style={{ paddingTop: px(60) }}
               onClick={() => {
-                // this.props.history.push('/uesr/logUp/FindMyOrganization')
+
                 this.setState({
                   isOrg: true
                 })

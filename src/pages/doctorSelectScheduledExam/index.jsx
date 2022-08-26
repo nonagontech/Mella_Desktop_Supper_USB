@@ -999,14 +999,6 @@ export default class DoctorSelecScheduledtExam extends Component {
           <a style={{ fontSize: px(22) }} href="#"
             onClick={(e) => {
               console.log('我要去添加宠物');
-              // try {
-
-              //   storage.doctorList = JSON.stringify(this.state.data)
-              // } catch (error) {
-              //   console.log('错误信息', error);
-              // }
-              // // /pet/doctorAddPet
-              // this.props.history.push({ pathname: '/pet/doctorAddPet' })
               this.props.history.push({ pathname: '/AddYuding', })
               e.preventDefault();
 
@@ -1030,27 +1022,7 @@ export default class DoctorSelecScheduledtExam extends Component {
         })
       }}>
         {/* 关闭缩小 */}
-        <Heard
-          onReturn={() => {
-            this.props.history.push('/page11')
-
-          }}
-          onSearch={(data) => {
-
-            storage.doctorExam = JSON.stringify(data)
-
-            storage.doctorList = JSON.stringify(this.state.data)
-            if (storage.isClinical === 'true') {
-              this.props.history.push({ pathname: '/page8', identity: storage.identity, patientId: data.patientId })
-            } else {
-              this.props.history.push({ pathname: '/page10', })
-            }
-          }}
-          menu10Click={() => {
-            this.props.history.push({ pathname: '/uesr/DoctorSelectAllExam', })
-          }}
-          blueSearch={true}
-        />
+        <Heard blueSearch={true} />
 
 
         <div className="hread flex">

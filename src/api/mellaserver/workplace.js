@@ -18,7 +18,7 @@ const baseURL = `${mellaserverBaseUrl}/workplace`
  * @returns 
  */
 export const listAllWorkplaceByOrganizationId = (organizationId) => {
-    return get(`${baseURL}/listAllWorkplaceByOrganizationId${organizationId}`, '')
+    return get(`${baseURL}/listAllWorkplaceByOrganizationId/${organizationId}`, '')
 }
 
 

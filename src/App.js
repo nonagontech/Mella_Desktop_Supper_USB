@@ -7,7 +7,6 @@ import EzyVetSelectTime from './pages/ezyVetSelectTime/index'
 import SelectMella from './pages/selectMella/index'
 import APIkey from './pages/apiKey/index'
 import VerifyOrganizationInformation from './pages/selectLocation/index'
-import EzyVetSelectExam from './pages/ezyVetSelectExam/index'
 import DoctorSelectScheduledExam from './pages/doctorSelectScheduledExam/index'
 import DoctorSelectAllExam from './pages/doctorSelectAllExam/index'
 import SelectExam from "./pages/selectExam/index";
@@ -24,14 +23,11 @@ import ForgotPassword from './pages/forgotPassword/index'
 import ResetPassword from './pages//resetPassword/index'
 import ScanCodeLogin from './pages/scanCodeLogin/index'
 //邮箱注册的整体部分
-import VetPrifile from './pages/vetProfile/index'
+import VetPrifile from './pages/signUpVetProfile'
 import JoinOrganizationByOption from './pages/joinOrganizationByOption/index'
-import FindMyOrganization from './pages/findMyOrganization/index'
-import FindMyWorkplace from './pages/findMyWorkplace/index'
 import IsHavePMS from './pages/ishavePMS/index'
-import VerifyEmail from './pages/verifyEmail/index'
+import VerifyEmail from './pages/signUpVerifyEmail/index'
 import NewOrganization from './pages/newOrganization/index'
-import NewWorkplace from './pages/newWorkplace/index'
 import InviteTeam from './pages/inviteTeam/index'
 //options
 import Help from './pages/help/index'
@@ -51,6 +47,7 @@ import Team from './pages/team/index'
 import MainBody from './pages/mainbody'
 import 'bootstrap/dist/css/bootstrap.min.css'
 class App extends Component {
+
   render() {
     return (
       <HashRouter>
@@ -59,7 +56,7 @@ class App extends Component {
           <Route exact path="/page1" component={Choose} />
           <Route exact path="/ezyVetLogin" component={EzyVetLogin} />
           <Route exact path="/EzyVetSelectTime" component={EzyVetSelectTime} />
-          <Route exact path="/EzyVetSelectExam" component={EzyVetSelectExam} />
+
           <Route exact path="/page2" component={APIkey} />
           <Route exact path="/page3" component={VerifyOrganizationInformation} />
           <Route exact path="/page4" component={SelectMella} />
@@ -74,14 +71,12 @@ class App extends Component {
           <Route exact path="/user/login/forgotPassword" component={ForgotPassword} />
           <Route exact path="/user/login/resetPassword" component={ResetPassword} />
           <Route exact path="/user/login/scanCodeLogin" component={ScanCodeLogin} />
-          <Route exact path="/uesr/logUp/FindMyOrganization" component={FindMyOrganization} />
-          <Route exact path="/uesr/logUp/FindMyWorkplace" component={FindMyWorkplace} />
+
           <Route exact path="/uesr/logUp/VetPrifile" component={VetPrifile} />
           <Route exact path="/uesr/logUp/JoinOrganizationByOption" component={JoinOrganizationByOption} />
           <Route exact path="/uesr/logUp/isHavePMS" component={IsHavePMS} />
           <Route exact path="/uesr/logUp/VerifyEmail" component={VerifyEmail} />
           <Route exact path="/uesr/logUp/NewOrganization" component={NewOrganization} />
-          <Route exact path="/uesr/logUp/NewWorkplace" component={NewWorkplace} />
           <Route exact path="/uesr/logUp/InviteTeam" component={InviteTeam} />
           <Route exact path="/uesr/selectExam" component={DoctorSelectScheduledExam} />
           <Route exact path="/uesr/DoctorSelectAllExam" component={DoctorSelectAllExam} />

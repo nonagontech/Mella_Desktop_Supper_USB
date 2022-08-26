@@ -134,6 +134,7 @@ export const activateUserByEmailCode = (code) => {
  * @returns 
  */
 export const registByAWSSES = (params) => {
+
     return postJson(`${baseURL}/registByAWSSES`, params)
 }
 

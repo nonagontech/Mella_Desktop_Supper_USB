@@ -129,19 +129,6 @@ export default class ScanCodeLogin extends Component {
 
 
 
-              // storage.userId = res.data.userId
-              // storage.roleId = res.data.roleId
-              // if (res.data.lastWorkplaceId) {
-              //   storage.lastWorkplaceId = res.data.lastWorkplaceId
-              // } else {
-              //   storage.lastWorkplaceId = ''
-              // }
-              // if (res.data.lastOrganization) {
-              //   storage.lastOrganization = res.data.lastOrganization
-              // } else {
-              //   storage.lastOrganization = ''
-              // }
-              // this.props.history.push('/uesr/selectExam')
 
 
               break;

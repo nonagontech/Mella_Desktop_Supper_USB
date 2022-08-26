@@ -22,7 +22,7 @@ export default class EzyVetSelectTime extends Component {
     patientId: ''
   }
 
-  componentDidMount () {
+  componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('big')
     console.log(storage.selectTime);
@@ -77,10 +77,10 @@ export default class EzyVetSelectTime extends Component {
     storage.selectTime = JSON.stringify(selectTime)
     storage.selectPatientId = this.state.patientId
     console.log(storage.selectTime, JSON.parse(storage.selectTime), storage.selectPatientId);
-    this.props.history.push('EzyVetSelectExam')
+
   }
 
-  render () {
+  render() {
     return (
       <div id="ezyVetSelectTime">
         {/* 关闭缩小 */}

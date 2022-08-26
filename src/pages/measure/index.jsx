@@ -562,9 +562,7 @@ export default class Mesasure extends Component {
           case '1': this.props.history.push('/VetSpireSelectExam')
 
             break;
-          case '2': this.props.history.push({ pathname: '/EzyVetSelectExam', listDate: storage.ezyVetList, defaultCurrent: storage.defaultCurrent })
 
-            break;
 
           case '3': this.props.history.push({ pathname: '/uesr/selectExam', listDate: storage.doctorList, defaultCurrent: storage.defaultCurrent })
 
@@ -3467,41 +3465,7 @@ export default class Mesasure extends Component {
         <div style={{ height: '60%' }}>
 
           <div className="heard">
-            <Heard
-              onSearch={(data) => {
-                console.log(data);
-                this.setState({
-                  patientId: data.patientId
-                }, () => {
-                  this._getPetInfo()
-                })
-              }}
-              menu9Click={() => {
-                storage.measurepatientId = this.state.patientId;
-              }}
-              menu8Click={() => {
-                switch (storage.identity) {   //1是vetspire   2是ezyvet   3是医生
-                  case '1': this.props.history.push('/VetSpireSelectExam')
-
-                    break;
-                  case '2': this.props.history.push({ pathname: '/EzyVetSelectExam', listDate: storage.ezyVetList, defaultCurrent: storage.defaultCurrent })
-
-                    break;
-
-                  case '3': this.props.history.push({ pathname: '/uesr/selectExam', listDate: storage.doctorList, defaultCurrent: storage.defaultCurrent })
-
-                    break;
-                  default:
-                    break;
-                }
-              }}
-
-              onReturn={() => {
-                this.props.history.goBack()
-              }}
-
-
-            />
+            <Heard />
           </div>
 
 
