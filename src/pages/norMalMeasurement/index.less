@@ -1,0 +1,452 @@
+#clinicalMeasure {
+  font-family: Arial;
+  .MyIcon {
+    font-size: 25px;
+  }
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  // background-color: pink;
+  display: flex;
+  flex-direction: column;
+  p {
+    margin: 0;
+  }
+
+
+  .clinical_top {
+    -webkit-app-region: no-drag;
+    width: 100%;
+    // height: 530px;
+    height: 90%;
+    display: flex;
+    font-display: row;
+    justify-items: first baseline;
+    .l {
+      width: 50%;
+      height: 100%;
+      // background-color:#f564d511;
+      .petinfo {
+        .heard {
+          background-color: #e7e7e7;
+          border-top-right-radius: 45px;
+          border-bottom-right-radius: 45px;
+          text-align: center;
+          align-items: center;
+          display: flex;
+          justify-content: flex-start;
+
+          font-weight: 600;
+          color: #141414;
+          font-family: Arial, Helvetica, sans-serif;
+          position: relative;
+          .avaterBox{
+            width: 25%;
+          }
+          .avatar {
+            border-radius: 100px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-color: rgba(225, 32, 109, 0.58);
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 50px 50px;
+            cursor: pointer;
+
+            .edit {
+              position: absolute;
+              right: 0;
+              bottom: 0;
+              
+            }
+          }
+       
+          .ltitle {
+            width: 75%;
+
+            p {
+              text-align: start;
+              margin: 0;
+              padding: 0;
+              text-overflow: ellipsis;
+              overflow: hidden; /*超出部分隐藏*/
+              white-space: nowrap; /*规定段落中的文本不进行换行 */
+              // background-color: red;
+              width: 100%;
+            }
+          }
+
+
+          
+        }
+        .info {
+          width: 100%;
+          // text-align: center;
+          font-weight: 500;
+          color: #141414;
+          font-family: Arial;
+          margin-top: 10px;
+          margin-bottom: 20px;
+          font-size: 14px;
+          padding-left: 90px;
+          p {
+            margin: 0;
+            width: 100%;
+            // background-color: red;
+            overflow: hidden; /*超出部分隐藏*/
+            text-overflow: ellipsis; /* 超出部分显示省略号 */
+            white-space: nowrap; /*规定段落中的文本不进行换行 */
+          }
+        }
+        .patirntID {
+          flex-direction: row;
+          display: flex;
+          align-items: center;
+          // justify-content: flex-start;
+          p {
+            margin: 0;
+            padding: 0;
+            // margin-left: 30px;
+          }
+          Input {
+            width: 150px;
+            height: 33px;
+            background-color: rgba(118, 118, 128, 0.12);
+            border-width: 0;
+            outline: none;
+            border-radius: 40px;
+            text-align: center;
+            margin-left: 25px;
+            margin-right: 6px;
+          }
+          .refresh {
+            // background-color: red;
+            font-size: 25px;
+            color: #838286;
+          }
+        }
+
+
+        .newPet {
+          // background-color: pink;
+          // padding-left: 30px;
+          .species {
+            // height: 100px;
+            width: 100%;
+            ul {
+              height: 100%;
+              width: 70%;
+              padding: 0;
+              margin: 0;
+              display: flex;
+              justify-content: space-between;
+
+              li {
+                float: left;
+                list-style: none;
+                // margin: 20px 23px 0;
+              }
+            }
+            .speciesChild {
+              align-items: center;
+              justify-content: center;
+              display: flex;
+              flex-direction: column;
+
+              
+            }
+          }
+          
+        }
+      }
+      .deviceInfo {
+        .heard1 {
+          width: 60%;
+          height: 40px;
+          background-color: #e7e7e7;
+          border-top-right-radius: 45px;
+          border-bottom-right-radius: 45px;
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+          font-size: 15px;
+          padding: 0 10px 0 30px;
+        }
+        .devicesBody {
+          // width: 100px;
+          // height: 100px;
+          // background-color: aqua;
+          margin-top: 23px;
+          .devices {
+            display: flex;
+            align-items: center;
+            padding-left: 31px;
+            p {
+              margin: 0;
+              padding: 0;
+              color: #141414;
+              font-size: 15px;
+              margin-right: 10px;
+            }
+          }
+          .part {
+            color: #141414;
+            font-size: 15px;
+            margin-right: 10px;
+            padding-left: 31px;
+            margin-top: 30px;
+            img {
+              margin-left: 30px;
+            }
+          }
+        }
+        .historyItem {
+          // background-color: pink;
+          justify-content: left;
+          align-items: center;
+          padding-left: 30px;
+
+          height: 40px;
+
+          p {
+            font-size: 13px;
+            // background-color: aqua;
+            margin: 0;
+            padding: 0;
+          }
+        }
+      }
+    }
+    .r {
+      width: 50%;
+      // height: 420px;
+      // background-color: aqua;
+      height: 95%;
+      position: relative;
+      text-align: center;
+      .crial {
+        position: relative;
+        .bb1 {
+          position: absolute;
+          // left: 150px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          width: 100%;
+          // top: -70px;
+
+          .btn5 {
+            background-color: #e1206d;
+            width: 220px;
+            // height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            border-radius: 60px;
+
+            cursor: pointer;
+          }
+          .btn:active {
+            opacity: 0.5;
+          }
+        }
+        .crialtext {
+          position: absolute;
+          // background-color: red;
+          display: flex;
+          // height: 50px;
+          width: 100%;
+
+          align-items: center;
+          justify-content: center;
+
+          div {
+            margin: 0;
+            padding: 0;
+            font-size: 38px;
+            color: #3b3a3a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+          }
+        }
+        .time {
+          // background-color: pink;
+          font-size: 32px;
+          color: #3b3a3a;
+          margin-top: 35px;
+        }
+        .btn {
+          display: flex;
+          justify-content: space-around;
+          padding: 0 50px;
+          margin-top: 30px;
+          .btn1 {
+            width: 120px;
+            height: 35px;
+            border-radius: 60px;
+            background-color: #ea1c6e;
+            color: #fff;
+            font-size: 20;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: default;
+          }
+        }
+      }
+    }
+  }
+  .flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .clinical_foot {
+    -webkit-app-region: no-drag;
+    height: 40%;
+    // background-color: blueviolet;
+    .top {
+      color: #fff;
+      height: 45px;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      font-weight: bold;
+      font-size: 15px;
+      -webkit-app-region: no-drag;
+
+      .foot_l {
+        -webkit-app-region: no-drag;
+        flex: 1;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        // background-color: pink;
+      }
+    }
+    .note {
+      width: 100%;
+      height: 256px;
+      background-color: #fff;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      textarea {
+        width: 92%;
+        height: 93%;
+        border: 1px solid #e7e7e7;
+        padding-left: 20px;
+        outline: none;
+        text-indent: 1 0px;
+        resize: none;
+      }
+    }
+  }
+  .ant-select-selection-item {
+    font-size: 13px;
+    font-weight: bold;
+    color: #4a4a4a;
+  }
+  .historyTable {
+    .ant-table-cell {
+      padding: 0;
+      text-align: center;
+
+      p {
+        padding: 0;
+        margin: 0;
+      }
+    }
+    th {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    .ant-table-header {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+  }
+  .characteristics {
+    height: 90%;
+    background-color: #e7e7e7;
+    flex-direction: row;
+    position: relative;
+
+    .careacterL {
+      height: 100%;
+      width: 45%;
+      padding-left: 4%;
+      padding-right: 2%;
+      // background-color: pink;
+      justify-content: space-around;
+      .item {
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+
+        .textTitle {
+          width: 60%;
+          // background-color: hotpink;
+        }
+
+        .input {
+          width: 30%;
+          background-color: #fff;
+          position: relative;
+          input {
+            border: 0;
+            padding: 0;
+            text-align: center;
+            // width: 20%;
+            height: 100%;
+            width: 100%;
+            padding-right: 8px;
+            background-color: #fff;
+          }
+          .unit {
+            position: absolute;
+          }
+        }
+      }
+    }
+    .careacterR {
+      height: 100%;
+      width: 55%;
+      // background-color: hotpink;
+      .imgBox {
+        width: 95%;
+        height: 95%;
+        background-color: #fff;
+        img {
+          width: 90%;
+        }
+      }
+    }
+  }
+}
+.ant-modal-header {
+  border-width: 0;
+}
+.ant-modal-footer {
+  border-width: 0;
+}
+.ant-modal-body {
+  padding: 0;
+}
+Input {
+  outline: none !important;
+}
