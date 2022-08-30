@@ -133,6 +133,29 @@ export const petPicture = (petSpeciesBreedId) => {
     return 'other';
   }
 }
+/**
+ * @dec 判断版本1是否大于版本2
+ * @param {str} version1 版本号1,格式必须为1.0.0 
+ * @param {*} version2 版本号2,格式必须为1.0.0 
+ * @returns 版本1是否大于版本2
+ */
+export const versionComarision = (version1, version2) => {
+  let version1Arr = version1.split('.')
+  let version2Arr = version2.split('.')
+  function num(params) {
+    return parseInt(params)
+  }
+  if (num(version1Arr[0]) >= num(version2Arr[0])
+    && num(version1Arr[1]) >= num(version2Arr[1])
+    && num(version1Arr[2]) > num(version2Arr[2])
+  ) {
+    return true
+  } else {
+    return false
+  }
+}
+
+
 
 
 

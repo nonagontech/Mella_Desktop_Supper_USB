@@ -4,7 +4,10 @@
  *
  */
 const Store = require("electron-store");
-Store.initRenderer();
+const fs = require("fs");
+const https = require('https');
+const http = require('http')
+
 
 const {
   app,
@@ -32,6 +35,10 @@ const {
   up,
   down,
 } = require("@nut-tree/nut-js");
+
+Store.initRenderer();
+
+
 if (isDev) {
   const {
     default: installExtension,
@@ -51,6 +58,7 @@ if (isDev) {
   });
 }
 
+console.log('---------', path.join(__dirname, ''));
 const devWidth = 1920;
 const devHeight = 1080;
 //每次在检测到底座后都会发送打开底座的指令去打开底座,但是在发送升级指令后设备会断开重连检测.这就会导致在发送升级文件前会发送一段数据,导致mac升级时文件效验不通过,导致升级失败.因此加了此标志位,当发送了升级指令则为true,发送文件后重置为false
@@ -63,7 +71,7 @@ var port = null;
 
 app.allowRendererProcessReuse = false;
 const ex = process.execPath; //自启动的参数
-const fs = require("fs");
+
 let device = null, //usb所在的设备
   file = "", //给底座进行升级的文件地址
   upload = false, //是否正在给底座进行升级
@@ -918,38 +926,30 @@ ipcMain.on("openDevTools", () => {
   mainWindow.webContents.openDevTools();
 });
 
-// const timerr = setTimeout(() => {
-//     console.log('----------', app.getAppPath('cache'));
-//     let dirPath = path.join(__dirname, 'binfile')
-//     console.log('--文件夹地址', dirPath);
-//     if (!fs.existsSync(dirPath)) {   //以同步的方法检测目录是否存在。 如果目录存在 返回true,如果目录不存在 返回false
-//         fs.mkdirSync(dirPath);
-//         console.log("文件夹创建成功");
-//     } else {
-//         console.log("文件夹已存在");
-//     }
-//     let url = 'http://ec2-3-214-224-72.compute-1.amazonaws.com:18886/group1/image/2_no_aes_ota_MellaPro_Charger(1).bin'
-//     let fileName = '1.bin';
-//     let stream = fs.createWriteStream(path.join(dirPath, fileName));
-//     request(url).pipe(stream).on("close", function (err) {
-//         console.log("第", "个文件[" + fileName + "]下载完毕");
-//     });
 
-//     clearTimeout(timerr)
-// }, 5000);
 
 //发送了底座升级指令
 let dataArr = new Array(),
   sendNum = 0;
 ipcMain.on("updateBase", (event, data) => {
-  let fileUrl = `${path.join(
-    __dirname,
-    "./build/2_no_aes_ota_MellaPro_Charger(1).bin"
-  )}`;
+
   if (data.state === "reset") {
     fileUrl = `${path.join(__dirname, "./build/reset.bin")}`;
+    upgradeFileDataProcess(fileUrl)
+  } else {
+    let { fileName, url } = data
+    createDir(fileName, url)
   }
 
+
+
+});
+
+/**
+ * @dec 根据升级文件的本地地址来获取到文件并对文件数据进行处理
+ * @param {str} fileUrl  升级文件的地址
+ */
+function upgradeFileDataProcess(fileUrl) {
   let newData = fileUrl.replace(/\\/g, "/");
 
   let fsData = fs.readFileSync(newData);
@@ -981,8 +981,10 @@ ipcMain.on("updateBase", (event, data) => {
     sendUpload();
     enterUpgradeFlog = true;
   }
-  // console.log('----发送的数据', file);
-});
+}
+
+
+
 ipcMain.on("reUpload", (event, data) => {
   console.log("结束了");
   upload = false;
@@ -990,11 +992,102 @@ ipcMain.on("reUpload", (event, data) => {
   sendNum = 0;
 });
 
+/**
+ * 
+ * @param {string} uri  文件下载地址 
+ * @param {*} fileName  下载后的文件名称
+ * @param {string}path  下载后保存的路径
+ */
+function downFile(uri, fileName, path) {
+
+  let downType = http
+  if (`${uri}`.indexOf('https') === 0) {
+    downType = https
+  }
+
+  downType.get(uri, (res) => {
+    console.log('状态码：', res.statusCode);
+    console.log('请求头：', res.headers);
+    // Open file in local filesystem
+    const file = fs.createWriteStream(path);
+    // Write data into local file
+    res.pipe(file);
+    // Close the file
+    file.on('finish', () => {
+      file.close();
+      console.log(`File downloaded!`);
+      upgradeFileDataProcess(path)
+    });
+    res.on('data', (d) => {
+      console.log('data下载过程:', d);
+    });
+
+  }).on("error", (err) => {
+    console.log("Error: ", err.message);
+    mainWindow.webContents.send("uploadBaseInfo", {
+      status: "error",
+      data: "Upgrade file download failed, please try again later",
+    });
+  });
+}
+
+/**
+ * @dec 查看项目根目录下是否有download文件夹,如果不存在则直接创建一个
+ */
+let oS = process.platform == 'darwin' ? 'Resources' : 'resources'
+const dirPathO = path.join(__dirname).split(oS)
+console.log('dirPathO', dirPathO);
+const relativePath = dirPathO[0];
+console.log('relativePath', relativePath);
+// 获取一个绝对路径的文件夹
+const dirPath = path.join(relativePath, "/dowload");
+console.log('dirPath', dirPath);
+//检测文件夹是否存在
+function createDir(fileName, uri,) {
+  // 获取真实的绝对路径
+
+  fs.access(dirPath, (err) => {
+    console.log('err', err);
+    if (err) { //如果文件不存在，就创建这个文件
+      fs.mkdir(dirPath, (err) => {
+        console.log('----111', err);
+        if (!err) {
+          console.log('文件夹创建成功');
+          checkFile(fileName, uri)
+        }
+      });
+    } else {
+      //如果这个文件夹已经存在
+      checkFile(fileName, uri)
+
+
+    }
+  })
+}
+function checkFile(fileName, uri) {
+  let filePath = `${dirPath}/${fileName}`
+
+  fs.access(filePath, (err) => {
+    console.log('err', err);
+    if (err) { //如果文件不存在，调用接口开始下载
+      downFile(uri, fileName, filePath)
+    } else {
+      //如果这个文件已经存在,直接去升级
+      console.log('----文件已经存在,我要去升级了');
+      upgradeFileDataProcess(filePath)
+    }
+  })
+
+}
+
+
+
+
 function sendUpload(params) {
   console.log(sendNum);
   if (sendNum < dataArr.length) {
     let value = dataArr[sendNum++];
-    console.log("---升级发送的代码", value);
+    // console.log("---升级发送的代码", value);
 
     device.write(value);
     let progress = parseFloat(((sendNum / dataArr.length) * 100).toFixed(2));
