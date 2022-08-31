@@ -124,6 +124,7 @@
       "publish": [
         "github"
       ],
+      "requestedExecutionLevel": "highestAvailable",
       "target": [
         {
           "target": "nsis",
