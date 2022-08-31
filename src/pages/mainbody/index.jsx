@@ -21,6 +21,9 @@ import CombineScales from "../../pages/combineScales";
 import OtterEQPage from '../../pages/otterEQ';
 import MyAccount from "../../pages/myAccount";
 import TemperaturePage from "../../pages/temperaturePage";
+import MabelPage from "../mabelPage";
+import EnrolledPlan from '../enrolledPlan';
+
 
 
 import { connect } from "react-redux";
@@ -1137,6 +1140,17 @@ class App extends Component {
           },
         ],
       });
+      // devicesTypeList.push({
+      //   type: "mabel",
+      //   devices: [
+      //     {
+      //       name: "mabel",
+      //       mac: "2.1.5.123.5",
+      //       deviceType: "mabel",
+      //       examRoom: "",
+      //     },
+      //   ],
+      // });
     }
 
     let hardList = [].concat(devicesTypeList);
@@ -1182,13 +1196,19 @@ class App extends Component {
             case "otterEQ":
               measurePage = <OtterEQPage bodyHeight={bodyHeight} />;
               break;
+            case "mabel":
+              measurePage = <MabelPage bodyHeight={bodyHeight} />;
+              break;
 
             default:
               break;
           }
           if (selectHardwareType === "add") {
             return <AddDevice bodyHeight={bodyHeight} />;
-          } else {
+          } else if (selectHardwareType === 'prescribePlan') {
+            return <EnrolledPlan bodyHeight={bodyHeight} />;
+          }
+          else {
             return (
               <>
                 <HardAndPetsUI bodyHeight={bodyHeight} />
@@ -1215,12 +1235,10 @@ class App extends Component {
             <ClininalStudy bodyHeight={bodyHeight} />
           </>
         );
-
       case "4":
         return (
           <MyAccount bodyHeight={bodyHeight} />
         );
-
       default:
         break;
     }
