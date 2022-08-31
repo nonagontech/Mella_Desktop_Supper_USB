@@ -30,7 +30,7 @@ export default class Home extends Component {
     ipcRenderer.send('small', win())
     storage.measurepatientId = '';
     temporaryStorage.logupVetInfo = {}
-    ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
+    this.test()
   }
   resize = (e) => {
 
@@ -39,19 +39,11 @@ export default class Home extends Component {
     let ipcRenderer = window.electron.ipcRenderer
     window.removeEventListener('resize', this.resize);
 
-    ipcRenderer.removeListener('changeFenBianLv', this.changeFenBianLv)
   }
-  changeFenBianLv = (e) => {
-    console.log('changeFenBianLv');
-    console.log(e);
-    let ipcRenderer = window.electron.ipcRenderer
-    // ipcRenderer.send('small')
-    ipcRenderer.send('small', win())
-    this.setState({
-
-    })
+  test = async () => {
+    console.log('---', window.navigator.serial);
+    // const port = await navigator.serial.requestPort();
   }
-
 
 
   _createAccount = () => {

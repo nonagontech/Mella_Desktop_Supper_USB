@@ -1040,7 +1040,7 @@ console.log('dirPathO', dirPathO);
 const relativePath = dirPathO[0];
 console.log('relativePath', relativePath);
 // 获取一个绝对路径的文件夹
-const dirPath = path.join(relativePath, "/dowload");
+const dirPath = path.join(relativePath, "/download");
 console.log('dirPath', dirPath);
 //检测文件夹是否存在
 function createDir(fileName, uri,) {

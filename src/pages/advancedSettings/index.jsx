@@ -111,6 +111,8 @@ export default class AdvancedSettings extends Component {
             isUpload: false,
             updateModal: false,
             progress: 0,
+            localVersion: '',
+            cloudVersion: '',
           })
           message.destroy()
           message.success('Update Successful');
@@ -120,6 +122,8 @@ export default class AdvancedSettings extends Component {
             isUpload: false,
             updateModal: false,
             progress: 0,
+            localVersion: '',
+            cloudVersion: '',
           })
           message.destroy()
           message.error('Upgrade failed')
@@ -141,6 +145,8 @@ export default class AdvancedSettings extends Component {
             isUpload: false,
             updateModal: false,
             progress: 0,
+            localVersion: '',
+            cloudVersion: '',
           })
           message.destroy()
           message.error('Upgrade failed')
@@ -159,6 +165,8 @@ export default class AdvancedSettings extends Component {
           isUpload: false,
           updateModal: false,
           progress: 0,
+          localVersion: '',
+          cloudVersion: '',
         })
         message.destroy()
         message.error(data.data)
@@ -169,6 +177,8 @@ export default class AdvancedSettings extends Component {
           isUpload: false,
           updateModal: false,
           progress: 0,
+          localVersion: '',
+          cloudVersion: '',
         })
         message.destroy()
         message.error('Upgrade failed, please try again')
@@ -190,6 +200,8 @@ export default class AdvancedSettings extends Component {
               isUpload: false,
               updateModal: false,
               progress: 0,
+              localVersion: '',
+              cloudVersion: '',
             })
             message.destroy()
             message.error('Upgrade failed')
@@ -254,23 +266,30 @@ export default class AdvancedSettings extends Component {
   _upload1 = (val) => {
 
     let { isHaveBase } = this.state
+    message.destroy()
     if (!isHaveBase) {
       this.setState({
         isUpload: false,
         updateModal: false,
+        localVersion: '',
+        cloudVersion: '',
       })
-      message.destroy()
+
       message.error('No base device found, please plug it in and try again')
     } else {
       console.log('---我插入底座了，准备去升级, 这里就可以打开modal框了');
       this.setState({
         uploadText: 'Detect upgrade environment',
         updateModal: true,
-        progress: 0
+        progress: 0,
+        localVersion: '',
+        cloudVersion: '',
+      }, () => {
+        this.localVersion()
       })
       uploadType = val
       //第一步,查询本地版本号
-      this.localVersion()
+
 
 
       //2.如果能收到关闭指令，则发送开始升级指令
@@ -303,13 +322,8 @@ export default class AdvancedSettings extends Component {
         if (res.flag) {
           let { firmwareVersion, updateUrl } = res.data
           let cloudBigtolocal = versionComarision(firmwareVersion, this.state.localVersion)
-          // console.log('比较信息:', firmwareVersion, this.state.localVersion, cloudBigtolocal);
-          if (!cloudBigtolocal) {
-            this.setState({
-              updateModal: false
-            })
-            message.success('Already running latest update')
-          } else {
+          console.log('比较信息:', firmwareVersion, this.state.localVersion, cloudBigtolocal);
+          if (cloudBigtolocal || !this.state.localVersion) {
             this.setState({
               cloudVersion: firmwareVersion,
               filePath: updateUrl,
@@ -324,6 +338,11 @@ export default class AdvancedSettings extends Component {
               ipcRenderer.send('usbdata', { command: '36', arr: ['00'] })
               clearTimeout(timer)
             }, 100);
+          } else {
+            this.setState({
+              updateModal: false
+            })
+            message.success(`The hardware version is v${firmwareVersion}, which is the latest version`)
           }
 
 
