@@ -30,7 +30,6 @@ import AddDevice from './pages/addDevice/index'
 import ConnectWorkplace from './pages/connectWorkplace'
 import NewOrg from './pages/newOrg/index'
 import Team from './pages/team/index'
-
 import MainBody from './pages/mainbody'
 class App extends Component {
 
