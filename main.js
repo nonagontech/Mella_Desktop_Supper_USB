@@ -35,8 +35,48 @@ const {
   up,
   down,
 } = require("@nut-tree/nut-js");
+// const SerialPort = require('serialport');
 
 Store.initRenderer();
+
+
+
+// SerialPort.list()
+//   .then(ports => {
+//     console.log(ports);
+//     let index = null
+//     for (let i = 0; i < ports.length; i++) {
+//       if (ports[i].manufacturer === 'FTDI') {
+//         index = i
+//         break;
+//       }
+//     }
+//     let port = new SerialPort(ports[index].path, {
+//       baudRate: 115200,
+//       dataBits: 8, //数据位
+//       parity: 'none', //奇偶校验
+//       stopBits: 1, //停止位
+//       flowControl: false,
+//       // autoOpen: false
+//     });
+//     console.log('====', port);
+
+//     port.on('data', function (data) {
+//       //收hex
+//       console.log('recv: ' + data.toString('hex'));
+//       //收字符串
+//       //console.log('recv: ' + data.toString('ascii'));
+//     });
+//     port.on('error', function (err) {
+//       console.log('error-------------', err);
+//     })
+
+//   }
+//   )
+//   .catch(err => {
+//     console.log('------------', err);
+//   })
+
 
 
 if (isDev) {

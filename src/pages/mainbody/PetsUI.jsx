@@ -219,10 +219,14 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     })
     return (
       <Menu onClick={({ key, }) => {
+        console.log('----', key);
         petSortTypeFun(key)
-        let petArr = dataSort(petList)
-        setPetList(petArr)
-        setPetListArrFun(petArr)
+        setTimeout(() => {
+          let petArr = dataSort(petList)
+          setPetList(petArr)
+          setPetListArrFun(petArr)
+        }, 500);
+
       }}>
         {options}
 

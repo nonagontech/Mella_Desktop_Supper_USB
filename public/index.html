@@ -46,9 +46,7 @@
   <script>
     window.electron = require('electron');
   </script>
-
   <div id="root"></div>
-  <button id="connect">Connect111</button>
   <script>
     window.electron = require('electron');
     if (window.screen.height > 900) {
@@ -56,24 +54,6 @@
     }
     else if (window.screen.height >= 768) {
       document.write('<link rel="stylesheet" href="css/index_768.css">');
-    }
-  </script>
-
-  <script>
-    const connectButton = document.getElementById("connect");
-    console.log('========', connectButton);
-    connectButton.addEventListener('click', portFun);
-    async function portFun(params) {
-      console.log('点击了');
-      try {
-
-        console.log(window.navigator);
-        const port = navigator.serial.requestPort();
-        // Continue connecting to the device attached to |port|.
-      } catch (e) {
-        console.log('错误-----', e);
-        // The prompt has been dismissed without selecting a device.
-      }
     }
   </script>
 </body>
