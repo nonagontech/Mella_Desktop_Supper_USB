@@ -5,7 +5,7 @@ import biggie from "./../../assets/img/hardList-biggie.png";
 import rfid from "./../../assets/img/hardList-rfid.png";
 import tape from "./../../assets/img/hardList-tape.png";
 import add from "./../../assets/img/hardList-add.png";
-import maeBowl from "./../../assets/img/hardList-maeBowl.png";
+import mabel from "./../../assets/img/mabel.png";
 import otterEQ from "./../../assets/img/hardList-otterEQ.png";
 
 import electronStore from "../../utils/electronStore";
@@ -50,8 +50,8 @@ const HardWareTypeUI = ({
       case "tape":
         img = tape;
         break;
-      case "maeBowl":
-        img = maeBowl;
+      case "mabel":
+        img = mabel;
         break;
       case "add":
         img = add;
