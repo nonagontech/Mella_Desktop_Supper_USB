@@ -5,7 +5,7 @@ import biggie from "./../../assets/img/hardList-biggie.png";
 import rfid from "./../../assets/img/hardList-rfid.png";
 import tape from "./../../assets/img/hardList-tape.png";
 import add from "./../../assets/img/hardList-add.png";
-import mabel from "./../../assets/img/mabel.png";
+import mabel from "./../../assets/img/hardList-mabel.png";
 import otterEQ from "./../../assets/img/hardList-otterEQ.png";
 
 import electronStore from "../../utils/electronStore";

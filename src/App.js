@@ -32,7 +32,6 @@ import NewOrg from './pages/newOrg/index'
 import Team from './pages/team/index'
 
 import MainBody from './pages/mainbody'
-import 'bootstrap/dist/css/bootstrap.min.css'
 class App extends Component {
 
   render() {
@@ -70,6 +69,7 @@ class App extends Component {
           <Route exact path="/menuOptions/ConnectWorkplace" component={ConnectWorkplace} />
           <Route exact path="/menuOptions/NewOrg" component={NewOrg} />
           <Route exact path="/menuOptions/Team" component={Team} />
+
         </Switch>
       </HashRouter>
     )

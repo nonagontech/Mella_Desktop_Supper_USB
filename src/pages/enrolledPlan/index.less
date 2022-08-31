@@ -1,0 +1,130 @@
+.planContentBox {
+  width: 100%;
+  background: #FFFFFF;
+  position: relative;
+
+  .heardTitleBox {
+    height: 100px;
+    border-bottom: 2px solid #979797;
+    display: grid;
+    align-content: center;
+
+    p {
+      margin-left: 32px;
+      color: #141414;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 24px;
+    }
+  }
+
+  .petMessageBox {
+    margin: 32px;
+    height: 144px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(156, 156, 156, 0.5);
+  }
+
+  .middleBox {
+    position: relative;
+
+    .selectIllness {
+      margin: 0 32px 32px 32px;
+      display: flex;
+
+      .checkboxGroup {
+        display: flex;
+        flex-flow: column;
+
+        .ant-checkbox-group-item {
+          margin-bottom: 16px;
+        }
+      }
+    }
+
+    .recommendMessageBox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .leftBox {
+        img {
+          width: 230px;
+        }
+      }
+
+      .rightBox {
+        width: 400px;
+        margin-right: 32px;
+
+        p {
+          font-size: 16px;
+        }
+
+        p:nth-child(1) {
+          font-weight: 600;
+        }
+
+        P:nth-child(2) {
+          color: #ea1c6e;
+          font-weight: 600;
+          padding: 16px 0;
+        }
+
+        .descriptionTitle {
+          p {
+            font-weight: 400;
+            color: #141414;
+            padding: 0;
+          }
+
+          p:nth-child(1) {
+            margin-bottom: 16px;
+          }
+        }
+      }
+    }
+
+    .planList {
+      margin: 32px;
+      border: 1px solid #979797;
+      border-radius: 8px;
+
+      .ant-list-item {
+        margin-bottom: 0;
+        .item{
+          border-right: 1px solid #979797;
+        }
+      }
+      .ant-list-item:last-child{
+        .item{
+          border: none;
+        }
+      }
+    }
+  }
+
+
+
+  .btnBox {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: 32px;
+    width: 100%;
+
+    button {
+      width: 320px;
+
+      span {
+        font-size: 16px;
+      }
+    }
+
+    .itemBtn {
+      width: 160px;
+      margin-right: 32px;
+    }
+
+  }
+}
