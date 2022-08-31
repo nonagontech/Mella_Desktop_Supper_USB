@@ -172,11 +172,16 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
         setPetListArrFun([])
       })
   }
-  const dataSort = (data) => {
+  const dataSort = (data, key,) => {
+    if (!key) {
+      key = petSortType
+    }
     let petList = [].concat(data)
-    switch (petSortType) {
+    switch (key) {
+
       case 'Time':
-        petList.sort((a, b) => { return moment(parseInt(a.insertedAt) * 1000).format('YYYY-MM-DD HH:mm') > moment(parseInt(b.insertedAt) * 1000).format('YYYY-MM-DD HH:mm') ? -1 : 1 })
+      case 'Recent':
+        petList.sort((a, b) => { return a.createTime > b.createTime ? -1 : 1 })
         break;
       case 'Pet ID':
         petList.sort((a, b) => { return a.patientId >= b.patientId ? 1 : -1 })
@@ -194,6 +199,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
         petList.sort((a, b) => { return a.gender >= b.gender ? 1 : -1 })
         break;
     }
+    console.log(petList);
     return petList
   }
   const menu = () => {
@@ -203,6 +209,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
       // { value: 'Owner' },
       // { value: 'Breed' },
       { value: 'Pet Name' },
+      { value: 'Recent' },
       // { value: 'Gender' },
     ];
     let options = menuList.map((item, index) => {
@@ -221,11 +228,11 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
       <Menu onClick={({ key, }) => {
         console.log('----', key);
         petSortTypeFun(key)
-        setTimeout(() => {
-          let petArr = dataSort(petList)
-          setPetList(petArr)
-          setPetListArrFun(petArr)
-        }, 500);
+
+        let petArr = dataSort(petList, key,)
+        setPetList(petArr)
+        setPetListArrFun(petArr)
+
 
       }}>
         {options}
