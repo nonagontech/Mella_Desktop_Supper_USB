@@ -1,29 +1,180 @@
 .contentBox {
+
+  .annulusBox {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+    margin-bottom: 32px;
+
+    .excircle {
+      width: 270px;
+      height: 270px;
+      border-radius: 50%;
+      background: #B51254;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .circleContentBox {
+        position: relative;
+        width: 175px;
+        height: 175px;
+        border-radius: 50%;
+        background: #ed1e72;
+        display: grid;
+        justify-items: center;
+
+        img {
+          padding: 8px 8px 0 8px;
+        }
+
+        .floatBox {
+          position: absolute;
+          height: 100%;
+          display: flex;
+          flex-flow: column;
+          align-items: center;
+          justify-content: center;
+
+          .weightTitle {
+            display: flex;
+            align-items: baseline;
+
+            p {
+              color: #FFFFFF;
+              font-size: 24px;
+              font-weight: 600;
+            }
+
+            p:nth-child(1) {
+              font-size: 40px;
+              margin-right: 4px;
+            }
+          }
+
+          .identification {
+            p {
+              font-size: 16px;
+              color: #FFFFFF;
+              font-weight: 600;
+            }
+          }
+
+        }
+      }
+    }
+  }
+
+  .middleBox {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+
+    .bodyState {
+      display: flex;
+
+      .item {
+        display: flex;
+        align-items: center;
+        margin-right: 16px;
+
+        p {
+          font-size: 18px;
+          font-weight: 600;
+          margin-left: 8px;
+        }
+      }
+
+      .item:nth-child(2) {
+        margin-right: 0;
+      }
+    }
+
+    .hintTitle {
+      color: #ed1e72;
+      font-size: 28px;
+      font-weight: 700;
+      padding: 32px 0;
+    }
+  }
+
+  .bottomBox {
+    .ant-spin-container {
+      display: flex;
+      justify-content: center;
+
+      .ant-list-items {
+        display: flex;
+
+        .listBox {
+          border: 1px solid #808080;
+          margin-right: 16px;
+          border-radius: 16px;
+          box-shadow: 0px 2px 4px rgba(100, 100, 100, 0.5);
+
+          .ant-list-item {
+            padding: 0;
+            .item {
+              .top {
+                p {
+                  font-weight: 600;
+                  padding: 14px 16px;
+                }
+              }
+
+              .bottom {
+                p {
+                  font-size: 16px;
+                  font-weight: 600;
+                  text-align: center;
+                  padding-bottom: 14px;
+                }
+              }
+            }
+          }
+
+        }
+
+        .listBox:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+
+  }
+
   .planBox {
     display: flex;
     flex-flow: column;
     align-items: center;
+
     .title {
       color: #3b3a3a;
       font-size: 40px;
       font-weight: 700;
       line-height: 42px;
       text-align: center;
-      margin-top: 64px;
+      margin-top: 80px;
     }
 
     .recommendedTitle {
       font-size: 16px;
       text-align: center;
-      margin-top: 64px;
+      margin-top: 80px;
     }
 
-    .btnBox{
+    .btnBox {
       width: 320px;
-      margin-top: 64px;
-      span{
-        font-size: 16px;
+      margin-top: 80px;
+
+      .ant-btn-round {
+        height: 40px;
+
+        span {
+          font-size: 16px;
+        }
       }
+
     }
   }
 }

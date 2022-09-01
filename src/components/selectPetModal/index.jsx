@@ -15,7 +15,7 @@ import reddog from "../../assets/images/reddog.png";
 import redother from "../../assets/images/redother.png";
 
 
-import { calculateAge, petPicture } from '../../utils/commonFun'
+import { calculateAge, petPicture } from '../../utils/commonFun';
 
 import _ from 'lodash';
 import moment from 'moment';

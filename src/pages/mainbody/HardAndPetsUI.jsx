@@ -53,7 +53,7 @@ const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow
   }, [selectHardwareType, hardwareList,])
 
 
-  console.log('=====----===', selectHardwareDetail);
+  // console.log('=====----===', selectHardwareDetail);
 
   return (
     <div className='deviceAndPets' style={{ width: px(200), height: bodyHeight }}>

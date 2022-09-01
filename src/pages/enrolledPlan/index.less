@@ -23,6 +23,46 @@
     height: 144px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(156, 156, 156, 0.5);
+    display: flex;
+
+    .left {
+      width: 50%;
+      max-width: 50%;
+      display: flex;
+      align-items: center;
+
+      .ant-avatar-image {
+        margin-left: 32px;
+      }
+
+      .petMsg {
+        margin-left: 8px;
+
+        p {
+          font-size: 16px;
+        }
+
+        p:nth-child(1) {
+          font-size: 18px;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .right {
+      width: 50%;
+      max-width: 50%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      flex-flow: column;
+      justify-content: center;
+
+      p {
+        margin-right: 32px;
+        font-size: 16px;
+      }
+    }
   }
 
   .middleBox {
@@ -90,21 +130,71 @@
       border: 1px solid #979797;
       border-radius: 8px;
 
-      .ant-list-item {
-        margin-bottom: 0;
-        .item{
+      .ant-list-items {
+        display: flex;
+        flex-flow: row wrap;
+        min-width: 0;
+
+        .listBox {
+          width: 25%;
+          max-width: 25%;
           border-right: 1px solid #979797;
+
+          .listItem {
+            padding: 0;
+
+            .item {
+              width: 100%;
+
+              p {
+                text-align: center;
+              }
+
+              .top {
+                border-bottom: 1px solid #979797;
+                display: grid;
+                justify-content: center;
+
+                p:nth-child(1) {
+                  color: #ea1c6e;
+                  font-size: 16px;
+                  font-weight: 700;
+                  padding: 16px 0 8px 0;
+                }
+
+                p:nth-child(2) {
+                  font-size: 16px;
+                  padding: 8px 0 16px 0;
+                }
+              }
+
+              .bottom {
+                display: grid;
+                justify-content: center;
+
+                p:nth-child(1) {
+                  color: #ea1c6e;
+                  font-size: 16px;
+                  font-weight: 700;
+                  padding: 16px 0 8px 0;
+                }
+
+                p:nth-child(2) {
+                  font-size: 16px;
+                  padding: 8px 0 16px 0;
+                }
+              }
+            }
+          }
         }
-      }
-      .ant-list-item:last-child{
-        .item{
+
+        .listBox:last-child {
           border: none;
         }
       }
+
     }
   }
-
-
 
   .btnBox {
     display: flex;
@@ -115,6 +205,7 @@
 
     button {
       width: 320px;
+      height: 48px;
 
       span {
         font-size: 16px;
@@ -126,5 +217,61 @@
       margin-right: 32px;
     }
 
+  }
+
+}
+
+.planModal {
+  .ant-modal-content {
+    border-radius: 14px;
+
+    .ant-modal-header {
+      border: none;
+      padding: 40px 24px 24px 24px;
+      border-radius: 14px;
+
+      .ant-modal-title {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 32px;
+      }
+    }
+
+    .ant-modal-body {
+      padding-top: 0;
+
+      .modalContentBox {
+        .description {
+          margin-bottom: 32px;
+
+          p {
+            text-align: center;
+            font-size: 16px;
+          }
+        }
+
+        .formBox {
+          .ant-form-item {
+            padding: 0 32px;
+            .ant-input {
+              text-align: center;
+              border-radius: 20px;
+              background: #f5f5f5;
+              height: 40px;
+            }
+
+            .ant-btn-round {
+              font-size: 16px;
+              height: 40px;
+              margin-top: 8px;
+            }
+          }
+          .ant-form-item:last-child{
+            padding: 0;
+          }
+        }
+      }
+    }
   }
 }

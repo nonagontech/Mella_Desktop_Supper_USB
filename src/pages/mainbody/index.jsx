@@ -1140,17 +1140,17 @@ class App extends Component {
           },
         ],
       });
-      // devicesTypeList.push({
-      //   type: "mabel",
-      //   devices: [
-      //     {
-      //       name: "mabel",
-      //       mac: "2.1.5.123.5",
-      //       deviceType: "mabel",
-      //       examRoom: "",
-      //     },
-      //   ],
-      // });
+      devicesTypeList.push({
+        type: "mabel",
+        devices: [
+          {
+            name: "mabel",
+            mac: "2.1.5.123.5",
+            deviceType: "mabel",
+            examRoom: "",
+          },
+        ],
+      });
     }
 
     let hardList = [].concat(devicesTypeList);
