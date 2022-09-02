@@ -28,9 +28,6 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
           <img src={biggieonscale}></img>
           <p className="startTitle">Ready, place pet onto scale</p>
         </div>
-        <div className="tableBox">
-          <HistoryTable saveNum={saveNum} tableColumnType="weight" />
-        </div>
       </div>
     </>
   );

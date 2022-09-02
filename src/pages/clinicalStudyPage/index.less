@@ -136,7 +136,6 @@
           }
         }
 
-
         .operation {
           padding: 0;
           padding-right: 5px;
@@ -145,14 +144,43 @@
 
         .historyTable {
           height: 100%;
-          // .ant-table-cell {
-          //     padding: 0;
+        }
 
-          //     p {
-          //         padding: 0;
-          //         margin: 0;
-          //     }
-          // }
+        .petChaeacteristics {
+          background: #E7E7E7;
+          display: grid;
+
+          .child {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .item {
+              position: relative;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-right: 16px;
+
+              .labelTitle {
+                text-align: left;
+              }
+
+              .inp {
+                background: #FFFFFF;
+                border-radius: 20px;
+              }
+
+              .inpSelect{
+                width: 105px;
+                .ant-select-selector{
+                  border: none;
+                  border-radius: 20px;
+                }
+              }
+
+            }
+          }
         }
       }
 
@@ -275,6 +303,7 @@
     }
   }
 }
+
 #selectEmergenciesModal {
   display: flex;
   align-items: center;

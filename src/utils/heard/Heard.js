@@ -1,41 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import { Menu, Popover, Button, Modal } from "antd";
-import PropTypes from "prop-types";
-import { SyncOutlined, createFromIconfontCN, LoadingOutlined } from '@ant-design/icons';
-import { SearchOutlined } from '@ant-design/icons';
-import moment from 'moment'
-import MyModal from './../myModal/MyModal'
-import { connect } from 'react-redux'
-import { setMenuNum, setSelectHardwareType, petDetailInfoFun } from '../../store/actions';
+import { createFromIconfontCN, LoadingOutlined } from '@ant-design/icons';
 
-//import 'antd/dist/antd.css';
-import "./heard.less";
 import help from "./../../assets/images/help.png";
 import message from "./../../assets/images/message.png";
-import triangle from "./../../assets/img/triangle.png";
-import { mTop, px, MTop } from "../px";
-import electronStore from "../electronStore";
 import dog from "./../../assets/images/reddog.png";
 import cat from "./../../assets/images/redcat.png";
 import other from "./../../assets/images/redother.png";
 import menu from "./../../assets/img/menu.png";
-import heardLeft from "./../../assets/img/heardLeft.png";
-import blueSearchPng from "./../../assets/img/blueSearch.png";
 import close from "./../../assets/img/close.png";
-import MinClose from "../../utils/minClose/MinClose";
 import jinggao from "./../../assets/img/jinggao.png";
 import redclose from "./../../assets/img/redclose.png";
-
 import rMin_red from "./../../assets/img/min-red.png";
 import rClose_red from "./../../assets/img/close-red.png";
-
 import rMin_white from "./../../assets/img/min-white.png";
 import rClose_white from "./../../assets/img/close-white.png";
 import mellaLogo from "./../../assets/images/mellaLogo.png";
+
+import { mTop, px, MTop } from "../px";
+import electronStore from "../electronStore";
+import MyModal from './../myModal/MyModal'
 import { version, updateTime } from "./../appversion";
-import Button1 from "../button/Button";
+
+import { connect } from 'react-redux'
+import { setMenuNum, setSelectHardwareType, petDetailInfoFun } from '../../store/actions';
+import moment from 'moment'
+import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
+
 import { getPetInfoByRFID } from "../../api";
+
+import "./heard.less";
 
 const { SubMenu } = Menu;
 const MyIcon = createFromIconfontCN({
@@ -45,10 +40,8 @@ const MyIcon = createFromIconfontCN({
 const allPetList = electronStore.get("doctorExam");
 let storage = window.localStorage;
 let ipcRenderer = window.electron.ipcRenderer;
-
 let mouseoutTimer = null;
 let matchingTimer = null;
-
 /**
  *
  * @param {function} onReturn  点击返回按钮后调用的函数
@@ -67,6 +60,8 @@ const Heard = ({
   petListArr,
   petDetailInfoFun
 }) => {
+  let history = useHistory();
+
   const [minbgc, setMinbgc] = useState('')        //最小化的背景颜色
   const [closebgc, setClosebgc] = useState('')    //关闭按钮的背景色
   const [rMin, setRMin] = useState(rMin_red)      //最小化的图标
@@ -77,7 +72,6 @@ const Heard = ({
   const [petList, setPetList] = useState([])        //搜索到的宠物列表
   const [menuVisible, setMenuVisible] = useState(false)//菜单图标下面的菜单内容图标
   const [menuMouseOverIndex, setMenuMouseOverIndex] = useState('')//用来定位鼠标滑到哪个菜单选项
-
 
   const [modalvisible, setModalVisible] = useState(false)       //关于的弹窗
   const [modalVis, setModalVis] = useState(false)               //RFID搜索是否有宠物的弹窗
@@ -175,7 +169,6 @@ const Heard = ({
         break;
     }
   };
-
   const _noUSB = (e, data) => {
     console.log("没有USB设备：", data);
     if (data === false) {
@@ -270,8 +263,6 @@ const Heard = ({
       };
     }
   };
-
-  let history = useHistory();
   //最小化，关闭的
   const MINCOLOSE = {
     minMouseEnter: () => {
@@ -301,7 +292,6 @@ const Heard = ({
       ipcRenderer.send("window-close");
     },
   };
-
   //搜索框内容
   const searchPetBody = () => {
     if (loading) {
@@ -422,7 +412,6 @@ const Heard = ({
       }
     }
   };
-
   const inputChange = (text) => {
     function isNumber(val) {
       var regPos = /^\d+(\.\d+)?$/; //非负浮点数
@@ -605,7 +594,6 @@ const Heard = ({
       setVisible(false);
     }
   };
-
   //左侧菜单栏
   const menuList = () => {
     let name = electronStore.get(`${storage.userId}-isClical`) ? 'Exit Clinical Study Mode' : 'Enter Clinical Study Mode'
@@ -665,12 +653,10 @@ const Heard = ({
         break;
       case "2":
         history.push("/MainBody");
-        console.log("全部的宠物");
         setMenuNum(e.index);
         break;
       case "3":
         history.push("/MainBody");
-        console.log("预约宠物");
         setMenuNum(e.index);
         break;
       case "4":
@@ -679,18 +665,16 @@ const Heard = ({
         break;
       case "5":
         //跳转到设置
-        // menu5Click()
         history.push("/menuOptions/settings");
-        // setMenuNum(e.index)
         break;
       case "6":
         if (e.name === "Exit Clinical Study Mode") {
           setMenuNum('1');
           electronStore.set(`${storage.userId}-isClical`, false)
+          setSelectHardwareType("mellaPro");
         } else {
           setMenuNum(e.index);
           electronStore.set(`${storage.userId}-isClical`, true)
-          setSelectHardwareType("mellaPro");
         }
         history.push("/MainBody");
         console.log("临床测试");
@@ -900,7 +884,6 @@ const Heard = ({
       </div>
     );
   };
-
   //设备列表界面
   const devices = () => {
     let userId = storage.userId;
@@ -1064,7 +1047,6 @@ const Heard = ({
       </div>
     );
   };
-
   //点击蓝牙搜索图标
   const blueClick = () => {
     console.log("点击了蓝牙图标");
@@ -1339,16 +1321,6 @@ const Heard = ({
     setIsMatchPet(false);
 
     setMacMatchPetList(searchData);
-  };
-  const resize = () => {
-    setSize()
-    // let { offsetWidth, offsetHeight } = heardRef;
-    // console.log("resize", heardRef);
-    // if (offsetHeight !== this.state.bodyHeight) {
-    //   this.setState({
-    //     bodyHeight: offsetHeight - px(50),
-    //   });
-    // }
   };
 
   useEffect(() => {

@@ -242,7 +242,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
   }
   const petListUI = () => {
     let options = petList.map((item, index) => {
-      let itemBac = '#E7E7E7', itemColor = '#141414'
+      let itemBac = '', itemColor = '#141414'
       if (item.petId === petDetailInfo.petId) {
         itemBac = '#e1206D'
         itemColor = '#fff'
@@ -407,7 +407,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
               <div className="sortText" >
                 {`Sort by: ${petSortType}`}
               </div>
-              <img src={xia} alt="" width={px(15)} style={{ marginLeft: px(10) }} />
+              <img src={xia} alt="" width={px(15)} style={{ marginLeft: px(10),cursor:'pointer' }} />
             </div>
           </Dropdown>
           <Tooltip placement='bottom' title='Add a Pet'>

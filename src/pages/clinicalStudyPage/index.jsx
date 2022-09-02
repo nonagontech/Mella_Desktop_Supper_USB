@@ -702,6 +702,7 @@ const ClinicalStudy = ({
     console.log("---------", index);
     setFurLength(index);
   };
+  //Exam Details内容
   const _petCharacteristics = () => {
     let placeholder = "";
     switch (`${furLength}`) {
@@ -720,8 +721,6 @@ const ClinicalStudy = ({
       default:
         break;
     }
-    // console.log('------', WeightValue);
-
     return (
       <div
         className="petChaeacteristics"
@@ -729,18 +728,11 @@ const ClinicalStudy = ({
       >
         <div className="child">
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "relative",
-            }}
+            className="item"
           >
-            <p style={{ width: "150px" }}>Room Temperature: </p>
+            <p className="labelTitle" style={{ width: "150px" }}>Room Temperature: </p>
             <Input
               className="inp"
-              // style={{ border: 'none', outline: 'medium' }}
-              // style={{ width: px(105), height: mTop(33), fontSize: px(18), marginRight: px(6) }}
               value={roomTemperature}
               bordered={false}
               onChange={(item) => {
@@ -758,18 +750,11 @@ const ClinicalStudy = ({
             />
           </div>
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "relative",
-            }}
+            className="item"
           >
-            <p style={{ width: "150px" }}>Reference Rectal Temperature: </p>
+            <p className="labelTitle" style={{ width: "150px" }}>Reference Rectal Temperature: </p>
             <Input
               className="inp"
-              // style={{ border: 'none', outline: 'medium' }}
-
               value={`${referenceRectalTemperature}`}
               bordered={false}
               onChange={(item) => {
@@ -789,13 +774,9 @@ const ClinicalStudy = ({
         </div>
         <div className="child">
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+            className="item"
           >
-            <p style={{ width: "150px" }}>Body Condition Score: </p>
+            <p className="labelTitle" style={{ width: "150px" }}>Body Condition Score: </p>
             <Input
               className="inp"
               style={{ border: "none", outline: "medium" }}
@@ -814,19 +795,12 @@ const ClinicalStudy = ({
               maxLength={8}
             />
           </div>
-          <div className="furLength">
-            <p style={{ width: "150px" }}>Fur Length: </p>
+          <div className="item">
+            <p className="labelTitle" style={{ width: "150px" }}>Fur Length: </p>
             <Select
               className="inpSelect"
               placeholder
               onChange={handleChange}
-              style={{
-                // width: "105px",
-                borderRadius: "40px",
-                // height: "33px",
-                outline: "none",
-                borderWidth: 0,
-              }}
               value={placeholder}
             >
               <Option value="1">smooth</Option>
@@ -838,14 +812,9 @@ const ClinicalStudy = ({
         </div>
         <div className="child">
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "relative",
-            }}
+            className="item"
           >
-            <p style={{ width: "150px" }}>Heart Rate: </p>
+            <p className="labelTitle" style={{ width: "150px" }}>Heart Rate: </p>
             <Input
               className="inp"
               style={{ border: "none", outline: "medium" }}
@@ -866,14 +835,9 @@ const ClinicalStudy = ({
             />
           </div>
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "relative",
-            }}
+            className="item"
           >
-            <p style={{ width: "150px" }}>Blood Pressure: </p>
+            <p className="labelTitle" style={{ width: "150px" }}>Blood Pressure: </p>
             <Input
               className="inp"
               style={{ border: "none", outline: "medium" }}
@@ -896,14 +860,9 @@ const ClinicalStudy = ({
         </div>
         <div className="child">
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "relative",
-            }}
+            className="item"
           >
-            <p style={{ width: "150px" }}>Respiratory Rate: </p>
+            <p className="labelTitle" style={{ width: "150px" }}>Respiratory Rate: </p>
             <Input
               className="inp"
               style={{ border: "none", outline: "medium" }}
@@ -923,8 +882,10 @@ const ClinicalStudy = ({
               maxLength={8}
             />
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
-            <p style={{ width: '150px' }}>Weight:  </p>
+          <div
+            className="item"
+          >
+            <p className="labelTitle" style={{ width: '150px' }}>Weight:  </p>
             <Input className='inp'
               style={{ border: 'none', outline: 'medium' }}
               value={WeightValue}

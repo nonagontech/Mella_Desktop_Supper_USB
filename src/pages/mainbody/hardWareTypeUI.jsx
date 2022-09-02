@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { message } from 'antd'
 
 import mellaPro from "./../../assets/img/hardList-mella.png";
 import biggie from "./../../assets/img/hardList-biggie.png";
@@ -64,14 +65,14 @@ const HardWareTypeUI = ({
         break;
     }
     let borderStyle = ``;
-    if (item.type === selectHardwareType) {
+    if (item.type === selectHardwareType && menuNum !== "6") {
       borderStyle = ` 2px solid #3B3A3A`;
     }
 
     return (
       <li
         key={`${index}`}
-        style={{ padding: `${px(10)}px 0` }}
+        style={{ margin: `${px(10)}px 0` }}
         onClick={() => {
           console.log(item.type);
           if (menuNum !== "6" && !electronStore.get(`${storage.userId}-isClical`)) {
@@ -95,13 +96,17 @@ const HardWareTypeUI = ({
 
               selectHardwareInfoFun(devicesInfo);
             }
-          } else {
-            setSelectHardwareType("mellaPro");
+          }
+          else {
+            message.destroy();
+            message.warning('Please exit clinical trial mode first');
+
           }
         }}
       >
         <div
-          style={{ border: borderStyle, padding: px(2), borderRadius: px(10) }}
+          className="item"
+          style={{ border: borderStyle }}
         >
           <img src={img} alt="" width={px(55)} />
         </div>
@@ -149,6 +154,8 @@ const HardWareTypeUI = ({
         }
         if (!sameFlag) {
           devicesInfo = hard.devices[0];
+          electronStore.delete(
+            `${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`);
           electronStore.set(
             `${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`,
             devicesInfo

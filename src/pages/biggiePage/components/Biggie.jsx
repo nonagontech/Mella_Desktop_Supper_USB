@@ -36,9 +36,7 @@ const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnP
             style={{ width: px(20), marginBottom: px(5) }}
           />
         </div>
-
-
-        <div style={{  borderRadius: px(150) }} className='cen'>
+        <div style={{ borderRadius: px(150) }} className='cen'>
           <div style={{ borderRadius: px(75) }} className='lT'>
             <img
               src={cir}
@@ -53,9 +51,6 @@ const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnP
             style={{ width: px(20), marginBottom: px(6) }}
           />
         </div>
-
-
-
         <div style={{ borderRadius: px(150) }} className='biggiel'>
           <div style={{ backgroundColor: rTColor, borderRadius: px(75) }} className='lT'>
             <div className='lTText' style={{ fontSize: rTtextSize }}>{rTtext}</div>
@@ -67,40 +62,28 @@ const Biggie = ({ weight, bodyFat, score, impedance, issave, onPress, discardOnP
           />
         </div>
       </div>
-
-
-
-
       <div className='biggiefoot'>
         {isHaveSaveBtn &&
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
             <div
               className='biggiefootbtn'
-              // style={{ height: px(36), }}
               onClick={() => {
                 discardOnPress()
               }}
             >
               <div style={{ color: '#fff', fontSize: px(16) }}>{`Discard`}</div>
             </div>
-
-
             <div
               className='biggiefootbtn'
-              // style={{ height: px(36), }}
               onClick={() => {
                 onPress()
               }}
             >
               <div style={{ color: '#fff', fontSize: px(16) }}>{issave ? `Save` : `Send to PMS`}</div>
             </div>
-
-
           </div>
         }
-
-
-        {(impedance && impedance > 0) ? <div style={{ color: '#000', fontSize: px(18), marginTop: mTop(10) }}>{`Impedance ${impedance} Ohms`}</div> : null}
+        <div style={{ color: '#000', fontSize: px(18), marginTop: mTop(10), height: '28px' }}>{(impedance && impedance > 0) ? `Impedance ${impedance} Ohms` : ''}</div>
       </div>
     </div>
   )

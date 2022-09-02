@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {
   message,
   Modal,
-  Input
+  Input,
+  Spin
 } from 'antd';
 import { createFromIconfontCN } from '@ant-design/icons';
 
@@ -481,80 +482,58 @@ export default class FindWorkplace extends Component {
           </div>
         </div>
 
-
-
-
         <MyModal
           visible={isOrg}
           element={
-            <div className='myfindOrg' >
-              <div className="orgHeard">
-                <div className="titleicon" style={{ marginTop: px(5) }}>
-                  <div
-                  // className=" iconfont icon-left return"
-                  // onClick={() => { this.setState({ isWorkplace: false, isOrg: true }) }}
-                  >
-                    {/* <img src={left1} alt="" style={{ height: px(25) }} /> */}
+              <div className='myfindOrg' >
+                <div className="orgHeard">
+                  <div className="titleicon" style={{ marginTop: px(5) }}>
+                    <div></div>
+                    <div
+                      onClick={() => { this.setState({ isWorkplace: false, isOrg: false }) }}
+                    >
+                      <img src={Close} alt="" style={{ width: px(16) }} />
+                    </div>
                   </div>
-                  <div
-                    onClick={() => { this.setState({ isWorkplace: false, isOrg: false }) }}
-                  >
-                    <img src={Close} alt="" style={{ width: px(25) }} />
-                  </div>
-                </div>
-                <div className="text"
-                  onMouseOver={() => {
-                    if (disabled) {
+                  <div className="text"
+                    onMouseOver={() => {
+                      if (disabled) {
+                        this.setState({
+                          disabled: false,
+                        });
+                      }
+                    }}
+                    onMouseOut={() => {
                       this.setState({
-                        disabled: false,
+                        disabled: true,
                       });
-                    }
-                  }}
-                  onMouseOut={() => {
-                    this.setState({
-                      disabled: true,
-                    });
-                  }}
+                    }}
 
-                >Find my organization</div>
-
-                <div className="searchBox">
-
-                  <Input
-                    placeholder=" &#xe61b; Search organization"
-                    bordered={false}
-                    allowClear={true}
-                    value={this.state.search}
-                    onChange={this._search}
+                  >Find my organization</div>
+                  <div className="searchBox">
+                    <Input
+                      placeholder=" &#xe61b; Search organization"
+                      bordered={false}
+                      allowClear={true}
+                      value={this.state.search}
+                      onChange={this._search}
+                    />
+                  </div>
+                </div>
+                <div className="list">
+                  {this._list()}
+                </div>
+                <div className="foot">
+                  <Button
+                    text={'Join Organization'}
+                    onClick={this._goWorkplace}
                   />
-
+                  <span style={{ marginTop: px(20) }}>{`Don’t see your organization? `}</span>
+                  <a href="#" onClick={this._goNewOrg}>Create a new organization</a>
                 </div>
               </div>
-
-
-              <div className="list"
-
-              >
-                {this._list()}
-              </div>
-
-              <div className="foot">
-                <Button
-                  text={'Join Organization'}
-                  onClick={this._goWorkplace}
-                />
-                <span style={{ marginTop: px(20) }}>{`Don’t see your organization? `}</span>
-                <a href="#" onClick={this._goNewOrg}>Create a new organization</a>
-              </div>
-
-            </div>
           }
-
         />
-
-
-
-
         <MyModal
           visible={isWorkplace}
           element={
@@ -565,12 +544,12 @@ export default class FindWorkplace extends Component {
                     // className=" iconfont icon-left return"
                     onClick={() => { this.setState({ isWorkplace: false, isOrg: true }) }}
                   >
-                    <img src={left1} alt="" style={{ height: px(25) }} />
+                    <img src={left1} alt="" style={{ height: px(16) }} />
                   </div>
                   <div
                     onClick={() => { this.setState({ isWorkplace: false, isOrg: false }) }}
                   >
-                    <img src={Close} alt="" style={{ width: px(25) }} />
+                    <img src={Close} alt="" style={{ width: px(16) }} />
                   </div>
                 </div>
 
@@ -607,7 +586,6 @@ export default class FindWorkplace extends Component {
 
             </div>
           }
-
         />
         <MyModal
           visible={this.state.isLoading}

@@ -153,14 +153,6 @@
 }
 
 /*体重测量界面*/
-.linkBox {
-  padding-top: 50px;
-}
-
-.linkBox .startBox {
-  padding-bottom: 20px;
-}
-
 .linkBox .startBox .startTitle {
   font-size: 32px;
   line-height: 42px;
@@ -169,13 +161,13 @@
 
 .biggiePage .biggieContentBox .biggbody .biggieTopBox .biggie .top .biggiel {
   width: 20%;
-  margin-top: 150px;
+  margin-top: 100px;
   height: 160px;
 }
 
 .biggiePage .biggieContentBox .biggbody .biggieTopBox .biggie .top .cen {
   height: 240px;
-  margin-bottom: 50px;
+  margin-bottom: 24px;
   width: 35%;
 }
 
@@ -386,7 +378,7 @@
 
 #clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child {
   height: 33px;
-  margin: 15px 0;
+  margin: 8px 0;
 }
 
 #clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child .inp {
@@ -397,10 +389,6 @@
 #clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child .furLength .ant-select-selector {
   width: 105px;
   height: 33px;
-}
-
-#clinical .clinicalBody .clinical_top .clinical_foot .petChaeacteristics .child:nth-child(1) {
-  margin-top: 30px;
 }
 
 /*设置界面*/

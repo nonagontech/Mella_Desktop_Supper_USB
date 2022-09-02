@@ -19,7 +19,7 @@ import PropTypes from 'prop-types';
 import "./index.less";
 
 const { Content, Header } = Layout;
-const OtterEQPage = ({ petMessage, hardwareMessage,bodyHeight }) => {
+const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight }) => {
   const [cutPageType, setCutPageType] = useState('linkPage');
   const changePage = () => {
     switch (cutPageType) {
@@ -43,6 +43,12 @@ const OtterEQPage = ({ petMessage, hardwareMessage,bodyHeight }) => {
     }
   }
 
+  useEffect(() => {
+    setCutPageType('linkPage');
+    return (() => { })
+
+  }, [petMessage.petId])
+
   return (
     <Layout className="ottterEQBox" style={{ height: bodyHeight }}>
       <div className="headerContentBox" style={{ background: "#fff", position: 'relative' }}>
@@ -55,7 +61,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage,bodyHeight }) => {
           <p className="chackPatientTitle">Select a patient</p>
         </div>
       ) : (
-        <Content className={"otterEQcontent"}>
+        <Content className="otterEQcontent">
           {changePage()}
         </Content>
       )}

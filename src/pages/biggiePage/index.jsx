@@ -254,37 +254,36 @@ const BiggirPage = ({
               </div>
             </>
           ) : connectStatus === "isMeasuring" ? (
-            <div className="biggbody" >
-              <div className="flex" style={{ width: '100%', }}>
-                <div className="biggieTopBox" style={{ width: px(400), }}>
-                  <Biggie
-                    weight={weight}
-                    bodyFat={fat}
-                    score={5}
-                    impedance={fat}
-                    isIbs={unit === "lb"}
-                    onPress={_saveWeight}
-                    discardOnPress={() =>
-                      setBiggieConnectStatusFun("disconnected")
-                    }
-                    issave={isSavePMS}
-                    isHaveSaveBtn={isHaveSaveBtn}
-                  />
-                </div>
-              </div>
-
-              <div className="biggeTitleBox">
-                <p className="biggeTitle">History</p>
-              </div>
-              <div className="biggeTableBox">
-                <HistoryTable saveNum={saveNum} tableColumnType='weight' />
+            <div className="biggbody">
+              <div className="biggieTopBox">
+                <Biggie
+                  weight={weight}
+                  bodyFat={fat}
+                  score={5}
+                  impedance={fat}
+                  isIbs={unit === "lb"}
+                  onPress={_saveWeight}
+                  discardOnPress={() =>
+                    setBiggieConnectStatusFun("disconnected")
+                  }
+                  issave={isSavePMS}
+                  isHaveSaveBtn={isHaveSaveBtn}
+                />
               </div>
             </div>
           ) : (
-            <div className="biggbody">
-              <LinkEquipment />
-            </div>
+            <LinkEquipment />
           )}
+          {
+            !_.isEmpty(petDetailInfo) && (
+              <div className="bottomContent">
+                <div className="biggeTitleBox">
+                  <p className="biggeTitle">History</p>
+                </div>
+                <HistoryTable saveNum={saveNum} tableColumnType='weight' />
+              </div>
+            )
+          }
         </Content>
       </Layout>
       <MyModal visible={saveLoad} />

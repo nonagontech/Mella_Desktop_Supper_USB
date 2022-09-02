@@ -15,13 +15,14 @@ import {
   selectHardwareModalShowFun,
   petSortTypeFun,
   petDetailInfoFun,
+  setSelectHardwareType
 } from "../../store/actions";
 import PropTypes from 'prop-types';
 import _ from "lodash";
 
 import "./index.less";
 
-const EnrolledPlan = ({ petMessage, hardwareMessage, bodyHeight }) => {
+const EnrolledPlan = ({ petMessage, hardwareMessage, bodyHeight,setSelectHardwareType }) => {
   const { Content, Header } = Layout;
   let history = useHistory();
   const [form] = Form.useForm();
@@ -58,6 +59,7 @@ const EnrolledPlan = ({ petMessage, hardwareMessage, bodyHeight }) => {
   //表单提交
   const onFinish = (values) => {
     console.log(values);
+    setSelectHardwareType("mabel");
   };
   //选择的疾病
   const onChange = (checkedValues) => {
@@ -304,5 +306,6 @@ export default connect(
     selectHardwareModalShowFun,
     petSortTypeFun,
     petDetailInfoFun,
+    setSelectHardwareType,
   }
 )(EnrolledPlan);

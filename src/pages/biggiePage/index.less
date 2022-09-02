@@ -1,48 +1,62 @@
 .biggiePage {
-    width: 0;
+  width: 0;
+  position: relative;
+  background-color: #FFFFFF;
+  border-bottom-right-radius: 20px;
+
+  .biggieContentBox {
     position: relative;
-    background-color: #FFFFFF;
-    border-bottom-right-radius: 20px;
 
-    .biggieContentBox {
-        .chackPatientBox {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+    .chackPatientBox {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-            .chackPatientTitle {
-                color: #3b3a3a;
-                font-size: 31px;
-                line-height: 42px;
-            }
-        }
+      .chackPatientTitle {
+        color: #3b3a3a;
+        font-size: 31px;
+        line-height: 42px;
+      }
     }
 
     .biggbody {
-        width: 100%;
-        height: 100%;
-        position: relative;
+      width: 100%;
+      height: 50%;
+      position: relative;
+      display: grid;
+      justify-content: center;
+      align-content: center;
 
-        .biggeTitleBox {
-            width: 100%;
-            height: 30px;
-            background-color: #19ade4;
 
-            .biggeTitle {
-                font-size: 13px;
-                color: #FFFFFF;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-        }
-
-        .biggeTableBox {
-            position: relative;
-            width: 100%;
-        }
+      .biggieTopBox {
+        width: 400px;
+      }
     }
+
+    .bottomContent {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 50%;
+
+      .biggeTitleBox {
+        width: 100%;
+        height: 30px;
+        position: relative;
+        background-color: #19ade4;
+
+        .biggeTitle {
+          font-size: 16px;
+          color: #FFFFFF;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+
+  }
 }

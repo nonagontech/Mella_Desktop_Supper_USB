@@ -8,15 +8,18 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   .heard {
     height: 10%;
   }
+
   .body {
     height: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
     .text {
       // padding:0 40px;
       text-align: center;
@@ -31,6 +34,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+
       .item {
         display: flex;
         flex-direction: row;
@@ -44,12 +48,14 @@
 
         .iconBox {
           margin-right: 10px;
+
           .icon {
             color: #8e8e93;
             font-size: 20px;
             // background-color: hotpink;
           }
         }
+
         .r {
           flex: 8;
           display: flex;
@@ -63,6 +69,7 @@
             font-size: 16px;
             color: #a0a0a0;
             font-weight: 500;
+
             .iconText {
               font-family: 'iconfont';
             }
@@ -80,14 +87,15 @@
   }
 
   .myfindOrg {
-    border-radius: 30px;
-    width: 50%;
+    border-radius: 15px;
+    width: 40%;
     background-color: #fff;
     position: relative;
     display: flex;
     align-items: center;
     flex-direction: column;
-    height: 90%;
+    height: 75%;
+
     .orgHeard {
       height: 25%;
       width: 100%;
@@ -103,27 +111,23 @@
         justify-content: space-between;
         align-items: center;
       }
-      .return {
-      }
 
       .text {
-        // background-color: pink;
-        // padding: 0 10px;
         text-align: center;
         font-size: 26px;
-        // margin-top: 40px;
       }
+
       .searchBox {
         width: 90%;
         height: 35px;
         display: flex;
-        // flex: 1;
         flex-direction: row;
         align-items: center;
         background-color: rgba(212, 208, 208, 0.4);
         border-radius: 5px;
         -webkit-app-region: no-drag;
         margin: 15px 0;
+
         .icon {
           color: #7b7474;
           padding: 0;
@@ -131,6 +135,7 @@
           margin: 0 10px;
           font-weight: 300;
         }
+
         input {
           flex: 1;
           width: 100%;
@@ -138,6 +143,7 @@
           border: 0;
           padding: 0;
         }
+
         input::-webkit-input-placeholder {
           color: #4a4a4a;
           font-family: 'iconfont';
@@ -179,21 +185,25 @@
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+
           .item {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
           }
+
           .search {
             font-family: 'iconfont';
             margin-right: 10px;
           }
         }
       }
+
       ul::-webkit-scrollbar {
         width: 0 !important;
       }
     }
+
     .foot {
       height: 20%;
       width: 100%;
@@ -202,16 +212,21 @@
       align-items: center;
       background-color: #e7e7e7;
       justify-content: center;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+
       #button {
         width: 90%;
         display: flex;
         align-items: center;
         justify-content: center;
+
         p {
           padding: 0;
           margin: 0;
         }
       }
+
       span {
         font-size: 13px;
 
@@ -219,6 +234,7 @@
           color: #e1206d;
         }
       }
+
       a {
         font-size: 13px;
         color: #e1206d;
@@ -231,12 +247,14 @@
     }
   }
 }
+
 .findOrg {
   border-radius: 30px;
   height: 90%;
 
   .ant-modal-content {
     border-radius: 20px;
+
     #findOrg {
       border-radius: 30px;
       position: relative;
@@ -245,11 +263,13 @@
       align-items: center;
       width: 100%;
       height: 80%;
+
       .return {
         position: absolute;
         left: 20px;
         top: 20px;
       }
+
       .text {
         // background-color: pink;
         padding: 0 10px;
@@ -257,6 +277,7 @@
         font-size: 26px;
         margin-top: 40px;
       }
+
       .searchBox {
         width: 80%;
         height: 35px;
@@ -268,6 +289,7 @@
         border-radius: 5px;
         -webkit-app-region: no-drag;
         margin: 15px 0;
+
         .icon {
           color: #7b7474;
           padding: 0;
@@ -275,6 +297,7 @@
           margin: 0 10px;
           font-weight: 300;
         }
+
         input {
           flex: 1;
           width: 100%;
@@ -282,6 +305,7 @@
           border: 0;
           padding: 0;
         }
+
         input::-webkit-input-placeholder {
           color: #4a4a4a;
           font-family: 'iconfont';
@@ -294,6 +318,7 @@
           padding: 0 0 0 13px;
         }
       }
+
       .list {
         height: 385px;
         display: flex;
@@ -323,21 +348,25 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+
             .item {
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
             }
+
             .search {
               font-family: 'iconfont';
               margin-right: 10px;
             }
           }
         }
+
         ul::-webkit-scrollbar {
           width: 0 !important;
         }
       }
+
       .foot {
         height: 110px;
         width: 100%;
@@ -345,9 +374,11 @@
         flex-direction: column;
         align-items: center;
         background-color: #e7e7e7;
+
         .btn {
           margin-top: 45px;
         }
+
         span {
           // background-color: pink;
           font-size: 13px;

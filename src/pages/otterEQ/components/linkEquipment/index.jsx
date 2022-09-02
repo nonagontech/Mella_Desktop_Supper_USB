@@ -40,7 +40,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage ,cutPageType}) => {
           </>
         ) : (
           <div className="imageBox" onClick={() => cutPageType('swabPetEarPage')}>
-            <img src={PlugInOtter} alt="" style={{ width: px(500), height: px(350) }} />
+            <img src={PlugInOtter} alt="" style={{ height: px(360) }} />
           </div>
         )
       }
