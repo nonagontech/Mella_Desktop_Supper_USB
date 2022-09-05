@@ -135,8 +135,8 @@ export const petPicture = (petSpeciesBreedId) => {
 }
 /**
  * @dec 判断版本1是否大于版本2
- * @param {str} version1 版本号1,格式必须为1.0.0 
- * @param {*} version2 版本号2,格式必须为1.0.0 
+ * @param {str} version1 版本号1,格式必须为1.0.0
+ * @param {*} version2 版本号2,格式必须为1.0.0
  * @returns 版本1是否大于版本2
  */
 export const versionComarision = (version1, version2) => {
@@ -153,6 +153,19 @@ export const versionComarision = (version1, version2) => {
   } else {
     return false
   }
+}
+/**
+ *
+ * @param {*} time
+ * @returns
+ */
+
+export const transitionTime = (time) => {
+
+  let timeDifference = new Date().getTimezoneOffset();
+  let newTime = moment(time).subtract(timeDifference, 'm').format();
+  return newTime;
+
 }
 
 

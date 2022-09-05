@@ -22,6 +22,8 @@ import redcat from "./../../../assets/images/redcat.png";
 import reddog from "./../../../assets/images/reddog.png";
 import redother from "./../../../assets/images/redother.png";
 
+import electronStore from "../../../utils/electronStore";
+
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
@@ -48,6 +50,7 @@ const HeaderItem = ({
   setMellaPredictReturnValueFun,
 }) => {
   let history = useHistory();
+  let storage = window.localStorage;
   let {
     petName,
     patientId,
@@ -191,11 +194,8 @@ const HeaderItem = ({
         let ipcRenderer = window.electron.ipcRenderer;
         if (res.message === "Success") {
           let prediction = res.result.prediction.toFixed(2);
-          console.log("------yuce", prediction);
-
           let num = parseFloat(parseFloat(prediction).toFixed(1));
           setMellaPredictReturnValueFun(num);
-
           let tempArr = prediction.split(".");
           let intNum = tempArr[0];
           let flotNum = tempArr[1];
@@ -215,9 +215,7 @@ const HeaderItem = ({
           }, 10);
         } else {
           const timeID = setTimeout(() => {
-            // this.sendData('41', [])
             ipcRenderer.send("usbdata", { command: "41", arr: [] });
-
             clearTimeout(timeID);
           }, 10);
         }
@@ -237,32 +235,46 @@ const HeaderItem = ({
         return RectalBluetoothIcon;
       }
     };
-    switch (selectHardwareType) {
-      case "mellaPro":
-        return _.isEqual(mellaConnectStatus, "disconnected") ? (
-          <Avatar size={40} src={BluetoothNotConnected} />
-        ) : (
-          <Progress
-            width={48}
-            type="circle"
-            percent={value}
-            format={() => <Avatar size={40} src={checkImage()} />}
-          />
-        );
-      case "biggie":
-        return _.isEqual(biggieConnectStatus, "disconnected") ? (
-          <Avatar size={40} src={BluetoothNotConnected} />
-        ) : (
-          <Avatar size={40} src={connectBle} />
-        );
-      case "tape":
-        return _.isEqual(rulerConnectStatus, "disconnected") ? (
-          <Avatar size={40} src={BluetoothNotConnected} />
-        ) : (
-          <Avatar size={40} src={connectBle} />
-        );
-      default:
-        break;
+
+    if (electronStore.get(`${storage.userId}-isClical`)) {
+      return _.isEqual(mellaConnectStatus, "disconnected") ? (
+        <Avatar size={40} src={BluetoothNotConnected} />
+      ) : (
+        <Progress
+          width={48}
+          type="circle"
+          percent={value}
+          format={() => <Avatar size={40} src={checkImage()} />}
+        />
+      );
+    } else {
+      switch (selectHardwareType) {
+        case "mellaPro":
+          return _.isEqual(mellaConnectStatus, "disconnected") ? (
+            <Avatar size={40} src={BluetoothNotConnected} />
+          ) : (
+            <Progress
+              width={48}
+              type="circle"
+              percent={value}
+              format={() => <Avatar size={40} src={checkImage()} />}
+            />
+          );
+        case "biggie":
+          return _.isEqual(biggieConnectStatus, "disconnected") ? (
+            <Avatar size={40} src={BluetoothNotConnected} />
+          ) : (
+            <Avatar size={40} src={connectBle} />
+          );
+        case "tape":
+          return _.isEqual(rulerConnectStatus, "disconnected") ? (
+            <Avatar size={40} src={BluetoothNotConnected} />
+          ) : (
+            <Avatar size={40} src={connectBle} />
+          );
+        default:
+          break;
+      }
     }
   };
 

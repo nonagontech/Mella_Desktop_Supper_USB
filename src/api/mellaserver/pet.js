@@ -76,8 +76,8 @@ export const deletePetExamByExamId = (examId, params = '') => {
  * @param {string} petId
  * @returns
  */
-export const getPetExamByPetId = (petId) => {
-    return get(`${baseURL}/getPetExamByPetId/${petId}`, '')
+export const getPetExamByPetId = (petId,params) => {
+    return get(`${baseURL}/getPetExamByPetId/${petId}`, params)
 }
 
 

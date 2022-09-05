@@ -21,6 +21,12 @@ const LinkEquipment = ({ petMessage, hardwareMessage ,cutPageType}) => {
     setNextType(true);
   }
 
+  useEffect(() => {
+    setNextType(false);
+    return (() => { })
+
+  }, [petMessage.petId])
+
   return (
     <>
       <div className="topBox">

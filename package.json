@@ -1,6 +1,6 @@
 {
   "name": "supermella",
-  "version": "v1.1.19",
+  "version": "v1.1.20",
   "main": "main.js",
   "private": true,
   "author": {
@@ -12,6 +12,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "ahooks": "^3.7.0",
     "antd": "^4.10.2",
     "antd-img-crop": "^3.16.0",
     "axios": "^0.26.1",
@@ -62,7 +63,7 @@
     "rebuild": "yarn electron-rebuild -v 11.2.0",
     "pack": "electron-builder --dir",
     "disk": "electron-builder",
-    "release": "cross-env GH_TOKEN=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  electron-builder",
+    "release": "cross-env GH_TOKEN=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  electron-builder",
     "clear": "rd /s/q dist1 && md dist1",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },

@@ -1033,8 +1033,8 @@ ipcMain.on("reUpload", (event, data) => {
 });
 
 /**
- * 
- * @param {string} uri  文件下载地址 
+ *
+ * @param {string} uri  文件下载地址
  * @param {*} fileName  下载后的文件名称
  * @param {string}path  下载后保存的路径
  */

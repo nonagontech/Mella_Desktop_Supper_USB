@@ -337,8 +337,9 @@ class App extends Component {
         if (mellaConnectStatus !== "isMeasuring") {
           setMellaConnectStatusFun("isMeasuring");
         }
+        console.log('mellaMeasurePart: ', mellaMeasurePart);
+        if (mellaMeasurePart !== "腋温" && mellaMeasurePart !== "肛温") {
 
-        if (mellaMeasurePart !== "腋温" || mellaMeasurePart !== "肛温") {
           setMellaMeasurePartFun("腋温");
         }
         this.props.setMellaMeasureNumFun(this.props.mellaMeasureNum + 1);
@@ -354,7 +355,7 @@ class App extends Component {
           clinicalIndex = 0;
         }
         //现在探头0可能不存在，所以把探头0改为探头1
-        let temp0 = parseFloat(`${dataArr1[7]}.${dataArr1[8]}`);
+        let temp0 = parseFloat(`${dataArr1[7]}.${dataArr1[4.18]}`);
         let Temp = temp0;
         setMellaMeasureValueFun(Temp);
         if (mellaConnectStatus !== "isMeasuring") {

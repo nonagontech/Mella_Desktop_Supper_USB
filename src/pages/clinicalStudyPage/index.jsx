@@ -730,7 +730,7 @@ const ClinicalStudy = ({
           <div
             className="item"
           >
-            <p className="labelTitle" style={{ width: "150px" }}>Room Temperature: </p>
+            <p className="labelTitle" style={{ width: "140px" }}>Room Temperature: </p>
             <Input
               className="inp"
               value={roomTemperature}
@@ -752,7 +752,7 @@ const ClinicalStudy = ({
           <div
             className="item"
           >
-            <p className="labelTitle" style={{ width: "150px" }}>Reference Rectal Temperature: </p>
+            <p className="labelTitle" style={{ width: "140px" }}>Reference Rectal Temperature: </p>
             <Input
               className="inp"
               value={`${referenceRectalTemperature}`}
@@ -776,7 +776,7 @@ const ClinicalStudy = ({
           <div
             className="item"
           >
-            <p className="labelTitle" style={{ width: "150px" }}>Body Condition Score: </p>
+            <p className="labelTitle" style={{ width: "140px" }}>Body Condition Score: </p>
             <Input
               className="inp"
               style={{ border: "none", outline: "medium" }}
@@ -796,7 +796,7 @@ const ClinicalStudy = ({
             />
           </div>
           <div className="item">
-            <p className="labelTitle" style={{ width: "150px" }}>Fur Length: </p>
+            <p className="labelTitle" style={{ width: "140px" }}>Fur Length: </p>
             <Select
               className="inpSelect"
               placeholder
@@ -814,7 +814,7 @@ const ClinicalStudy = ({
           <div
             className="item"
           >
-            <p className="labelTitle" style={{ width: "150px" }}>Heart Rate: </p>
+            <p className="labelTitle" style={{ width: "140px" }}>Heart Rate: </p>
             <Input
               className="inp"
               style={{ border: "none", outline: "medium" }}
@@ -837,7 +837,7 @@ const ClinicalStudy = ({
           <div
             className="item"
           >
-            <p className="labelTitle" style={{ width: "150px" }}>Blood Pressure: </p>
+            <p className="labelTitle" style={{ width: "140px" }}>Blood Pressure: </p>
             <Input
               className="inp"
               style={{ border: "none", outline: "medium" }}
@@ -862,7 +862,7 @@ const ClinicalStudy = ({
           <div
             className="item"
           >
-            <p className="labelTitle" style={{ width: "150px" }}>Respiratory Rate: </p>
+            <p className="labelTitle" style={{ width: "140px" }}>Respiratory Rate: </p>
             <Input
               className="inp"
               style={{ border: "none", outline: "medium" }}
@@ -885,7 +885,7 @@ const ClinicalStudy = ({
           <div
             className="item"
           >
-            <p className="labelTitle" style={{ width: '150px' }}>Weight:  </p>
+            <p className="labelTitle" style={{ width: '140px' }}>Weight:  </p>
             <Input className='inp'
               style={{ border: 'none', outline: 'medium' }}
               value={WeightValue}
@@ -1880,7 +1880,6 @@ const ClinicalStudy = ({
               {_foot()}
               {_editModal()}
               {tipSpin && (
-                // true &&
                 <div className="modal">
                   <div className="loadIcon" style={{ marginBottom: px(5) }}>
                     <LoadingOutlined

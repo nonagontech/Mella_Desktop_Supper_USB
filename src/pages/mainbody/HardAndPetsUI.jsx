@@ -18,7 +18,6 @@ const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow
   //定义选择的硬件详细信息
   const [selectHardwareDetail, setSelectHardwareDetail] = useState({})
   useEffect(() => {
-    console.log('初始化硬件和宠物界面', hardwareList);
     //根据设备类型获取到此类型下的所有硬件,并用来展示
     for (let i = 0; i < hardwareList.length; i++) {
       const element = hardwareList[i];
@@ -26,7 +25,6 @@ const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow
         let list = element.devices || []
         //获取被选中的硬件的详细信息
         let selectHardwareInfo = hardwareInfo || {}
-        console.log('------=========--------', selectHardwareInfo);
         if (selectHardwareInfo === {}) {
           let selectHardwareInfo = list[0] || {}
           setSelectHardwareDetail(selectHardwareInfo)
@@ -40,9 +38,7 @@ const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow
               break
             }
           }
-          console.log('sameFlag', sameFlag);
           if (!sameFlag) {
-            console.log('设置了默认值');
             let selectHardwareInfo = list[0] || {}
             setSelectHardwareDetail(selectHardwareInfo)
           }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Button,
   Progress,
@@ -10,12 +10,17 @@ import {
   Popconfirm,
   message,
 } from "antd";
+
 import measuredTable_1 from "./../../assets/img/measuredTable_1.png";
 import measuredTable_2 from "./../../assets/img/measuredTable_2.png";
 import measuredTable_3 from "./../../assets/img/measuredTable_3.png";
 import EditCircle from "./../../assets/img/EditCircle.png";
 import Delete from "./../../assets/img/Delete.png";
-import _ from "lodash";
+
+import { px, mTop } from "../../utils/px";
+import electronStore from "../../utils/electronStore";
+import { deletePetExamByExamId, getPetExamByPetId, updatePetExam } from "../../api";
+
 import { connect } from "react-redux";
 import {
   selectHardwareModalShowFun,
@@ -27,11 +32,11 @@ import {
   setMellaMeasurePartFun,
 } from "../../store/actions";
 import Draggable from "react-draggable";
-import { px, mTop } from "../../utils/px";
-import electronStore from "../../utils/electronStore";
 import moment from "moment";
+import _ from "lodash";
+import { useDebounceEffect } from 'ahooks';
+
 import "./index.less";
-import { deletePetExamByExamId, getPetExamByPetId, updatePetExam } from "../../api";
 
 const HistoryTable = ({
   petMessage,
@@ -50,7 +55,6 @@ const HistoryTable = ({
     let historyElement = document.querySelectorAll(".historyTable");
     hisHe = historyElement[0].clientHeight - mTop(60);
   } catch (error) { }
-  const [petData, setPetData] = useState([]); //存储宠物历史数据
   const [disabled, setDisabled] = useState(true); //model是否可拖拽
   const [visible, setVisible] = useState(false); //model框是否显示
   const [newMemo, setNewMemo] = useState(""); //note内容
@@ -64,8 +68,12 @@ const HistoryTable = ({
   });
   const [reRender, setReRender] = useState(0);
   const [isHua, setIsHua] = useState(true);
-  const [loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(false);//加载
+  const [petData, setPetData] = useState([]); //存储宠物历史数据
+  const [pageSize, setPageSize] = useState(10); // 每页10条
+  const [total, setTotal] = useState(0);//历史数据的总条数
+  const [currPage, setCurrPage] = useState(1);//页码
+  const [isMore, setIsMore] = useState(true); // 是否还有数据 false-已经到底
   //体重表格渲染
   const weightColumns = [
     {
@@ -263,36 +271,31 @@ const HistoryTable = ({
     }
   };
   //获取历史宠物数据
-  const getPetTemperatureData = () => {
+  const getPetTemperatureData = (currPage) => {
     setLoading(true);
-    getPetExamByPetId(petId)
+    let params = {
+      pageSize: pageSize,
+      currPage: currPage,
+      deviceType: tableColumnType === "temperature" ? 0 : 1,
+    }
+    getPetExamByPetId(petId, params)
       .then((res) => {
         setLoading(false);
-        console.log("历史记录", res);
+        setTotal(res.data.totalCount);
         if (res.flag === true) {
-          let arr = [];
-          for (let i = 0; i < res.data.length; i++) {
-            const element = res.data[i];
-            const type = () => {
-              switch (tableColumnType) {
-                case "temperature":
-                  return element.temperature;
-                case "weight":
-                  return element.weight;
-                default:
-                  break;
-              }
-            };
-            if (type()) {
-              arr.push(element);
-            }
+          let newArr = [];
+          if (currPage === 1) {
+            newArr = res.data.list;
+          } else {
+            let oldArr = petData;
+            let arr = res.data.list;
+            newArr = [...oldArr, ...arr];
           }
-          setPetData(_.orderBy(arr, 'createTime', 'desc'));
+          setPetData(_.orderBy(newArr, 'createTime', 'desc'));
         }
       })
       .catch((err) => {
         setLoading(false);
-        console.log(err);
       });
   };
   //保存note
@@ -339,16 +342,40 @@ const HistoryTable = ({
       bottom: clientHeight - (targetRect?.bottom - uiData?.y),
     });
   };
+  //滚动监听
+  const onScrollCapture = () => {
+    // 滚动的容器
+    let tableEleNodes = document.querySelectorAll(`.historyTableStyle .ant-table-body`)[0];
+    console.log('tableEleNodes?.scrollHeight', tableEleNodes?.scrollHeight);
+    console.log('tableEleNodes.clientHeight : ', tableEleNodes?.clientHeight);
+    console.log('tableEleNodes?.scrollTop', tableEleNodes?.scrollTop);
+    //是否滚动到底部
+    let bottomType = Math.round(tableEleNodes?.scrollTop) + tableEleNodes?.clientHeight === tableEleNodes?.scrollHeight;
+    console.log('bottomType: ', bottomType);
+    if (bottomType) {
+      if (total === petData.length) {
+        setIsMore(false);
+        return false;
+      }
+      setCurrPage(currPage + 1);
+      getPetTemperatureData(currPage + 1);
+    }
+  }
 
-  useEffect(() => {
-    getPetTemperatureData();
-    return () => { };
-  }, [petMessage]);
+  useDebounceEffect(() => {
+    setCurrPage(1);
+    setPetData([]);
+    setTotal(0);
+    getPetTemperatureData(1);
+  }, [petId], { wait: 500 });
 
   useEffect(() => {
     if (reRender !== saveNum) {
+      setCurrPage(1);
+      setPetData([]);
+      setTotal(0);
       setReRender(saveNum);
-      getPetTemperatureData();
+      getPetTemperatureData(1);
     }
     return () => { };
   }, [saveNum]);
@@ -362,7 +389,7 @@ const HistoryTable = ({
   }, []);
 
   return (
-    <>
+    <div className="tableContainer" onScrollCapture={onScrollCapture}>
       <Table
         rowKey={"examId"}
         columns={columType()}
@@ -432,7 +459,7 @@ const HistoryTable = ({
           </div>
         </div>
       </Modal>
-    </>
+    </div>
   );
 };
 

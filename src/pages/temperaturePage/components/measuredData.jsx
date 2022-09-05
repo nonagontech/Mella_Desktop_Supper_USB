@@ -196,18 +196,18 @@ const MeasuredData = ({
   };
   //获取历史宠物温度数据
   const getPetTemperatureData = () => {
-
-    getPetExamByPetId(petId)
-
+    let params = {
+      pageSize: 10,
+      currPage: 1,
+      deviceType: 0,
+    }
+    getPetExamByPetId(petId, params)
       .then((res) => {
-        console.log("历史温度记录1", res);
         if (res.flag === true) {
           let arr = [];
-          for (let i = 0; i < res.data.length; i++) {
-            const element = res.data[i];
-            if (element.temperature) {
-              arr.push(element);
-            }
+          for (let i = 0; i < res.data.list.length; i++) {
+            const element = res.data.list[i];
+            arr.push(element);
           }
           setPetTemperatureData(_.orderBy(arr, 'createTime', 'desc'));
         }

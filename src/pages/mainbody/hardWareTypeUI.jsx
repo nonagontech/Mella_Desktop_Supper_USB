@@ -65,7 +65,7 @@ const HardWareTypeUI = ({
         break;
     }
     let borderStyle = ``;
-    if (item.type === selectHardwareType && menuNum !== "6") {
+    if (item.type === selectHardwareType && menuNum !== "6" && !electronStore.get(`${storage.userId}-isClical`)) {
       borderStyle = ` 2px solid #3B3A3A`;
     }
 

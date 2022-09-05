@@ -143,7 +143,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     let params = {
       doctorId: storage.userId,
       offset: 0,
-      size: 100,
+      size: 10,
     }
     if (storage.lastWorkplaceId) {
       params.workplaceId = storage.lastWorkplaceId
@@ -445,7 +445,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
             <div className="walkText">Walk-In</div>
           </div>
         </div>
-        {/* <MyModal visible={loading} /> */}
       </div >
     </div >
   )
