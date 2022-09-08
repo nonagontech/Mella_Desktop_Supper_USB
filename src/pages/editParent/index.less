@@ -1,8 +1,10 @@
 #editParent {
   font-family: Arial;
+
   .MyIcon {
     font-size: 25px;
   }
+
   position: relative;
   z-index: 1;
   display: flex;
@@ -17,6 +19,7 @@
   .heard {
     width: 100%;
   }
+
   .editPetInfo_top {
     width: 90%;
     // height: 90%;
@@ -28,6 +31,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+
     // justify-content: space-around;
     // background-color: pink;
     .parentInfo {
@@ -38,6 +42,7 @@
       align-items: center;
       flex-direction: column;
       justify-content: space-around;
+
       .title {
         font-size: 25px;
         font-weight: bold;
@@ -45,9 +50,11 @@
         // background-color: pink;
         width: 100%;
       }
+
       .info {
         width: 100%;
       }
+
       .petSpecies {
         // height: 110px;
         width: 100%;
@@ -63,6 +70,7 @@
           // align-items: center;
           justify-content: center;
           width: 40%;
+
           // background-color: hotpink;
           .firstName {
             p {
@@ -70,6 +78,7 @@
               color: #a0a0a0;
               font-size: 15px;
             }
+
             input {
               padding: 0;
               margin: 0;
@@ -79,12 +88,14 @@
             }
           }
         }
+
         .r {
           width: 40%;
           height: 100%;
           align-items: center;
           justify-content: center;
           display: flex;
+
           .img {
             //   width: 110px;
             //   height: 110px;
@@ -107,9 +118,11 @@
               img {
                 margin: 0 auto;
               }
+
               .uploadImg {
                 display: none;
               }
+
               p {
                 position: absolute;
                 // background-color: rgba(88,88,88,0.7);
@@ -139,6 +152,7 @@
           // background-color: hotpink;
           // padding-top: 50px;
           width: 45%;
+
           p {
             // background-color: red;
             margin: 0;
@@ -146,16 +160,19 @@
             font-size: 15px;
             // margin-bottom: 5px;
           }
+
           .infoInput {
             border-bottom: 1px solid #d8d8d8;
             width: 80%;
             // background-color: honeydew;
             position: relative;
+
             input {
               padding: 0;
               color: #4a4a4a;
               font-size: 17px;
             }
+
             .ibKg {
               position: absolute;
               right: 0;
@@ -167,6 +184,7 @@
               display: flex;
               align-items: center;
               justify-content: center;
+
               .ibs {
                 flex: 1;
                 align-items: center;
@@ -177,6 +195,7 @@
                 border-top-left-radius: 20px;
                 border-bottom-left-radius: 20px;
               }
+
               .kgs {
                 flex: 1;
                 align-items: center;
@@ -188,9 +207,11 @@
                 border-bottom-right-radius: 20px;
               }
             }
+
             .ant-select-selector {
               padding: 0;
               margin: 0;
+
               input {
                 padding: 0;
                 margin: 0;
@@ -198,10 +219,12 @@
             }
           }
         }
+
         .r {
           // flex: 1;
           // padding-top: 50px;
           width: 45%;
+
           p {
             // background-color: red;
             margin: 0;
@@ -209,21 +232,25 @@
             font-size: 15px;
             margin-bottom: 5px;
           }
+
           .infoInput {
             border-bottom: 1px solid #d8d8d8;
             width: 80%;
             // background-color: honeydew;
             position: relative;
+
             input {
               padding: 0;
               color: #4a4a4a;
               font-size: 17px;
             }
+
             p {
               font-size: 17px;
               color: #4a4a4a;
               cursor: pointer;
             }
+
             .calendar {
               position: absolute;
               // width: 100px;
@@ -231,6 +258,7 @@
               background-color: pink;
               display: none;
               z-index: 999;
+
               .btn {
                 // width: 125px;
                 height: 24px;
@@ -243,12 +271,14 @@
               }
             }
           }
+
           .max {
             color: #4a4a4a;
             font-size: 17px;
             flex-direction: row;
             display: flex;
             align-items: center;
+
             .selected {
               width: 15px;
               height: 15px;
@@ -260,6 +290,7 @@
               display: flex;
             }
           }
+
           .gender {
             border-bottom: 1px solid #d8d8d8;
             width: 80%;
@@ -275,6 +306,7 @@
               display: flex;
               color: #4a4a4a;
               font-size: 13px;
+
               // background-color: pink;
               .female {
                 flex: 1;
@@ -282,6 +314,7 @@
                 justify-content: center;
                 display: flex;
                 flex-direction: column;
+
                 .femaleCiral {
                   // width: 40px;
                   // height: 40px;
@@ -293,12 +326,14 @@
                   cursor: pointer;
                 }
               }
+
               .male {
                 flex: 1;
                 align-items: center;
                 justify-content: center;
                 display: flex;
                 flex-direction: column;
+
                 .maleCiral {
                   width: 40px;
                   height: 40px;
@@ -319,48 +354,44 @@
     .pets {
       height: 50%;
       width: 100%;
+
       .petsTitle {
         display: flex;
         align-items: center;
         width: 100%;
+
         h2 {
           padding: 0;
           margin: 0;
           font-weight: 600;
         }
-        .btn {
-          width: 45%;
-          height: 40px;
-          background-color: #e1206d;
-          text-align: center;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border-radius: 40px;
 
-          color: #fff;
-          font-size: 20px;
-          cursor: pointer;
+        .ant-btn {
+          width: 176px;
         }
       }
+
       .petList {
         ul {
           padding: 0;
           margin: 0;
+
           li {
             display: flex;
-            cursor: pointer;
             -webkit-app-region: no-drag;
+            cursor: default;
+
             .item {
               display: flex;
               align-items: center;
               flex-direction: row;
-              // justify-content: center;
               width: 100%;
+
               p {
                 padding: 0;
                 margin: 0;
               }
+
               .img {
                 background-repeat: no-repeat;
                 background-position: center;
@@ -370,14 +401,17 @@
               .itemL {
                 display: flex;
                 align-items: center;
-                // justify-content: center;
                 width: 30%;
                 border-right: #979797 solid 1px;
                 height: 100%;
-                a {
+
+                p {
                   color: #e1206d;
+                  border-bottom: 1px solid #e1206d;
+                  cursor: pointer;
                 }
               }
+
               .itemC {
                 display: flex;
                 align-items: center;
@@ -385,7 +419,8 @@
                 width: 40%;
                 height: 100%;
                 border-right: #979797 solid 1px;
-                p{
+
+                p {
                   width: 100%;
                   overflow: hidden;
                   text-overflow: ellipsis;
@@ -393,15 +428,17 @@
                   white-space: nowrap;
                   text-align: center;
                 }
-              
+
               }
+
               .itemR {
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 width: 30%;
                 height: 100%;
-                p{
+
+                p {
                   width: 100%;
                   overflow: hidden;
                   text-overflow: ellipsis;
@@ -422,26 +459,20 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    // height: 180px;
     width: 100%;
     height: 15%;
 
-    .save {
-      width: 35%;
+    .ant-btn {
+      width: 240px;
       height: 40px;
-      background-color: #e1206d;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 40px;
 
-      color: #fff;
-      font-size: 20px;
-      cursor: pointer;
+      span {
+        font-size: 16px;
+      }
     }
   }
 }
+
 .ant-select-selection-search-input {
   border: none;
   outline: medium;

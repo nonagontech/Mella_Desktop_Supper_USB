@@ -72,6 +72,10 @@ const MeasuredData = ({
     right: 0,
   });
   const [isHua, setIsHua] = useState(true);
+  const [pageSize, setPageSize] = useState(10); // 每页10条
+  const [total, setTotal] = useState(0);//历史数据的总条数
+  const [currPage, setCurrPage] = useState(1);//页码
+
   //表格渲染
   const columns = [
     {
@@ -101,7 +105,7 @@ const MeasuredData = ({
           num = num.toFixed(1);
         }
 
-        return <Badge color={color()} text={num} />;
+        return <Badge color={color(text)} text={num} />;
       },
     },
     {
@@ -160,10 +164,10 @@ const MeasuredData = ({
     },
   ];
   //根据温度判断指示文字颜色
-  const color = () => {
-    if (mellaMeasureValue > 40) {
+  const color = (data) => {
+    if (_.toNumber(data) > 40) {
       return "#e1206d";
-    } else if (_.inRange(_.round(mellaMeasureValue), 38, 40)) {
+    } else if (_.inRange(_.round(_.toNumber(data)), 38, 40)) {
       return "#58bde6";
     } else {
       return "#98da86";
@@ -183,33 +187,36 @@ const MeasuredData = ({
     };
     return (
       <>
-        <p style={{ color: { color } }} className="ProgressTitle">
+        <p style={{ color:  color(mellaMeasureValue)  }} className="ProgressTitle">
           {getTemp(percent)}
-          <span style={{ color: { color } }} className="symbol">{`${isHua ? "℉" : "℃"
+          <span style={{ color: color(mellaMeasureValue)  }} className="symbol">{`${isHua ? "℉" : "℃"
             }`}</span>
         </p>
-        <p style={{ color: { color } }} className="ProgressTitle">
+        <p style={{ color:  color(mellaMeasureValue)  }} className="ProgressTitle">
           {title()}
         </p>
       </>
     );
   };
   //获取历史宠物温度数据
-  const getPetTemperatureData = () => {
+  const getPetTemperatureData = (currPage) => {
     let params = {
-      pageSize: 10,
-      currPage: 1,
+      pageSize: pageSize,
+      currPage: currPage,
       deviceType: 0,
     }
     getPetExamByPetId(petId, params)
       .then((res) => {
         if (res.flag === true) {
-          let arr = [];
-          for (let i = 0; i < res.data.list.length; i++) {
-            const element = res.data.list[i];
-            arr.push(element);
+          let newArr = [];
+          if (currPage === 1) {
+            newArr = res.data.list;
+          } else {
+            let oldArr = petTemperatureData;
+            let arr = res.data.list;
+            newArr = [...oldArr, ...arr];
           }
-          setPetTemperatureData(_.orderBy(arr, 'createTime', 'desc'));
+          setPetTemperatureData(_.orderBy(newArr, 'createTime', 'desc'));
         }
       })
       .catch((err) => {
@@ -248,7 +255,6 @@ const MeasuredData = ({
       petVitalTypeId: petVitalId,
       memo: "",
     };
-
     addClamantPetExam(params)
       .then((res) => {
         if (res.flag === true) {
@@ -264,7 +270,7 @@ const MeasuredData = ({
           }
         }
         setSaveType(true);
-        getPetTemperatureData();
+        getPetTemperatureData(1);
       })
       .catch((err) => {
         console.log(err);
@@ -278,7 +284,7 @@ const MeasuredData = ({
     updatePetExam(petMessages.examId, datas)
       .then((res) => {
         setVisible(false);
-        getPetTemperatureData();
+        getPetTemperatureData(1);
       })
       .catch((err) => {
         setVisible(false);
@@ -293,7 +299,7 @@ const MeasuredData = ({
         (res) => {
           if (res.flag === true) {
             message.success("Successfully Delete");
-            getPetTemperatureData();
+            getPetTemperatureData(1);
           } else {
             message.error("Fail To Delete");
           }
@@ -451,11 +457,29 @@ const MeasuredData = ({
         message.error('Failed to obtain the latest medical record, the data is saved in Mella')
       })
   }
+  //滚动监听
+  const onScrollCapture = () => {
+    // 滚动的容器
+    let tableEleNodes = document.querySelectorAll(`.measuredTable .ant-table-body`)[0];
+    //是否滚动到底部
+    let bottomType = Math.round(tableEleNodes?.scrollTop) + tableEleNodes?.clientHeight === tableEleNodes?.scrollHeight;
+    if (bottomType) {
+      if (total === petTemperatureData.length) {
+        return false;
+      }
+      setCurrPage(currPage + 1);
+      getPetTemperatureData(currPage + 1);
+    }
+  }
 
   useEffect(() => {
-    getPetTemperatureData();
-    return () => { };
-  }, [petMessage]);
+    setCurrPage(1);
+    setPetTemperatureData([]);
+    setTotal(0);
+    getPetTemperatureData(1);
+    return(() => {})
+  }, [petId]);
+
 
   useEffect(() => {
     let hardSet = electronStore.get(`${storage.userId}-hardwareConfiguration`);
@@ -508,7 +532,7 @@ const MeasuredData = ({
         <div className="listTitleBox1">
           <p className="listTitle">History</p>
         </div>
-        <div className="table" style={{ height: mTop(300) }}>
+        <div className="table" onScrollCapture={onScrollCapture} style={{ height: mTop(300) }}>
           <Table
             rowKey={"examId"}
             columns={columns}
@@ -516,10 +540,9 @@ const MeasuredData = ({
             className="measuredTable"
             pagination={false}
             scroll={{
-              // y: hisHe,
               y: '80%'
             }}
-          ></Table>
+          />
         </div>
       </div>
       {/*修改note弹窗 */}

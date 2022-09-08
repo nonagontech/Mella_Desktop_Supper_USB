@@ -1,10 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Button,
-  Progress,
-  Space,
   Table,
-  Tag,
   Badge,
   Modal,
   Popconfirm,
@@ -17,7 +13,7 @@ import measuredTable_3 from "./../../assets/img/measuredTable_3.png";
 import EditCircle from "./../../assets/img/EditCircle.png";
 import Delete from "./../../assets/img/Delete.png";
 
-import { px, mTop } from "../../utils/px";
+import { mTop } from "../../utils/px";
 import electronStore from "../../utils/electronStore";
 import { deletePetExamByExamId, getPetExamByPetId, updatePetExam } from "../../api";
 
@@ -34,7 +30,7 @@ import {
 import Draggable from "react-draggable";
 import moment from "moment";
 import _ from "lodash";
-import { useDebounceEffect } from 'ahooks';
+import { useThrottleFn, useDebounceFn, useDebounceEffect } from 'ahooks';
 
 import "./index.less";
 
@@ -45,16 +41,9 @@ const HistoryTable = ({
   saveNum = 0,
   tableColumnType, //表格内容渲染temperature为温度表格，weight为体重表格
 }) => {
-  let { mellaMeasureValue, mellaConnectStatus, mellaMeasurePart } =
-    hardwareMessage;
-  let { petId, memo } = petMessage;
+  let { petId } = petMessage;
   let storage = window.localStorage;
-  let hisHe = mTop(200);
   let draggleRef = React.createRef();
-  try {
-    let historyElement = document.querySelectorAll(".historyTable");
-    hisHe = historyElement[0].clientHeight - mTop(60);
-  } catch (error) { }
   const [disabled, setDisabled] = useState(true); //model是否可拖拽
   const [visible, setVisible] = useState(false); //model框是否显示
   const [newMemo, setNewMemo] = useState(""); //note内容
@@ -185,6 +174,7 @@ const HistoryTable = ({
       align: "center",
       render: (text, record) => {
         let num = parseFloat(text);
+
         if (isHua) {
           num = parseInt((num * 1.8 + 32) * 10) / 10;
         } else {
@@ -262,16 +252,16 @@ const HistoryTable = ({
   };
   //判断指示文字颜色
   const color = (data) => {
-    if (data > 40) {
+    if (_.toNumber(data) > 40) {
       return "#e1206d";
-    } else if (_.inRange(_.round(data), 38, 40)) {
+    } else if (_.inRange(_.round(_.toNumber(data)), 38, 40)) {
       return "#58bde6";
     } else {
       return "#98da86";
     }
   };
   //获取历史宠物数据
-  const getPetTemperatureData = (currPage) => {
+  const { run: getPetTemperatureData } = useDebounceFn((currPage) => {
     setLoading(true);
     let params = {
       pageSize: pageSize,
@@ -297,7 +287,8 @@ const HistoryTable = ({
       .catch((err) => {
         setLoading(false);
       });
-  };
+  }, { wait: 0 });
+
   //保存note
   const save = () => {
     let datas = {
@@ -306,7 +297,7 @@ const HistoryTable = ({
     updatePetExam(petMessages.examId, datas)
       .then((res) => {
         setVisible(false);
-        getPetTemperatureData();
+        getPetTemperatureData(1);
       })
       .catch((err) => {
         setVisible(false);
@@ -320,7 +311,7 @@ const HistoryTable = ({
         (res) => {
           if (res.flag === true) {
             message.success("Successfully Delete");
-            getPetTemperatureData();
+            getPetTemperatureData(1);
           } else {
             message.error("Fail To Delete");
           }
@@ -346,15 +337,10 @@ const HistoryTable = ({
   const onScrollCapture = () => {
     // 滚动的容器
     let tableEleNodes = document.querySelectorAll(`.historyTableStyle .ant-table-body`)[0];
-    console.log('tableEleNodes?.scrollHeight', tableEleNodes?.scrollHeight);
-    console.log('tableEleNodes.clientHeight : ', tableEleNodes?.clientHeight);
-    console.log('tableEleNodes?.scrollTop', tableEleNodes?.scrollTop);
     //是否滚动到底部
     let bottomType = Math.round(tableEleNodes?.scrollTop) + tableEleNodes?.clientHeight === tableEleNodes?.scrollHeight;
-    console.log('bottomType: ', bottomType);
     if (bottomType) {
       if (total === petData.length) {
-        setIsMore(false);
         return false;
       }
       setCurrPage(currPage + 1);
@@ -367,7 +353,7 @@ const HistoryTable = ({
     setPetData([]);
     setTotal(0);
     getPetTemperatureData(1);
-  }, [petId], { wait: 500 });
+  }, [petId], { wait: 0 });
 
   useEffect(() => {
     if (reRender !== saveNum) {
@@ -386,6 +372,7 @@ const HistoryTable = ({
       let { isHua } = hardSet;
       setIsHua(isHua);
     }
+    return (() => { });
   }, []);
 
   return (
@@ -397,7 +384,6 @@ const HistoryTable = ({
         pagination={false}
         loading={loading}
         scroll={{
-          // y: hisHe,
           y: '80%'
         }}
         className="historyTableStyle"

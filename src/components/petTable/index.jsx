@@ -57,19 +57,16 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
       title: 'Time',
       dataIndex: 'insertedAt',
       key: 'insertedAt',
-      width: '16%',
-      // ...this.getColumnSearchProps('insertedAt'),
+      width: '20%',
       render: (text, record, index) => {
         let chazhi = new Date().getTimezoneOffset()
-        // console.log(moment(parseInt(text) * 1000).format('YYYY-MM-DD HH:mm'));
-        let year = moment(parseInt(text) * 1000).format('YYYY-MM-DD');
+        let year = moment(parseInt(text) * 1000).format('YYYY-MM-DD hh:mm a');
         let time = moment(parseInt(text) * 1000).format('hh:mm a');
         let newTime = moment(parseInt(text) * 1000).format('YYYY-MM-DD HH:mm');
-        // console.log(moment(parseInt(text) * 1000).add(chazhi, 'm').format('YYYY-MM-DD HH:mm'));
         return (
-          <div className='flex' style={{ paddingTop: pX(3), paddingBottom: pX(3), paddingLeft: px(10), justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+          <div className='flex' style={{ paddingTop: pX(3), paddingBottom: pX(3), paddingLeft: px(10), display:'flex', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
             <p>{`${year}`}</p>
-            <p>{`${time}`}</p>
+            {/* <p>{`${time}`}</p> */}
           </div>
         )
       },
@@ -80,14 +77,12 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
       dataIndex: 'patientId',
       key: 'patientId',
       width: '15%',
-      // ...this.getColumnSearchProps('patientId'),
     },
     {
       title: 'Pet Name',
       dataIndex: 'petName',
       key: 'petName',
       width: '15%',
-      // ...this.getColumnSearchProps('petName'),
     },
     {
       title: 'Owner',
@@ -101,6 +96,8 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
       dataIndex: 'breed',
       key: 'breed',
       width: '15%',
+      ellipsis: true,
+      align: "center",
       // ...this.getColumnSearchProps('breed'),
       render: (text, record, index) => {
         if (!text || text === 'defaultdog' || text === 'defaultother' || text === 'defaultcat') {

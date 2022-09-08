@@ -39,6 +39,7 @@ import {
 } from '../../api/mellaserver/organization';
 
 import './index.less';
+import _ from 'lodash';
 
 const { SubMenu } = Menu;
 const { Option } = Select;
@@ -102,6 +103,7 @@ class EditPetInfo extends Component {
   }
 
   componentDidMount() {
+    console.log('this.props.history.location.parent: ', this.props.history.location.parent);
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('big', win())
     let { petDetailInfo } = this.props
@@ -245,7 +247,6 @@ class EditPetInfo extends Component {
     this.setState({
       spin: true
     })
-    getPetInfoByPatientIdAndPetId(datas)
     getPetInfoByPatientIdAndPetId(datas)
       .then(res => {
         this.setState({
@@ -849,6 +850,93 @@ class EditPetInfo extends Component {
         }
       })
   }
+  //保存宠物信息
+  save = () => {
+    let { petName, birthday, firstName, lastName, petSpeciesBreedId, isMix, weight, gender, unit, imageId, breedName, petId, confirmSelectBreedJson, confirmSelectUserJson } = this.state
+    if (unit === 1) {
+      weight = (0.45359 * weight).toFixed(2)
+    }
+    let data = {}
+    if (this.state.patientId === this.state.oldPatientId) {
+      data = {
+        petName,
+        weight: parseFloat(weight),
+        gender,
+        firstName,
+        lastName,
+      }
+    } else {
+      data = {
+        petName,
+        weight: parseFloat(weight),
+        gender,
+        firstName,
+        lastName,
+        patientId: this.state.patientId,
+      }
+    }
+    if (birthday) {
+      data.birthday = moment(birthday).format('YYYY-MM-DD')
+    }
+    if (imageId !== -1) {
+      data.imageId = imageId
+    }
+    if (confirmSelectBreedJson.name) {
+      data.breedName = confirmSelectBreedJson.name
+    }
+    if (confirmSelectUserJson.petSpeciesBreedId) {
+      data.userId = confirmSelectUserJson.petSpeciesBreedId
+    }
+    if (storage.lastOrganization) {
+      data.organizationId = storage.lastOrganization
+    }
+    if (this.state.patientId === '') {
+      message.error('The pet ID cannot be empty');
+    } else {
+      this.setState({
+        spin: true
+      })
+      updatePetInfo(petId, data)
+        .then(res => {
+          this.setState({
+            spin: false
+          })
+          if (res.flag === true) {
+            try {
+              if (storage.identity === '3') {
+                let data = JSON.parse(storage.doctorExam)
+                data.petName = petName
+                data.weight = weight
+                data.gender = gender
+                data.patientId = this.state.patientId
+                if (birthday) {
+                  data.age = moment(new Date()).diff(moment(birthday), 'years')
+                }
+                if (confirmSelectBreedJson.name) {
+                  data.breed = confirmSelectBreedJson.name
+                }
+                if (this.state.petUrl) {
+                  data.url = this.state.petUrl
+                }
+
+                storage.doctorExam = JSON.stringify(data)
+              }
+            } catch (error) {
+
+            }
+            this.props.petDetailInfoFun({ ...this.props.petDetailInfo, petName, birthday, patientId: this.state.patientId })
+            this.props.history.goBack()
+          } else {
+            message.error('This patient ID is already occupied, please change to a new one')
+          }
+        })
+        .catch(err => {
+          this.setState({
+            spin: false
+          })
+        })
+    }
+  }
 
 
   render() {
@@ -860,12 +948,11 @@ class EditPetInfo extends Component {
           {/* 菜单 */}
           <div className="menu">
             <MyIcon type='icon-fanhui4' className="icon" onClick={() => {
-              // if (storage.goEditPet === "mesasure") {
-              //   this.props.history.push({ pathname: 'page8', participate: { patientId: this.state.patientId } })
-              // } else {
-              //   this.props.history.goBack()
-              // }
-              this.props.history.goBack()
+              if (!_.isEmpty(this.props.history.location.parent)) {
+                this.props.history.push({ pathname: '/menuOptions/editParent', parent: this.props.history.location.parent })
+              } else {
+                this.props.history.goBack()
+              }
             }} />
           </div>
           <div className="text">mella</div>
@@ -901,105 +988,10 @@ class EditPetInfo extends Component {
           >
             Delete Pet
           </div>
-
           <div className="save"
             onClick={() => {
-              let { petName, birthday, firstName, lastName, petSpeciesBreedId, isMix, weight, gender, unit, imageId, breedName, petId, confirmSelectBreedJson, confirmSelectUserJson } = this.state
-              console.log('生日：', birthday);
-              if (unit === 1) {
-                weight = (0.45359 * weight).toFixed(2)
-              }
-              let data = {}
-              if (this.state.patientId === this.state.oldPatientId) {
-                data = {
-                  petName,
-                  weight: parseFloat(weight),
-                  gender,
-                  firstName,
-                  lastName,
-                  // patientId: this.state.patientId,
-                }
-              } else {
-                data = {
-                  petName,
-                  weight: parseFloat(weight),
-                  gender,
-                  firstName,
-                  lastName,
-                  patientId: this.state.patientId,
-                }
-              }
-
-
-              if (birthday) {
-                data.birthday = moment(birthday).format('YYYY-MM-DD')
-              }
-              if (imageId !== -1) {
-                data.imageId = imageId
-              }
-              // if (breedName) {
-              //   data.breedName = breedName
-              // }
-              if (confirmSelectBreedJson.name) {
-                data.breedName = confirmSelectBreedJson.name
-              }
-              if (confirmSelectUserJson.petSpeciesBreedId) {
-                data.userId = confirmSelectUserJson.petSpeciesBreedId
-              }
-              if (storage.lastOrganization) {
-                data.organizationId = storage.lastOrganization
-              }
-              if (this.state.patientId === '') {
-                message.error('The pet ID cannot be empty');
-              } else {
-                this.setState({
-                  spin: true
-                })
-                // console.log('--------入参', data);
-                updatePetInfo(petId, data)
-                  .then(res => {
-                    this.setState({
-                      spin: false
-                    })
-                    console.log(res);
-                    if (res.flag === true) {
-                      try {
-                        if (storage.identity === '3') {
-                          let data = JSON.parse(storage.doctorExam)
-                          data.petName = petName
-                          data.weight = weight
-                          data.gender = gender
-                          data.patientId = this.state.patientId
-                          if (birthday) {
-                            data.age = moment(new Date()).diff(moment(birthday), 'years')
-                          }
-                          if (confirmSelectBreedJson.name) {
-                            data.breed = confirmSelectBreedJson.name
-                          }
-                          if (this.state.petUrl) {
-                            data.url = this.state.petUrl
-                          }
-
-                          storage.doctorExam = JSON.stringify(data)
-                        }
-                      } catch (error) {
-
-                      }
-                      this.props.petDetailInfoFun({ ...this.props.petDetailInfo, petName, birthday, patientId: this.state.patientId })
-                      this.props.history.goBack()
-                    } else {
-                      message.error('This patient ID is already occupied, please change to a new one')
-                    }
-                  })
-                  .catch(err => {
-                    this.setState({
-                      spin: false
-                    })
-                    console.log(err);
-                  })
-              }
+              this.save();
             }}
-
           >Save Changes</div>
         </div>
         <MyModal

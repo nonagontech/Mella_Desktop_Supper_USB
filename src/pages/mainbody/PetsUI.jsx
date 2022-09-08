@@ -17,7 +17,7 @@ import deivceAdd from "./../../assets/img/hardList-add.png";
 import { px } from '../../utils/px'
 
 import { connect } from 'react-redux'
-import { petSortTypeFun, petDetailInfoFun, setPetListArrFun } from '../../store/actions'
+import { petSortTypeFun, petDetailInfoFun, setPetListArrFun } from '../../store/actions';
 import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types'
 import moment from 'moment'
@@ -59,24 +59,10 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     } catch (error) {
       console.log("字符串转对象失败", error);
     }
-    /*orgArr的格式为[{
-       organizationId:1,
-       organizationName:'11111',
-       connectionKey:''
-     }]
-
-      workplace:{
-        1:{
-           workplaceId:1,
-           workplaceName:'122334
-         },
-      }
-     */
     let orgArr = [],
       workplaceJson = {};
     for (let i = 0; i < userWorkplace.length; i++) {
       let element = userWorkplace[i];
-      // console.log('每一项的值：', element);
       if (element.organizationEntity && element.workplaceEntity) {
         let { organizationEntity, workplaceEntity, roleId } = element;
         const { name, organizationId, connectionKey } = organizationEntity;

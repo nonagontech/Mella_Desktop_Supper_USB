@@ -1503,7 +1503,7 @@ const Heard = ({
             <div
               className="min_icon"
               onClick={MINCOLOSE.minClock}
-              style={{ backgroundColor: minbgc, height: px(50), width: px(50) }}
+              style={{ backgroundColor: minbgc, height: px(47), width: px(47) }}
               onMouseEnter={MINCOLOSE.minMouseEnter}
               onMouseLeave={MINCOLOSE.minMouseLeave}
             >
@@ -1512,7 +1512,7 @@ const Heard = ({
             <div
               className="min_icon"
               onClick={MINCOLOSE.closeClock}
-              style={{ backgroundColor: closebgc, height: px(50), width: px(50) }}
+              style={{ backgroundColor: closebgc, height: px(47), width: px(47) }}
               onMouseEnter={MINCOLOSE.closeMouseEnter}
               onMouseLeave={MINCOLOSE.closeMouseLeave}
             >

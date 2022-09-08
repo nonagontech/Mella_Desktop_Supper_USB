@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import {
   Select,
+  Button,
 } from 'antd'
 
 import parent from '../../assets/img/parent.png'
@@ -14,6 +15,8 @@ import { px } from '../../utils/px';
 import MyModal from '../../utils/myModal/MyModal'
 
 import moment from 'moment'
+import { connect } from 'react-redux'
+import { petDetailInfoFun } from '../../store/actions';
 
 import './index.less';
 import { pet_petall } from '../../api'
@@ -21,7 +24,7 @@ import { pet_petall } from '../../api'
 const { Option } = Select;
 let storage = window.localStorage;
 
-export default class PetAndParents extends Component {
+class PetAndParents extends Component {
 
   state = {
     parentList: [],       //宠物主人列表
@@ -56,9 +59,7 @@ export default class PetAndParents extends Component {
 
     })
   }
-
   _getExam = async () => {
-    console.log('进来了');
     this.setState({
       loading: true,
       spin: false
@@ -67,20 +68,8 @@ export default class PetAndParents extends Component {
       offset: 0,
       size: 500,
     }
-
-    console.log('查询宠物的入参', params);
-    const isUnKnow = (val) => {
-      if (val) {
-        return val
-      } else {
-        return 'unknown'
-      }
-    }
-
-
     pet_petall(storage.lastOrganization, params)
       .then(res => {
-        console.log('查询到的宠物列表', res);
         this.setState({
           loading: false
         })
@@ -126,30 +115,12 @@ export default class PetAndParents extends Component {
                   parent: owerJson,
                   pets: [json]
                 }
-                // console.log('-----', parentAndPetJson);
                 parentAndPetList.push(parentAndPetJson)
               } else {
                 parentAndPetList[flogNum].pets.push(json)
               }
-
-
-
-
-
             }
-            // if (userId) {
-            //   let sameFlog = owerList.some((ower => {
-            //     return ower.userId === userId
-            //   }))
-            //   if (!sameFlog) {
-            //     let owerJson = {
-            //       userId, firstName, lastName, phone, email, userImageUrl, name: `${lastName} ${firstName}`
-            //     }
-            //     owerList.push(owerJson)
-            //   }
-            // }
           }
-          // console.log(parentAndPetList);
           data.sort((a, b) => {
             return moment(parseInt(a.insertedAt) * 1000).format('YYYY-MM-DD HH:mm') > moment(parseInt(b.insertedAt) * 1000).format('YYYY-MM-DD HH:mm') ? -1 : 1
           })
@@ -171,9 +142,6 @@ export default class PetAndParents extends Component {
 
 
   }
-
-
-
   list = (value) => {
     let { petList, parentList, petSearchArr, parentSearchArr, searchText, parentAndPetList } = this.state
     let data = []
@@ -190,7 +158,6 @@ export default class PetAndParents extends Component {
         data = petList
       }
     }
-
     let options = data.map((item, index) => {
       let { speciesId, url, userImageUrl, patientId, petId, name } = item
       let images = null
@@ -212,32 +179,23 @@ export default class PetAndParents extends Component {
           }
         }
       }
-
-
-
       return (
         <li
           key={`${index}`}
-          style={{ margin: `0 0 ${px(15)}px 0`, borderRadius: px(20) }}
+          style={{ margin: `0 8px ${px(15)}px 0`, borderRadius: px(20) }}
           onClick={() => {
+            let params = []
             if (item.type !== 'pet') {
-              // console.log('跳转到宠物用户详情页', item,);
-              let params = []
               for (let i = 0; i < parentAndPetList.length; i++) {
                 if (item.userId === parentAndPetList[i].parent.userId) {
-
                   params = parentAndPetList[i]
                   break
                 }
-
               }
-
-
               this.props.history.push({ pathname: '/menuOptions/editParent', parent: params })
             } else {
-              console.log(item);
-              this.props.history.push({ pathname: '/page9', participate: { patientId, petName: name, petId } })
-
+              this.props.petDetailInfoFun(item);
+              this.props.history.push({ pathname: '/page9', parent: params })
             }
           }}
         >
@@ -259,15 +217,12 @@ export default class PetAndParents extends Component {
           </div>
         </li >
       )
-
     })
 
     let liStyle = { backgroundColor: '#fff', }
     if (this.state.petList.length > 6) {
       liStyle = { height: px(560), overflowY: 'auto' }
     }
-
-
     return (
       <div className='petList'>
         <ul style={liStyle}>
@@ -316,21 +271,15 @@ export default class PetAndParents extends Component {
   }
 
   render() {
-    let bodyHeight = '92%'
-    try {
-      bodyHeight = document.getElementById('settings').clientHeight - document.querySelectorAll('#settings .heard')[0].clientHeight
-    } catch (error) {
-
-    }
     return (
       <div id="PetAndParents">
         <div className="heard">
           <Heart />
         </div>
-
-
-        <div className="body" style={{ height: bodyHeight, padding: `0 ${px(35)}px` }}>
-          <h1 style={{ fontSize: px(38) }}>{`Pet & Parents Profile Management`}</h1>
+        <div className="body">
+          <div className='titleBox'>
+            <h1 style={{ fontSize: px(20) }}>{`Pet & Parents Profile Management`}</h1>
+          </div>
           <div className="search">
             <div className="searchL">
               <input
@@ -343,46 +292,50 @@ export default class PetAndParents extends Component {
                 }}
               />
             </div>
-            <div className="searchr" style={{ fontSize: px(18), height: px(40) }}>
+            <Button
+              type="primary"
+              shape="round"
+            >
               Search
-            </div>
+            </Button>
           </div>
           <div className="btns">
-            <div className="btnL" style={{ fontSize: px(24), height: px(45) }}>
+            <Button
+              type="primary"
+              shape="round"
+            >
               + New Parent
-            </div>
-            <div
-              className="btnL" style={{ fontSize: px(24), height: px(45) }}
+            </Button>
+            <Button
+              type="primary"
+              shape="round"
               onClick={() => {
                 this.props.history.push('/pet/doctorAddPet')
               }}
-
             >
               + New Pet
-            </div>
+            </Button>
           </div>
-
           <div className="lists">
             <div className="listsL">
               {this.list('parent')}
             </div>
-
             <div className="listsL">
               {this.list('pet')}
             </div>
           </div>
         </div>
-
-
         <MyModal visible={this.state.loading} />
-
-
-
-
-
-
-
       </div>
     )
   }
 }
+
+export default connect(
+  (state) => ({
+
+  }),
+  {
+    petDetailInfoFun
+  }
+)(PetAndParents);
