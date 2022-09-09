@@ -30,7 +30,6 @@ import moment from 'moment';
 import {
   checkPatientId,
   getPetInfoByPatientIdAndPetId,
-  selectBreedBySpeciesId,
   updatePetInfo,
   deletePetByPetId
 } from '../../api/mellaserver/pet';
@@ -127,8 +126,6 @@ class EditPetInfo extends Component {
       dogBreed,
       catBreed
     })
-    this.getBreed('cat')
-    this.getBreed('dog')
     this.getUser()
     ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
   }
@@ -144,45 +141,6 @@ class EditPetInfo extends Component {
     this.setState({
 
     })
-  }
-  getBreed = (val) => {
-    let data = {}
-    switch (val) {
-      case 'dog':
-        data.speciesId = 2; break;
-
-      case 'cat':
-        data.speciesId = 1; break;
-    }
-
-    selectBreedBySpeciesId(data)
-      .then(res => {
-        if (res.code === 0) {
-          let arr = []
-          res.petlist.map((item, index) => {
-            let data = {
-              petSpeciesBreedId: item.petSpeciesBreedId,
-              breedName: item.breedName
-            }
-            arr.push(data)
-          })
-          if (val === 'dog') {
-            this.setState({
-              dogBreed: arr
-            })
-            electronStore.set('dogBreed', arr)
-          } else if (val === 'cat') {
-            this.setState({
-              catBreed: arr
-            })
-            electronStore.set('catBreed', arr)
-          }
-
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      })
   }
   getUser = () => {
     let params = {

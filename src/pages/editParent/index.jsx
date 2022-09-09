@@ -1,23 +1,26 @@
 import React, { Component } from 'react'
-import { Menu, message, Select, Button } from 'antd';
+import { Menu, message, Select, Button, Spin, Avatar } from 'antd';
 import { createFromIconfontCN } from '@ant-design/icons';
 
-import dog from '../../assets/images/reddog.png'
-import cat from '../../assets/images/redcat.png'
-import other from '../../assets/images/redother.png'
+import reddog from '../../assets/images/reddog.png'
+import redcat from '../../assets/images/redcat.png'
+import redother from '../../assets/images/redother.png'
 import selectphoto from '../../assets/images/sel.png'
 
 import { mTop, px } from '../../utils/px';
 import MyModal from '../../utils/myModal/MyModal';
 import Heard from '../../utils/heard/Heard';
-import Avatar from '../../components/avatar/Avatar';
+import AvatarUpload from '../../components/avatar/Avatar';
+import { petPicture } from '../../utils/commonFun';
 
 import { connect } from 'react-redux'
 import { petDetailInfoFun } from '../../store/actions';
 import { getUserInfoByUserId, updateUserInfo, selectPetInfoByUserId } from '../../api/mellaserver/user';
-import { getPersonPetByUserId } from '../../api/mellaserver/petall'
+
+import { getPersonPetByUserId } from '../../api/mellaserver/petall';
 
 import moment from 'moment';
+import _ from 'lodash';
 
 import './index.less';
 
@@ -33,6 +36,7 @@ class EditParent extends Component {
     petList: [],         //当前这个宠物主人下的所有宠物
     userId: '',          //当前这个宠物主人的userId
     userImageUrl: '',
+    loading: false,//加载
   }
   componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
@@ -41,22 +45,12 @@ class EditParent extends Component {
     if (this.props.history.location.parent) { //接受入参
       let { parent, pets } = this.props.history.location.parent
       let { firstName, lastName, userId } = parent
-
-      selectPetInfoByUserId(userId).then((res) => {
-        console.log('res: ', res);
-
-      })
-      getPersonPetByUserId(userId).then((res) => {
-        console.log('res: ', res);
-
-      })
-
-      this._getParent(userId)
+      this.getPersonPet(userId);
+      this._getParent(userId);
       this.setState({
         firstName,
         lastName,
         userId,
-        petList: pets
       })
     }
   }
@@ -105,6 +99,21 @@ class EditParent extends Component {
         })
       })
   }
+  getPersonPet = (userId) => {
+    this.setState({ loading: true });
+    getPersonPetByUserId(userId)
+      .then((res) => {
+        this.setState({ loading: false });
+        if (res.msg === 'success') {
+          this.setState({ petList: res.data })
+        } else {
+          message.error('Failed to obtain pet information');
+        }
+      })
+      .catch((err) => {
+        message.error('Failed to obtain pet information');
+      })
+  }
   _petSpecies = () => {
     let { userImageUrl } = this.state
     this.avatar = userImageUrl ? userImageUrl : selectphoto
@@ -139,7 +148,7 @@ class EditParent extends Component {
         </div>
         <div className="r">
           <div className="img">
-            <Avatar
+            <AvatarUpload
               init={
                 <div className="ciral ">
                   <img src={this.avatar} alt="" id="touxiang" height="280px" />
@@ -195,22 +204,13 @@ class EditParent extends Component {
       </div>
     )
   }
+  //宠物列表
   petList = () => {
     let { petList } = this.state
     let options = petList.map((item, index) => {
-      let { speciesId, url, breedName, petBirthday, gender, name, } = item
+      let { url, breedName, birthday, gender, petName, imageId, petSpeciesBreedId } = item
       let images = `url(${url}?download=0&width=150)`
-      let petAge = moment(new Date()).diff(moment(petBirthday), 'years')
-      if (!url) {
-        switch (speciesId) {
-          case 1: images = `url(${cat})`
-            break;
-          case 2: images = `url(${dog})`
-            break
-          default: images = `url(${other})`
-            break;
-        }
-      }
+      let petAge = moment(new Date()).diff(moment(birthday), 'years')
       return (
         <li
           key={`${index}`}
@@ -218,23 +218,14 @@ class EditParent extends Component {
         >
           <div className='item' style={{ padding: `${px(15)}px 0 ${px(15)}px  ${px(20)}px`, }}>
             <div className="itemL">
-              <div
-                className='img'
-                style={{
-                  width: px(50),
-                  height: px(50),
-                  marginRight: px(20),
-                  borderRadius: px(60),
-                  backgroundImage: images,
-                }}>
-              </div>
+              <Avatar src={this.shoePetPicture(petSpeciesBreedId, url)} size={50} />
               <p
                 onClick={(e) => {
                   this.props.petDetailInfoFun(item);
                   this.props.history.push({ pathname: '/page9', parent: this.props.history.location.parent });
                 }}
               >
-                {name}
+                {petName}
               </p>
             </div>
             <div className="itemC">
@@ -257,6 +248,7 @@ class EditParent extends Component {
       </ul>
     )
   }
+  //保存
   save = () => {
     message.destroy()
     let { firstName, lastName, email, phone, imageId, userId } = this.state
@@ -291,6 +283,23 @@ class EditParent extends Component {
         message.error('fail to edit')
         console.log(err);
       })
+  }
+  //选择宠物头像
+  shoePetPicture = (petSpeciesBreedId, url) => {
+    if (_.isEmpty(url)) {
+      switch (petPicture(petSpeciesBreedId)) {
+        case 'cat':
+          return redcat
+        case 'dog':
+          return reddog
+        case 'other':
+          return redother
+        default:
+          return redother
+      }
+    } else {
+      return url
+    }
   }
   render() {
     return (
