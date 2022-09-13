@@ -42,14 +42,13 @@ class EditParent extends Component {
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('Lowbig')
     ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
-    if (this.props.history.location.parent) { //接受入参
-      let { parent, pets } = this.props.history.location.parent
-      let { firstName, lastName, userId } = parent
+
+
+    if (this.props.history.location.userId) { //接受入参
+      let userId = this.props.history.location.userId
       this.getPersonPet(userId);
       this._getParent(userId);
       this.setState({
-        firstName,
-        lastName,
         userId,
       })
     }
@@ -64,6 +63,7 @@ class EditParent extends Component {
     this.setState({
     })
   }
+  //获取用户详情信息
   _getParent = (data) => {
     this.setState({
       spin: true
@@ -99,9 +99,14 @@ class EditParent extends Component {
         })
       })
   }
+  //获取用户当前组织下的所有宠物
   getPersonPet = (userId) => {
     this.setState({ loading: true });
-    getPersonPetByUserId(userId)
+    let newData = {
+      orgId: storage.lastOrganization,
+      userId: userId,
+    }
+    getPersonPetByUserId(newData)
       .then((res) => {
         this.setState({ loading: false });
         if (res.msg === 'success') {
@@ -221,8 +226,11 @@ class EditParent extends Component {
               <Avatar src={this.shoePetPicture(petSpeciesBreedId, url)} size={50} />
               <p
                 onClick={(e) => {
-                  this.props.petDetailInfoFun(item);
-                  this.props.history.push({ pathname: '/page9', parent: this.props.history.location.parent });
+                  let location = {
+                    pet: { ...item },
+                    userId: this.props.history.location.userId
+                  }
+                  this.props.history.push({ pathname: '/page9', ...location });
                 }}
               >
                 {petName}
@@ -318,7 +326,7 @@ class EditParent extends Component {
           <div className="pets">
             <div className="petsTitle">
               <h2 style={{ fontSize: px(24), marginRight: px(40) }}>Pets</h2>
-              <Button type="primary" shape="round">+ Add New Pet</Button>
+              {/* <Button type="primary" shape="round">+ Add New Pet</Button> */}
             </div>
             <div className="petList">
               {this.petList()}

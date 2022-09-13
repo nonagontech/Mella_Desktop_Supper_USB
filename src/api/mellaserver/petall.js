@@ -22,12 +22,12 @@ export const pet_petall = (lastOrganization, params) => {
   return postJson(`${baseURL}/pet/${lastOrganization}/petall`, params)
 }
 /**
- * @dec 根据用户id查询私人宠物
+ * @dec 根据用户id查询当前组织下的所有宠物
  * @param {*} params
  * @returns
  */
 export const getPersonPetByUserId = (params) => {
-  return get(`${baseURL}/getPersonPetByUserId?userId=${params}`, '');
+  return get(`${baseURL}/getPersonPetByUserId?userId=${params.userId}&orgId=${params.orgId}`);
 }
 
 

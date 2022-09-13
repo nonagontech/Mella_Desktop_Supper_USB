@@ -80,7 +80,7 @@ const ClinicalStudy = ({
   const [respiratoryRate, setRespiratoryRate] = useState("");
   const [notes, setNotes] = useState("");
   const [isPetCharacteristics, setIsPetCharacteristics] = useState(false);
-  const [historyData, setHistoryData] = useState([]);
+  const [historyData, setHistoryData] = useState([]);//walk-in中未分配的数据
   const [editRectal, setEditRectal] = useState("");
   const [editRoomTemperature, setEditRoomTemperature] = useState("");
   const [editHeartRate, setEditHeartRate] = useState("");
@@ -115,6 +115,9 @@ const ClinicalStudy = ({
   const [selectPetModalLoading, setSelectPetModalLoading] = useState(false);//分配宠物后调用接口加载
   const [addPetModalLoading, setAddPetModalLoading] = useState(false);//添加新宠物调用接口加载
   const [addPetId, setAddPetId] = useState('');//添加宠物成功后返回的宠物id
+  const [pageSize, setPageSize] = useState(10); // 每页10条
+  const [total, setTotal] = useState(0);//历史数据的总条数
+  const [currPage, setCurrPage] = useState(1);//页码
 
   //分辨率变化
   const chartsBox = useCallback((node) => {
@@ -131,7 +134,6 @@ const ClinicalStudy = ({
     }
   };
   const addClinical = () => {
-    console.log("调用接口进行保存数据");
     let emerData = [];
     let { Eci, wen0, wen1 } = echarsData;
     for (let i = 0; i < wen0.length; i++) {
@@ -142,7 +144,6 @@ const ClinicalStudy = ({
       };
       emerData.push(str);
     }
-
     saveHistoryTime && clearTimeout(saveHistoryTime);
     saveHistoryTime = setTimeout(() => {
       let BCS =
@@ -185,7 +186,6 @@ const ClinicalStudy = ({
         datas.doctorId = storage.userId;
         datas.userId = storage.userId;
       }
-      console.log('----====---', WeightValue);
       let ubdateWeight = units === "℉" ? (parseFloat(WeightValue / 2)).toFixed(2) : parseFloat(WeightValue).toFixed(2);
       let updatePetInfoData = {
         weight: ubdateWeight
@@ -197,46 +197,33 @@ const ClinicalStudy = ({
       let { petId, isWalkIn } = petDetailInfo;
       if (petId && !isWalkIn) {
         datas.petId = petId;
-        console.log("入参数据:", datas);
         addAllClinical(datas)
           .then((res) => {
-            console.log(res);
-
             if (res.flag === true) {
-              console.log("上传成功");
               message.success("Uploaded successfully");
               _getHistory11(petDetailInfo.petId);
             } else {
-              console.log("上传失败");
-
               message.error("upload failed");
             }
           })
           .catch((err) => {
-            console.log(err);
             message.error("upload failed");
           });
       } else if (isWalkIn) {
-        console.log("温度数据保存入参：", datas);
-
         addAllClinical(datas)
           .then((res) => {
             if (res.flag === true) {
               message.success("Uploaded successfully");
-
-              _getEmergencyHistory();
+              _getEmergencyHistory(1);
             } else {
-              console.log("上传失败");
               message.error("upload failed");
             }
           })
           .catch((err) => {
-            console.log(err);
             message.error(err);
           });
       }
-      if (WeightValue !== '') {
-
+      if (WeightValue !== '' && !isWalkIn) {
         updatePetInfo(petId, updatePetInfoData)
           .then((res) => {
             if (res.flag === true) {
@@ -370,83 +357,75 @@ const ClinicalStudy = ({
         console.log(err);
       });
   };
-  const _getEmergencyHistory = () => {
-    //封装的日期排序方法
-    function ForwardRankingDate(data, p) {
-      for (let i = 0; i < data.length - 1; i++) {
-        for (let j = 0; j < data.length - 1 - i; j++) {
-          if (Date.parse(data[j][p]) < Date.parse(data[j + 1][p])) {
-            var temp = data[j];
-            data[j] = data[j + 1];
-            data[j + 1] = temp;
-          }
-        }
-      }
-      return data;
-    }
+  //获取walk-in下未分配宠物的临床测试记录
+  const _getEmergencyHistory = (currPage) => {
     let historys = [];
     setLoading(true);
-
-    getPetExamByDoctorId(storage.userId)
+    let data = {
+      pageSize: pageSize,
+      currPage: currPage,
+    }
+    getPetExamByDoctorId(storage.userId, data)
       .then((res) => {
         setLoading(false);
         if (res.flag === true) {
-          let datas = res.data;
+          setTotal(res.data.totalCount);
+          let datas = res.data.list;
           for (let i = datas.length - 1; i >= 0; i--) {
-            if (datas[i].petId === null && datas[i].clinicalDatagroupId !== null && datas[i].temperature !== null) {
-              let {
-                petId,
-                examId,
-                userId,
-                petVitalTypeId,
-                temperature,
-                roomTemperature,
-                bloodPressure,
-                memo,
-                clinicalDatagroupId,
-                bodyConditionScore,
-                heartRate,
-                respiratoryRate,
-                referenceRectalTemperature,
-                furLength,
-                createTime,
-                clinicalDataEntity,
-              } = datas[i];
-              let Tem = temperature;
-              try {
-                Tem = temperature || clinicalDataEntity.data0;
-              } catch (error) {
-                console.log("抛出的异常", error);
-              }
-
-              let str = {
-                clinicalDatagroupId,
-                createTime,
-                date: moment(createTime).format("MMM DD"),
-                time: moment(createTime).format("hh:mm A"),
-                temp: parseInt(Tem * 10) / 10,
-                placement: petVitalTypeId,
-                note: memo,
-                historyId: examId,
-                bodyConditionScore,
-                heartRate,
-                respiratoryRate,
-                referenceRectalTemperature,
-                furLength,
-                roomTemperature,
-                bloodPressure,
-                petId,
-                userId,
-              };
-
-              historys.push(str);
+            let {
+              petId,
+              examId,
+              userId,
+              petVitalTypeId,
+              temperature,
+              roomTemperature,
+              bloodPressure,
+              memo,
+              clinicalDatagroupId,
+              bodyConditionScore,
+              heartRate,
+              respiratoryRate,
+              referenceRectalTemperature,
+              furLength,
+              createTime,
+              clinicalDataEntity,
+            } = datas[i];
+            let Tem = temperature;
+            try {
+              Tem = temperature || clinicalDataEntity.data0;
+            } catch (error) {
+              console.log("抛出的异常", error);
             }
+            let str = {
+              clinicalDatagroupId,
+              createTime,
+              date: moment(createTime).format("MMM DD"),
+              time: moment(createTime).format("hh:mm A"),
+              temp: parseInt(Tem * 10) / 10,
+              placement: petVitalTypeId,
+              note: memo,
+              historyId: examId,
+              bodyConditionScore,
+              heartRate,
+              respiratoryRate,
+              referenceRectalTemperature,
+              furLength,
+              roomTemperature,
+              bloodPressure,
+              petId,
+              userId,
+            };
+            historys.push(str);
           }
-
-          //把所有数据拿完后做个排序
-
-          let historyData = ForwardRankingDate(historys, "createTime");
-          setHistoryData(historyData);
+          let newArr = [];
+          if (currPage === 1) {
+            newArr = historys;
+          } else {
+            let oldArr = historyData;
+            let arr = historys;
+            newArr = [...oldArr, ...arr];
+          }
+          setHistoryData(_.orderBy(newArr, 'createTime', 'desc'));
         }
       })
       .catch((err) => {
@@ -902,6 +881,7 @@ const ClinicalStudy = ({
       </div>
     );
   };
+  //历史数据
   const _history = () => {
     const _del = (key, record) => {
       deletePetExamByExamId(key)
@@ -1268,7 +1248,6 @@ const ClinicalStudy = ({
         },
       },
     ];
-
     let hisHe = mTop(200);
     try {
       let historyElement = document.querySelectorAll(
@@ -1278,8 +1257,9 @@ const ClinicalStudy = ({
     } catch (error) { }
 
     return (
-      <div className="historyTable">
+      <div className="historyTableBox" onScrollCapture={onScrollCapture}>
         <Table
+          className="historyTable"
           columns={columns}
           loading={loading}
           dataSource={historyData}
@@ -1294,6 +1274,20 @@ const ClinicalStudy = ({
       </div>
     );
   };
+  //滚动监听
+  const onScrollCapture = () => {
+    // 滚动的容器
+    let tableEleNodes = document.querySelectorAll(`.historyTable .ant-table-body`)[0];
+    //是否滚动到底部
+    let bottomType = Math.round(tableEleNodes?.scrollTop) + tableEleNodes?.clientHeight === tableEleNodes?.scrollHeight;
+    if (bottomType) {
+      if (total === historyData.length) {
+        return false;
+      }
+      setCurrPage(currPage + 1);
+      _getEmergencyHistory(currPage + 1);
+    }
+  }
   const _editModal = () => {
     function save() {
       let datas = {
@@ -1626,7 +1620,7 @@ const ClinicalStudy = ({
           message.success("Assigned successfully");
           setSelectPetVisible(false);
           setAddPetId('');
-          _getEmergencyHistory();
+          _getEmergencyHistory(1);
         } else {
           message.error("Assignment failed");
         }
@@ -1677,11 +1671,21 @@ const ClinicalStudy = ({
 
   useEffect(() => {
     if (petDetailInfo.petId) {
+      setCurrPage(1);
+      setHistoryData([]);
+      setTotal(0);
       _getHistory11(petDetailInfo.petId);
     } else if (petDetailInfo.isWalkIn) {
-      _getEmergencyHistory();
+      setCurrPage(1);
+      setHistoryData([]);
+      setTotal(0);
+      _getEmergencyHistory(1);
     }
-    return () => { };
+    return () => {
+      setCurrPage(1);
+      setHistoryData([]);
+      setTotal(0);
+    };
   }, [petDetailInfo]);
 
   useEffect(() => {
@@ -1826,7 +1830,6 @@ const ClinicalStudy = ({
     }
     return (() => { })
   }, [biggieBodyWeight])
-
 
   return (
     <>

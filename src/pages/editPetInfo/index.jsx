@@ -31,7 +31,8 @@ import {
   checkPatientId,
   getPetInfoByPatientIdAndPetId,
   updatePetInfo,
-  deletePetByPetId
+  deletePetByPetId,
+  updatePetInfo1
 } from '../../api/mellaserver/pet';
 import {
   listDoctorsByAdmin
@@ -40,8 +41,6 @@ import {
 import './index.less';
 import _ from 'lodash';
 
-const { SubMenu } = Menu;
-const { Option } = Select;
 const MyIcon = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2326495_7b2bscbhvvt.js'
 })
@@ -71,12 +70,10 @@ class EditPetInfo extends Component {
     birthday: moment(new Date()).format('MMMM D, YYYY'),
     patientId: '',
     petName: '',
-
     petId: '',
     lastName: '',
     firstName: '',
     breedName: '',
-
     initpetName: '',
     initpetId: '',
     initlastName: '',
@@ -85,40 +82,49 @@ class EditPetInfo extends Component {
     spin: false,
     dogBreed: [],
     catBreed: [],
-
     oldPatientId: '',
     searchBreed: '',
     selectBreedJson: {},
     confirmSelectBreedJson: {},
     selectBreed: false,
-
     doctorArr: [],
     selectUser: false,
     selectUserJson: {},
-    selectUserId: '',
+    selectUserId: -1,
     confirmSelectUserJson: {},
     petUrl: '',
     deletePetModalVisible: false,
   }
 
   componentDidMount() {
-    console.log('this.props.history.location.parent: ', this.props.history.location.parent);
     let ipcRenderer = window.electron.ipcRenderer
     ipcRenderer.send('big', win())
     let { petDetailInfo } = this.props
     let { petId, patientId, petName, lastName, firstName, breedName, isWalkIn } = petDetailInfo
     if (!isWalkIn) {
-      if (!patientId || patientId === 'unknown') {
-        patientId = null
+      //判断是医生诊断宠物还是用户私有宠物
+      if (this.props.history.location?.pet) {
+        this.setState({
+          patientId: this.props.history.location?.pet?.patientId,
+          petId: this.props.history.location.pet?.petId,
+          oldPatientId: this.props.history.location?.pet?.patientId,
+          breedName: this.props.history.location?.pet?.breedName
+        }, () => {
+          this._getPetInfo();
+        })
+      } else {
+        if (!patientId || patientId === 'unknown') {
+          patientId = null
+        }
+        this.setState({
+          patientId,
+          petId,
+          oldPatientId: patientId,
+          breedName: breedName
+        }, () => {
+          this._getPetInfo();
+        })
       }
-      this.setState({
-        patientId,
-        petId,
-        oldPatientId: patientId,
-        breedName: breedName
-      }, () => {
-        this._getPetInfo()
-      })
     }
     let dogBreed = electronStore.get('dogBreed') || []
     let catBreed = electronStore.get('catBreed') || []
@@ -126,8 +132,9 @@ class EditPetInfo extends Component {
       dogBreed,
       catBreed
     })
-    this.getUser()
     ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
+    //获取工作场所
+    // this.getUser()
   }
   componentWillUnmount() {
     let ipcRenderer = window.electron.ipcRenderer
@@ -142,6 +149,7 @@ class EditPetInfo extends Component {
 
     })
   }
+  //获取工作场所
   getUser = () => {
     let params = {
       doctorId: storage.userId,
@@ -185,6 +193,7 @@ class EditPetInfo extends Component {
         console.log(err);
       })
   }
+  //获取宠物详情信息
   _getPetInfo = () => {
     let { patientId, petId } = this.state
     let datas = {
@@ -257,19 +266,18 @@ class EditPetInfo extends Component {
             weight,
             imgurl: url,
             gender,
-            petSpecies: speciesId,
             initpetName: petName,
             initlastName: lastName,
             initfirstName: firstName,
             confirmSelectBreedJson,
             petSpeciesBreedId
           })
-          switch (speciesId) {
-            case 1: this.selectWZ('cat'); break;
-            case 2: this.selectWZ('dog'); break;
+          // switch (petSpeciesBreedId) {
+          //   case 1: this.selectWZ('cat'); break;
+          //   case 2: this.selectWZ('dog'); break;
 
-            default: this.selectWZ('other'); break;
-          }
+          //   default: this.selectWZ('other'); break;
+          // }
 
         } else {
           message.destroy()
@@ -329,7 +337,7 @@ class EditPetInfo extends Component {
       closebgc: ''
     })
   }
-  /**------------------顶部end------------------------ */
+  //选择宠物默认品种
   selectWZ = (val) => {
     let { catBreed, dogBreed } = this.state
     if (this.state.selectWZ !== val) {
@@ -383,6 +391,7 @@ class EditPetInfo extends Component {
       }
     }
   }
+  //宠物详情第一列
   _petSpecies = () => {
     let { petSpecies, dogImg, catImg, otherImg, imgurl } = this.state
 
@@ -456,6 +465,7 @@ class EditPetInfo extends Component {
       </div>
     )
   }
+  //宠物详情第二列
   _petName = () => {
     let birthday = this.state.birthday
     let birthdayValue = birthday ? moment(birthday) : moment(new Date())
@@ -576,6 +586,7 @@ class EditPetInfo extends Component {
 
     )
   }
+  //宠物详情第三列
   _ownName = () => {
     let { confirmSelectUserJson } = this.state
     return (
@@ -599,12 +610,12 @@ class EditPetInfo extends Component {
                 if (this.state.patientId === this.state.oldPatientId) {
                   return
                 }
-                if (this.state.patientId === '') {
+                if (this.state.patientId === '' && !this.props.history.location?.pet) {
                   message.error('The pet ID cannot be empty');
                   return
                 }
                 let params = {
-                  patientId: this.state.patientId,
+                  patientId: this.state.patientId ? this.state.patientId : null,
                   doctorId: storage.userId
                 }
                 if (storage.lastWorkplaceId) {
@@ -620,12 +631,13 @@ class EditPetInfo extends Component {
                       message.error('This patient ID is already occupied, please change to a new one');
                     } else {
                       errPatientId = '';
-                      message.success('This pet ID will work');
+                      if (!this.props.history.location?.pet && this.state.patientId !== null) {
+                        message.success('This pet ID will work');
+                      }
                     }
                   })
                   .catch(err => {
                     console.log(err);
-
                   })
               }}
             />
@@ -649,6 +661,7 @@ class EditPetInfo extends Component {
       </div>
     )
   }
+  //选择宠物详细品种
   _select = (value, data) => {
     console.log(value, data);  //value的值为id
     this.setState({
@@ -656,12 +669,10 @@ class EditPetInfo extends Component {
       breedName: data.children
     })
   }
+  //品种判断
   _primaryBreed = () => {
+    let { breedName, confirmSelectBreedJson } = this.state;
 
-    let options = null
-    options = this.state.breedArr.map(d => <Option key={d.petSpeciesBreedId}>{d.breedName}</Option>);
-    let { breedName, confirmSelectBreedJson } = this.state
-    console.log('=============', confirmSelectBreedJson);
     return (
       <div className="petName" style={{ marginTop: mTop(30), alignItems: 'flex-end', }}>
         <div className="l">
@@ -699,6 +710,7 @@ class EditPetInfo extends Component {
 
     )
   }
+  //体重
   _weight = () => {
     let ibBgcColor = '', ibCor = '', kgBgcColor = '', kgCor = '', femaleBgc = '', maleBgc = '';
     switch (this.state.unit) {
@@ -808,7 +820,7 @@ class EditPetInfo extends Component {
         }
       })
   }
-  //保存宠物信息
+  //更新宠物信息
   save = () => {
     let { petName, birthday, firstName, lastName, petSpeciesBreedId, isMix, weight, gender, unit, imageId, breedName, petId, confirmSelectBreedJson, confirmSelectUserJson } = this.state
     if (unit === 1) {
@@ -848,55 +860,72 @@ class EditPetInfo extends Component {
     if (storage.lastOrganization) {
       data.organizationId = storage.lastOrganization
     }
-    if (this.state.patientId === '') {
+    if (this.state.patientId === '' && !this.props.history.location?.pet) {
       message.error('The pet ID cannot be empty');
     } else {
       this.setState({
         spin: true
       })
-      updatePetInfo(petId, data)
-        .then(res => {
-          this.setState({
-            spin: false
-          })
-          if (res.flag === true) {
-            try {
-              if (storage.identity === '3') {
-                let data = JSON.parse(storage.doctorExam)
-                data.petName = petName
-                data.weight = weight
-                data.gender = gender
-                data.patientId = this.state.patientId
-                if (birthday) {
-                  data.age = moment(new Date()).diff(moment(birthday), 'years')
-                }
-                if (confirmSelectBreedJson.name) {
-                  data.breed = confirmSelectBreedJson.name
-                }
-                if (this.state.petUrl) {
-                  data.url = this.state.petUrl
-                }
-
-                storage.doctorExam = JSON.stringify(data)
-              }
-            } catch (error) {
-
+      //判断是用户更新宠物还是医生更新宠物
+      if (this.props.history.location?.pet) {
+        updatePetInfo1(this.props.history.location.userId, petId, data)
+          .then((res) => {
+            this.setState({
+              spin: false
+            })
+            if (res.flag === true) {
+              message.success('update successfully');
+              this.props.history.push({ pathname: '/menuOptions/editParent', userId: this.props.history.location.userId })
+            } else {
+              message.error('This patient ID is already occupied, please change to a new one')
             }
-            this.props.petDetailInfoFun({ ...this.props.petDetailInfo, petName, birthday, patientId: this.state.patientId })
-            this.props.history.goBack()
-          } else {
-            message.error('This patient ID is already occupied, please change to a new one')
-          }
-        })
-        .catch(err => {
-          this.setState({
-            spin: false
           })
-        })
+          .catch((err) => {
+            message.error(err)
+          })
+      } else {
+        updatePetInfo(petId, data)
+          .then(res => {
+            this.setState({
+              spin: false
+            })
+            if (res.flag === true) {
+              try {
+                if (storage.identity === '3') {
+                  let data = JSON.parse(storage.doctorExam)
+                  data.petName = petName
+                  data.weight = weight
+                  data.gender = gender
+                  data.patientId = this.state.patientId
+                  if (birthday) {
+                    data.age = moment(new Date()).diff(moment(birthday), 'years')
+                  }
+                  if (confirmSelectBreedJson.name) {
+                    data.breed = confirmSelectBreedJson.name
+                  }
+                  if (this.state.petUrl) {
+                    data.url = this.state.petUrl
+                  }
+
+                  storage.doctorExam = JSON.stringify(data)
+                }
+              } catch (error) {
+
+              }
+              this.props.petDetailInfoFun({ ...this.props.petDetailInfo, petName, birthday, patientId: this.state.patientId })
+              this.props.history.goBack()
+            } else {
+              message.error('This patient ID is already occupied, please change to a new one')
+            }
+          })
+          .catch(err => {
+            this.setState({
+              spin: false
+            })
+          })
+      }
     }
   }
-
-
   render() {
     const { closeColor, closebgc, minbgc } = this.state
     return (
@@ -905,13 +934,17 @@ class EditPetInfo extends Component {
         <div className="close1">
           {/* 菜单 */}
           <div className="menu">
-            <MyIcon type='icon-fanhui4' className="icon" onClick={() => {
-              if (!_.isEmpty(this.props.history.location.parent)) {
-                this.props.history.push({ pathname: '/menuOptions/editParent', parent: this.props.history.location.parent })
-              } else {
-                this.props.history.goBack()
-              }
-            }} />
+            <MyIcon
+              type='icon-fanhui4'
+              className="icon"
+              onClick={() => {
+                if (!_.isEmpty(this.props.history.location.userId)) {
+                  this.props.history.push({ pathname: '/menuOptions/editParent', userId: this.props.history.location.userId })
+                } else {
+                  this.props.history.goBack()
+                }
+              }}
+            />
           </div>
           <div className="text">mella</div>
           <div className='maxmin'>
@@ -978,68 +1011,72 @@ class EditPetInfo extends Component {
             />
           )
         }
-        <MyModal
-          visible={this.state.selectUser}
-          element={
-            <div className='myfindOrg' >
-              <div className="orgHeard">
-                <div className="titleicon" style={{ marginTop: px(5) }}>
-                  <div>
-                  </div>
-                  <div
-                    onClick={() => {
-                      this.setState({
-                        selectUser: false,
-                        selectUserJson: {}
-                      })
-                    }}
-                  >
-                    <img src={Close} alt="" style={{ width: px(25) }} />
-                  </div>
-                </div>
-                <div className="text" >Choose Parents</div>
-                <div className="searchBox">
-                  <Input
-                    placeholder=" &#xe61b; Search name"
-                    bordered={false}
-                    allowClear={true}
-                    value={this.state.searchBreed}
-                    onChange={(item) => {
+        {
+          this.state.selectUser && (
+            <MyModal
+              visible={this.state.selectUser}
+              element={
+                <div className='myfindOrg' >
+                  <div className="orgHeard">
+                    <div className="titleicon" style={{ marginTop: px(5) }}>
+                      <div>
+                      </div>
+                      <div
+                        onClick={() => {
+                          this.setState({
+                            selectUser: false,
+                            selectUserJson: {}
+                          })
+                        }}
+                      >
+                        <img src={Close} alt="" style={{ width: px(25) }} />
+                      </div>
+                    </div>
+                    <div className="text" >Choose Parents</div>
+                    <div className="searchBox">
+                      <Input
+                        placeholder=" &#xe61b; Search name"
+                        bordered={false}
+                        allowClear={true}
+                        value={this.state.searchBreed}
+                        onChange={(item) => {
 
-                      this.setState({
-                        searchBreed: item.target.value
-                      })
-                    }}
-                  />
+                          this.setState({
+                            searchBreed: item.target.value
+                          })
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="list" >
+                    <PhoneBook
+                      listDate={this.state.doctorArr}
+                      confirmSelectBreed={this.state.selectUserId}
+                      selectFun={(val) => {
+                        this.setState({
+                          selectUserJson: val,
+                          selectUserId: val.petSpeciesBreedId
+                        })
+                      }}
+                      searchText={this.state.searchBreed}
+                    />
+                  </div>
+                  <div className="foot">
+                    <Button
+                      text={'Select'}
+                      onClick={() => {
+                        this.setState({
+                          confirmSelectUserJson: this.state.selectUserJson,
+                          selectUser: false
+                        })
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="list" >
-                <PhoneBook
-                  listDate={this.state.doctorArr}
-                  confirmSelectBreed={this.state.selectUserId}
-                  selectFun={(val) => {
-                    this.setState({
-                      selectUserJson: val,
-                      selectUserId: val.petSpeciesBreedId
-                    })
-                  }}
-                  searchText={this.state.searchBreed}
-                />
-              </div>
-              <div className="foot">
-                <Button
-                  text={'Select'}
-                  onClick={() => {
-                    this.setState({
-                      confirmSelectUserJson: this.state.selectUserJson,
-                      selectUser: false
-                    })
-                  }}
-                />
-              </div>
-            </div>
-          }
-        />
+              }
+            />
+          )
+        }
       </div>
     )
   }

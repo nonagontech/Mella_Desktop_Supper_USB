@@ -396,12 +396,12 @@
   border: none;
 }
 
-#settings .body .desk:nth-child(3) .item {
-  margin-top: 25px;
-}
+/* #settings .body .desk:nth-child(3) .item {
+  margin-top: 32px;
+} */
 
 #settings .body .desk .title {
-  margin: 50px 0 10px 50px;
+  margin: 32px 0;
   font-size: 26px;
 }
 

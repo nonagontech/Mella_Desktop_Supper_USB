@@ -12,11 +12,11 @@ const baseURL = `${mellaserverBaseUrl}/pet`
 
 /**
  * @dec  获取医生用户测量的所有病历单
- * @param {string} dockerId 用户的id值
+ * @param {string} params
  * @returns 返回一个接口
  */
-export const getPetExamByDoctorId = (dockerId) => {
-    return get(`${baseURL}/getPetExamByDoctorId/${dockerId}`, '')
+export const getPetExamByDoctorId = (userId,params) => {
+    return get(`${baseURL}/getPetExamByDoctorId/${userId}`, params)
 }
 
 

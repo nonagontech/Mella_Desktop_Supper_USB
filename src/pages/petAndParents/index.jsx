@@ -40,7 +40,6 @@ class PetAndParents extends Component {
     let { height, width } = window.screen
     ipcRenderer.send('Lowbig')
     ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
-
     this._getExam()
 
   }
@@ -55,9 +54,6 @@ class PetAndParents extends Component {
     let { height, width } = window.screen
     let windowsHeight = height > width ? width : height
     ipcRenderer.send('Lowbig')
-    this.setState({
-
-    })
   }
   _getExam = async () => {
     this.setState({
@@ -115,6 +111,8 @@ class PetAndParents extends Component {
                   parent: owerJson,
                   pets: [json]
                 }
+                console.log('parentAndPetJson: ', parentAndPetJson);
+
                 parentAndPetList.push(parentAndPetJson)
               } else {
                 parentAndPetList[flogNum].pets.push(json)
@@ -159,7 +157,7 @@ class PetAndParents extends Component {
       }
     }
     let options = data.map((item, index) => {
-      let { speciesId, url, userImageUrl, patientId, petId, name } = item
+      let { speciesId, url, userImageUrl, patientId, petId, name,userId } = item
       let images = null
       if (value === 'parent') {
         images = `url(${userImageUrl}?download=0&width=150)`
@@ -192,7 +190,7 @@ class PetAndParents extends Component {
                   break
                 }
               }
-              this.props.history.push({ pathname: '/menuOptions/editParent', parent: params })
+              this.props.history.push({ pathname: '/menuOptions/editParent', userId: userId })
             } else {
               this.props.petDetailInfoFun(item);
               this.props.history.push({ pathname: '/page9', parent: params })

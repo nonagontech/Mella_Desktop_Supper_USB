@@ -1,4 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import rMin_red from "./../../assets/img/min-red.png";
+import rClose_red from "./../../assets/img/close-red.png";
+import rMin_white from "./../../assets/img/min-white.png";
+import rClose_white from "./../../assets/img/close-white.png";
 import './maxminreturn.less'
 
 export default class MaxMin extends Component {
@@ -58,6 +62,13 @@ export default class MaxMin extends Component {
                         onClick={this.props.onClick1}
                     />
                 </div>
+
+
+                <div className='headIconBox'>
+
+                </div>
+
+
                 <div className="close123">
                     <div className="home iconfont icon-zhuye3"
                         onClick={this.props.onClick}

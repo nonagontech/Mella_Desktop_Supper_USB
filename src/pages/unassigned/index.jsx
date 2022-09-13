@@ -49,6 +49,9 @@ export default class Unassigned extends Component {
     assignVisible: false, //点击assign按钮后跳出的选择宠物的弹框
     selectPetId: "",
     modalLoading: false,//控制弹窗加载
+    pageSize: 10,//数量
+    currPage: 1,//页码
+    total: 0,//总数
   };
 
   componentDidMount() {
@@ -63,7 +66,7 @@ export default class Unassigned extends Component {
       });
     }
     ipcRenderer.on("changeFenBianLv", this.changeFenBianLv);
-    this._getEmergencyHistory();
+    this._getEmergencyHistory(1);
     const timer = setTimeout(() => {
       this._getBreed();
       clearTimeout(timer);
@@ -89,7 +92,7 @@ export default class Unassigned extends Component {
     this.setState({});
   };
   //获取通过walk-In测量的信息，通过判断获取的数据中petId是否为空来展示数据
-  _getEmergencyHistory = () => {
+  _getEmergencyHistory = (currPage) => {
     //封装的日期排序方法
     function ForwardRankingDate(data, p) {
       for (let i = 0; i < data.length - 1; i++) {
@@ -107,75 +110,78 @@ export default class Unassigned extends Component {
     this.setState({
       loading: true,
     });
-    getPetExamByDoctorId(storage.userId)
+    let data = {
+      pageSize: this.state.pageSize,
+      currPage: currPage,
+    }
+    getPetExamByDoctorId(storage.userId, data)
       .then((res) => {
-        console.log("---res", res);
         if (res.flag === true) {
-          let datas = res.data;
+          let datas = res.data.list;
           for (let i = datas.length - 1; i >= 0; i--) {
-            if (datas[i].petId === null) {
-              let {
-                petId,
-                examId,
-                userId,
-                petVitalTypeId,
-                temperature,
-                roomTemperature,
-                bloodPressure,
-                memo,
-                clinicalDatagroupId,
-                bodyConditionScore,
-                heartRate,
-                respiratoryRate,
-                referenceRectalTemperature,
-                furLength,
-                createTime,
-                clinicalDataEntity,
-              } = datas[i];
-              let day = moment().diff(moment(createTime), "day");
-              // console.log(day);
-              if (day > 3) {
-                continue;
+            let {
+              petId,
+              examId,
+              userId,
+              petVitalTypeId,
+              temperature,
+              roomTemperature,
+              bloodPressure,
+              memo,
+              clinicalDatagroupId,
+              bodyConditionScore,
+              heartRate,
+              respiratoryRate,
+              referenceRectalTemperature,
+              furLength,
+              createTime,
+              clinicalDataEntity,
+            } = datas[i];
+            let day = moment().diff(moment(createTime), "day");
+            let Tem = temperature;
+            try {
+              if (clinicalDataEntity) {
+                Tem = temperature || clinicalDataEntity.data0;
               }
-
-              let Tem = temperature;
-              try {
-                if (clinicalDataEntity) {
-                  Tem = temperature || clinicalDataEntity.data0;
-                }
-              } catch (error) {
-                console.log("抛出的异常", error);
-              }
-              let str = {
-                clinicalDatagroupId,
-                createTime,
-                date: moment(createTime).format("MMM DD"),
-                time: moment(createTime).format("hh:mm A"),
-                temp: parseInt(Tem * 10) / 10,
-                placement: petVitalTypeId,
-                note: memo,
-                historyId: examId,
-                bodyConditionScore,
-                heartRate,
-                respiratoryRate,
-                referenceRectalTemperature,
-                furLength,
-                roomTemperature,
-                bloodPressure,
-                petId,
-                userId,
-                day,
-              };
-
-              historys.push(str);
+            } catch (error) {
+              console.log("抛出的异常", error);
             }
+            let str = {
+              clinicalDatagroupId,
+              createTime,
+              date: moment(createTime).format("MMM DD"),
+              time: moment(createTime).format("hh:mm A"),
+              temp: parseInt(Tem * 10) / 10,
+              placement: petVitalTypeId,
+              note: memo,
+              historyId: examId,
+              bodyConditionScore,
+              heartRate,
+              respiratoryRate,
+              referenceRectalTemperature,
+              furLength,
+              roomTemperature,
+              bloodPressure,
+              petId,
+              userId,
+              day,
+            };
+            historys.push(str);
+          }
+          let newArr = [];
+          if (this.state.currPage === 1) {
+            newArr = historys
+          } else {
+            let oldArr = this.state.historyData;
+            let arr = historys;
+            newArr = [...oldArr, ...arr];
           }
           //把所有数据拿完后做个排序
-          let historyData = ForwardRankingDate(historys, "createTime");
-          console.log("historyData:", historyData);
+          let historyData = ForwardRankingDate(newArr, "createTime");
           this.setState({
             historyData,
             loading: false,
+            total: res.data.totalCount
           });
         } else {
           this.setState({
@@ -512,7 +518,7 @@ export default class Unassigned extends Component {
                 })
                 if (res.flag === true) {
                   message.success("Assigned successfully");
-                  that._getEmergencyHistory();
+                  that._getEmergencyHistory(1);
                   that.setState({
                     visible: false,
                     assignPatientId: "",
@@ -790,6 +796,22 @@ export default class Unassigned extends Component {
     });
     return <ul>{option}</ul>;
   };
+  //表格滚动
+  onScrollCapture = () => {
+    // 滚动的容器
+    let tableEleNodes = document.querySelectorAll(`.tableStyle .ant-table-body`)[0];
+    //是否滚动到底部
+    let bottomType = Math.round(tableEleNodes?.scrollTop) + tableEleNodes?.clientHeight === tableEleNodes?.scrollHeight;
+    if (bottomType) {
+      if (this.state.total === this.state.historyData.length) {
+        return false;
+      }
+      this.setState({
+        currPage: this.state.currPage + 1,
+      })
+      this._getEmergencyHistory(this.state.currPage + 1);
+    }
+  }
 
   render() {
     let { loading, disabled, historyData, searchText, serchExamData } =
@@ -961,12 +983,10 @@ export default class Unassigned extends Component {
               <p>Search</p>
             </div>
           </div>
-
-          <div className="table">
+          <div className="tableBox" onScrollCapture={() => this.onScrollCapture()}>
             <Table
               style={{
                 width: "95%",
-                height: MTop(550),
               }}
               loading={loading}
               columns={columns}
@@ -974,8 +994,10 @@ export default class Unassigned extends Component {
               rowKey={(columns) => columns.historyId}
               pagination={false}
               scroll={{
-                y: MTop(500),
+                // y: MTop(500),
+                y: 500
               }}
+              className="tableStyle"
             />
           </div>
           {this._modal()}

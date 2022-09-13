@@ -423,7 +423,7 @@ export default class Settings extends Component {
             {
               // storage.roleId === '3' &&
               <div className="desk">
-                <div className="title user">User Admin</div>
+                <div className="title">User Admin</div>
 
                 <div className="item" style={{ marginBottom: px(10) }}>
                   <div className="l" onClick={() => { this.props.history.push('/menuOptions/ConnectWorkplace') }}>

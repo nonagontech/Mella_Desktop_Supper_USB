@@ -25,7 +25,7 @@ class Slider extends Component {
     // window.onmouseup = e => this.onMouseUp(e);
     // window.onmousemove = e => this.onMouseMove(e);
   }
-  componentDidMount () {
+  componentDidMount() {
     console.log(this.props.left, parseInt(this.props.railWidth));
     if (this.props.left) {
       if (this.props.left >= parseInt(this.props.railWidth)) {
@@ -45,8 +45,7 @@ class Slider extends Component {
     }
 
   }
-  componentWillReceiveProps (nextProps) {
-
+  componentWillReceiveProps(nextProps) {
     if (nextProps.left && nextProps.left !== this.state.translateX) {
       if (nextProps.left >= parseInt(this.props.railWidth)) {
         this.setState({
@@ -61,15 +60,10 @@ class Slider extends Component {
           translateX: nextProps.left
         })
       }
-
     }
-
-
-
-
   }
 
-  onMouseDown (e) {
+  onMouseDown(e) {
     console.log('按下');
     e.stopPropagation();
     this.moving = true;
@@ -78,7 +72,7 @@ class Slider extends Component {
     document.onmouseup = e => this.onMouseUp(e);
   }
 
-  onMouseUp (e) {
+  onMouseUp(e) {
     if (!this.moving) {
       return
     }
@@ -95,11 +89,11 @@ class Slider extends Component {
 
   }
 
-  onMouseMove (e) {
+  onMouseMove(e) {
     this.moving && this.onMove(e);
   }
 
-  onMove (e) {
+  onMove(e) {
     // console.log(e);
     if (this.lastX && this.lastY) {
       let dx = e.clientX - this.lastX;
@@ -112,7 +106,7 @@ class Slider extends Component {
     this.lastY = e.clientY;
   }
 
-  render () {
+  render() {
 
     let { min, max, railWidth, railrHeight, railBackgroundColor, sliderWidth, sliderBackgroundColor } = this.props
     // console.log(railWidth);
@@ -140,7 +134,7 @@ class Slider extends Component {
 Slider.propTypes = {
   min: PropTypes.number,
   max: PropTypes.number,
-  railWidth: PropTypes.string || PropTypes.number,
+  railWidth: PropTypes.number,
   railrHeight: PropTypes.string,
   railBackgroundColor: PropTypes.string,
   sliderWidth: PropTypes.string,
@@ -150,7 +144,7 @@ Slider.propTypes = {
 Slider.defaultProps = {
   min: 0,
   max: 100,
-  railWidth: '185px',
+  railWidth: 185,
   railrHeight: '2px',
   railBackgroundColor: '#D8D8D8',
   sliderWidth: '15px',
