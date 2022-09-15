@@ -2492,6 +2492,11 @@
   resolved "https://registry.yarnpkg.com/@types/verror/-/verror-1.10.4.tgz#805c0612b3a0c124cf99f517364142946b74ba3b"
   integrity sha512-OjJdqx6QlbyZw9LShPwRW+Kmiegeg3eWNI41MQQKaG3vjdU2L9SRElntM51HmHBY1cu7izxQJ1lMYioQh3XMBg==
 
+"@types/w3c-web-serial@^1.0.2":
+  version "1.0.2"
+  resolved "https://qsmdiagnostics.jfrog.io/artifactory/api/npm/qsm-npm/@types/w3c-web-serial/-/w3c-web-serial-1.0.2.tgz#8bf21f90b40dda6d2e2e6b188417b6bd66525d03"
+  integrity sha512-Ftx4BtLxgAnel7V7GbHylCYjSq827A+jeEE3SnTS7huCGUN0pSwUn+CchTCT9TkZj9w+NVMUq4Bk2R0GvUNmAQ==
+
 "@types/webpack-sources@*":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/webpack-sources/-/webpack-sources-2.0.0.tgz#08216ab9be2be2e1499beaebc4d469cec81e82a7"
@@ -12230,6 +12235,13 @@ qs@~6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
+
+qsm-otter-sdk@^1.0.4:
+  version "1.0.4"
+  resolved "https://qsmdiagnostics.jfrog.io/artifactory/api/npm/qsm-npm/qsm-otter-sdk/-/qsm-otter-sdk-1.0.4.tgz#5336d4b4daeb71f40596c498fcfbc129bdc8828a"
+  integrity sha512-Rb8MeDrWnFuhVQ1SFZXVFT6mjCGLsgSrjVTz16HnvgqekTM/n/nV16kD/MeHRH+YpmkTuPypCoDSzc9zTejO5A==
+  dependencies:
+    "@types/w3c-web-serial" "^1.0.2"
 
 query-string@^4.1.0:
   version "4.3.4"

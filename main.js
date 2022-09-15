@@ -35,7 +35,7 @@ const {
   up,
   down,
 } = require("@nut-tree/nut-js");
-// const SerialPort = require('serialport');
+const SerialPort = require('serialport');
 
 Store.initRenderer();
 
@@ -46,10 +46,13 @@ Store.initRenderer();
 //     console.log(ports);
 //     let index = null
 //     for (let i = 0; i < ports.length; i++) {
-//       if (ports[i].manufacturer === 'FTDI') {
+//       if (ports[i].manufacturer === 'Hades2001') {
 //         index = i
 //         break;
 //       }
+//     }
+//     if (index === null) {
+//       return
 //     }
 //     let port = new SerialPort(ports[index].path, {
 //       baudRate: 115200,
@@ -60,15 +63,35 @@ Store.initRenderer();
 //       // autoOpen: false
 //     });
 //     console.log('====', port);
-
+//     let num123 = 0
 //     port.on('data', function (data) {
 //       //收hex
-//       console.log('recv: ' + data.toString('hex'));
+//       // console.log(data, data.length);
+//       console.log(data.toString('hex'));
+//       // mainWindow.webContents.send("test", data);
 //       //收字符串
-//       //console.log('recv: ' + data.toString('ascii'));
+//       // console.log('recv: ' + data.toString('ascii'));
+//       let base64Img = data.toString('base64')
+//       // console.log(base64Img);
+//       var decodeImg = new Buffer(base64Img, 'base64');  // new Buffer(string, encoding)
+
+//       console.log(Buffer.compare(data, decodeImg));  // 0 表示一样
+//       fs.appendFileSync(`./test/${num123}.jpg`, decodeImg, function (err) {
+//         if (err) { console.log(err) }
+//       });
+//       if (data.length < 40) {
+//         num123++
+//       }
+
+
+
+//       // console.log(data1);
+//       // fs.writeFile('./hello.avi', data1)
+
 //     });
 //     port.on('error', function (err) {
 //       console.log('error-------------', err);
+//       fs.close
 //     })
 
 //   }

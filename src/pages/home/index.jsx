@@ -11,6 +11,7 @@ import { version } from '../../utils/appversion';
 
 import logo from '../../assets/images/mella.png'
 
+
 import './index.less';
 
 let storage = window.localStorage;
@@ -18,6 +19,8 @@ let storage = window.localStorage;
 let logoClick = 0;
 //定义变量:点击logo的时间
 let logoTime = 0;
+
+let ipcRenderer = window.electron.ipcRenderer
 export default class Home extends Component {
   state = {
     imgurl: '',
@@ -30,19 +33,23 @@ export default class Home extends Component {
     ipcRenderer.send('small', win())
     storage.measurepatientId = '';
     temporaryStorage.logupVetInfo = {}
-    this.test()
   }
   resize = (e) => {
 
   }
   componentWillUnmount() {
-    let ipcRenderer = window.electron.ipcRenderer
+
     window.removeEventListener('resize', this.resize);
 
   }
+
   test = async () => {
-    console.log('---', window.navigator.serial);
-    // const port = await navigator.serial.requestPort();
+
+
+    const SDK = require("qsm-otter-sdk");
+    console.log('Pairing ')
+    let datas = await SDK.pairInstrument()
+    console.log('datas:', datas);
   }
 
 
@@ -52,12 +59,7 @@ export default class Home extends Component {
     // this.props.history.push('/uesr/logUp/JoinOrganizationByOption')
 
   }
-  _test = () => {
-    console.log('点击');
-    console.log(navigator);
-    console.log(navigator.userAgent);
-    console.log('---------------------------');
-  }
+
   _openUtils = () => {
     console.log('点击来了', logoClick);
     if (new Date() - logoTime > 500) {
@@ -96,6 +98,7 @@ export default class Home extends Component {
 
         </div>
 
+
         <div className="heard" >
           <div
 
@@ -111,6 +114,9 @@ export default class Home extends Component {
           </div>
 
         </div>
+        {/* <video id="video"></video> */}
+
+
 
 
         <div className="button" style={{ marginBottom: px(25) }}>
@@ -120,6 +126,7 @@ export default class Home extends Component {
             shape="round"
             size='large'
             onClick={() => { this.props.history.push('/page11') }}
+            // onClick={() => this.test()}
             className="siginInBtn"
           >
             Sign In
@@ -134,6 +141,9 @@ export default class Home extends Component {
             shape="round"
             size='large'
             onClick={this._createAccount}
+            // onClick={() => {
+            //   ipcRenderer.send('SDKreadConnectionStatus')
+            // }}
             className="createBtn"
           >
             Create an Account
