@@ -4,6 +4,7 @@ import {
   message
 } from 'antd';
 
+
 import temporaryStorage from '../../utils/temporaryStorage'
 import { px, mTop, win, timerFun } from '../../utils/px'
 import MinClose from '../../utils/minClose/MinClose';
@@ -21,42 +22,38 @@ let logoClick = 0;
 let logoTime = 0;
 
 let ipcRenderer = window.electron.ipcRenderer
+const SDK = require("qsm-otter-sdk");
 export default class Home extends Component {
   state = {
     imgurl: '',
     size: { width: 0, height: 0 }
   }
   componentDidMount() {
-    let ipcRenderer = window.electron.ipcRenderer
     timerFun()
     ipcRenderer.send('close-loading-window', 1)
     ipcRenderer.send('small', win())
     storage.measurepatientId = '';
     temporaryStorage.logupVetInfo = {}
   }
-  resize = (e) => {
-
-  }
-  componentWillUnmount() {
-
-    window.removeEventListener('resize', this.resize);
-
-  }
-
   test = async () => {
+    console.log(SDK);
+    var serial = window.navigator.serial;
+    console.log(serial);
+    // const port = await SDK.pairInstrument()
+    const port = serial.requestPort({})
+    console.log("paired instrument", port)
 
-
-    const SDK = require("qsm-otter-sdk");
-    console.log('Pairing ')
-    let datas = await SDK.pairInstrument()
-    console.log('datas:', datas);
   }
 
 
-  _createAccount = () => {
-    this.props.history.push('/uesr/logUp/VetPrifile')
+  _createAccount = async () => {
+    // this.props.history.push('/uesr/logUp/VetPrifile')
 
     // this.props.history.push('/uesr/logUp/JoinOrganizationByOption')
+
+    console.log('连接状态');
+    const port = await SDK.readConnectionStatus()
+    console.log("paired instrument", port)
 
   }
 
@@ -72,7 +69,6 @@ export default class Home extends Component {
       if (logoClick >= 8) {
         logoClick = 0;
 
-        let ipcRenderer = window.electron.ipcRenderer
         ipcRenderer.send('openDevTools', true)
       }
     }
@@ -125,8 +121,8 @@ export default class Home extends Component {
             type="primary"
             shape="round"
             size='large'
-            onClick={() => { this.props.history.push('/page11') }}
-            // onClick={() => this.test()}
+            // onClick={() => { this.props.history.push('/page11') }}
+            onClick={() => this.test()}
             className="siginInBtn"
           >
             Sign In
