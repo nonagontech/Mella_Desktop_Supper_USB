@@ -45,7 +45,7 @@ const TemperaturePage = ({ petMessage, hardwareMessage, bodyHeight }) => {
   return (
     <>
       <Layout className="homeBox" style={{ height: bodyHeight }}>
-        <div className="headerContentBox" style={{ background: "#fff", position: 'relative' }}>
+        <div className="headerContentBox">
           <div style={{ height: '100%' }}>
             <HeaderItem />
           </div>

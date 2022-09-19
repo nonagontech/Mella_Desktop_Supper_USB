@@ -22,4 +22,4 @@ export const ezyvetBaseUrl = process.env.REACT_APP_EZYVET_BASE_URL
 //rhapsody的基本地址
 export const rhapsodyBaseUrl = process.env.REACT_APP_RHAPSODY_BASE_URL
 
-console.log('-1111111-', mellaserverBaseUrl);
+console.log('-11121111-', mellaserverBaseUrl);

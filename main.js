@@ -421,6 +421,7 @@ function createWindow() {
     webPreferences: {
       // devTools:false,
       nodeIntegration: true, // 是否集成 Nodejs,把之前预加载的js去了，发现也可以运行,设置为true就可以在这个渲染进程中调用Node.js
+      contextIsolation: false,
       // preload: path.join(__dirname, './public/renderer.js')
     },
     show: false, // newBrowserWindow创建后先隐藏，
