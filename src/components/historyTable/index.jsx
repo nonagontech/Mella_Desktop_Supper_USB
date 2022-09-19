@@ -154,9 +154,6 @@ const HistoryTable = ({
       title: "Date",
       dataIndex: "createTime",
       ellipsis: true,
-      // onHeaderCell: (row) => {
-      //   return console.log('row',row);
-      // } ,
       align: "center",
       render: (text, record) => moment(text).format("MMM D"),
     },

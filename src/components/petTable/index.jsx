@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { ConfigProvider, Table } from 'antd';
+import { ConfigProvider, Table, Select } from 'antd';
 import { useHistory } from 'react-router-dom'
 import moment from 'moment'
-
 import { mTop, px, MTop, pX } from '../../utils/px';
 import './petTable.less'
 import { petDetailInfoFun, setMenuNum, } from '../../store/actions';
 import SelectionBox from '../../utils/selectionBox/SelectionBox'
-
-
-
-
 
 const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNum, resetPetList, type }) => {
   let history = useHistory()
@@ -48,65 +43,53 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
         searchData.push(list[i])
       }
     }
-    console.log(searchData);
     setSearchData(searchData)
   }
-
   const columns = [
     {
       title: 'Time',
       dataIndex: 'insertedAt',
       key: 'insertedAt',
-      width: '20%',
-      render: (text, record, index) => {
-        let chazhi = new Date().getTimezoneOffset()
-        let year = moment(parseInt(text) * 1000).format('YYYY-MM-DD hh:mm a');
-        let time = moment(parseInt(text) * 1000).format('hh:mm a');
-        let newTime = moment(parseInt(text) * 1000).format('YYYY-MM-DD HH:mm');
-        return (
-          <div className='flex' style={{ paddingTop: pX(3), paddingBottom: pX(3), paddingLeft: px(10), display:'flex', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-            <p>{`${year}`}</p>
-            {/* <p>{`${time}`}</p> */}
-          </div>
-        )
-      },
+      ellipsis: true,
+      align: "center",
+      render: (text, record, index) => moment(parseInt(text) * 1000).format('YYYY-MM-DD hh:mm a'),
 
     },
     {
       title: 'Pet ID',
       dataIndex: 'patientId',
       key: 'patientId',
-      width: '15%',
+      ellipsis: true,
+      align: "center",
     },
     {
       title: 'Pet Name',
       dataIndex: 'petName',
       key: 'petName',
-      width: '15%',
+      ellipsis: true,
+      align: "center",
     },
     {
       title: 'Owner',
       dataIndex: 'owner',
       key: 'owner',
-      width: '15%',
-      // ...this.getColumnSearchProps('owner'),
+      ellipsis: true,
+      align: "center",
     },
     {
       title: 'Breed',
       dataIndex: 'breed',
       key: 'breed',
-      width: '15%',
       ellipsis: true,
       align: "center",
-      // ...this.getColumnSearchProps('breed'),
       render: (text, record, index) => {
         if (!text || text === 'defaultdog' || text === 'defaultother' || text === 'defaultcat') {
           return (
-            <p style={{ textAlign: 'center' }}>{'unknown'}</p>
+            'unknown'
           )
         } else {
           return (
-            <p style={{ textAlign: 'center' }}>{text}</p>
+            text
           )
         }
 
@@ -117,26 +100,23 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
       title: 'Gender',
       dataIndex: 'gender',
       key: 'gender',
-      width: '12%',
-      // width: '30%',
-      // ...this.getColumnSearchProps('gender'),
+      ellipsis: true,
+      align: "center",
     },
     {
       title: 'Age',
       dataIndex: 'age',
       key: 'age',
-      width: '12%',
-      // width: '20%',
+      ellipsis: true,
+      align: "center",
       render: (text, record, index) => {
-        // console.log(text);
-
         if (`${text}` === 'NaN') {
           return (
-            <p style={{ textAlign: 'center', justifyItems: 'center' }}>{'unknown'}</p>
+            'unknown'
           )
         } else {
           return (
-            <p style={{ textAlign: 'center' }}>{text}</p>
+            text
           )
         }
 
@@ -151,7 +131,6 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
         <p style={{ fontSize: px(22) }}> {`No Pets Scheduled &`}</p>  &nbsp;&nbsp;
         <a style={{ fontSize: px(22) }} href="#"
           onClick={(e) => {
-            console.log('我要去添加宠物1111');
             try {
               if (type === 'scheduled') {
                 setMenuNum('AddScheduledPet')
@@ -169,10 +148,42 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
       </div>
     )
   }
+  const options = [
+    { key: 'time', value: 'Time' },
+    { key: 'petid', value: 'Pet ID' },
+    { key: 'owner', value: 'Owner' },
+    { key: 'breed', value: 'Breed' },
+    { key: 'petname', value: 'Pet Name' },
+    { key: 'gender', value: 'Gender' },
+  ]
+  const handleChange = (value,option) => {
+    let petList = [].concat(petListArr)
+    switch (option.key) {
+      case 'time':
+        petList.sort((a, b) => { return moment(parseInt(a.insertedAt) * 1000).format('YYYY-MM-DD HH:mm') > moment(parseInt(b.insertedAt) * 1000).format('YYYY-MM-DD HH:mm') ? -1 : 1 })
+        break;
+      case 'petid':
+        petList.sort((a, b) => { return a.patientId >= b.patientId ? 1 : -1 })
+        break;
+      case 'owner':
+        petList.sort((a, b) => { return a.owner >= b.owner ? 1 : -1 })
+        break;
+      case 'breed':
+        petList.sort((a, b) => { return a.breed >= b.breed ? 1 : -1 })
+        break;
+      case 'petname':
+        petList.sort((a, b) => { return a.petName >= b.petName ? 1 : -1 })
+        break;
+      case 'gender':
+        petList.sort((a, b) => { return a.gender >= b.gender ? 1 : -1 })
+        break;
+    }
+    resetPetList(petList)
+  };
   return (
     <div className='petTable' >
       <div className="pet_table_heard">
-        <div className="search" style={{ height: px(28) }}>
+        <div className="search" style={{ height: px(32) }}>
           <input
             type="text"
             placeholder="&#xe61b;    search"
@@ -182,7 +193,6 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
               _search(e.target.value)
             }
             }
-
           />
         </div>
 
@@ -201,8 +211,7 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
 
         <div className="sort flex" >
           <p style={{ fontSize: px(16), marginRight: px(10) }}>Sort By:</p>
-
-          <SelectionBox
+          {/* <SelectionBox
             listArr={[
               { key: 'time', value: 'Time' },
               { key: 'petid', value: 'Pet ID' },
@@ -234,13 +243,15 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
                   break;
               }
               resetPetList(petList)
-
             }}
+          /> */}
+          <Select
+            defaultValue={['Time']}
+            onChange={handleChange}
+            options={options}
+            className="selectFilter"
           />
         </div>
-
-
-
       </div>
       <div className="table" >
         <ConfigProvider renderEmpty={noData}>
@@ -255,7 +266,6 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
             columns={columns}
             dataSource={(heardSearchText.length === 0) ? petListArr : searchData}
             loading={loading}
-            locale={{ filterConfirm: <div>111</div> }}
             pagination={false}
             scroll={{
               // y: px(480),
@@ -273,12 +283,9 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
           />
         </ConfigProvider>
       </div>
-
     </div >
-
   )
 }
-
 
 PetTable.propTypes = {
   petListArr: PropTypes.array,

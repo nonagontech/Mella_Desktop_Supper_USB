@@ -161,11 +161,11 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
                 breed: null,
 
               }
-              petDetailInfoFun(json)
-              setMenuNum("1")
+              petDetailInfoFun(json);
+              setMenuNum("1");
             }}
           >
-            <div className="walkText">Walk-In</div>
+            <p className="walkText">Walk-In</p>
           </div>
         </div>
 

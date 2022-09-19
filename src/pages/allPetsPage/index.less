@@ -1,65 +1,66 @@
 #allPets {
-    display: flex;
-    flex: 1;
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #fff;
+  position: relative;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom-right-radius: 20px;
+
+  .allPetHeard {
     width: 100%;
-    height: 100%;
-    -webkit-app-region: drag;
-    -webkit-user-select: none;
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #fff;
-    position: relative;
-    flex-direction: column;
-    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    border-bottom-right-radius: 20px;
+    justify-content: space-between;
+    border-bottom: 1px solid #979797;
+    position: relative;
 
-    .allPetHeard {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        // justify-content: center;
-        justify-content: space-between;
-        border-bottom: 2px solid #979797;
-        position: relative;
+    .addDeviceTitle {
+      color: #141414;
+      font-weight: bold;
+      font-size: larger;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
 
-        .addDeviceTitle {
+      .refresh {
+        -webkit-app-region: no-drag;
+      }
 
-            color: #141414;
-            font-weight: bold;
-            font-size: larger;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-
-            .refresh {
-                -webkit-app-region: no-drag;
-            }
-
-        }
-
-        .walkBtn1 {
-            // width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            -webkit-app-region: no-drag;
-            // background-color: pink;
-
-            .walkbtnBox {
-                width: 80%;
-                background-color: #e1206d;
-                border-radius: 80px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #fff;
-            }
-        }
     }
+
+    .walkBtn1 {
+      // width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      -webkit-app-region: no-drag;
+      // background-color: pink;
+
+      .walkbtnBox {
+        background-color: #e1206d;
+        border-radius: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+
+        .walkText {
+          font-size: 16px;
+        }
+      }
+    }
+  }
 
 
 

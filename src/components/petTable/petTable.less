@@ -34,9 +34,7 @@
       }
 
       input::-webkit-input-placeholder {
-        /* WebKit browsers */
         color: rgba(60, 60, 67, 0.6);
-        // font-size: ;
         font-family: 'iconfont';
       }
 
@@ -44,14 +42,12 @@
     }
 
     .walkBtn1 {
-
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       -webkit-app-region: no-drag;
-      // background-color: pink;
 
       .walkbtnBox {
         width: 80%;
@@ -67,19 +63,18 @@
 
   .heard2 {
     flex-direction: row;
-    // align-items: flex-start;
     justify-content: flex-start;
-    // background-color: pink;
     width: 90%;
 
     .sort {
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
-      // justify-content: space-between;
       width: 40%;
+      .selectFilter{
+        width: 50%;
+      }
 
-      // background-color: hotpink;
       p {
         margin: 0;
       }
@@ -88,21 +83,30 @@
   }
 
   .table {
-    // margin: 0 5%;
-
-    padding: 0%;
-    margin: 0;
-    width: 100%;
+    // width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    .ant-table-cell {
-      padding: 0;
+    .ant-table-body {
+      &::-webkit-scrollbar-track {
+        background-color: transparent;
+        border-radius: 4px;
+      }
 
-      p {
-        padding: 0;
-        margin: 0;
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        background-color: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: #A2A3A5;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background-color: #747474;
       }
     }
 
@@ -114,13 +118,11 @@
         text-decoration: none;
       }
     }
-
-    .ant-table-cell {
-      text-align: center;
-    }
-
-    .ant-table-filter-column-title {
-      text-align: center;
-    }
   }
+}
+
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background-color: #e1206d;
+  color: #FFFFFF;
+  font-weight: 500;
 }
