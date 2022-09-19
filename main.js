@@ -451,14 +451,62 @@ function createWindow() {
     transparent: true,
   };
   mainWindow = new BrowserWindow(windowOptions);
+
+
+
+  mainWindow.webContents.session.on('select-serial-port', (event, portList, webContents, callback) => {
+
+    //Add listeners to handle ports being added or removed before the callback for `select-serial-port`
+    //is called.
+    mainWindow.webContents.session.on('serial-port-added', (event, port) => {
+      console.log('serial-port-added FIRED WITH', port)
+      //Optionally update portList to add the new port
+    })
+
+    mainWindow.webContents.session.on('serial-port-removed', (event, port) => {
+      console.log('serial-port-removed FIRED WITH', port)
+      //Optionally update portList to remove the port
+    })
+
+    event.preventDefault()
+    if (portList && portList.length > 0) {
+      callback(portList[0].portId)
+    } else {
+      callback('') //Could not find any matching devices
+    }
+  })
+
+  mainWindow.webContents.session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
+    if (permission === 'serial' && details.securityOrigin === 'file:///') {
+      return true
+    }
+
+    return false
+  })
+
+  mainWindow.webContents.session.setDevicePermissionHandler((details) => {
+    if (details.deviceType === 'serial' && details.origin === 'file://') {
+      return true
+    }
+
+    return false
+  })
+
+
+
+
+
+
+
+
+
+
   const urlLocation = isDev
     ? "http://localhost:3000"
+    // ? `file://${path.join(__dirname, "./public/test.html")}`
     : `file://${path.join(__dirname, "./build/index.html")}`;
-  // 开发
+
   mainWindow.loadURL(urlLocation);
-  // 生产
-  // mainWindow.loadURL(`file://${path.join(__dirname, './build/index.html')}`)
-  // mainWindow.loadURL(`file://${__dirname}/index.html`);
   //是否打开开发者
   if (isDev) {
     mainWindow.webContents.openDevTools();
