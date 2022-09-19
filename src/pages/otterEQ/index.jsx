@@ -57,7 +57,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight }) => {
         </div>
       </div>
       {_.isEmpty(petMessage) ? (
-        <div className="chackPatientBox">
+        <div className="chackPatientBox" style={{ height: bodyHeight - 100 }}>
           <p className="chackPatientTitle">Select a patient</p>
         </div>
       ) : (
