@@ -14,18 +14,58 @@ import moment from "moment";
 import _ from "lodash";
 import "./index.less";
 
-const LinkEquipment = ({ petMessage, hardwareMessage ,cutPageType}) => {
+
+const LinkEquipment = ({ petMessage, hardwareMessage, cutPageType, qsmConnectStatus }) => {
   const [nextType, setNextType] = useState(false);
+
 
   const onClick = () => {
     setNextType(true);
   }
+
+
+
 
   useEffect(() => {
     setNextType(false);
     return (() => { })
 
   }, [petMessage.petId])
+
+
+  const body = () => {
+    // if(qsmConnectStatus ==='disconnected'){
+    //   return (
+
+    //   )
+    // }
+    if (!nextType) {
+      return (
+        <>
+          <div className="middleBox">
+            <Input placeholder="Please enter your serial number" className="middleInput" style={{ width: px(300), height: px(50) }} />
+          </div>
+          <div className="bottomBox">
+            <Button type="primary" shape="round" style={{ width: px(400), height: px(40) }} onClick={onClick} >Next</Button>
+          </div>
+        </>
+      )
+    } else {
+      if (qsmConnectStatus === 'disconnected') {
+        return (
+          <div className="imageBox" onClick={() => cutPageType('swabPetEarPage')}>
+            <img src={PlugInOtter} alt="" style={{ height: px(360) }} />
+          </div>
+        )
+      } else {
+        cutPageType('swabPetEarPage')
+      }
+
+
+    }
+
+  }
+
 
   return (
     <>
@@ -35,20 +75,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage ,cutPageType}) => {
         </p>
       </div>
       {
-        !nextType ? (
-          <>
-            <div className="middleBox">
-              <Input placeholder="Please enter your serial number" className="middleInput" style={{ width: px(300), height: px(50) }} />
-            </div>
-            <div className="bottomBox">
-              <Button type="primary" shape="round" style={{ width: px(400), height: px(40) }} onClick={onClick} >Next</Button>
-            </div>
-          </>
-        ) : (
-          <div className="imageBox" onClick={() => cutPageType('swabPetEarPage')}>
-            <img src={PlugInOtter} alt="" style={{ height: px(360) }} />
-          </div>
-        )
+        body()
       }
     </>
   );
@@ -58,6 +85,7 @@ export default connect(
   (state) => ({
     petMessage: state.petReduce.petDetailInfo,
     hardwareMessage: state.hardwareReduce,
+    qsmConnectStatus: state.qsmReduce.qsmConnectStatus,
   }),
   {
     selectHardwareModalShowFun,

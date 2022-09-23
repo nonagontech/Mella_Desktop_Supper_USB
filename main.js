@@ -35,73 +35,7 @@ const {
   up,
   down,
 } = require("@nut-tree/nut-js");
-const SerialPort = require('serialport');
-
 Store.initRenderer();
-
-
-
-// SerialPort.list()
-//   .then(ports => {
-//     console.log(ports);
-//     let index = null
-//     for (let i = 0; i < ports.length; i++) {
-//       if (ports[i].manufacturer === 'Hades2001') {
-//         index = i
-//         break;
-//       }
-//     }
-//     if (index === null) {
-//       return
-//     }
-//     let port = new SerialPort(ports[index].path, {
-//       baudRate: 115200,
-//       dataBits: 8, //数据位
-//       parity: 'none', //奇偶校验
-//       stopBits: 1, //停止位
-//       flowControl: false,
-//       // autoOpen: false
-//     });
-//     console.log('====', port);
-//     let num123 = 0
-//     port.on('data', function (data) {
-//       //收hex
-//       // console.log(data, data.length);
-//       console.log(data.toString('hex'));
-//       // mainWindow.webContents.send("test", data);
-//       //收字符串
-//       // console.log('recv: ' + data.toString('ascii'));
-//       let base64Img = data.toString('base64')
-//       // console.log(base64Img);
-//       var decodeImg = new Buffer(base64Img, 'base64');  // new Buffer(string, encoding)
-
-//       console.log(Buffer.compare(data, decodeImg));  // 0 表示一样
-//       fs.appendFileSync(`./test/${num123}.jpg`, decodeImg, function (err) {
-//         if (err) { console.log(err) }
-//       });
-//       if (data.length < 40) {
-//         num123++
-//       }
-
-
-
-//       // console.log(data1);
-//       // fs.writeFile('./hello.avi', data1)
-
-//     });
-//     port.on('error', function (err) {
-//       console.log('error-------------', err);
-//       fs.close
-//     })
-
-//   }
-//   )
-//   .catch(err => {
-//     console.log('------------', err);
-//   })
-
-
-
 if (isDev) {
   const {
     default: installExtension,
@@ -120,8 +54,6 @@ if (isDev) {
     }
   });
 }
-
-console.log('---------', path.join(__dirname, ''));
 const devWidth = 1920;
 const devHeight = 1080;
 //每次在检测到底座后都会发送打开底座的指令去打开底座,但是在发送升级指令后设备会断开重连检测.这就会导致在发送升级文件前会发送一段数据,导致mac升级时文件效验不通过,导致升级失败.因此加了此标志位,当发送了升级指令则为true,发送文件后重置为false
@@ -216,14 +148,12 @@ function openUsb() {
       device.on("data", (data) => {
         //监听底座发送过来的数据
         let hex = data.toString("hex");
-        // console.log('----------', hex);
         let str = "",
           dataArr = [];
         for (let i = 0; i < hex.length; i = i + 2) {
           str += `${hex[i]}${hex[i + 1]} `;
           dataArr.push(`${hex[i]}${hex[i + 1]}`);
         }
-        // console.log(dataIndex++, upload, "接受的数据位：", str);
         if (upload) {
           const timer = setTimeout(() => {
             sendUpload();
@@ -231,7 +161,6 @@ function openUsb() {
           }, 30);
         } else {
           let processedData = processed_data(dataArr);
-          // console.log('装换的数据：', processedData);
           for (let i = 0; i < processedData.length; i++) {
             const element = processedData[i];
 
@@ -240,17 +169,9 @@ function openUsb() {
         }
       });
       device.on("error", function (err) {
-        console.log(
-          "----err",
-          err,
-          `${err}`,
-          `${err}` === "Error: could not read from HID device"
-        );
+        console.log("err", err);
         if (`${err}` === "Error: could not read from HID device") {
-          console.log(
-            "两种可能，一种是usb被拔出了，一种是点击了重新切换的按钮"
-          );
-          //想个法子看是那种情况
+          console.log("两种可能，一种是usb被拔出了，一种是点击了重新切换的按钮");
         }
       });
       if (!enterUpgradeFlog) {
@@ -284,8 +205,6 @@ function processed_data(arr) {
     newArr = [],
     trueArr = [],
     length = arr.length;
-
-  // console.log('入参', arr);
   for (let i = 0; i < length; i++) {
     //这是判断温度计的
     if (arr[i] === "aa") {
@@ -295,7 +214,6 @@ function processed_data(arr) {
         for (; j <= dataLength + 1 + i; j++) {
           newArr.push(parseInt(arr[j], 16));
         }
-        // console.log(newArr,check(newArr),newArr[newArr.length-2]);
         if (check(newArr) === newArr[newArr.length - 2]) {
           trueArr.push(newArr);
           newArr = [];
@@ -321,7 +239,6 @@ function processed_data(arr) {
 
     // }
   }
-  // console.log("-----出参-------", trueArr);
   return trueArr;
 }
 //校验数据是否有误
@@ -348,17 +265,10 @@ function sendData(command, arr) {
   let length = arr.length + 3;
 
   //开始生成校验位
-  console.log(
-    parseInt(length, 16),
-    parseInt(command, 16),
-    parseInt(length, 16) ^ parseInt(command, 16)
-  );
   let Check = length ^ parseInt(command, 16);
   for (let i = 0; i < arr.length; i++) {
-    // console.log(Check, parseInt(arr[i].toString(16), 16));
     Check = Check ^ parseInt(arr[i].toString(16), 16);
   }
-  // console.log('------------', Check);
   sendArr[0] = 170;
   sendArr[1] = length;
   sendArr[2] = parseInt(command, 16);
@@ -367,7 +277,6 @@ function sendData(command, arr) {
   }
   sendArr.push(Check);
   sendArr.push(parseInt(`55`, 16));
-  // console.log(sendArr);
   return sendArr;
 }
 
@@ -376,31 +285,20 @@ var appTray = null;
 
 function show(val) {
   let size = require("electron").screen.getPrimaryDisplay().workAreaSize;
-  // console.log('-----===========---------', require('electron').screen.getAllDisplays());
-  //1920 1080
-  //size{width:1880,height:1080}
   let width = parseInt(size.width);
   let height = parseInt(size.height + 40);
   width = 1920
   height = 1080
-  // console.log({
-  //     width,
-  //     height
-  // });
   if (width < height) {
     let a = width;
     width = height;
     height = a;
   }
-  // height = 1080 / 1920 * width
 
   let windowWidth = parseInt((val / devWidth) * width);
   let windowHeight = parseInt((val / devHeight) * height);
 
-  console.log(val, width, height, {
-    width: windowWidth,
-    height: windowHeight
-  });
+
   return {
     width: windowWidth,
     height: windowHeight,
@@ -445,7 +343,7 @@ function createWindow() {
       // devTools:false,
       nodeIntegration: true, // 是否集成 Nodejs,把之前预加载的js去了，发现也可以运行,设置为true就可以在这个渲染进程中调用Node.js
       contextIsolation: false,
-      // preload: path.join(__dirname, './public/renderer.js')
+      // preload: path.join(__dirname, 'preload.js')
     },
     show: false, // newBrowserWindow创建后先隐藏，
     transparent: true,
@@ -477,7 +375,7 @@ function createWindow() {
   })
 
   mainWindow.webContents.session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
-    if (permission === 'serial' && details.securityOrigin === 'file:///') {
+    if (permission === 'serial') {
       return true
     }
 
@@ -485,7 +383,7 @@ function createWindow() {
   })
 
   mainWindow.webContents.session.setDevicePermissionHandler((details) => {
-    if (details.deviceType === 'serial' && details.origin === 'file://') {
+    if (details.deviceType === 'serial') {
       return true
     }
 
@@ -729,17 +627,7 @@ function checkUpdate() {
       });
   });
   autoUpdater.on("download-progress", (data) => {
-    console.log(
-      data.progress,
-      "-----",
-      data.bytesPerSecond,
-      "-----",
-      data.percent,
-      "-----",
-      data.total,
-      "-----",
-      data.transferred
-    );
+
 
     try {
       mainWindow.setProgressBar(data.percent / 100, { mode: "normal" });
@@ -796,9 +684,7 @@ let isCloseLoading = false;
 ipcMain.on("close-loading-window", function () {
   if (!isCloseLoading) {
     isCloseLoading = true;
-    console.log(loadingWindow);
     loadingWindow.close();
-    console.log(loadingWindow);
   }
 });
 
@@ -821,7 +707,6 @@ ipcMain.on("window-close", function () {
 function wind(width1, height1, data, min = {}) {
   let width = show(width1).height;
   let height = show(height1).height;
-  console.log('----设置大小', { width, height });
   if (data) {
     width = parseInt((width1 / devHeight) * data.height);
     height = parseInt((height1 / devHeight) * data.height);
@@ -919,7 +804,6 @@ ipcMain.on("num", (event, data) => {
   let arr = sendData(data.command, data.arr);
   // console.log('渲染端发来的数据并经过转化：', arr);
   port.write(arr, "hex", function (err) {
-    console.log(2);
     if (err) {
       console.log("写渲染端发来的数据Error on write: ", err.message);
     } else {
@@ -962,7 +846,6 @@ ipcMain.on("usbdata", (event, data) => {
    */
 
   let arr = sendData(data.command, data.arr);
-  // console.log('渲染端发来的数据并经过转化：', arr);
   let sendArr = [0x00].concat(arr);
   try {
     device && device.write(sendArr);

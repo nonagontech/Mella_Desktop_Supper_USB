@@ -17,7 +17,7 @@ let logoClick = 0;
 //定义变量:点击logo的时间
 let logoTime = 0;
 let ipcRenderer = window.electron.ipcRenderer
-const SDK = require("qsm-otter-sdk");
+
 export default class Home extends Component {
   state = {
     imgurl: '',
@@ -30,16 +30,11 @@ export default class Home extends Component {
     storage.measurepatientId = '';
     temporaryStorage.logupVetInfo = {}
   }
-  test = async () => {
-    console.log(SDK);
-    const port = await SDK.pairInstrument()
-    console.log("paired instrument", port)
-  }
-  _createAccount = async () => {
-    console.log('连接状态');
-    const port = await SDK.readConnectionStatus()
-    console.log("paired instrument", port)
-  }
+
+
+
+
+
   _openUtils = () => {
     console.log('点击来了', logoClick);
     if (new Date() - logoTime > 500) {
@@ -79,7 +74,6 @@ export default class Home extends Component {
             shape="round"
             size='large'
             onClick={() => { this.props.history.push('/page11') }}
-            // onClick={() => this.test()}
             className="siginInBtn"
           >
             Sign In
@@ -91,7 +85,6 @@ export default class Home extends Component {
             type="primary"
             shape="round"
             size='large'
-            // onClick={this._createAccount}
             onClick={() => { this.props.history.push('/uesr/logUp/VetPrifile') }}
             className="createBtn"
           >
