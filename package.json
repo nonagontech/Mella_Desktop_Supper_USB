@@ -8,6 +8,8 @@
     "email": "15256767601@126.com"
   },
   "dependencies": {
+    "@ant-design/charts": "^1.4.2",
+    "@ant-design/icons": "^4.7.0",
     "@nut-tree/nut-js": "^2.0.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
