@@ -9,24 +9,29 @@ import HardListModal from './HardListModal'
 
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
-import { selectHardwareModalShowFun } from './../../store/actions';
+import { selectHardwareModalShowFun, selectHardwareInfoFun } from './../../store/actions';
 
 import './mainbody.less';
 
 let storage = window.localStorage
-const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow, hardwareList, selectHardwareModalShowFun, hardwareInfo }) => {
+const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow, hardwareList, selectHardwareModalShowFun, hardwareInfo, selectHardwareInfoFun }) => {
   //定义选择的硬件详细信息
   const [selectHardwareDetail, setSelectHardwareDetail] = useState({})
   useEffect(() => {
     //根据设备类型获取到此类型下的所有硬件,并用来展示
+
     for (let i = 0; i < hardwareList.length; i++) {
       const element = hardwareList[i];
+
       if (element.type === selectHardwareType) {
         let list = element.devices || []
+
         //获取被选中的硬件的详细信息
         let selectHardwareInfo = hardwareInfo || {}
-        if (selectHardwareInfo === {}) {
-          let selectHardwareInfo = list[0] || {}
+        if (selectHardwareInfo.mac === null && list[0]) {
+          let selectHardwareInfo = list[0]
+          selectHardwareInfoFun(selectHardwareInfo)
+
           setSelectHardwareDetail(selectHardwareInfo)
         } else {
           let sameFlag = false
@@ -93,6 +98,10 @@ export default connect(
     selectHardwareType: state.hardwareReduce.selectHardwareType,
     hardwareList: state.hardwareReduce.hardwareList,
     hardwareInfo: state.hardwareReduce.selectHardwareInfo,
+
   }),
-  { selectHardwareModalShowFun }
+  {
+    selectHardwareModalShowFun,
+    selectHardwareInfoFun
+  }
 )(HardAndPetsUI)
