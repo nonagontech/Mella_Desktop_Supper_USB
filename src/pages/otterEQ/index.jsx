@@ -50,7 +50,10 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
 
   //查看是否有QSM设备插入
   const readQSMConnectionStatus = async () => {
+    const pairInstrument = await SDK.pairInstrument()
+    console.log(pairInstrument)
     const connectionStatus = await SDK.readConnectionStatus()
+
     let a = typeof (connectionStatus)
     console.log('插入情况', connectionStatus, a);
     if (typeof (connectionStatus) === 'boolean') {
@@ -63,7 +66,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
 
   /**
    * @dec 从main.js传过来的usb插拔事件
-   * @param {*} e 
+   * @param {*} e
    * @param {*} data 值为true 代表插入设备，false为拔掉设备
    */
   const usbDetect = (e, data) => {
