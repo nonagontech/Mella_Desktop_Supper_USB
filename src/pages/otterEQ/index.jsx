@@ -13,13 +13,18 @@ import {
   selectHardwareModalShowFun,
   petSortTypeFun,
   petDetailInfoFun,
+  setQsmConnectStatus
 } from "../../store/actions";
 import PropTypes from 'prop-types';
 
 import "./index.less";
 
+
+const ipcRenderer = window.require("electron").ipcRenderer;
+const SDK = require("qsm-otter-sdk");
+
 const { Content, Header } = Layout;
-const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight }) => {
+const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectStatus }) => {
   const [cutPageType, setCutPageType] = useState('linkPage');
   const changePage = () => {
     switch (cutPageType) {
@@ -43,11 +48,47 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight }) => {
     }
   }
 
+  //查看是否有QSM设备插入
+  const readQSMConnectionStatus = async () => {
+    const connectionStatus = await SDK.readConnectionStatus()
+    let a = typeof (connectionStatus)
+    console.log('插入情况', connectionStatus, a);
+    if (typeof (connectionStatus) === 'boolean') {
+      let status = connectionStatus ? 'connected' : 'disconnected'
+      setQsmConnectStatus(status)
+    }
+
+
+  }
+
+  /**
+   * @dec 从main.js传过来的usb插拔事件
+   * @param {*} e 
+   * @param {*} data 值为true 代表插入设备，false为拔掉设备
+   */
+  const usbDetect = (e, data) => {
+    readQSMConnectionStatus()
+  }
+
   useEffect(() => {
     setCutPageType('linkPage');
     return (() => { })
 
   }, [petMessage.petId])
+
+
+  //监听usb的插拔
+  useEffect(() => {
+    ipcRenderer.on("usbDetect", usbDetect);
+    return () => {
+      ipcRenderer.removeListener("usbDetect", usbDetect);
+    }
+  }, [])
+  //初始化获取设备是否插入
+  useEffect(() => {
+    readQSMConnectionStatus()
+  }, [])
+
 
   return (
     <Layout className="ottterEQBox" style={{ height: bodyHeight }}>
@@ -83,5 +124,6 @@ export default connect(
     selectHardwareModalShowFun,
     petSortTypeFun,
     petDetailInfoFun,
+    setQsmConnectStatus
   }
 )(OtterEQPage);

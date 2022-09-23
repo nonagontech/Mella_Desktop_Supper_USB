@@ -221,20 +221,22 @@ class App extends Component {
     this.detectTimer = setInterval(() => {
       exchangeNum++;
       //如果正在测量或者没有USB设备，不检测
-      if (isMeasure || !this.state.isHaveUsbDevice) {
-        return;
+      let { mellaConnectStatus } = this.props
+      if (this.state.isHaveUsbDevice && mellaConnectStatus !== 'isMeasuring' && mellaConnectStatus !== 'disconnected') {
+        if (exchangeNum % 2 === 0) {
+          //让底座发送查询温度计信息指令
+          console.log('获取温度计07');
+          ipcRenderer.send("usbdata", { command: "07", arr: ["5A"] });
+        } else {
+          console.log('获取温度计31');
+          ipcRenderer.send("usbdata", { command: "31", arr: ["5A"] });
+        }
       }
-      if (exchangeNum % 2 === 0) {
-        //让底座发送查询温度计信息指令
-        ipcRenderer.send("usbdata", { command: "07", arr: ["5A"] });
-      } else {
-        ipcRenderer.send("usbdata", { command: "31", arr: ["5A"] });
-      }
+
 
       //如果底座没有回应，则计算时间差,时间差大于5秒，则没与温度计连接
       if (new Date() - initTime > 6000) {
         this._disconnect_to_mella();
-      } else {
       }
     }, 2000);
   };
@@ -337,7 +339,6 @@ class App extends Component {
         if (mellaConnectStatus !== "isMeasuring") {
           setMellaConnectStatusFun("isMeasuring");
         }
-        console.log('mellaMeasurePart: ', mellaMeasurePart);
         if (mellaMeasurePart !== "腋温" && mellaMeasurePart !== "肛温") {
 
           setMellaMeasurePartFun("腋温");
@@ -463,28 +464,20 @@ class App extends Component {
             autoOff: { length: 0, number: "30" },
           };
         }
+        let { isHua, is15, self_tarting, isBacklight, isBeep, backlightTimer, autoOff } = hardSet
 
-        let beep = hardSet.isBeep ? "11" : "00";
-        let unit = hardSet.isHua ? "00" : "01";
-
+        let beep = isBeep ? "11" : "00";
+        let unit = isHua ? "00" : "01";
+        let autoOffNumber = autoOff.number
+        let backlightTimerNumber = isBacklight ? backlightTimer.number : '00'
         if (
-          dataArr1[7] === hardSet.autoOff.number &&
-          dataArr1[8] === hardSet.backlightTimer.number &&
+          dataArr1[7] === autoOffNumber &&
+          dataArr1[8] === backlightTimerNumber &&
           dataArr1[9] === beep &&
           dataArr1[10] === unit
         ) {
         } else {
-          console.log("不相同，去发送命令");
-          let setArr = [
-            "03",
-            "ed",
-            "07",
-            "dd",
-            hardSet.autoOff.number,
-            hardSet.isBacklight ? hardSet.backlightTimer.number : "00",
-            hardSet.isBeep ? "11" : "00",
-            hardSet.isHua ? "00" : "01",
-          ];
+          let setArr = ["03", "ed", "07", "dd", autoOffNumber, backlightTimerNumber, beep, unit,];
           ipcRenderer.send("usbdata", { command: "21", arr: setArr });
         }
       },
