@@ -89,7 +89,8 @@ const HardWareTypeUI = ({
               if (item.devices.length > 0) {
                 devicesInfo = electronStore.get(
                   `${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`
-                );
+                ) || {};
+                console.log(item.devices, devicesInfo);
                 let isSame = item.devices.some((item) => item.mac === devicesInfo.mac)
                 if (!isSame) {
                   devicesInfo = item.devices[0];
