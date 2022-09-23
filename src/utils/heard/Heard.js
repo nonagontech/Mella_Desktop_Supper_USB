@@ -1339,11 +1339,9 @@ const Heard = ({
   }, []);
   useEffect(() => {
     if (blueSearch) {
-      console.log("---渲染时执行----??????");
       ipcRenderer.on("sned", _send);
       ipcRenderer.on("noUSB", _noUSB);
       return () => {
-        console.log("----卸载----?????????/");
         ipcRenderer.removeListener("sned", _send);
         ipcRenderer.removeListener("noUSB", _noUSB);
       };

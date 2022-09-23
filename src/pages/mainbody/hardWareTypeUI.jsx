@@ -80,19 +80,27 @@ const HardWareTypeUI = ({
             setSelectHardwareType(item.type);
             if (item.type === "add") {
             } else {
-              let devicesInfo = electronStore.get(
-                `${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`
-              );
-
-              //要做个处理,看保存的数据是否和当前的一致，如果不一致，就把当前的保存下来
-
-              if (!devicesInfo && item.devices[0]) {
-                devicesInfo = item.devices[0];
-                electronStore.set(
-                  `${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`,
-                  devicesInfo
-                );
+              let devicesInfo = {
+                deviceType: item.type,
+                examRoom: null,
+                mac: null,
+                name: null
               }
+              if (item.devices.length > 0) {
+                devicesInfo = electronStore.get(
+                  `${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`
+                );
+                let isSame = item.devices.some((item) => item.mac === devicesInfo.mac)
+                if (!isSame) {
+                  devicesInfo = item.devices[0];
+                  electronStore.set(
+                    `${storage.lastOrganization}-${storage.userId}-${item.type}-selectDeviceInfo`,
+                    devicesInfo
+                  );
+                }
+              }
+
+
 
               selectHardwareInfoFun(devicesInfo);
             }

@@ -313,9 +313,9 @@ const ScanPet = ({
   useEffect(() => {
     if (inputIndex < 6) {
       let { deviceType, mac } = selectHardwareInfo
-
+      console.log(selectHardwareInfo);
       if (deviceType === 'tape') {
-        if (mac === '45264' || (mac && receiveBroadcastHardwareInfo.deviceType === 'tape' && receiveBroadcastHardwareInfo.macId === mac)) {
+        if (mac === null || (mac && receiveBroadcastHardwareInfo.deviceType === 'tape' && receiveBroadcastHardwareInfo.macId === mac)) {
 
           switch (inputIndex) {
             case 0:
