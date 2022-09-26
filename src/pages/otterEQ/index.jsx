@@ -70,6 +70,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
       console.log('error', error);
     }
 
+   setTimeout(async() => {
     const connectionStatus = await SDK.readConnectionStatus()
 
     let a = typeof (connectionStatus)
@@ -79,6 +80,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
       setQsmConnectStatus(status)
       setQsmConStatus(status)
     }
+   }, 500);
 
 
   }
@@ -89,7 +91,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
    * @param {*} data 值为true 代表插入设备，false为拔掉设备
    */
   const usbDetect = async (e, data) => {
-    if (data) {
+    if (data) { // readQSMConnectionStatus()
       readQSMConnectionStatus()
     } else {
       const connectionStatus = await SDK.readConnectionStatus()

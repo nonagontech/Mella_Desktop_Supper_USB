@@ -91,43 +91,38 @@ let windowOpen = true;
 let usbDetect = require("usb-detection");
 usbDetect.startMonitoring();
 usbDetect.on("add", function (device) {
+  // console.log('====================================');
+  // console.log(mainWindow);
+  // console.log('====================================');
+
+
+  // if (mainWindow) {
+  //   mainWindow.webContents.session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
+  //     console.log('====================================');
+  //     console.log('权限：',{webContents, permission, requestingOrigin, details});
+  //     console.log('====================================');
+  //     if (permission === 'serial') {
+  //       return true
+  //     }
+
+  //     return false
+  //   })
+
+  //   mainWindow.webContents.session.setDevicePermissionHandler((details) => {
+  //     if (details.deviceType === 'serial') {
+  //       return true
+  //     }
+
+  //     return false
+  //   })
+  //     //Add listeners to handle ports being added or removed before the callback for `select-serial-port`
+
+
+
+
+  // }
   console.log("add", device);
   mainWindow.webContents.send("usbDetect", true);
-
-  if (mainWindow) {
-    mainWindow.webContents.session.on('select-serial-port', (event, portList, webContents, callback) => {
-
-      //Add listeners to handle ports being added or removed before the callback for `select-serial-port`
-      //is called.
-      mainWindow.webContents.session.on('serial-port-added', (event, port) => {
-        console.log('serial-port-added FIRED WITH', port)
-        //Optionally update portList to add the new port
-      })
-
-      mainWindow.webContents.session.on('serial-port-removed', (event, port) => {
-        console.log('serial-port-removed FIRED WITH', port)
-        //Optionally update portList to remove the port
-      })
-    })
-
-    mainWindow.webContents.session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
-
-      if (permission === 'serial') {
-        return true
-      }
-
-      return false
-    })
-
-    mainWindow.webContents.session.setDevicePermissionHandler((details) => {
-      if (details.deviceType === 'serial') {
-        return true
-      }
-
-      return false
-    })
-
-  }
 });
 usbDetect.on("remove", function (device) {
   console.log("remove", device);

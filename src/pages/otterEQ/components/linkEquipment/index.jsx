@@ -59,7 +59,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage, cutPageType, qsmConnectSta
     } else {
       if (qsmConnectStatus === 'disconnected') {
         return (
-          <div className="imageBox" onClick={() => cutPageType('swabPetEarPage')}>
+          <div className="imageBox">
             <img src={PlugInOtter} alt="" style={{ height: px(360) }} />
           </div>
         )
