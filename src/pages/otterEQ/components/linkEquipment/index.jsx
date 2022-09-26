@@ -15,7 +15,7 @@ import _ from "lodash";
 import "./index.less";
 
 
-const LinkEquipment = ({ petMessage, hardwareMessage, cutPageType, qsmConnectStatus }) => {
+const LinkEquipment = ({ petMessage, hardwareMessage, cutPageType, qsmConnectStatus, isNext = false }) => {
   const [nextType, setNextType] = useState(false);
 
 
@@ -31,6 +31,12 @@ const LinkEquipment = ({ petMessage, hardwareMessage, cutPageType, qsmConnectSta
     return (() => { })
 
   }, [petMessage.petId])
+  useEffect(() => {
+
+    if (isNext) {
+      setNextType(true)
+    }
+  }, [])
 
 
   const body = () => {

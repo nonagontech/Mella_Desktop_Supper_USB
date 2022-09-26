@@ -26,18 +26,31 @@ const SDK = require("qsm-otter-sdk");
 const { Content, Header } = Layout;
 const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectStatus }) => {
   const [cutPageType, setCutPageType] = useState('linkPage');
+  const [qsmConStatus, setQsmConStatus] = useState('linkPage');
   const changePage = () => {
-    switch (cutPageType) {
-      case "linkPage":
-        return <LinkEquipment cutPageType={getCutPageType} />;
-      case "swabPetEarPage":
-        return <SwabPetEar cutPageType={getCutPageType} />;
-      case "experimentalPage":
-        return <ExperimentalPage cutPageType={getCutPageType} />;
-      case "timerPage":
-        return <TimerPage cutPageType={getCutPageType} />;
-      default:
-        break;
+    if (qsmConStatus === 'connected')
+      switch (cutPageType) {
+        case "linkPage":
+          return <LinkEquipment cutPageType={getCutPageType} />;
+        case "swabPetEarPage":
+          return <SwabPetEar cutPageType={getCutPageType} />;
+        case "experimentalPage":
+          return <ExperimentalPage cutPageType={getCutPageType} />;
+        case "timerPage":
+          return <TimerPage cutPageType={getCutPageType} />;
+        default:
+          break;
+      } else {
+      switch (cutPageType) {
+        case "linkPage":
+          return <LinkEquipment cutPageType={getCutPageType} />;
+        case "swabPetEarPage":
+        case "experimentalPage":
+        case "timerPage":
+          return <LinkEquipment cutPageType={getCutPageType} isNext={true} />;
+        default:
+          break;
+      }
     }
   };
 
@@ -50,8 +63,13 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
 
   //查看是否有QSM设备插入
   const readQSMConnectionStatus = async () => {
-    const pairInstrument = await SDK.pairInstrument()
-    console.log(pairInstrument)
+    try {
+      const pairInstrument = await SDK.pairInstrument()
+      console.log(pairInstrument)
+    } catch (error) {
+      console.log('error', error);
+    }
+
     const connectionStatus = await SDK.readConnectionStatus()
 
     let a = typeof (connectionStatus)
@@ -59,6 +77,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
     if (typeof (connectionStatus) === 'boolean') {
       let status = connectionStatus ? 'connected' : 'disconnected'
       setQsmConnectStatus(status)
+      setQsmConStatus(status)
     }
 
 
@@ -69,8 +88,21 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
    * @param {*} e
    * @param {*} data 值为true 代表插入设备，false为拔掉设备
    */
-  const usbDetect = (e, data) => {
-    readQSMConnectionStatus()
+  const usbDetect = async (e, data) => {
+    if (data) {
+      readQSMConnectionStatus()
+    } else {
+      const connectionStatus = await SDK.readConnectionStatus()
+
+      let a = typeof (connectionStatus)
+      console.log('插入情况', connectionStatus, a);
+      if (typeof (connectionStatus) === 'boolean') {
+        let status = connectionStatus ? 'connected' : 'disconnected'
+        setQsmConnectStatus(status)
+        setQsmConStatus(status)
+      }
+    }
+
   }
 
   useEffect(() => {
