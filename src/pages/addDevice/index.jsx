@@ -85,7 +85,7 @@ export default class AddDevice extends Component {
       })
     } else {
       if (!this.state.noUSB) {
-        // message.error('The base is not detected. Please insert the base', 0)
+
         this.setState({
           noUSB: true
         })

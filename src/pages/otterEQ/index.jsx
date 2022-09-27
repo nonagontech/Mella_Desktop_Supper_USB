@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Layout } from "antd";
+import { Layout ,message} from "antd";
 
 import LinkEquipment from "./components/linkEquipment";
 import SwabPetEar from "./components/swabPetEar";
@@ -124,6 +124,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
   //初始化获取设备是否插入
   useEffect(() => {
     readQSMConnectionStatus()
+    message.destroy();
   }, [])
 
 

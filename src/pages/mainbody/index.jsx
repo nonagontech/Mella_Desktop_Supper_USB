@@ -200,7 +200,13 @@ class App extends Component {
     } else {
       if (this.state.isHaveUsbDevice) {
         message.destroy();
-        message.error("The base is not detected. Please insert the base", 0);
+        console.log('====================================');
+        console.log(this.props.selectHardwareType);
+        console.log('====================================');
+        if (this.props.selectHardwareType !== "otterEQ") {
+          message.error("The base is not detected. Please insert the base", 0);
+        }
+
       }
     }
     if (data === this.props.isHaveUsbDevice) {
