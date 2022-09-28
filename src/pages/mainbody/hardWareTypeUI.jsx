@@ -143,11 +143,16 @@ const HardWareTypeUI = ({
       );
 
       if (!devicesInfo) {
-        devicesInfo = hard.devices[0];
-        electronStore.set(
-          `${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`,
-          devicesInfo
-        );
+        console.log('???', hard, hard.devices);
+        if (hard.devices.length > 0) {
+          devicesInfo = hard.devices[0];
+
+          electronStore.set(
+            `${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`,
+            devicesInfo
+          );
+        }
+
       } else {
         let sameFlag = false;
         console.log("============", hard.devices, devicesInfo);

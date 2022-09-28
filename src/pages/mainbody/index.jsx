@@ -917,22 +917,34 @@ class App extends Component {
           //num1和num2组成测得的测量值，num的值为测量数值，单位恒为厘米
           let num1 = bluData[11];
           let num2 = bluData[12];
-          let num = getVal(num1, num2);
-          try {
-            newVal = parseFloat(num);
-            if (rulerUnitNum === 17) {
-              newVal = newVal.toFixed(2);
-            } else {
-              newVal = newVal.toFixed(1);
-            }
-          } catch (error) {
-            console.log(error);
-          }
+          let num = getVal(num1, num2, units);
+          // try {
+          //   newVal = parseFloat(num);
+          //   if (rulerUnitNum === 17) {
+          //     newVal = newVal.toFixed(2);
+          //   } else {
+          //     newVal = newVal.toFixed(1);
+          //   }
+          // } catch (error) {
+          //   console.log(error);
+          // }
+          newVal = num
 
-          function getVal(shi, xiaoshuo) {
+          function getVal(shi, xiaoshuo, units) {
             let num1 = parseInt(shi, 16);
             let num2 = parseInt(xiaoshuo, 16);
-            return `${num1}.${num2}`;
+            console.log(shi, xiaoshuo, num1, num2, `${num1}.${num2}`, units);
+            if (units === 'cm') {
+              let value = parseFloat(`${num1}.${num2}`).toFixed(1)
+              return value
+            } else {
+              if (num2 < 10) {
+                num2 = `0${num2}`
+              }
+              let value = parseFloat(`${num1}.${num2}`).toFixed(2)
+              return value
+            }
+
           }
           if (newVal !== rulerMeasureValue) {
             setRulerMeasureValueFun(newVal);

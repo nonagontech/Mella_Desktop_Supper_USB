@@ -1,11 +1,11 @@
-const {override, fixBabelImports, addLessLoader} = require('customize-cra');
+const { override, fixBabelImports, addLessLoader } = require('customize-cra');
 const rewireCompressionPlugin = require('react-app-rewire-compression-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 // 在这里进行自定义修改相关配置
-const replaceConfig = () => (config,env) => {
+const replaceConfig = () => (config, env) => {
   config.plugins.push(new HardSourceWebpackPlugin())
-    // 在这里进行CompressionPlugin的配置
+  // 在这里进行CompressionPlugin的配置
   config = rewireCompressionPlugin(config, env, {
     test: /\.js(\?.*)?$/i,
     cache: true
@@ -25,12 +25,12 @@ module.exports = override(
 
   // 使用less-loader对源码中的less的变量进行重新指定,纯实现按需打包不需要
   addLessLoader({
-    lessOptions:{
+    lessOptions: {
       javascriptEnabled: true,
-      modifyVars: {'@primary-color': '#e1206d'},
+      modifyVars: { '@primary-color': '#e1206d' },
     }
 
   }),
-  replaceConfig(),
+  // replaceConfig(),
 
 )
