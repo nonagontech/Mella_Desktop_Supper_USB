@@ -2,21 +2,28 @@ import React, { useState, useEffect } from 'react'
 import { message } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
-import biggieHome from './../../assets/img/searchType-biggieHome.png'
-import biggiePro from './../../assets/img/searchType-biggiePro.png'
-import mellaHome from './../../assets/img/searchType-home.png'
-import mellaPro from './../../assets/img/searchType-mellaPro.png'
-import maeBowl from './../../assets/img/searchType-maeBowl.png'
-import other from './../../assets/img/searchType-other.png'
-import possum from './../../assets/img/searchType-possum.png'
-import rfid from './../../assets/img/searchType-rfid.png'
-import redclose from '../../assets/img/redclose.png'
+import biggieHome from './../../assets/img/searchType-biggieHome.png';
+import biggiePro from './../../assets/img/searchType-biggiePro.png';
+import mellaHome from './../../assets/img/searchType-home.png';
+import mellaPro from './../../assets/img/searchType-mellaPro.png';
+import maeBowl from './../../assets/img/searchType-maeBowl.png';
+import other from './../../assets/img/searchType-other.png';
+import possum from './../../assets/img/searchType-possum.png';
+import rfid from './../../assets/img/searchType-rfid.png';
+import redclose from '../../assets/img/redclose.png';
+import tabby from '../../assets/img/searchType-tabby.png';
 
 import electronStore from '../../utils/electronStore';
 import { mTop, px, MTop } from '../../utils/px';
 
 import { connect } from 'react-redux'
-import { setReceiveBroadcastHardwareInfoFun, setHardwareList, changeselectHardwareIndex, setSelectHardwareType, selectHardwareList } from '../../store/actions';
+import {
+  setReceiveBroadcastHardwareInfoFun,
+  setHardwareList,
+  changeselectHardwareIndex,
+  setSelectHardwareType,
+  selectHardwareList
+} from '../../store/actions';
 import PropTypes from 'prop-types';
 
 import './mainbody.less';
@@ -160,13 +167,13 @@ const AddDevice = ({ bodyHeight, hardwareReducer, isHaveUsbDevice, receiveBroadc
           let options = (val) => {
             let arr = []
             if (val === 1) {
-              arr = [mellaPro, mellaHome, biggiePro, biggieHome, rfid]
+              arr = [mellaPro, mellaHome, biggiePro, rfid]
             } else {
-              arr = [possum, maeBowl, other]
+              arr = [possum, maeBowl, tabby, other,]
             }
             let option = arr.map((item, index) => {
-              let imgWidth = px(80)
-              imgWidth = index === 2 ? px(65) : imgWidth
+              let imgWidth = px(100)
+              // imgWidth = index === 2 ? px(65) : imgWidth
               return (<li key={index.toString()} style={{ margin: `${px(20)}px` }}>
                 <div className="searchType-item" key={index} >
                   <img src={item} alt="" width={imgWidth} />

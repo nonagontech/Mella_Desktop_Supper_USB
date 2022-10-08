@@ -107,7 +107,8 @@ const LinkEquipment = ({ petMessage, hardwareMessage, setSelectHardwareType }) =
           (
             <div className="planBox">
               <p className="title">
-                Luna is not enrolled<br />
+                {`${petMessage.petName}`}
+                is not enrolled<br />
                 in a feeding plan
               </p>
               <p className="recommendedTitle">A Mabel smart bowl scale is recommended.</p>
