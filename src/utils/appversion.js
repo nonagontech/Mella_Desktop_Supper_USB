@@ -1,2 +1,2 @@
-export const version = '1.1.26';
-export const updateTime = '09-28-22';
+export const version = '1.1.27';
+export const updateTime = '10-08-22';
