@@ -1,9 +1,10 @@
-import React, { } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout } from "antd";
 
 import HeaderItem from "../temperaturePage/components/headerItem";
 import LinkEquipment from "./components/LinkEquipment";
 import ScanPet from "./components/scanPet";
+import CalculationResult from "./components/calculationResult";
 
 import PropTypes from 'prop-types';
 import _ from "lodash";
@@ -22,6 +23,8 @@ import "./index.less";
 
 const ScanPage = ({ petMessage, hardwareMessage, bodyHeight, }) => {
   let { petId, isWalkIn } = petMessage;
+  const [calculationResultType, setCalculationResultType] = useState(false);//切换计算结果界面
+  const [measureData, setMeasureData] = useState({});//测量的值
 
   return (
     <>
@@ -31,7 +34,16 @@ const ScanPage = ({ petMessage, hardwareMessage, bodyHeight, }) => {
             <HeaderItem />
           </div>
         </div>
-        {_.isEmpty(petId) && !isWalkIn ? <LinkEquipment /> : <ScanPet />}
+        {
+          calculationResultType ?
+            (
+              <CalculationResult type={setCalculationResultType} getMeasureData={measureData} />
+            ) :
+            (
+              _.isEmpty(petId) && !isWalkIn ? <LinkEquipment /> : <ScanPet type={setCalculationResultType} setMeasureData={setMeasureData} />
+            )
+        }
+
       </Layout>
     </>
   );

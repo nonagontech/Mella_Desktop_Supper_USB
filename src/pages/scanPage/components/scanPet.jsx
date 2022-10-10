@@ -1,29 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
 import {
   Layout,
-  Menu,
-  PageHeader,
   Radio,
   Input,
   Space,
   Button,
-  Modal,
   message,
-  Carousel,
 } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
-import {
-  selectHardwareModalShowFun,
-  petSortTypeFun,
-  petDetailInfoFun,
-  setRulerConnectStatusFun,
-  setRulerMeasureValueFun,
-  setRulerUnitFun,
-  setRulerConfirmCountFun,
-} from "../../../store/actions";
-import _ from "lodash";
-import NumericInput from "./numericInput";
+
 import head from "./../../../assets/img/head.png";
 import neck from "./../../../assets/img/neck.png";
 import upper from "./../../../assets/img/upper.png";
@@ -36,13 +20,30 @@ import catUpper from "./../../../assets/img/catUpper.png";
 import catLower from "./../../../assets/img/catLower.png";
 import catFull from "./../../../assets/img/catFull.png";
 import catBody from "./../../../assets/img/catBody.png";
-import redjinggao from './../../../assets/img/redjinggao.png'
-import "./scanPet.less";
-import { px } from "../../../utils/px";
-import MyModal from '../../../utils/myModal/MyModal'
-import { updatePetInfo1 } from "../../../api";
+import amplification from './../../../assets/img/amplification.png';
+import shrink from './../../../assets/img/shrink.png';
+import doghead_D from './../../../assets/img/doghead_D.png';
 
-const { Content, Header } = Layout;
+
+import { connect } from "react-redux";
+import {
+  selectHardwareModalShowFun,
+  petSortTypeFun,
+  petDetailInfoFun,
+  setRulerConnectStatusFun,
+  setRulerMeasureValueFun,
+  setRulerUnitFun,
+  setRulerConfirmCountFun,
+} from "../../../store/actions";
+import { px } from "../../../utils/px";
+import { updatePetInfo1 } from "../../../api";
+import NumericInput from "./numericInput";
+
+import _ from "lodash";
+
+import "./scanPet.less";
+
+const { Content } = Layout;
 const ScanPet = ({
   petMessage,
   petDetailInfoFun,
@@ -50,51 +51,59 @@ const ScanPet = ({
   setRulerConfirmCountFun,
   setRulerMeasureValueFun,
   setRulerUnitFun,
-  setRulerConnectStatusFun
+  setRulerConnectStatusFun,
+  type,
+  setMeasureData,
 }) => {
   let { petSpeciesBreedId, patientId, petId } = petMessage;
   let { rulerMeasureValue, rulerConfirmCount, rulerUnit, rulerConnectStatus, selectHardwareInfo, receiveBroadcastHardwareInfo } = ruleMessage;
   let storage = window.localStorage;
-  const [radioValue, setRadioValue] = useState("in");
-  const [inputIndex, setInputIndex] = useState(-1);
-  const [visible, setVisible] = useState(false);
-  const [carouselIndex, setCarouselIndex] = useState(1);
+  const [radioValue, setRadioValue] = useState("in");//单位
+  const [inputIndex, setInputIndex] = useState(-1);//输入框下标
+  const [carouselIndex, setCarouselIndex] = useState(1);//小小圆点下标
   const [headValue, setHeadValue] = useState(""); //接收输入框的值
   const [neckValue, setNeckValue] = useState(""); //接收输入框的值
   const [upperValue, setUpperValue] = useState(""); //接收输入框的值
   const [lowerValue, setLowerValue] = useState(""); //接收输入框的值
   const [torsoValue, setTorsoValue] = useState(""); //接收输入框的值
   const [bodyValue, setBodyValue] = useState(""); //接收输入框的值
-  const [showModal, setShowModal] = useState(false);
-  const [selectPetDetail, setSelectPetDetail] = useState({})
+  const [hindlimbValue, setHindlimbValue] = useState(""); //接收输入框的值
+  const [forelimbLengthValue, setForelimbLengthValue] = useState(""); //接收输入框的值
+  const [forelimbCircumferenceValue, setForelimbCircumferenceValue] = useState(""); //接收输入框的值
+  const [lookType, setLookType] = useState(false);//用户查看局部放大图片
   let newData = [];
-
 
   //保存input组
   const inputEl = (data) => {
     newData.push(data);
   };
-
   //切换聚焦事件
   const switchFocus = () => {
     let num = inputIndex;
     if (num === 3) {
       setCarouselIndex(2);
     }
-    if (num < 5) {
+    if (num === 7) {
+      setCarouselIndex(3);
+    }
+    if (num < 8) {
       setInputIndex(num + 1);
     }
   };
-
-  //结束事件
+  //切换到计算界面
   const finishScan = () => {
-    Modal.confirm({
-      title: "Confirm",
-      icon: <ExclamationCircleOutlined />,
-      content: "Whether To Save Data",
-      top: "40vh",
-      onOk: saveData,
-    });
+    type(true);
+    setMeasureData({
+      headValue: headValue,
+      neckValue: neckValue,
+      upperValue: upperValue,
+      lowerValue: lowerValue,
+      torsoValue: torsoValue,
+      bodyValue: bodyValue,
+      hindlimbValue: hindlimbValue,
+      forelimbLengthValue: forelimbLengthValue,
+      forelimbCircumferenceValue: forelimbCircumferenceValue,
+    })
   };
   //保存数据
   const saveData = () => {
@@ -133,10 +142,8 @@ const ScanPet = ({
       })
       .catch((err) => {
         message.error("update failed");
-        console.log(err);
       });
   };
-
   //判断是猫还是狗还是其他
   const checkPetType = () => {
     //0是猫，1是狗，或者petSpeciesBreedId为空判断图片为狗
@@ -151,8 +158,11 @@ const ScanPet = ({
       return 1;
     }
   };
-
-  //切换图片
+  //用户点击放大按钮查看局部详情
+  const onLookImage = (type) => {
+    setLookType(type);
+  }
+  //切换整体图片
   const changeImage = () => {
     switch (inputIndex) {
       case 0:
@@ -199,12 +209,81 @@ const ScanPet = ({
         );
     }
   };
+  //切换局部放大图片
+  const changeLookImage = () => {
+    switch (inputIndex) {
+      case 0:
+        return <div className="localityBox">
+          <div className="localityTitleBox">
+            <p className="localityTitle">Head<br />Circumference</p>
+          </div>
+          <img src={doghead_D} className="localityImage" />
+        </div>;
+      case 1:
+        return <div className="localityBox">
+          <div className="localityTitleBox">
+            <p className="localityTitle">Neck<br />Circumference</p>
+          </div>
+          <img src={doghead_D} className="localityImage" />
+        </div>;
+      case 2:
+        return <div className="localityBox">
+          <div className="localityTitleBox">
+            <p className="localityTitle">Upper Torso<br />Circumference</p>
+          </div>
+          <img src={doghead_D} className="localityImage" />
+        </div>;
+      case 3:
+        return <div className="localityBox">
+          <div className="localityTitleBox">
+            <p className="localityTitle">Lower Torso<br />Circumference</p>
+          </div>
+          <img src={doghead_D} className="localityImage" />
+        </div>;
+      case 4:
+        return <div className="localityBox">
+          <div className="localityTitleBox">
+            <p className="localityTitle">Full Torso<br />Length</p>
+          </div>
+          <img src={doghead_D} className="localityImage" />
+        </div>;
+      case 5:
+        return <div className="localityBox">
+          <div className="localityTitleBox">
+            <p className="localityTitle">Full Body<br />Length</p>
+          </div>
+          <img src={doghead_D} className="localityImage" />
+        </div>;
+      case 6:
+        return <div className="localityBox">
+          <div className="localityTitleBox">
+            <p className="localityTitle">Hindlimb<br />Length</p>
+          </div>
+          <img src={doghead_D} className="localityImage" />
+        </div>;
+      case 7:
+        return <div className="localityBox">
+          <div className="localityTitleBox">
+            <p className="localityTitle">Forelimb<br />Length</p>
+          </div>
+          <img src={doghead_D} className="localityImage" />
+        </div>;
+      case 8:
+        return <div className="localityBox">
+          <div className="localityTitleBox">
+            <p className="localityTitle">Full Torso<br />Length</p>
+          </div>
+          <img src={doghead_D} className="localityImage" />
+        </div>;
+      default:
+        return;
+    }
 
+  }
   //点击输入框事件
   const clickInput = (index) => {
     setInputIndex(index);
   };
-
   //单位转化
   const changeUnit = (value) => {
     if (rulerUnit === "cm") {
@@ -213,19 +292,26 @@ const ScanPet = ({
       return _.floor(_.divide(value, 2.54), 2);
     }
   };
-
   //单选框改变事件
   const changeRadio = (e) => {
     setRadioValue(e.target.value);
     setRulerUnitFun(e.target.value);
   };
-
   //小圆点点击事件
   const clickPoint = (index) => {
-    if (index === 1) {
-      setCarouselIndex(1);
-    } else {
-      setCarouselIndex(2);
+    switch (index) {
+      case 1:
+        setCarouselIndex(1);
+        break;
+      case 2:
+        setCarouselIndex(2);
+        break;
+      case 3:
+        setCarouselIndex(3);
+        break;
+      default:
+        setCarouselIndex(1);
+        break;
     }
   };
   //切换宠物获取到长度信息,对数据根据界面单位进行换算
@@ -240,55 +326,132 @@ const ScanPet = ({
       }
     }
   };
-
-
+  const onValue = () => {
+    switch (inputIndex) {
+      case 0:
+        return headValue;
+      case 1:
+        return neckValue;
+      case 2:
+        return upperValue;
+      case 3:
+        return lowerValue;
+      case 4:
+        return torsoValue;
+      case 5:
+        return bodyValue;
+      case 6:
+        return hindlimbValue;
+      case 7:
+        return forelimbLengthValue;
+      case 8:
+        return forelimbCircumferenceValue;
+      default:
+        return headValue;
+    }
+  }
+  const onOnChange = () => {
+    switch (inputIndex) {
+      case 0:
+        return setHeadValue;
+      case 1:
+        return setNeckValue;
+      case 2:
+        return setUpperValue;
+      case 3:
+        return setLowerValue;
+      case 4:
+        return setTorsoValue;
+      case 5:
+        return setBodyValue;
+      case 6:
+        return setHindlimbValue;
+      case 7:
+        return setForelimbLengthValue;
+      case 8:
+        return setForelimbCircumferenceValue;
+      default:
+        return setHeadValue;
+    }
+  }
+  //上一次历史数据展示
+  const historyData = () => {
+    switch (carouselIndex) {
+      case 1:
+        return <Space className="historyData">
+          <p>7</p>
+          <p>10</p>
+          <p>20</p>
+          <p>15</p>
+        </Space>;
+      case 2:
+        return <Space className="historyData">
+          <p>14</p>
+          <p>16</p>
+          <p>8</p>
+          <p>9</p>
+        </Space>;
+      case 3:
+        return <Space className="historyData">
+          <p>8</p>
+        </Space>;
+      default:
+        return <Space className="historyData">
+          <p>7</p>
+          <p>10</p>
+          <p>20</p>
+          <p>15</p>
+        </Space>;
+    }
+  }
 
   //监听点击界面中下一步按钮
   useEffect(() => {
     console.log("inputIndex", inputIndex);
 
-    if (inputIndex < 6 && inputIndex !== -1) {
+    if (inputIndex < 9 && inputIndex !== -1) {
       newData[inputIndex].focus();
     }
-    if (inputIndex === 6) {
+    if (inputIndex === 9) {
       finishScan();
     }
-
     return () => { };
   }, [inputIndex]);
-
+  //监听小圆点切换
   useEffect(() => {
-    if (carouselIndex === 2) {
-      setInputIndex(4);
-    } else if (carouselIndex === 1) {
-      setInputIndex(0);
+    switch (carouselIndex) {
+      case 1:
+        setInputIndex(0);
+        break;
+      case 2:
+        setInputIndex(4);
+        break;
+      case 3:
+        setInputIndex(8);
+        break;
+      default:
+        setInputIndex(0);
+        break;
     }
     return () => { };
   }, [carouselIndex]);
-
   //监听用户点击了硬件中的下一步按钮
   useEffect(() => {
     if (inputIndex === -1) {
       setInputIndex(0);
-    } else if (inputIndex < 6) {
+    } else if (inputIndex < 9) {
       setInputIndex(inputIndex + 1);
     }
     if (inputIndex === 3) {
       setCarouselIndex(2);
     }
+    if (inputIndex === 7) {
+      setCarouselIndex(3);
+    }
     return () => { };
   }, [rulerConfirmCount]);
-
-  // useEffect(() => {
-  //   setRulerConnectStatusFun('disconnected')
-  // },[])
-
-
   //监听切换了宠物
   useEffect(() => {
-    // if (rulerConnectStatus === 'isMeasuring') {
-    //   setShowModal(true);
-    // } else {
     setInputIndex(0);
     setCarouselIndex(1);
     let {
@@ -298,6 +461,9 @@ const ScanPet = ({
       lowerTorsoCircumference,
       h2tLength,
       neckCircumference,
+      hindlimbValue,
+      forelimbLengthValue,
+      forelimbCircumferenceValue
     } = petMessage;
 
     setBodyValue(petLengthDataConvert(l2rarmDistance));
@@ -306,14 +472,15 @@ const ScanPet = ({
     setNeckValue(petLengthDataConvert(neckCircumference));
     setHeadValue(petLengthDataConvert(h2tLength));
     setTorsoValue(petLengthDataConvert(torsoLength));
-    // }
+    setHindlimbValue(petLengthDataConvert(hindlimbValue));
+    setForelimbLengthValue(petLengthDataConvert(forelimbLengthValue));
+    setForelimbCircumferenceValue(petLengthDataConvert(forelimbCircumferenceValue));
     return () => { };
   }, [petId]);
   //监听用户点击了硬件中的下一步按钮和拉动皮尺
   useEffect(() => {
-    if (inputIndex < 6) {
+    if (inputIndex < 9) {
       let { deviceType, mac } = selectHardwareInfo
-      console.log(selectHardwareInfo);
       if (deviceType === 'tape') {
         if (mac === null || (mac && receiveBroadcastHardwareInfo.deviceType === 'tape' && receiveBroadcastHardwareInfo.macId === mac)) {
 
@@ -335,6 +502,12 @@ const ScanPet = ({
               break;
             case 5:
               setBodyValue(rulerMeasureValue);
+            case 6:
+              setHindlimbValue(rulerMeasureValue);
+            case 7:
+              setForelimbLengthValue(rulerMeasureValue);
+            case 8:
+              setForelimbCircumferenceValue(rulerMeasureValue);
               break;
             default:
               break;
@@ -347,39 +520,47 @@ const ScanPet = ({
             setLowerValue(lowerValue && changeUnit(lowerValue));
             setTorsoValue(torsoValue && changeUnit(torsoValue));
             setBodyValue(bodyValue && changeUnit(bodyValue));
+            setHindlimbValue(hindlimbValue && changeUnit(hindlimbValue));
+            setForelimbLengthValue(forelimbLengthValue && changeUnit(forelimbLengthValue));
+            setForelimbCircumferenceValue(forelimbCircumferenceValue && changeUnit(forelimbCircumferenceValue));
           }
         }
       }
 
     }
   }, [rulerConfirmCount, rulerMeasureValue]);
-  // //监听单位改变
-  // useEffect(() => {
-  //   let { deviceType, mac } = selectHardwareInfo
-
-  //   console.log('=====', receiveBroadcastHardwareInfo.macId);
-  //   if (deviceType === 'tape') {
-  //     if (mac === '45264' || (mac && receiveBroadcastHardwareInfo.deviceType === 'tape' && receiveBroadcastHardwareInfo.macId === mac)) {
-  //       console.log('初始化====', rulerUnit, radioValue);
-
-  //       setRadioValue(rulerUnit);
-  //       setHeadValue(headValue && changeUnit(headValue));
-  //       setNeckValue(neckValue && changeUnit(neckValue));
-  //       setUpperValue(upperValue && changeUnit(upperValue));
-  //       setLowerValue(lowerValue && changeUnit(lowerValue));
-  //       setTorsoValue(torsoValue && changeUnit(torsoValue));
-  //       setBodyValue(bodyValue && changeUnit(bodyValue));
-
-  //     }
-  //   }
-
-  // }, [rulerUnit]);
-
 
   return (
     <>
       <Content className="scanContentBox">
-        <div className="scanImageBox">{changeImage()}</div>
+        {
+          lookType ?
+            (
+              <>
+                <div className="lookImageBox">
+                  {changeLookImage()}
+                  < img src={shrink} className="checkImage" onClick={() => onLookImage(false)} />
+                </div>
+                <div className="lookInputBox">
+                  <NumericInput
+                    value={onValue()}
+                    onChange={onOnChange()}
+                    // getinput={inputEl}
+                    onClick={() => clickInput(inputIndex)}
+                    index={inputIndex}
+                    onKey={inputIndex}
+                    ChangeSize={'32px'}
+                  />
+                </div>
+              </>
+            ) :
+            (
+              <div className="scanImageBox">
+                {changeImage()}
+                < img src={amplification} className="checkImage" onClick={() => onLookImage(true)} />
+              </div>
+            )
+        }
         {/*选择单位框*/}
         <Radio.Group
           value={radioValue}
@@ -426,7 +607,7 @@ const ScanPet = ({
                   <NumericInput
                     value={headValue}
                     onChange={setHeadValue}
-                    getInput={inputEl}
+                    getinput={inputEl}
                     onClick={() => clickInput(0)}
                     index={inputIndex}
                     onKey={0}
@@ -437,7 +618,7 @@ const ScanPet = ({
                   <NumericInput
                     value={neckValue}
                     onChange={setNeckValue}
-                    getInput={inputEl}
+                    getinput={inputEl}
                     onClick={() => clickInput(1)}
                     index={inputIndex}
                     onKey={1}
@@ -448,7 +629,7 @@ const ScanPet = ({
                   <NumericInput
                     value={upperValue}
                     onChange={setUpperValue}
-                    getInput={inputEl}
+                    getinput={inputEl}
                     onClick={() => clickInput(2)}
                     index={inputIndex}
                     onKey={2}
@@ -459,7 +640,7 @@ const ScanPet = ({
                   <NumericInput
                     value={lowerValue}
                     onChange={setLowerValue}
-                    getInput={inputEl}
+                    getinput={inputEl}
                     onClick={() => clickInput(3)}
                     index={inputIndex}
                     onKey={3}
@@ -478,7 +659,7 @@ const ScanPet = ({
                   <NumericInput
                     value={torsoValue}
                     onChange={setTorsoValue}
-                    getInput={inputEl}
+                    getinput={inputEl}
                     onClick={() => clickInput(4)}
                     index={inputIndex}
                     onKey={4}
@@ -489,17 +670,57 @@ const ScanPet = ({
                   <NumericInput
                     value={bodyValue}
                     onChange={setBodyValue}
-                    getInput={inputEl}
+                    getinput={inputEl}
                     onClick={() => clickInput(5)}
                     index={inputIndex}
                     onKey={5}
+                  />
+                </div>
+                <div className="inputItem">
+                  <p className="inputTitle">Hindlimb Length</p>
+                  <NumericInput
+                    value={hindlimbValue}
+                    onChange={setHindlimbValue}
+                    getinput={inputEl}
+                    onClick={() => clickInput(6)}
+                    index={inputIndex}
+                    onKey={6}
+                  />
+                </div>
+                <div className="inputItem">
+                  <p className="inputTitle">Forelimb Length</p>
+                  <NumericInput
+                    value={forelimbLengthValue}
+                    onChange={setForelimbLengthValue}
+                    getinput={inputEl}
+                    onClick={() => clickInput(7)}
+                    index={inputIndex}
+                    onKey={7}
+                  />
+                </div>
+              </Space>
+            </Input.Group>
+            {/*第三列输入框*/}
+            <Input.Group
+              className="inputGroupItem"
+              style={{ display: carouselIndex === 3 ? "" : "none" }}
+            >
+              <Space className="inputItemBox">
+                <div className="inputItem">
+                  <p className="inputTitle">Full Torso Length</p>
+                  <NumericInput
+                    value={forelimbCircumferenceValue}
+                    onChange={setForelimbCircumferenceValue}
+                    getinput={inputEl}
+                    onClick={() => clickInput(8)}
+                    index={inputIndex}
+                    onKey={8}
                   />
                 </div>
               </Space>
             </Input.Group>
           </div>
         </div>
-
         {/*小圆点 */}
         <div className="dotBox">
           <ul className="dotList">
@@ -525,7 +746,28 @@ const ScanPet = ({
                 2
               </Button>
             </li>
+            <li>
+              <Button
+                className="dotItem"
+                onClick={() => clickPoint(3)}
+                style={{
+                  background: carouselIndex === 3 ? "#0a0a0a" : "#bdbaba",
+                }}
+              >
+                3
+              </Button>
+            </li>
           </ul>
+        </div>
+        {/*历史测量数据展示*/}
+        <div className="historyBox">
+          <div className="historyTimeBox">
+            <p>Previously Measured on 06-20-22</p>
+          </div>
+          <div className="historyDataBox">
+            {historyData()}
+          </div>
+
         </div>
         {/*下一步 */}
         <div className="nextBtnBox">
@@ -534,9 +776,9 @@ const ScanPet = ({
             shape="round"
             size="large"
             className="nextBtn"
-            onClick={inputIndex > 4 ? finishScan : switchFocus}
+            onClick={inputIndex > 7 ? finishScan : switchFocus}
           >
-            {inputIndex > 4 ? "Finish" : "Next"}
+            {inputIndex > 7 ? "Calculate" : "Next"}
           </Button>
         </div>
       </Content>

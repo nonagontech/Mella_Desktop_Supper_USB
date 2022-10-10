@@ -1,11 +1,59 @@
 .scanContentBox {
-  background: #fff;
-  display: grid;
-  justify-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
+  .lookImageBox {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    position: relative;
+
+    .localityBox {
+      width: 95%;
+      height: 160px;
+      background-color: #d8d8d8;
+      border-bottom-right-radius: 160px;
+      border-top-right-radius: 160px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .localityImage {
+        width: 160px;
+        height: 160px;
+      }
+
+      .localityTitleBox {
+        width: 100%;
+        display: flex;
+        align-content: center;
+
+        .localityTitle {
+          font-size: 32px;
+          font-weight: 700;
+          margin-left: 20%;
+        }
+      }
+    }
+  }
+
+  .lookInputBox {
+    width: 128px;
+  }
 
   .scanImageBox {
-    display: grid;
-    justify-items: center;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .checkImage {
+    width: 32px;
+    height: 32px;
+    margin-left: 8px;
+    margin-right: 8px;
+    cursor: pointer;
   }
 
   .selectLengthUnit {
@@ -69,6 +117,39 @@
         outline: none;
         // opacity: .3;
         transition: all .5s;
+      }
+    }
+  }
+
+  .historyBox {
+    width: 100%;
+
+    .historyTimeBox {
+      height: 32px;
+      background-color: #ececec;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      p {
+        font-size: 16px;
+        color: #a0a0a0;
+      }
+    }
+
+    .historyDataBox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .historyData {
+        margin-top: 16px;
+        p {
+          width: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
       }
     }
   }
