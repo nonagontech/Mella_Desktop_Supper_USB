@@ -105,45 +105,6 @@ const ScanPet = ({
       forelimbCircumferenceValue: forelimbCircumferenceValue,
     })
   };
-  //保存数据
-  const saveData = () => {
-    const newNum = (val) => {
-      if (val) {
-        if (rulerUnit === "in") {
-          return parseFloat((parseFloat(val) * 2.54).toFixed(1));
-        } else {
-          return parseFloat(val);
-        }
-      } else {
-        return "";
-      }
-    };
-    let prams = {
-      l2rarmDistance: newNum(bodyValue) || null,
-      lowerTorsoCircumference: newNum(lowerValue) || null,
-      upperTorsoCircumference: newNum(upperValue) || null,
-      neckCircumference: newNum(neckValue) || null,
-      h2tLength: newNum(headValue) || null,
-      torsoLength: newNum(torsoValue) || null,
-    };
-
-    updatePetInfo1(storage.userId, petId, prams)
-
-      .then((res) => {
-        if (res.flag) {
-          petDetailInfoFun({
-            ...petMessage,
-            ...prams,
-          });
-          message.success("Uploaded successfully");
-        } else {
-          message.error("upload failed");
-        }
-      })
-      .catch((err) => {
-        message.error("update failed");
-      });
-  };
   //判断是猫还是狗还是其他
   const checkPetType = () => {
     //0是猫，1是狗，或者petSpeciesBreedId为空判断图片为狗
@@ -461,9 +422,9 @@ const ScanPet = ({
       lowerTorsoCircumference,
       h2tLength,
       neckCircumference,
-      hindlimbValue,
-      forelimbLengthValue,
-      forelimbCircumferenceValue
+      hindLimbLength,
+      foreLimbLength,
+      foreLimbCircumference
     } = petMessage;
 
     setBodyValue(petLengthDataConvert(l2rarmDistance));
@@ -472,9 +433,9 @@ const ScanPet = ({
     setNeckValue(petLengthDataConvert(neckCircumference));
     setHeadValue(petLengthDataConvert(h2tLength));
     setTorsoValue(petLengthDataConvert(torsoLength));
-    setHindlimbValue(petLengthDataConvert(hindlimbValue));
-    setForelimbLengthValue(petLengthDataConvert(forelimbLengthValue));
-    setForelimbCircumferenceValue(petLengthDataConvert(forelimbCircumferenceValue));
+    setHindlimbValue(petLengthDataConvert(hindLimbLength));
+    setForelimbLengthValue(petLengthDataConvert(foreLimbLength));
+    setForelimbCircumferenceValue(petLengthDataConvert(foreLimbCircumference));
     return () => { };
   }, [petId]);
   //监听用户点击了硬件中的下一步按钮和拉动皮尺

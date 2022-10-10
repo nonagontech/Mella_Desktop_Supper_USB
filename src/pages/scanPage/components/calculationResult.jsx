@@ -8,6 +8,7 @@ import {
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 import { updatePetInfo1 } from "../../../api";
+import { petPicture, calculateAge, catLeanBodyMass, catFatMass, dogLeanBodyMass, dogFatMass, dogBodyFatPercentage } from '../../../utils/commonFun';
 
 import { connect } from "react-redux";
 import {
@@ -31,14 +32,25 @@ const CalculationResult = ({
   ruleMessage,
   getMeasureData,
 }) => {
-  let { petId } = petMessage;
+  let { petId, petSpeciesBreedId, weight, birthday } = petMessage;
   let { rulerUnit } = ruleMessage;
+  let {
+    headValue,
+    neckValue,
+    upperValue,
+    lowerValue,
+    torsoValue,
+    bodyValue,
+    hindlimbValue,
+    forelimbLengthValue,
+    forelimbCircumferenceValue,
+  } = getMeasureData;
   let storage = window.localStorage;
   //重新测量
   const onAgainMeasure = () => {
     type(false);
   }
-  //保存数据
+  //用户点击保存
   const onSave = () => {
     Modal.confirm({
       title: "Confirm",
@@ -68,10 +80,11 @@ const CalculationResult = ({
       neckCircumference: newNum(getMeasureData.neckValue) || null,
       h2tLength: newNum(getMeasureData.headValue) || null,
       torsoLength: newNum(getMeasureData.torsoValue) || null,
+      hindLimbLength: newNum(getMeasureData.hindlimbValue) || null,
+      foreLimbLength: newNum(getMeasureData.forelimbLengthValue) || null,
+      foreLimbCircumference: newNum(getMeasureData.forelimbCircumferenceValue) || null,
     };
-
     updatePetInfo1(storage.userId, petId, prams)
-
       .then((res) => {
         if (res.flag) {
           petDetailInfoFun({
@@ -88,7 +101,42 @@ const CalculationResult = ({
         message.error("update failed");
       });
   };
-
+  //获取LeanBodyMass
+  const getLeanBodyMass = () => {
+    switch (petPicture(petSpeciesBreedId)) {
+      case 'cat':
+        return _.round(catLeanBodyMass(headValue, hindlimbValue, forelimbCircumferenceValue, forelimbLengthValue, bodyValue, upperValue), 2);
+      case 'dog':
+        return _.round(dogLeanBodyMass(weight, calculateAge(birthday), headValue, forelimbLengthValue, hindlimbValue), 2);
+      default:
+        message.warning('The pet is of unknown breed');
+        return;
+    }
+  }
+  //获取FatMass
+  const getFatMass = () => {
+    switch (petPicture(petSpeciesBreedId)) {
+      case 'cat':
+        return _.round(catFatMass(weight, headValue, forelimbLengthValue, forelimbCircumferenceValue), 2);
+      case 'dog':
+        return _.round(dogBodyFatPercentage(upperValue, lowerValue, hindlimbValue, headValue), 2);
+      default:
+        message.warning('The pet is of unknown breed');
+        return;
+    }
+  }
+  //获取BodyFatPercent
+  const getBodyFatPercent = () => {
+    switch (petPicture(petSpeciesBreedId)) {
+      case 'cat':
+        return;
+      case 'dog':
+        return _.round(dogFatMass(weight, hindlimbValue, upperValue, headValue), 2);
+      default:
+        message.warning('The pet is of unknown breed');
+        return;
+    }
+  }
   return (
     <Content className="calculationResultContentBox">
       <div className="localityBox">
@@ -97,8 +145,7 @@ const CalculationResult = ({
         </div>
         <div className="circleBox">
           <div className="dataBox">
-            <p>0.85</p>
-            <p>g</p>
+            <p>{getLeanBodyMass() ? `${getLeanBodyMass()}g` : ''}</p>
           </div>
         </div>
       </div>
@@ -108,8 +155,7 @@ const CalculationResult = ({
         </div>
         <div className="circleBox">
           <div className="dataBox">
-            <p>0.98</p>
-            <p>g</p>
+            <p>{getFatMass() ? `${getFatMass()}g` : ''}</p>
           </div>
         </div>
       </div>
@@ -119,7 +165,7 @@ const CalculationResult = ({
         </div>
         <div className="circleBox">
           <div className="dataBox">
-            <p>24%</p>
+            <p>{getBodyFatPercent() ? `${getBodyFatPercent()}%` : ''}</p>
           </div>
         </div>
       </div>

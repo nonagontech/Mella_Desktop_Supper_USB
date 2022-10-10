@@ -159,13 +159,73 @@ export const versionComarision = (version1, version2) => {
  * @param {*} time
  * @returns
  */
-
 export const transitionTime = (time) => {
-
   let timeDifference = new Date().getTimezoneOffset();
   let newTime = moment(time).subtract(timeDifference, 'm').format();
   return newTime;
+}
+/**
+ * @dec 获取瘦体重（g)
+ * @param {*} headCircumference 头部周长（cm)
+ * @param {*} hindlimbLength    后肢长度（cm）
+ * @param {*} forelimbCircumference 前肢周长（cm)
+ * @param {*} forelimbLength        前肢长度(cm)
+ * @param {*} bodyLength            身体长度（cm)
+ * @param {*} upperTorsoCircumference 胸部周长(cm)
+ * @returns 返回猫的瘦体重
+ */
+export const catLeanBodyMass = (headCircumference, hindlimbLength, forelimbCircumference, forelimbLength, bodyLength, upperTorsoCircumference) => {
+  //头部直径
+  let headDiameter = headCircumference / 3
+  let value = 30.3 * (headDiameter * hindlimbLength) + 316.9 * forelimbCircumference + 2.55 * (upperTorsoCircumference / 3) * forelimbLength + 14.4 * bodyLength - 3058.7
+  return value
+}
+/**
+* @dec 获取脂肪质量（g)
+* @param {*} weight            宠物体重（lb)
+* @param {*} headCircumference 头部周长（cm)
+* @param {*} forelimbLength    前肢长度(cm)
+* @param {*} forelimbCircumference 前肢周长（cm)
+* @returns
+*/
+export const catFatMass = (weight, headCircumference, forelimbLength, forelimbCircumference) => {
 
+  return 436.9 * weight - 24 * (headCircumference / 3) * forelimbLength - 309.2 * forelimbCircumference + 2522.7
+}
+/**
+* @dec 狗的瘦体重
+* @param {*} weight            宠物体重（lb)
+* @param {*} age               年龄
+* @param {*} headCircumference 头部周长（cm)
+* @param {*} forelimbLength    前肢长度(cm)
+* @param {*} hindlimbLength     后肢长度（cm）
+* @returns
+*/
+export const dogLeanBodyMass = (weight, age, headCircumference, forelimbLength, hindlimbLength) => {
+  return 1.8 * (8.25 * weight - 9.02 * age + 8.92 * ((headCircumference / 6) ** 2) + 96.86 * forelimbLength - 111.07 * (forelimbLength - hindlimbLength) - 357.18) ** 1.333
+}
+
+/**
+*
+* @param {*} weight                宠物体重（lb)
+* @param {*} hindlimbLength  后肢长度（cm）
+* @param {*} upperTorsoCircumference 胸部周长(cm)
+* @param {*} headCircumference 头部周长（cm)
+* @returns
+*/
+export const dogFatMass = (weight, hindlimbLength, upperTorsoCircumference, headCircumference) => {
+  return 229.04 * weight - 416.63 * (hindlimbLength ** 1.2) + 157.78 * (upperTorsoCircumference - headCircumference) + 908.79
+}
+/**
+* @dec 计算狗的体脂百分比
+* @param {*} upperTorsoCircumference  胸部周长(cm)
+* @param {*} lowerTorsoCircumference   下躯干周长（cm）
+* @param {*} hindlimbLength 后肢长度（cm）
+* @param {*} headCircumference 头部周长（cm)
+* @returns
+*/
+export const dogBodyFatPercentage = (upperTorsoCircumference, lowerTorsoCircumference, hindlimbLength, headCircumference) => {
+  return 0.71 * upperTorsoCircumference - 0.1 * ((lowerTorsoCircumference / 6) ** 2) - 5.78 * (hindlimbLength ** 0.8) + 26.56 * (lowerTorsoCircumference / headCircumference) + 2.06
 }
 
 
