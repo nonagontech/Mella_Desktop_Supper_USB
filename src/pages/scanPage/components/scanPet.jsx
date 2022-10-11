@@ -7,22 +7,51 @@ import {
   Button,
   message,
 } from "antd";
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
-import head from "./../../../assets/img/head.png";
-import neck from "./../../../assets/img/neck.png";
-import upper from "./../../../assets/img/upper.png";
-import lower from "./../../../assets/img/lower.png";
-import Full from "./../../../assets/img/Full.png";
-import body from "./../../../assets/img/body.png";
+
+import dogHead from "./../../../assets/img/dogHead.png";
+import dogNeck from "./../../../assets/img/dogNeck.png";
+import dogUpper from "./../../../assets/img/dogUpper.png";
+import dogLower from "./../../../assets/img/dogLower.png";
+import dogTorso from "./../../../assets/img/dogTorso.png";
+import dogBody from "./../../../assets/img/dogBody.png";
+import dogHindlimb from "./../../../assets/img/dogHindlimb.png";
+import dogForelimbLength from "./../../../assets/img/dogForelimbLength.png";
+import dogForelimbCircumference from "./../../../assets/img/dogForelimbCircumference.png";
+
+import dogHead_D from "./../../../assets/img/dogHead_D.png";
+import dogNeck_D from "./../../../assets/img/dogNeck_D.png";
+import dogUpper_D from "./../../../assets/img/dogUpper_D.png";
+import dogLower_D from "./../../../assets/img/dogLower_D.png";
+import dogTorso_D from "./../../../assets/img/dogTorso_D.png";
+import dogBody_D from "./../../../assets/img/dogBody_D.png";
+import dogHindlimb_D from "./../../../assets/img/dogHindlimb_D.png";
+import dogForelimbLength_D from "./../../../assets/img/dogForelimbLength_D.png";
+import dogForelimbCircumference_D from "./../../../assets/img/dogForelimbCircumference_D.png";
+
 import catHead from "./../../../assets/img/catHead.png";
 import catNeck from "./../../../assets/img/catNeck.png";
 import catUpper from "./../../../assets/img/catUpper.png";
 import catLower from "./../../../assets/img/catLower.png";
-import catFull from "./../../../assets/img/catFull.png";
+import catTorso from "./../../../assets/img/catTorso.png";
 import catBody from "./../../../assets/img/catBody.png";
+import catHindlimb from "./../../../assets/img/catHindlimb.png";
+import catForelimbLength from "./../../../assets/img/catForelimbLength.png";
+import catForelimbCircumference from "./../../../assets/img/catForelimbCircumference.png";
+
+import catHead_D from "./../../../assets/img/catHead_D.png";
+import catNeck_D from "./../../../assets/img/catNeck_D.png";
+import catUpper_D from "./../../../assets/img/catUpper_D.png";
+import catLower_D from "./../../../assets/img/catLower_D.png";
+import catTorso_D from "./../../../assets/img/catTorso_D.png";
+import catBody_D from "./../../../assets/img/catBody_D.png";
+import catHindlimb_D from "./../../../assets/img/catHindlimb_D.png";
+import catForelimbLength_D from "./../../../assets/img/catForelimbLength_D.png";
+import catForelimbCircumference_D from "./../../../assets/img/catForelimbCircumference_D.png";
+
 import amplification from './../../../assets/img/amplification.png';
 import shrink from './../../../assets/img/shrink.png';
-import doghead_D from './../../../assets/img/doghead_D.png';
 
 
 import { connect } from "react-redux";
@@ -36,7 +65,6 @@ import {
   setRulerConfirmCountFun,
 } from "../../../store/actions";
 import { px } from "../../../utils/px";
-import { updatePetInfo1 } from "../../../api";
 import NumericInput from "./numericInput";
 
 import _ from "lodash";
@@ -46,18 +74,13 @@ import "./scanPet.less";
 const { Content } = Layout;
 const ScanPet = ({
   petMessage,
-  petDetailInfoFun,
   ruleMessage,
-  setRulerConfirmCountFun,
-  setRulerMeasureValueFun,
   setRulerUnitFun,
-  setRulerConnectStatusFun,
   type,
   setMeasureData,
 }) => {
-  let { petSpeciesBreedId, patientId, petId } = petMessage;
+  let { petSpeciesBreedId, petId } = petMessage;
   let { rulerMeasureValue, rulerConfirmCount, rulerUnit, rulerConnectStatus, selectHardwareInfo, receiveBroadcastHardwareInfo } = ruleMessage;
-  let storage = window.localStorage;
   const [radioValue, setRadioValue] = useState("in");//单位
   const [inputIndex, setInputIndex] = useState(-1);//输入框下标
   const [carouselIndex, setCarouselIndex] = useState(1);//小小圆点下标
@@ -128,45 +151,63 @@ const ScanPet = ({
     switch (inputIndex) {
       case 0:
         return checkPetType() === 1 ? (
-          <img src={head} />
+          <img src={dogHead} width='320px' />
         ) : (
-          <img src={catHead} />
+          <img src={catHead} width='320px' />
         );
       case 1:
         return checkPetType() === 1 ? (
-          <img src={neck} />
+          <img src={dogNeck} width='320px' />
         ) : (
-          <img src={catNeck} />
+          <img src={catNeck} width='320px' />
         );
       case 2:
         return checkPetType() === 1 ? (
-          <img src={upper} />
+          <img src={dogUpper} width='320px' />
         ) : (
-          <img src={catUpper} />
+          <img src={catUpper} width='320px' />
         );
       case 3:
         return checkPetType() === 1 ? (
-          <img src={lower} />
+          <img src={dogLower} width='320px' />
         ) : (
-          <img src={catLower} />
+          <img src={catLower} width='320px' />
         );
       case 4:
         return checkPetType() === 1 ? (
-          <img src={Full} />
+          <img src={dogTorso} width='320px' />
         ) : (
-          <img src={catFull} />
+          <img src={catTorso} width='320px' />
         );
       case 5:
         return checkPetType() === 1 ? (
-          <img src={body} />
+          <img src={dogBody} width='320px' />
         ) : (
-          <img src={catBody} />
+          <img src={catBody} width='320px' />
+        );
+      case 6:
+        return checkPetType() === 1 ? (
+          <img src={dogHindlimb} width='320px' />
+        ) : (
+          <img src={catHindlimb} width='320px' />
+        );
+      case 7:
+        return checkPetType() === 1 ? (
+          <img src={dogForelimbLength} width='320px' />
+        ) : (
+          <img src={catForelimbLength} width='320px' />
+        );
+      case 8:
+        return checkPetType() === 1 ? (
+          <img src={dogForelimbCircumference} width='320px' />
+        ) : (
+          <img src={catForelimbCircumference} width='320px' />
         );
       default:
         return checkPetType() === 1 ? (
-          <img src={body} />
+          <img src={dogForelimbCircumference} width='320px' />
         ) : (
-          <img src={catBody} />
+          <img src={catForelimbCircumference} width='320px' />
         );
     }
   };
@@ -178,68 +219,139 @@ const ScanPet = ({
           <div className="localityTitleBox">
             <p className="localityTitle">Head<br />Circumference</p>
           </div>
-          <img src={doghead_D} className="localityImage" />
+          {
+            checkPetType() === 1 ?
+              (
+                <img src={dogHead_D} className="localityImage" />
+              ) :
+              (
+                <img src={catHead_D} className="localityImage" />
+              )
+          }
         </div>;
       case 1:
         return <div className="localityBox">
           <div className="localityTitleBox">
             <p className="localityTitle">Neck<br />Circumference</p>
           </div>
-          <img src={doghead_D} className="localityImage" />
+          {
+            checkPetType() === 1 ?
+              (
+                <img src={dogNeck_D} className="localityImage" />
+              ) :
+              (
+                <img src={catNeck_D} className="localityImage" />
+              )
+          }
         </div>;
       case 2:
         return <div className="localityBox">
           <div className="localityTitleBox">
             <p className="localityTitle">Upper Torso<br />Circumference</p>
           </div>
-          <img src={doghead_D} className="localityImage" />
+          {
+            checkPetType() === 1 ?
+              (
+                <img src={dogUpper_D} className="localityImage" />
+              ) :
+              (
+                <img src={catUpper_D} className="localityImage" />
+              )
+          }
         </div>;
       case 3:
         return <div className="localityBox">
           <div className="localityTitleBox">
             <p className="localityTitle">Lower Torso<br />Circumference</p>
           </div>
-          <img src={doghead_D} className="localityImage" />
+          {
+            checkPetType() === 1 ?
+              (
+                <img src={dogLower_D} className="localityImage" />
+              ) :
+              (
+                <img src={catLower_D} className="localityImage" />
+              )
+          }
         </div>;
       case 4:
         return <div className="localityBox">
           <div className="localityTitleBox">
             <p className="localityTitle">Full Torso<br />Length</p>
           </div>
-          <img src={doghead_D} className="localityImage" />
+          {
+            checkPetType() === 1 ?
+              (
+                <img src={dogTorso_D} className="localityImage" />
+              ) :
+              (
+                <img src={catTorso_D} className="localityImage" />
+              )
+          }
         </div>;
       case 5:
         return <div className="localityBox">
           <div className="localityTitleBox">
             <p className="localityTitle">Full Body<br />Length</p>
           </div>
-          <img src={doghead_D} className="localityImage" />
+          {
+            checkPetType() === 1 ?
+              (
+                <img src={dogBody_D} className="localityImage" />
+              ) :
+              (
+                <img src={catBody_D} className="localityImage" />
+              )
+          }
         </div>;
       case 6:
         return <div className="localityBox">
           <div className="localityTitleBox">
             <p className="localityTitle">Hindlimb<br />Length</p>
           </div>
-          <img src={doghead_D} className="localityImage" />
+          {
+            checkPetType() === 1 ?
+              (
+                <img src={dogHindlimb_D} className="localityImage" />
+              ) :
+              (
+                <img src={catHindlimb_D} className="localityImage" />
+              )
+          }
         </div>;
       case 7:
         return <div className="localityBox">
           <div className="localityTitleBox">
             <p className="localityTitle">Forelimb<br />Length</p>
           </div>
-          <img src={doghead_D} className="localityImage" />
+          {
+            checkPetType() === 1 ?
+              (
+                <img src={dogForelimbLength_D} className="localityImage" />
+              ) :
+              (
+                <img src={catForelimbLength_D} className="localityImage" />
+              )
+          }
         </div>;
       case 8:
         return <div className="localityBox">
           <div className="localityTitleBox">
-            <p className="localityTitle">Full Torso<br />Length</p>
+            <p className="localityTitle">Forelimb<br />Circumference</p>
           </div>
-          <img src={doghead_D} className="localityImage" />
+          {
+            checkPetType() === 1 ?
+              (
+                <img src={dogForelimbCircumference_D} className="localityImage" />
+              ) :
+              (
+                <img src={catForelimbCircumference_D} className="localityImage" />
+              )
+          }
         </div>;
       default:
         return;
     }
-
   }
   //点击输入框事件
   const clickInput = (index) => {
@@ -258,23 +370,40 @@ const ScanPet = ({
     setRadioValue(e.target.value);
     setRulerUnitFun(e.target.value);
   };
-  //小圆点点击事件
-  const clickPoint = (index) => {
-    switch (index) {
-      case 1:
-        setCarouselIndex(1);
-        break;
-      case 2:
-        setCarouselIndex(2);
-        break;
-      case 3:
-        setCarouselIndex(3);
-        break;
-      default:
-        setCarouselIndex(1);
-        break;
+  //左箭头点击事件
+  const letfClick = () => {
+    if (_.inRange(inputIndex, 4, 8)) {
+      setCarouselIndex(1);
+    } else if (inputIndex === 8) {
+      setCarouselIndex(2);
     }
-  };
+
+  }
+  //右箭头点击事件
+  const rightClick = () => {
+    if (_.inRange(inputIndex, 0, 4)) {
+      setCarouselIndex(2);
+    } else if (_.inRange(inputIndex, 4, 8)) {
+      setCarouselIndex(3);
+    }
+  }
+  //小圆点点击事件
+  // const clickPoint = (index) => {
+  //   switch (index) {
+  //     case 1:
+  //       setCarouselIndex(1);
+  //       break;
+  //     case 2:
+  //       setCarouselIndex(2);
+  //       break;
+  //     case 3:
+  //       setCarouselIndex(3);
+  //       break;
+  //     default:
+  //       setCarouselIndex(1);
+  //       break;
+  //   }
+  // };
   //切换宠物获取到长度信息,对数据根据界面单位进行换算
   const petLengthDataConvert = (val) => {
     if (!val) {
@@ -444,7 +573,6 @@ const ScanPet = ({
       let { deviceType, mac } = selectHardwareInfo
       if (deviceType === 'tape') {
         if (mac === null || (mac && receiveBroadcastHardwareInfo.deviceType === 'tape' && receiveBroadcastHardwareInfo.macId === mac)) {
-
           switch (inputIndex) {
             case 0:
               setHeadValue(rulerMeasureValue);
@@ -463,10 +591,13 @@ const ScanPet = ({
               break;
             case 5:
               setBodyValue(rulerMeasureValue);
+              break;
             case 6:
               setHindlimbValue(rulerMeasureValue);
+              break;
             case 7:
               setForelimbLengthValue(rulerMeasureValue);
+              break;
             case 8:
               setForelimbCircumferenceValue(rulerMeasureValue);
               break;
@@ -555,7 +686,11 @@ const ScanPet = ({
             cm
           </Radio.Button>
         </Radio.Group>
+        {/**输入框 */}
         <div className="slideshowBox" style={{ height: px(100) }}>
+          <div className="leftImageBox" onClick={() => letfClick()}>
+            <LeftOutlined style={{ fontSize: '24px', visibility: carouselIndex === 1 ? 'hidden' : 'visible' }} />
+          </div>
           <div className="scollInputGroup">
             {/*第一列输入框*/}
             <Input.Group
@@ -668,7 +803,7 @@ const ScanPet = ({
             >
               <Space className="inputItemBox">
                 <div className="inputItem">
-                  <p className="inputTitle">Full Torso Length</p>
+                  <p className="inputTitle">Forelimb Circumference</p>
                   <NumericInput
                     value={forelimbCircumferenceValue}
                     onChange={setForelimbCircumferenceValue}
@@ -681,9 +816,12 @@ const ScanPet = ({
               </Space>
             </Input.Group>
           </div>
+          <div className="rightImageBox" onClick={() => rightClick()}>
+            <RightOutlined style={{ fontSize: '24px', visibility: carouselIndex === 3 ? 'hidden' : 'visible' }} />
+          </div>
         </div>
         {/*小圆点 */}
-        <div className="dotBox">
+        {/* <div className="dotBox">
           <ul className="dotList">
             <li>
               <Button
@@ -719,7 +857,7 @@ const ScanPet = ({
               </Button>
             </li>
           </ul>
-        </div>
+        </div> */}
         {/*历史测量数据展示*/}
         <div className="historyBox">
           <div className="historyTimeBox">

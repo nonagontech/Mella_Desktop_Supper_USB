@@ -26,6 +26,7 @@ const ScanPage = ({ petMessage, hardwareMessage, bodyHeight, }) => {
   const [calculationResultType, setCalculationResultType] = useState(false);//切换计算结果界面
   const [measureData, setMeasureData] = useState({});//测量的值
 
+
   return (
     <>
       <Layout className="scanHomeBox" style={{ height: bodyHeight }}>

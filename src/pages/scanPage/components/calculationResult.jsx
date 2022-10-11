@@ -20,6 +20,7 @@ import {
   setRulerUnitFun,
   setRulerConfirmCountFun,
 } from "../../../store/actions";
+import { useUpdateEffect } from 'ahooks';
 import _ from "lodash";
 
 import "./calculationResult.less";
@@ -107,9 +108,9 @@ const CalculationResult = ({
       case 'cat':
         return _.round(catLeanBodyMass(headValue, hindlimbValue, forelimbCircumferenceValue, forelimbLengthValue, bodyValue, upperValue), 2);
       case 'dog':
-        return _.round(dogLeanBodyMass(weight, calculateAge(birthday), headValue, forelimbLengthValue, hindlimbValue), 2);
+        return _.round(dogLeanBodyMass(weight * 2.2046, calculateAge(birthday), headValue, forelimbLengthValue, hindlimbValue), 2);
       default:
-        message.warning('The pet is of unknown breed');
+        // message.warning('The pet is of unknown breed');
         return;
     }
   }
@@ -117,11 +118,11 @@ const CalculationResult = ({
   const getFatMass = () => {
     switch (petPicture(petSpeciesBreedId)) {
       case 'cat':
-        return _.round(catFatMass(weight, headValue, forelimbLengthValue, forelimbCircumferenceValue), 2);
+        return _.round(catFatMass(weight * 2.2046, headValue, forelimbLengthValue, forelimbCircumferenceValue), 2);
       case 'dog':
         return _.round(dogBodyFatPercentage(upperValue, lowerValue, hindlimbValue, headValue), 2);
       default:
-        message.warning('The pet is of unknown breed');
+        // message.warning('The pet is of unknown breed');
         return;
     }
   }
@@ -131,12 +132,18 @@ const CalculationResult = ({
       case 'cat':
         return;
       case 'dog':
-        return _.round(dogFatMass(weight, hindlimbValue, upperValue, headValue), 2);
+        return _.round(dogFatMass(weight * 2.2046, hindlimbValue, upperValue, headValue), 2);
       default:
-        message.warning('The pet is of unknown breed');
+        // message.warning('The pet is of unknown breed');
         return;
     }
   }
+
+  useUpdateEffect(() => {
+    type(false);
+    return () => { };
+  }, [petId]);
+
   return (
     <Content className="calculationResultContentBox">
       <div className="localityBox">

@@ -38,7 +38,7 @@ const NumericInput = (props) => {
       className='inputNum'
       onChange={handleChange}
       onBlur={handleBlur}
-      maxLength={25}
+      maxLength={10}
       ref={getinput}
       onClick={handleClick}
       style={{ borderColor: bordercolor, textAlign: "center", fontSize: ChangeSize }}

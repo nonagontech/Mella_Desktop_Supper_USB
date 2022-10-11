@@ -108,7 +108,7 @@ class App extends Component {
     this.getLocalSetting();
     //获取单位
     let hardSet = electronStore.get(`${storage.userId}-hardwareConfiguration`) || {}
-    console.log('----', hardSet);
+    // console.log('----', hardSet);
     let { isHua, } = hardSet
     if (isHua === false) {
       this.setState({
@@ -200,9 +200,6 @@ class App extends Component {
     } else {
       if (this.state.isHaveUsbDevice) {
         message.destroy();
-        console.log('====================================');
-        console.log(this.props.selectHardwareType);
-        console.log('====================================');
         if (this.props.selectHardwareType !== "otterEQ") {
           message.error("The base is not detected. Please insert the base", 0);
         }
@@ -220,7 +217,7 @@ class App extends Component {
   };
   //监听mella温度计是否与底座连接或断开
   _whether_to_connect_to_mella = () => {
-    console.log("监听mella温度计是否与底座连接或断开");
+    // console.log("监听mella温度计是否与底座连接或断开");
     message.destroy();
     this.detectTimer && clearInterval(this.detectTimer);
     //2秒检测一次
@@ -231,10 +228,10 @@ class App extends Component {
       if (this.state.isHaveUsbDevice && mellaConnectStatus !== 'isMeasuring' && mellaConnectStatus !== 'disconnected') {
         if (exchangeNum % 2 === 0) {
           //让底座发送查询温度计信息指令
-          console.log('获取温度计07');
+          // console.log('获取温度计07');
           ipcRenderer.send("usbdata", { command: "07", arr: ["5A"] });
         } else {
-          console.log('获取温度计31');
+          // console.log('获取温度计31');
           ipcRenderer.send("usbdata", { command: "31", arr: ["5A"] });
         }
       }
@@ -314,7 +311,7 @@ class App extends Component {
         //第一次测量去获取探头ID
         if (firstEar) {
           firstEar = false;
-          console.log("去获取探头id");
+          // console.log("去获取探头id");
           ipcRenderer.send("usbdata", { command: "31", arr: [] });
           //重新测量,清空预测值
           clinicalYuce = [];
@@ -859,16 +856,6 @@ class App extends Component {
             default:
               break;
           }
-          console.log({
-            // mac,
-            // hardwareVersion,
-            // softwareVersion,
-            wifiFlag,
-            control,
-            weight,
-            weightUnits,
-          });
-
 
         } else if (bluName.indexOf("Tabby") !== -1 && bluData.length > 10) {
           // console.log('硬件名称', bluName, '-----硬件数据', bluData);
@@ -889,7 +876,7 @@ class App extends Component {
           let confirmBtn = bluData[10]; //十六进制数字，值为01代表尺子拉动，值为x2代表按了尺子确认按钮
           let rulerUnitNum = parseInt(bluData[13], 16); //十进制数字，值等于11代表单位为in，00代表单位为cm
           let newVal = null; //为测量数值，和单位匹配对应
-          const ITEMINDEX = 6;
+          const ITEMINDEX = 9;
           let units = rulerUnitNum === 0 ? "cm" : "in";
           let mac = bluData[1];
           for (let i = 2; i <= 6; i++) {
@@ -933,7 +920,7 @@ class App extends Component {
           function getVal(shi, xiaoshuo, units) {
             let num1 = parseInt(shi, 16);
             let num2 = parseInt(xiaoshuo, 16);
-            console.log(shi, xiaoshuo, num1, num2, `${num1}.${num2}`, units);
+            // console.log(shi, xiaoshuo, num1, num2, `${num1}.${num2}`, units);
             if (units === 'cm') {
               let value = parseFloat(`${num1}.${num2}`).toFixed(1)
               return value

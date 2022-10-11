@@ -175,6 +175,7 @@ export const transitionTime = (time) => {
  * @returns 返回猫的瘦体重
  */
 export const catLeanBodyMass = (headCircumference, hindlimbLength, forelimbCircumference, forelimbLength, bodyLength, upperTorsoCircumference) => {
+  console.log('headCircumference, hindlimbLength, forelimbCircumference, forelimbLength, bodyLength, upperTorsoCircumference: ', headCircumference, hindlimbLength, forelimbCircumference, forelimbLength, bodyLength, upperTorsoCircumference);
   //头部直径
   let headDiameter = headCircumference / 3
   let value = 30.3 * (headDiameter * hindlimbLength) + 316.9 * forelimbCircumference + 2.55 * (upperTorsoCircumference / 3) * forelimbLength + 14.4 * bodyLength - 3058.7
@@ -189,6 +190,7 @@ export const catLeanBodyMass = (headCircumference, hindlimbLength, forelimbCircu
 * @returns
 */
 export const catFatMass = (weight, headCircumference, forelimbLength, forelimbCircumference) => {
+  console.log('weight, headCircumference, forelimbLength, forelimbCircumference: ', weight, headCircumference, forelimbLength, forelimbCircumference);
 
   return 436.9 * weight - 24 * (headCircumference / 3) * forelimbLength - 309.2 * forelimbCircumference + 2522.7
 }
