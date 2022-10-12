@@ -118,11 +118,12 @@ const CalculationResult = ({
   }
   //获取FatMass
   const getFatMass = () => {
+    console.log('===================================', petPicture(petSpeciesBreedId));
     switch (petPicture(petSpeciesBreedId)) {
       case 'cat':
         return _.round(catFatMass(weight * 2.2046, in_cm(headValue), in_cm(forelimbLengthValue), in_cm(forelimbCircumferenceValue)), 2);
       case 'dog':
-        return _.round(dogBodyFatPercentage(in_cm(upperValue), in_cm(lowerValue), in_cm(hindlimbValue), in_cm(headValue)), 2);
+        return _.round(dogFatMass(weight * 2.2046, in_cm(hindlimbValue), in_cm(upperValue), in_cm(headValue)), 2);
       default:
         // message.warning('The pet is of unknown breed');
         return;
@@ -134,7 +135,8 @@ const CalculationResult = ({
       case 'cat':
         return;
       case 'dog':
-        return _.round(dogFatMass(weight * 2.2046, in_cm(hindlimbValue), in_cm(upperValue), in_cm(headValue)), 2);
+        return _.round(dogBodyFatPercentage(in_cm(upperValue), in_cm(lowerValue), in_cm(hindlimbValue), in_cm(headValue)), 2);
+
       default:
         // message.warning('The pet is of unknown breed');
         return;
