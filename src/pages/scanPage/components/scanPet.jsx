@@ -387,23 +387,6 @@ const ScanPet = ({
       setCarouselIndex(3);
     }
   }
-  //小圆点点击事件
-  // const clickPoint = (index) => {
-  //   switch (index) {
-  //     case 1:
-  //       setCarouselIndex(1);
-  //       break;
-  //     case 2:
-  //       setCarouselIndex(2);
-  //       break;
-  //     case 3:
-  //       setCarouselIndex(3);
-  //       break;
-  //     default:
-  //       setCarouselIndex(1);
-  //       break;
-  //   }
-  // };
   //切换宠物获取到长度信息,对数据根据界面单位进行换算
   const petLengthDataConvert = (val) => {
     if (!val) {
@@ -507,7 +490,7 @@ const ScanPet = ({
     }
     return () => { };
   }, [inputIndex]);
-  //监听小圆点切换
+  //监听切换
   useEffect(() => {
     switch (carouselIndex) {
       case 1:
@@ -820,44 +803,6 @@ const ScanPet = ({
             <RightOutlined style={{ fontSize: '24px', visibility: carouselIndex === 3 ? 'hidden' : 'visible' }} />
           </div>
         </div>
-        {/*小圆点 */}
-        {/* <div className="dotBox">
-          <ul className="dotList">
-            <li>
-              <Button
-                className="dotItem"
-                onClick={() => clickPoint(1)}
-                style={{
-                  background: carouselIndex === 1 ? "#0a0a0a" : "#bdbaba",
-                }}
-              >
-                1
-              </Button>
-            </li>
-            <li>
-              <Button
-                className="dotItem"
-                onClick={() => clickPoint(2)}
-                style={{
-                  background: carouselIndex === 2 ? "#0a0a0a" : "#bdbaba",
-                }}
-              >
-                2
-              </Button>
-            </li>
-            <li>
-              <Button
-                className="dotItem"
-                onClick={() => clickPoint(3)}
-                style={{
-                  background: carouselIndex === 3 ? "#0a0a0a" : "#bdbaba",
-                }}
-              >
-                3
-              </Button>
-            </li>
-          </ul>
-        </div> */}
         {/*历史测量数据展示*/}
         <div className="historyBox">
           <div className="historyTimeBox">

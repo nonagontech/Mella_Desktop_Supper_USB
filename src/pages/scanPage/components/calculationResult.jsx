@@ -32,6 +32,7 @@ const CalculationResult = ({
   petDetailInfoFun,
   ruleMessage,
   getMeasureData,
+  setRulerUnitFun
 }) => {
   let { petId, petSpeciesBreedId, weight, birthday } = petMessage;
   let { rulerUnit } = ruleMessage;
@@ -61,29 +62,30 @@ const CalculationResult = ({
       onOk: saveData,
     });
   }
+  //in-cm转换
+  const in_cm = (val) => {
+    if (val) {
+      if (rulerUnit === "in") {
+        return parseFloat((parseFloat(val) * 2.54).toFixed(1));
+      } else {
+        return parseFloat(val);
+      }
+    } else {
+      return 0;
+    }
+  }
   //保存数据
   const saveData = () => {
-    const newNum = (val) => {
-      if (val) {
-        if (rulerUnit === "in") {
-          return parseFloat((parseFloat(val) * 2.54).toFixed(1));
-        } else {
-          return parseFloat(val);
-        }
-      } else {
-        return "";
-      }
-    };
     let prams = {
-      l2rarmDistance: newNum(getMeasureData.bodyValue) || null,
-      lowerTorsoCircumference: newNum(getMeasureData.lowerValue) || null,
-      upperTorsoCircumference: newNum(getMeasureData.upperValue) || null,
-      neckCircumference: newNum(getMeasureData.neckValue) || null,
-      h2tLength: newNum(getMeasureData.headValue) || null,
-      torsoLength: newNum(getMeasureData.torsoValue) || null,
-      hindLimbLength: newNum(getMeasureData.hindlimbValue) || null,
-      foreLimbLength: newNum(getMeasureData.forelimbLengthValue) || null,
-      foreLimbCircumference: newNum(getMeasureData.forelimbCircumferenceValue) || null,
+      l2rarmDistance: in_cm(getMeasureData.bodyValue) || null,
+      lowerTorsoCircumference: in_cm(getMeasureData.lowerValue) || null,
+      upperTorsoCircumference: in_cm(getMeasureData.upperValue) || null,
+      neckCircumference: in_cm(getMeasureData.neckValue) || null,
+      h2tLength: in_cm(getMeasureData.headValue) || null,
+      torsoLength: in_cm(getMeasureData.torsoValue) || null,
+      hindLimbLength: in_cm(getMeasureData.hindlimbValue) || null,
+      foreLimbLength: in_cm(getMeasureData.forelimbLengthValue) || null,
+      foreLimbCircumference: in_cm(getMeasureData.forelimbCircumferenceValue) || null,
     };
     updatePetInfo1(storage.userId, petId, prams)
       .then((res) => {
@@ -106,9 +108,9 @@ const CalculationResult = ({
   const getLeanBodyMass = () => {
     switch (petPicture(petSpeciesBreedId)) {
       case 'cat':
-        return _.round(catLeanBodyMass(headValue, hindlimbValue, forelimbCircumferenceValue, forelimbLengthValue, bodyValue, upperValue), 2);
+        return _.round(catLeanBodyMass(headValue, in_cm(hindlimbValue), in_cm(forelimbCircumferenceValue), in_cm(forelimbLengthValue), in_cm(bodyValue), in_cm(upperValue)), 2);
       case 'dog':
-        return _.round(dogLeanBodyMass(weight * 2.2046, calculateAge(birthday), headValue, forelimbLengthValue, hindlimbValue), 2);
+        return _.round(dogLeanBodyMass(weight * 2.2046, calculateAge(birthday), in_cm(headValue), in_cm(forelimbLengthValue), in_cm(hindlimbValue)), 2);
       default:
         // message.warning('The pet is of unknown breed');
         return;
@@ -118,9 +120,9 @@ const CalculationResult = ({
   const getFatMass = () => {
     switch (petPicture(petSpeciesBreedId)) {
       case 'cat':
-        return _.round(catFatMass(weight * 2.2046, headValue, forelimbLengthValue, forelimbCircumferenceValue), 2);
+        return _.round(catFatMass(weight * 2.2046, in_cm(headValue), in_cm(forelimbLengthValue), in_cm(forelimbCircumferenceValue)), 2);
       case 'dog':
-        return _.round(dogBodyFatPercentage(upperValue, lowerValue, hindlimbValue, headValue), 2);
+        return _.round(dogBodyFatPercentage(in_cm(upperValue), in_cm(lowerValue), in_cm(hindlimbValue), in_cm(headValue)), 2);
       default:
         // message.warning('The pet is of unknown breed');
         return;
@@ -132,7 +134,7 @@ const CalculationResult = ({
       case 'cat':
         return;
       case 'dog':
-        return _.round(dogFatMass(weight * 2.2046, hindlimbValue, upperValue, headValue), 2);
+        return _.round(dogFatMass(weight * 2.2046, in_cm(hindlimbValue), in_cm(upperValue), in_cm(headValue)), 2);
       default:
         // message.warning('The pet is of unknown breed');
         return;
