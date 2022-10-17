@@ -118,7 +118,6 @@ const CalculationResult = ({
   }
   //获取FatMass
   const getFatMass = () => {
-    console.log('===================================', petPicture(petSpeciesBreedId));
     switch (petPicture(petSpeciesBreedId)) {
       case 'cat':
         return _.round(catFatMass(weight * 2.2046, in_cm(headValue), in_cm(forelimbLengthValue), in_cm(forelimbCircumferenceValue)), 2);

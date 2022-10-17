@@ -912,7 +912,7 @@ class EditPetInfo extends Component {
               } catch (error) {
 
               }
-              this.props.petDetailInfoFun({ ...this.props.petDetailInfo, petName, birthday, patientId: this.state.patientId })
+              this.props.petDetailInfoFun({ ...this.props.petDetailInfo, petName, birthday, patientId: this.state.patientId, weight: weight })
               this.props.history.goBack()
             } else {
               message.error('This patient ID is already occupied, please change to a new one')
