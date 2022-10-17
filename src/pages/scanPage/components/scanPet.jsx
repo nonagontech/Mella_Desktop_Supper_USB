@@ -1133,6 +1133,15 @@ const ScanPet = ({
               type="primary"
               shape="round"
               size='middle'
+              onClick={() => setMissMeasureVisible(false)}
+              className="modalBtn"
+            >
+              cancel
+            </Button>
+            <Button
+              type="primary"
+              shape="round"
+              size='middle'
               onClick={() => saveMiss()}
               className="modalBtn"
             >
