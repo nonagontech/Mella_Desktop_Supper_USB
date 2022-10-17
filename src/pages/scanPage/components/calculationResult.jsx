@@ -118,7 +118,6 @@ const CalculationResult = ({
   }
   //获取FatMass
   const getFatMass = () => {
-    console.log('===================================', petPicture(petSpeciesBreedId));
     switch (petPicture(petSpeciesBreedId)) {
       case 'cat':
         return _.round(catFatMass(weight * 2.2046, in_cm(headValue), in_cm(forelimbLengthValue), in_cm(forelimbCircumferenceValue)), 2);
@@ -180,10 +179,19 @@ const CalculationResult = ({
           </div>
         </div>
       </div>
-      <div className="againMeasureBox">
+      {/* <div className="againMeasureBox">
         <p onClick={() => onAgainMeasure()}>Measure Again</p>
-      </div>
+      </div> */}
       <div className="calculateBtnBox">
+        <Button
+          type="primary"
+          shape="round"
+          size="large"
+          className="calculateBtn"
+          onClick={() => onAgainMeasure()}
+        >
+          Measure Again
+        </Button>
         <Button
           type="primary"
           shape="round"

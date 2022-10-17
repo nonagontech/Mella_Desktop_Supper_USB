@@ -6,6 +6,7 @@ import {
   Space,
   Button,
   message,
+  Modal,
 } from "antd";
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
@@ -53,7 +54,8 @@ import catForelimbCircumference_D from "./../../../assets/img/catForelimbCircumf
 import amplification from './../../../assets/img/amplification.png';
 import shrink from './../../../assets/img/shrink.png';
 
-
+import { useUpdateEffect } from 'ahooks';
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   selectHardwareModalShowFun,
@@ -63,6 +65,7 @@ import {
   setRulerMeasureValueFun,
   setRulerUnitFun,
   setRulerConfirmCountFun,
+  setSelectHardwareType
 } from "../../../store/actions";
 import { px } from "../../../utils/px";
 import NumericInput from "./numericInput";
@@ -78,12 +81,16 @@ const ScanPet = ({
   setRulerUnitFun,
   type,
   setMeasureData,
+  setSelectHardwareType,
 }) => {
-  let { petSpeciesBreedId, petId } = petMessage;
+  let history = useHistory();
+  let { petSpeciesBreedId, petId, weight } = petMessage;
   let { rulerMeasureValue, rulerConfirmCount, rulerUnit, rulerConnectStatus, selectHardwareInfo, receiveBroadcastHardwareInfo } = ruleMessage;
   const [radioValue, setRadioValue] = useState("in");//单位
   const [inputIndex, setInputIndex] = useState(-1);//输入框下标
+  const [missInputIndex, setMissInputIndex] = useState(0);//输入框下标
   const [carouselIndex, setCarouselIndex] = useState(1);//小小圆点下标
+
   const [headValue, setHeadValue] = useState(""); //接收输入框的值
   const [neckValue, setNeckValue] = useState(""); //接收输入框的值
   const [upperValue, setUpperValue] = useState(""); //接收输入框的值
@@ -93,13 +100,31 @@ const ScanPet = ({
   const [hindlimbValue, setHindlimbValue] = useState(""); //接收输入框的值
   const [forelimbLengthValue, setForelimbLengthValue] = useState(""); //接收输入框的值
   const [forelimbCircumferenceValue, setForelimbCircumferenceValue] = useState(""); //接收输入框的值
-  const [lookType, setLookType] = useState(false);//用户查看局部放大图片
-  let newData = [];
 
-  //保存input组
+  const [missHeadValue, setMissHeadValue] = useState(""); //接收输入框的值
+  const [missNeckValue, setMissNeckValue] = useState(""); //接收输入框的值
+  const [missUpperValue, setMissUpperValue] = useState(""); //接收输入框的值
+  const [missLowerValue, setMissLowerValue] = useState(""); //接收输入框的值
+  const [missTorsoValue, setMissTorsoValue] = useState(""); //接收输入框的值
+  const [missBodyValue, setMissBodyValue] = useState(""); //接收输入框的值
+  const [missHindlimbValue, setMissHindlimbValue] = useState(""); //接收输入框的值
+  const [missForelimbLengthValue, setMissForelimbLengthValue] = useState(""); //接收输入框的值
+  const [missForelimbCircumferenceValue, setMissForelimbCircumferenceValue] = useState(""); //接收输入框的值
+
+  const [lookType, setLookType] = useState(false);//用户查看局部放大图片
+  const [weightTipVisible, setWeightTipVisible] = useState(false);//体重是否为空的弹窗
+  const [missMeasureVisible, setMissMeasureVisible] = useState(false);//是否有遗漏测量的弹窗
+  let newData = [];
+  let missNewData = [];
+
+  //保存input组，为了选中
   const inputEl = (data) => {
     newData.push(data);
   };
+  //保存遗漏的input组，为了选中
+  const missInputEl = (data) => {
+    missNewData.push(data);
+  }
   //切换聚焦事件
   const switchFocus = () => {
     let num = inputIndex;
@@ -113,20 +138,33 @@ const ScanPet = ({
       setInputIndex(num + 1);
     }
   };
-  //切换到计算界面
+  //切换到计算界面，判断测量结果是否有遗漏
   const finishScan = () => {
-    type(true);
-    setMeasureData({
-      headValue: headValue,
-      neckValue: neckValue,
-      upperValue: upperValue,
-      lowerValue: lowerValue,
-      torsoValue: torsoValue,
-      bodyValue: bodyValue,
-      hindlimbValue: hindlimbValue,
-      forelimbLengthValue: forelimbLengthValue,
-      forelimbCircumferenceValue: forelimbCircumferenceValue,
-    })
+    if (headValue && neckValue && upperValue && lowerValue && torsoValue && bodyValue && hindlimbValue && forelimbLengthValue && forelimbCircumferenceValue) {
+      type(true);
+      setMeasureData({
+        headValue: headValue,
+        neckValue: neckValue,
+        upperValue: upperValue,
+        lowerValue: lowerValue,
+        torsoValue: torsoValue,
+        bodyValue: bodyValue,
+        hindlimbValue: hindlimbValue,
+        forelimbLengthValue: forelimbLengthValue,
+        forelimbCircumferenceValue: forelimbCircumferenceValue,
+      });
+    } else {
+      setMissHeadValue(headValue);
+      setMissNeckValue(neckValue);
+      setMissUpperValue(upperValue);
+      setMissLowerValue(lowerValue);
+      setMissTorsoValue(torsoValue);
+      setMissBodyValue(bodyValue);
+      setMissHindlimbValue(hindlimbValue);
+      setMissForelimbLengthValue(forelimbLengthValue);
+      setMissForelimbCircumferenceValue(forelimbCircumferenceValue);
+      setMissMeasureVisible(true);
+    }
   };
   //判断是猫还是狗还是其他
   const checkPetType = () => {
@@ -357,6 +395,10 @@ const ScanPet = ({
   const clickInput = (index) => {
     setInputIndex(index);
   };
+  //点击遗漏输入框事件
+  const missClickInput = (index) => {
+    setMissInputIndex(index);
+  }
   //单位转化
   const changeUnit = (value) => {
     if (rulerUnit === "cm") {
@@ -477,6 +519,41 @@ const ScanPet = ({
         </Space>;
     }
   }
+  //用户忽视体重为空
+  const onCancel = () => {
+    setWeightTipVisible(false);
+  }
+  //用户更新宠物体重信息
+  const updatePetMessage = () => {
+    //跳转到编辑宠物信息页面
+    history.push("/page9");
+  }
+  //用户前往体脂秤界面进行测量体重
+  const goToBiggieScale = () => {
+    setSelectHardwareType('biggie');
+    //跳转到mainBody界面
+    history.push("/MainBody");
+  }
+  //用户完成遗漏的数值填写
+  const saveMiss = () => {
+    if (missHeadValue && missNeckValue && missUpperValue && missLowerValue && missTorsoValue && missBodyValue && missHindlimbValue && missForelimbLengthValue && missForelimbCircumferenceValue) {
+      type(true);
+      setMeasureData({
+        headValue: headValue || missHeadValue,
+        neckValue: neckValue || missNeckValue,
+        upperValue: upperValue || missUpperValue,
+        lowerValue: lowerValue || missLowerValue,
+        torsoValue: torsoValue || missTorsoValue,
+        bodyValue: bodyValue || missBodyValue,
+        hindlimbValue: hindlimbValue || missHindlimbValue,
+        forelimbLengthValue: forelimbLengthValue || missForelimbLengthValue,
+        forelimbCircumferenceValue: forelimbCircumferenceValue || missForelimbCircumferenceValue,
+      });
+    } else {
+      message.warning('Please complete the missing values');
+    }
+
+  }
 
   //监听点击界面中下一步按钮
   useEffect(() => {
@@ -490,6 +567,13 @@ const ScanPet = ({
     }
     return () => { };
   }, [inputIndex]);
+  //监听点击遗漏弹窗里面的输入框
+  // useUpdateEffect(() => {
+  //   console.log('missInputIndex: ', missInputIndex);
+  //   if (missInputIndex < 9) {
+  //     missNewData[missInputIndex].focus();
+  //   }
+  // }, [missInputIndex])
   //监听切换
   useEffect(() => {
     switch (carouselIndex) {
@@ -538,7 +622,6 @@ const ScanPet = ({
       foreLimbLength,
       foreLimbCircumference
     } = petMessage;
-
     setBodyValue(petLengthDataConvert(l2rarmDistance));
     setLowerValue(petLengthDataConvert(lowerTorsoCircumference));
     setUpperValue(petLengthDataConvert(upperTorsoCircumference));
@@ -604,10 +687,20 @@ const ScanPet = ({
 
     }
   }, [rulerConfirmCount, rulerMeasureValue]);
+  //检测宠物体重是否为空
+  useEffect(() => {
+    if (!weight) {
+      setWeightTipVisible(true)
+    }
+    return () => { };
+  }, [petId])
 
   return (
     <>
       <Content className="scanContentBox">
+        <div className="historyWeightBox">
+          <p>Last Weighed Oct 20, 2022: 10 lbs</p>
+        </div>
         {
           lookType ?
             (
@@ -620,7 +713,6 @@ const ScanPet = ({
                   <NumericInput
                     value={onValue()}
                     onChange={onOnChange()}
-                    // getinput={inputEl}
                     onClick={() => clickInput(inputIndex)}
                     index={inputIndex}
                     onKey={inputIndex}
@@ -826,6 +918,229 @@ const ScanPet = ({
           </Button>
         </div>
       </Content>
+      <Modal
+        open={weightTipVisible}
+        width={320}
+        className='weightTipModal'
+        centered
+        keyboard={false}
+        closable={false}
+        footer={null}
+      >
+        <div className="modalContentBox">
+          <p className="title">Weight Required</p>
+          <div className="tipTitleBox">
+            <p className="tipTitle">
+              This pet's weight has not been
+            </p>
+            <p className="tipTitle">
+              entered into their profile. Update
+            </p>
+            <p className="tipTitle">
+              their pet profile with the weight or
+            </p>
+            <div className="tipTitle">
+              use the
+              <p onClick={() => goToBiggieScale()}>Biggie Scale</p>
+              .
+            </div>
+          </div>
+          <div className="modalBtnBox">
+            <Button
+              type="primary"
+              shape="round"
+              size='middle'
+              onClick={() => onCancel()}
+              className="modalBtn"
+            >
+              Skip
+            </Button>
+            <Button
+              type="primary"
+              shape="round"
+              size='middle'
+              onClick={() => updatePetMessage()}
+              className="modalBtn"
+            >
+              Update Profile
+            </Button>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        open={missMeasureVisible}
+        width={432}
+        className='missMeasureModal'
+        centered
+        keyboard={false}
+        closable={false}
+        footer={null}
+      >
+        <div className="modalContentBox">
+          <p className="title">You've missed these measurements</p>
+          <p className="title">Enter these missing readings</p>
+          <div className="inputBox">
+            {
+              headValue ? (null) :
+                (
+                  <div className="inputItem">
+                    <p className="inputTitle">Full Torso Length</p>
+                    <NumericInput
+                      value={missHeadValue}
+                      onChange={setMissHeadValue}
+                      getinput={missInputEl}
+                      onClick={() => missClickInput(0)}
+                      index={missInputIndex}
+                      onKey={0}
+                    />
+                  </div>
+
+                )
+            }
+            {
+              neckValue ? (null) :
+                (
+                  <div className="inputItem">
+                    <p className="inputTitle">Neck Circumference</p>
+                    <NumericInput
+                      value={missNeckValue}
+                      onChange={setMissNeckValue}
+                      getinput={missInputEl}
+                      onClick={() => missClickInput(1)}
+                      index={missInputIndex}
+                      onKey={1}
+                    />
+                  </div>
+
+                )
+            }
+            {
+              upperValue ? (null) :
+                (
+                  <div className="inputItem">
+                    <p className="inputTitle">Upper Torso Circumference</p>
+                    <NumericInput
+                      value={missUpperValue}
+                      onChange={setMissUpperValue}
+                      getinput={missInputEl}
+                      onClick={() => missClickInput(2)}
+                      index={missInputIndex}
+                      onKey={2}
+                    />
+                  </div>
+                )
+            }
+            {
+              lowerValue ? (null) :
+                (
+                  <div className="inputItem">
+                    <p className="inputTitle">Lower Torso Circumference</p>
+                    <NumericInput
+                      value={missLowerValue}
+                      onChange={setMissLowerValue}
+                      getinput={missInputEl}
+                      onClick={() => missClickInput(3)}
+                      index={missInputIndex}
+                      onKey={3}
+                    />
+                  </div>
+                )
+            }
+            {
+              torsoValue ? (null) :
+                (
+                  <div className="inputItem">
+                    <p className="inputTitle">Full Torso Length</p>
+                    <NumericInput
+                      value={missTorsoValue}
+                      onChange={setMissTorsoValue}
+                      getinput={missInputEl}
+                      onClick={() => missClickInput(4)}
+                      index={missInputIndex}
+                      onKey={4}
+                    />
+                  </div>
+                )
+            }
+            {
+              bodyValue ? (null) :
+                (
+                  <div className="inputItem">
+                    <p className="inputTitle">Full Body Length</p>
+                    <NumericInput
+                      value={missBodyValue}
+                      onChange={setMissBodyValue}
+                      getinput={missInputEl}
+                      onClick={() => missClickInput(5)}
+                      index={missInputIndex}
+                      onKey={5}
+                    />
+                  </div>
+                )
+            }
+            {
+              hindlimbValue ? (null) :
+                (
+                  <div className="inputItem">
+                    <p className="inputTitle">Hindlimb Length</p>
+                    <NumericInput
+                      value={missHindlimbValue}
+                      onChange={setMissHindlimbValue}
+                      getinput={missInputEl}
+                      onClick={() => missClickInput(6)}
+                      index={missInputIndex}
+                      onKey={6}
+                    />
+                  </div>
+                )
+            }
+            {
+              forelimbLengthValue ? (null) :
+                (
+                  <div className="inputItem">
+                    <p className="inputTitle">Forelimb Length</p>
+                    <NumericInput
+                      value={missForelimbLengthValue}
+                      onChange={setMissForelimbLengthValue}
+                      getinput={missInputEl}
+                      onClick={() => missClickInput(7)}
+                      index={missInputIndex}
+                      onKey={7}
+                    />
+                  </div>
+                )
+            }
+            {
+              forelimbCircumferenceValue ? (null) :
+                (
+                  <div className="inputItem">
+                    <p className="inputTitle">Forelimb Circumference</p>
+                    <NumericInput
+                      value={missForelimbCircumferenceValue}
+                      onChange={setMissForelimbCircumferenceValue}
+                      getinput={missInputEl}
+                      onClick={() => missClickInput(8)}
+                      index={missInputIndex}
+                      onKey={8}
+                    />
+                  </div>
+                )
+            }
+
+          </div>
+          <div className="modalBtnBox">
+            <Button
+              type="primary"
+              shape="round"
+              size='middle'
+              onClick={() => saveMiss()}
+              className="modalBtn"
+            >
+              Save and Calculate
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };
@@ -843,5 +1158,6 @@ export default connect(
     setRulerMeasureValueFun,
     setRulerUnitFun,
     setRulerConfirmCountFun,
+    setSelectHardwareType,
   }
 )(ScanPet);
