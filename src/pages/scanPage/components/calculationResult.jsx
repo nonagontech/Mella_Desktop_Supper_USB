@@ -179,10 +179,19 @@ const CalculationResult = ({
           </div>
         </div>
       </div>
-      <div className="againMeasureBox">
+      {/* <div className="againMeasureBox">
         <p onClick={() => onAgainMeasure()}>Measure Again</p>
-      </div>
+      </div> */}
       <div className="calculateBtnBox">
+        <Button
+          type="primary"
+          shape="round"
+          size="large"
+          className="calculateBtn"
+          onClick={() => onAgainMeasure()}
+        >
+          Measure Again
+        </Button>
         <Button
           type="primary"
           shape="round"
