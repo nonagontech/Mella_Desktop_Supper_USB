@@ -90,8 +90,13 @@ const HistoryTable = ({
     },
 
     {
-      title: "BF%",
-      dataIndex: "fat",
+      // title: "BF%",
+      // dataIndex: "fat",
+      title: "Impedance",
+      dataIndex: "impedance",
+
+
+
       key: "fat",
       ellipsis: true,
       align: "center",

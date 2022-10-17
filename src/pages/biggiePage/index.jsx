@@ -33,6 +33,7 @@ const BiggirPage = ({
   let { biggieBodyWeight } = hardwareReduce;
   //定义体重值 体脂值 体重单位 连接状态
   const [weight, setWeight] = useState(0);
+  const [impedance, setImpedance] = useState(null)
   const [saveNum, setSaveNum] = useState(0);
   const [fat, setFat] = useState(0);
   const [unit, setUnit] = useState("kg");
@@ -40,6 +41,7 @@ const BiggirPage = ({
   const [isSavePMS, setIsSavePMS] = useState(false);
   const [saveLoad, setSaveLoad] = useState(false);
   const [isHaveSaveBtn, setIsHaveSaveBtn] = useState(true);
+  console.log('------', fat);
 
   const _saveWeight = () => {
     let params = {
@@ -47,8 +49,9 @@ const BiggirPage = ({
       doctorId: storage.userId,
       weight: weight,
       memo: "",
-      fat,
+      fat: null,
       bodyConditionScore: null,
+      impedance: impedance ? impedance : null
     };
     setSaveLoad(true);
     console.log("---体重保存入参--：", params);
@@ -216,6 +219,7 @@ const BiggirPage = ({
     } = hardwareReduce;
     setConnectStatus(biggieConnectStatus);
     setFat(biggieBodyFat);
+    setImpedance(biggieBodyFat)
     setUnit(biggieUnit);
     if (biggieUnit === "lb") {
       biggieBodyWeight = biggieBodyWeight * 2;
@@ -258,7 +262,7 @@ const BiggirPage = ({
               <div className="biggieTopBox">
                 <Biggie
                   weight={weight}
-                  bodyFat={fat}
+                  bodyFat={fat ? 5 : 0}
                   score={5}
                   impedance={fat}
                   isIbs={unit === "lb"}
