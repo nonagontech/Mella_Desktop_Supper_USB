@@ -698,6 +698,9 @@ const ScanPet = ({
   return (
     <>
       <Content className="scanContentBox">
+        <div className="historyWeightBox">
+          <p>Last Weighed Oct 20, 2022: 10 lbs</p>
+        </div>
         {
           lookType ?
             (
