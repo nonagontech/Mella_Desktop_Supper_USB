@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react'
-import { message } from 'antd';
+import { message, Modal, Button } from 'antd';
 import Heart from '../../utils/heard/Heard'
 import { px, win } from '../../utils/px'
 import MyModal from '../../utils/myModal/MyModal.jsx'
@@ -20,13 +20,11 @@ export default class AdvancedSettings extends Component {
     isUpload: false,
     updateModal: false,
     progress: 0,
-
-
     localVersion: '',
     cloudVersion: '',
-    filePath: ''
+    filePath: '',
+    isModalOpen: false,
   }
-
   componentDidMount() {
     ipcRenderer.send("big", win());
     //检测是否有usb设备
@@ -37,24 +35,33 @@ export default class AdvancedSettings extends Component {
     ipcRenderer.on('sned', this._send)
     //发送结束升级指令,相当于初始化
     ipcRenderer.send('reUpload', {})
+    //获取插入硬件版本
+    this.getHardwareVersion();
   }
   componentWillUnmount() {
     ipcRenderer.removeListener('noUSB', this._noUSB)
     ipcRenderer.removeListener('uploadBaseInfo', this._uploadBaseInfo)
     ipcRenderer.removeListener('sned', this._send)
-
     this.localVersionTimer && clearTimeout(this.localVersionTimer)
   }
-
+  //进入界面时获取底座的版本
+  getHardwareVersion = () => {
+    ipcRenderer.send('usbdata', { command: '08', arr: [''] });
+    this.localVersionTimer = setTimeout(() => {
+      //如果3秒后还没有收到桌面返回的版本号,则代表这是很老的底座程序,给出弹窗提示
+      this.setState({ isModalOpen: true });
+      this.localVersionTimer && clearTimeout(this.localVersionTimer)
+    }, 3000);
+  }
+  //底座发过来的指令信息
   _send = (event, data) => {
     //data就是测量的数据，是十进制的数字
-    console.log(data);
+    console.log('_send', data);
     let { isUpload } = this.state
 
     if (data[2] === 54) {
       if (isUpload) {
         if (data[3] === 0) {
-          console.log('这是已经在升级状态下的, 要他重新插拔底座然后再去发送指令');
           this.setState({
             uploadText: 'Start the upgrade after re-plugging the base'
           })
@@ -75,7 +82,7 @@ export default class AdvancedSettings extends Component {
       //获取到了版本信息,把定时器关闭,此底座不是很老版本
       console.log('版本信息:', data);
       this.localVersionTimer && clearTimeout(this.localVersionTimer)
-      let localVersion = `${data[6]}.${data[7]}.${data[8]}`
+      let localVersion = `${data[6]}.${data[7]}.${data[8]}`;
       this.setState({
         localVersion,
         uploadText: `The current version number is v${localVersion}, getting the latest version`
@@ -85,15 +92,14 @@ export default class AdvancedSettings extends Component {
     }
 
   }
-
   //是否插上底座设备，为true则代表插上了底座设备，反之为拔掉了底座设备
   _noUSB = (e, data) => {
     console.log('没有USB设备：', data);
     let { isUpload, progress } = this.state
     if (data === false) {
-
       this.setState({
-        isHaveBase: true
+        isHaveBase: true,
+        updateModal: false,
       })
       if (isUpload) {
         if (progress === 0) {
@@ -315,7 +321,6 @@ export default class AdvancedSettings extends Component {
   }
   //询问网端最新的版本号
   cloudVersion = () => {
-    console.log('-----进入获取网端版本时间了');
     getInfoOfLatestDevice('mellabase')
       .then(res => {
         console.log('获取到了网端的版本号', res);
@@ -437,6 +442,42 @@ export default class AdvancedSettings extends Component {
             </div>
           }
         />
+        <Modal
+          open={this.state.isModalOpen}
+          // width={432}
+          className='tipModal'
+          centered
+          keyboard={false}
+          closable={false}
+          footer={null}
+        >
+          <div className='modalContentBox'>
+            <p className="title">An update for the Mella Pro Charger is available</p>
+            <div className="modalBtnBox">
+              <Button
+                type="primary"
+                shape="round"
+                size='middle'
+                onClick={() => this.setState({ isModalOpen: false })}
+                className="modalBtn"
+              >
+                cancel
+              </Button>
+              <Button
+                type="primary"
+                shape="round"
+                size='middle'
+                onClick={() => {
+                  this._upload1('base');
+                  this.setState({ isModalOpen: false })
+                }}
+                className="modalBtn"
+              >
+                Update Mella Charging Base
+              </Button>
+            </div>
+          </div>
+        </Modal>
       </div>
     )
   }

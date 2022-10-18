@@ -23,8 +23,8 @@ export const ezyvetBaseUrl = process.env.REACT_APP_EZYVET_BASE_URL
 export const rhapsodyBaseUrl = process.env.REACT_APP_RHAPSODY_BASE_URL
 
 //环境变量类型‘react’    'electron'
-export const devType = 'react'
+// export const devType = 'react'
 
-// export const devType = 'electron'
+export const devType = 'electron'
 
 console.log('-5522-', mellaserverBaseUrl);
