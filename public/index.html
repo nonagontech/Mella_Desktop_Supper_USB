@@ -44,12 +44,22 @@
 <body id="htmlBody">
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <script src="./iconfont/iconfont.js"></script>
-  <script>
-    window.electron = require('electron');
-  </script>
+
   <div id="root"></div>
   <script>
-    window.electron = require('electron');
+    let devType = 'react'
+    if (devType === 'electron') {
+      window.electron = require('electron');
+    } else if (devType === 'react') {
+      window.electron = {
+        ipcRenderer: {
+          send: () => { },
+          on: () => { },
+          removeListener: () => { }
+        }
+      }
+    }
+
     if (window.screen.height > 900) {
       document.write('<link rel="stylesheet" href="css/index_900.css">');
     }

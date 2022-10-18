@@ -226,7 +226,8 @@ const BiggirPage = ({
     }
     setWeight(biggieBodyWeight);
     if (biggieSameWeightCount === 6) {
-      let ipcRenderer = window.require("electron").ipcRenderer;
+      // let ipcRenderer = window.require("electron").ipcRenderer;
+      let ipcRenderer = window.electron.ipcRenderer;
       ipcRenderer.send("keyboardWriting", weight);
     }
 
