@@ -28,23 +28,23 @@
 }
 
 #signIn .logo img {
-  width: 80px;
+  width: 48px;
 }
 
 #signIn .text {
-  font-size: 18px;
-  margin-bottom: 10px;
-  margin-top: 15px;
+  font-size: 16px;
+  margin-bottom: 8px;
+  margin-top: 8px;
 }
 
 #signIn .inpF .inp {
   width: 220px;
-  height: 35px;
-  font-size: 16px;
+  height: 30px;
+  font-size: 14px;
 }
 
 #signIn .button11 {
-  padding: 16px 0;
+  padding: 5px 0;
 }
 
 #signIn .button11 .btn1 {
@@ -59,7 +59,7 @@
 
 /*中间宠物列表*/
 #mainbody .deviceAndPets .PetUI11 .petList {
-  height: 270px;
+  height: 176px;
 }
 
 
@@ -321,7 +321,7 @@
 }
 
 #editPetInfo .editPetInfo_foot {
-  height: 10%;
+  height: 8%;
 }
 
 /*所有宠物列表界面*/
@@ -455,12 +455,12 @@
 }
 
 #settings .body .desk .title {
-  margin: 16px 0 8px 16px;
+  margin: 8px 0 8px 8px;
   font-size: 18px;
 }
 
 #settings .body .btnSave {
-  padding: 20px 0;
+  padding: 0;
 }
 
 /*帮助界面*/

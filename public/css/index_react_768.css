@@ -1,0 +1,52 @@
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#home,
+#signIn {
+  width: 288px;
+  height: 576px;
+  flex: none;
+  border: 1px #e7e7e7 solid;
+  overflow: visible;
+}
+
+#mainbody,
+#unassigned,
+#connectworkplace,
+#settings,
+#addDevice,
+#veterinarians,
+#advancedsettings,
+#allPets,
+#doctorAddPet,
+#editParent,
+#editPetInfo,
+#forgotPassword,
+#help,
+#inviteTeam,
+#joinOrganizationByOption,
+#newOraganization,
+#PetAndParents,
+#resetPassword,
+#scanCodeLogin,
+#verifyEmail,
+#vetPrifile,
+#inviteTeam,
+#unassigned {
+  width: 800px;
+  height: 592px;
+  border: 1px #e7e7e7 solid;
+  flex: none;
+}
+
+#mainbody .mainbody-body {
+  border: 1px #e7e7e7 solid;
+  border-radius: 0;
+}
+
+#unassigned .body .tableBox .ant-table-body {
+  max-height: 310px !important;
+}

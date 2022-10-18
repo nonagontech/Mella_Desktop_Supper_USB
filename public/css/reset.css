@@ -98,9 +98,9 @@ html, body {
   justify-content: center;
   flex-direction: column;
 }
-.ant-spin-nested-loading{
+/* .ant-spin-nested-loading{
   height: 100%;
-}
-.ant-spin-container{
+} */
+/* .ant-spin-container{
   height: 100%;
-}
+} */

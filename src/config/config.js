@@ -25,4 +25,6 @@ export const rhapsodyBaseUrl = process.env.REACT_APP_RHAPSODY_BASE_URL
 //环境变量类型‘react’    'electron'
 export const devType = 'react'
 
+// export const devType = 'electron'
+
 console.log('-5522-', mellaserverBaseUrl);

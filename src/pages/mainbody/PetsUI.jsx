@@ -274,9 +274,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     )
   }
   const selectOrgUI = () => {
-    // console.log('orgArr', orgArr);
     const selectOrgFn = (value, option) => {
-      console.log('-------value', value, option);
       setOrganizationName(value)
       storage.roleId = option.roleid
       storage.lastOrganization = option.organizationid
@@ -284,7 +282,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
       try {
         let key = parseInt(selectOrgId);
         let lastWorkplaceId = workplaceJson[key][0].workplaceId;
-        // console.log('------', lastWorkplaceId);
         storage.lastWorkplaceId = lastWorkplaceId;
 
       } catch (error) {
@@ -304,8 +301,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
           organizationid={item.organizationId}
           roleid={item.roleId}
           connectionkey={item.connectionKey}
-
-
         >
           {item.organizationName}
         </Option>
@@ -318,9 +313,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
         onChange={selectOrgFn}
         dropdownClassName="selectOrgUI"
         bordered={false}
-        // showArrow={false}
-        // dropdownMatchSelectWidth={140}
-        suffixIcon={() => <img src={xia} alt="" width={px(20)} style={{ marginLeft: px(10) }} />}
+        suffixIcon={<img src={xia} alt="" width={px(15)} style={{ marginLeft: px(10) }} />}
       >
         {options}
       </Select>
@@ -393,7 +386,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
               <div className="sortText" >
                 {`Sort by: ${petSortType}`}
               </div>
-              <img src={xia} alt="" width={px(15)} style={{ marginLeft: px(10),cursor:'pointer' }} />
+              <img src={xia} alt="" width={px(15)} style={{ marginLeft: px(10), cursor: 'pointer' }} />
             </div>
           </Dropdown>
           <Tooltip placement='bottom' title='Add a Pet'>
