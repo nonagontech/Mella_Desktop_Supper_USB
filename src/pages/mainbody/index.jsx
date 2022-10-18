@@ -52,7 +52,8 @@ import {
 import "./mainbody.less";
 
 
-let ipcRenderer = window.require("electron").ipcRenderer;
+// let ipcRenderer = window.require("electron").ipcRenderer;
+let ipcRenderer = window.electron.ipcRenderer;
 let isMeasure = false; //是否正在测量,用于判断是否需要发送指定指令给USB,查看硬件是否连接
 let initTime = 0; //初始化时间,用来计算底座没有回应温度计的时间差,如果时间差大于6秒代表断开连接
 let num07 = 0; //接收到07命令行的次数,次数大于3跳出弹框

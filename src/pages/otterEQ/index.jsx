@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Layout ,message} from "antd";
+import { Layout, message } from "antd";
 
 import LinkEquipment from "./components/linkEquipment";
 import SwabPetEar from "./components/swabPetEar";
@@ -20,7 +20,8 @@ import PropTypes from 'prop-types';
 import "./index.less";
 
 
-const ipcRenderer = window.require("electron").ipcRenderer;
+// const ipcRenderer = window.require("electron").ipcRenderer;
+let ipcRenderer = window.electron.ipcRenderer;
 const SDK = require("qsm-otter-sdk");
 
 const { Content, Header } = Layout;
@@ -70,17 +71,17 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
       console.log('error', error);
     }
 
-   setTimeout(async() => {
-    const connectionStatus = await SDK.readConnectionStatus()
+    setTimeout(async () => {
+      const connectionStatus = await SDK.readConnectionStatus()
 
-    let a = typeof (connectionStatus)
-    console.log('插入情况', connectionStatus, a);
-    if (typeof (connectionStatus) === 'boolean') {
-      let status = connectionStatus ? 'connected' : 'disconnected'
-      setQsmConnectStatus(status)
-      setQsmConStatus(status)
-    }
-   }, 500);
+      let a = typeof (connectionStatus)
+      console.log('插入情况', connectionStatus, a);
+      if (typeof (connectionStatus) === 'boolean') {
+        let status = connectionStatus ? 'connected' : 'disconnected'
+        setQsmConnectStatus(status)
+        setQsmConStatus(status)
+      }
+    }, 500);
 
 
   }
