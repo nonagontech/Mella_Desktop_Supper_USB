@@ -36,7 +36,7 @@ export default class AdvancedSettings extends Component {
     //发送结束升级指令,相当于初始化
     ipcRenderer.send('reUpload', {})
     //获取插入硬件版本
-    this.getHardwareVersion();
+    // this.getHardwareVersion();
   }
   componentWillUnmount() {
     ipcRenderer.removeListener('noUSB', this._noUSB)
@@ -45,14 +45,15 @@ export default class AdvancedSettings extends Component {
     this.localVersionTimer && clearTimeout(this.localVersionTimer)
   }
   //进入界面时获取底座的版本
-  getHardwareVersion = () => {
-    ipcRenderer.send('usbdata', { command: '08', arr: [''] });
-    this.localVersionTimer = setTimeout(() => {
-      //如果3秒后还没有收到桌面返回的版本号,则代表这是很老的底座程序,给出弹窗提示
-      this.setState({ isModalOpen: true });
-      this.localVersionTimer && clearTimeout(this.localVersionTimer)
-    }, 3000);
-  }
+  // getHardwareVersion = () => {
+  //   if(this.state.isHaveBase)
+  //   ipcRenderer.send('usbdata', { command: '08', arr: [''] });
+  //   this.localVersionTimer = setTimeout(() => {
+  //     //如果3秒后还没有收到桌面返回的版本号,则代表这是很老的底座程序,给出弹窗提示
+  //     this.setState({ isModalOpen: true });
+  //     this.localVersionTimer && clearTimeout(this.localVersionTimer)
+  //   }, 3000);
+  // }
   //底座发过来的指令信息
   _send = (event, data) => {
     //data就是测量的数据，是十进制的数字
@@ -92,14 +93,13 @@ export default class AdvancedSettings extends Component {
     }
 
   }
-  //是否插上底座设备，为true则代表插上了底座设备，反之为拔掉了底座设备
+  //是否插上底座设备，为false则代表插上了底座设备，反之为拔掉了底座设备
   _noUSB = (e, data) => {
     console.log('没有USB设备：', data);
     let { isUpload, progress } = this.state
     if (data === false) {
       this.setState({
         isHaveBase: true,
-        updateModal: false,
       })
       if (isUpload) {
         if (progress === 0) {
@@ -138,11 +138,11 @@ export default class AdvancedSettings extends Component {
 
 
       }
-
     } else {
       if (this.state.isHaveBase) {
         this.setState({
-          isHaveBase: false
+          isHaveBase: false,
+
         })
       }
       if (isUpload) {

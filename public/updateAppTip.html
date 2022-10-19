@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Hello World</title>
+  <script src="./assets/react.js"></script>
+  <script src="./assets/react-dom.js"></script>
+  <script src="./assets/babel.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/antd/4.18.2/antd.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.18.2/antd.compact.min.css">
+</head>
+
+<body>
+  <div id="updateAppTip"></div>
+</body>
+<script type="text/babel">
+  const MessageBox = () => {
+
+
+    return (
+      <div id="contreBox">
+        <img src="./assets/img/mella.png" alt="" height="150px" />
+        <p id="title">发现新版本1.0.0(54.84M)</p>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: '<p>修复bug</p>',
+          }}
+        />
+      </div>
+    )
+  };
+
+  ReactDOM.render(<MessageBox />, document.getElementById('updateAppTip'))
+</script>
+<style>
+  #updateAppTip {
+    height: 100%;
+    width: 100%;
+  }
+
+  #contreBox {
+    height: 100%;
+    width: 100%;
+  }
+</style>
+
+</html>

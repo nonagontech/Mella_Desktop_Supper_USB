@@ -11,6 +11,7 @@ const http = require('http')
 
 const {
   app,
+  BrowserView,
   BrowserWindow,
   ipcMain,
   Tray,
@@ -91,49 +92,15 @@ let windowOpen = true;
 let usbDetect = require("usb-detection");
 usbDetect.startMonitoring();
 usbDetect.on("add", function (device) {
-  // console.log('====================================');
-  // console.log(mainWindow);
-  // console.log('====================================');
-
-
-  // if (mainWindow) {
-  //   mainWindow.webContents.session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
-  //     console.log('====================================');
-  //     console.log('权限：',{webContents, permission, requestingOrigin, details});
-  //     console.log('====================================');
-  //     if (permission === 'serial') {
-  //       return true
-  //     }
-
-  //     return false
-  //   })
-
-  //   mainWindow.webContents.session.setDevicePermissionHandler((details) => {
-  //     if (details.deviceType === 'serial') {
-  //       return true
-  //     }
-
-  //     return false
-  //   })
-  //     //Add listeners to handle ports being added or removed before the callback for `select-serial-port`
-
-
-
-
-  // }
-  console.log("add", device);
   mainWindow.webContents.send("usbDetect", true);
 });
 usbDetect.on("remove", function (device) {
   console.log("remove", device);
   mainWindow.webContents.send("usbDetect", false);
-
   if (
     device.vendorId === deviceUSB.vendorId &&
     device.productId === deviceUSB.productId
   ) {
-    console.log("拔出来的设备是底座，要去搜索设备了");
-
     openUsb();
   }
 });
@@ -161,7 +128,6 @@ function openUsb() {
   if (windowOpen) {
     //如果没有点击退出
     if (!flog) {
-      console.log("没找到设备");
       deviceUSB = { productId: -1, vendorId: -1 };
       const timer = setTimeout(() => {
         openUsb();
@@ -169,11 +135,6 @@ function openUsb() {
       }, 2000);
       mainWindow.webContents.send("noUSB", true);
     } else {
-      console.log(
-        "找到了设备",
-        deviceUSB,
-        `${enterUpgradeFlog ? "升级状态" : "非升级状态"}`
-      );
       device = new HID.HID(path);
       device.on("data", (data) => {
         //监听底座发送过来的数据
@@ -199,7 +160,6 @@ function openUsb() {
         }
       });
       device.on("error", function (err) {
-        console.log("err", err);
         if (`${err}` === "Error: could not read from HID device") {
           console.log("两种可能，一种是usb被拔出了，一种是点击了重新切换的按钮");
         }
@@ -207,17 +167,14 @@ function openUsb() {
       if (!enterUpgradeFlog) {
         open_USB_Communication();
       }
-
       mainWindow.webContents.send("noUSB", false);
     }
   }
 }
-
 /**
  * 打开底座usb的蓝牙通信
  */
 function open_USB_Communication() {
-  console.log("打开了底座通信");
   device.write([0x00, 0xaa, 0x04, 0x36, 0x11, 0x23, 0x55]);
 }
 /**
@@ -284,7 +241,6 @@ function check(arr) {
   }
   return checkFloag;
 }
-
 //向蓝牙发送的数据进行转换，
 //入参 十六进制的控制命令字符串、数据位数组，数组的内容也是十六进制字符串
 //返回值：返回要发送的数组，数组里的每一位都是十进制的数字
@@ -309,10 +265,8 @@ function sendData(command, arr) {
   sendArr.push(parseInt(`55`, 16));
   return sendArr;
 }
-
 //托盘对象
 var appTray = null;
-
 function show(val) {
   let size = require("electron").screen.getPrimaryDisplay().workAreaSize;
   let width = parseInt(size.width);
@@ -334,7 +288,6 @@ function show(val) {
     height: windowHeight,
   };
 }
-
 //创建加载中的窗口
 let loadingWindow = null
 function createLoadingWindow() {
@@ -361,7 +314,6 @@ function createLoadingWindow() {
   });
 
 }
-
 function createWindow() {
   const windowOptions = {
     height: show(800).height,
@@ -373,15 +325,11 @@ function createWindow() {
       // devTools:false,
       nodeIntegration: true, // 是否集成 Nodejs,把之前预加载的js去了，发现也可以运行,设置为true就可以在这个渲染进程中调用Node.js
       contextIsolation: false,
-      // preload: path.join(__dirname, 'preload.js')
     },
     show: false, // newBrowserWindow创建后先隐藏，
     transparent: true,
   };
   mainWindow = new BrowserWindow(windowOptions);
-
-
-
   mainWindow.webContents.session.on('select-serial-port', (event, portList, webContents, callback) => {
 
     //Add listeners to handle ports being added or removed before the callback for `select-serial-port`
@@ -403,38 +351,22 @@ function createWindow() {
       callback('') //Could not find any matching devices
     }
   })
-
   mainWindow.webContents.session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
 
     if (permission === 'serial') {
       return true
     }
-
     return false
   })
-
   mainWindow.webContents.session.setDevicePermissionHandler((details) => {
     if (details.deviceType === 'serial') {
       return true
     }
-
     return false
   })
-
-
-
-
-
-
-
-
-
-
   const urlLocation = isDev
     ? "http://localhost:3000"
-    // ? `file://${path.join(__dirname, "./public/test.html")}`
     : `file://${path.join(__dirname, "./build/index.html")}`;
-
   mainWindow.loadURL(urlLocation);
   //是否打开开发者
   if (isDev) {
@@ -442,47 +374,6 @@ function createWindow() {
   }
   // 设置窗口是否可以由用户手动最大化。
   mainWindow.setMaximizable(false)
-
-  //系统托盘右键菜单
-  let trayMenuTemplate = [
-    {
-      label: "设置",
-      click: function () { }, //打开相应页面
-    },
-    {
-      label: "帮助",
-      click: function () { },
-    },
-    {
-      label: "关于",
-      click: function () { },
-    },
-    {
-      label: "退出",
-      click: function () {
-        app.quit();
-        app.quit(); //因为程序设定关闭为最小化，所以调用两次关闭，防止最大化时一次不能关闭的情况
-      },
-    },
-  ];
-  //系统托盘图标目录
-  // trayIcon = path.join(__dirname, './');//app是选取的目录
-
-  // appTray = new Tray(path.join(__dirname,'./logo.png'));//app.ico是app目录下的ico文件
-
-  // //图标的上下文菜单
-  // const contextMenu = Menu.buildFromTemplate(trayMenuTemplate);
-
-  // //设置此托盘图标的悬停提示内容
-  // appTray.setToolTip('Mella');
-
-  // //设置此图标的上下文菜单
-  // appTray.setContextMenu(contextMenu);
-  // //单击右下角小图标显示应用
-  // appTray.on('click',function(){
-  //   mainWindow.show();
-  // })
-
   mainWindow.on("closed", function () {
     mainWindow = null;
   });
@@ -493,11 +384,8 @@ function createWindow() {
     }, 20)
   });
 }
-
 //app主进程的事件和方法
-let fenbianlvTimer = null,
-  winWidth,
-  winHeight;
+let fenbianlvTimer = null, winWidth, winHeight;
 const statusMessage = {
   error: { status: -1, msg: "检测更新查询异常" },
   checking: { status: 0, msg: "正在检查应用程序更新" },
@@ -508,7 +396,6 @@ const statusMessage = {
   cencleInstall: { status: 5, msg: "取消安装" },
   downLoading: { status: 6, msg: "正在下载" },
 };
-
 const menu = new Menu();
 menu.append(
   new MenuItem({
@@ -592,20 +479,12 @@ function checkUpdate() {
   autoUpdater.autoDownload = false;
   autoUpdater.checkForUpdatesAndNotify();
   autoUpdater.on("error", (err) => {
-    console.log("升级错误", err);
     mainWindow.webContents.send("uploadMessage", {
       payload: statusMessage.error,
       output: err,
     });
-    //升级错误提示
-    // dialog.showErrorBox('Error:', err === null ? 'unknown' : `${err}`)
   });
   autoUpdater.on("update-available", (val) => {
-    console.log("我要开始更新了", val);
-    mainWindow.webContents.send("uploadMessage", {
-      payload: statusMessage.updateAva,
-      output: val,
-    });
     dialog
       .showMessageBox({
         type: "info",
@@ -615,7 +494,6 @@ function checkUpdate() {
         buttons: ["Yes", "No"],
       })
       .then((res) => {
-        console.log(res);
         if (res.response === 0) {
           autoUpdater.downloadUpdate();
         } else {
@@ -678,15 +556,33 @@ function checkUpdate() {
     });
   });
 }
-
 app.on("ready", () => {
   createLoadingWindow();
   checkUpdate();
   createWindow();
   openUsb();
+  // setTimeout(() => {
+  //   const win = new BrowserWindow({
+  //     width: 500,
+  //     height: 300,
+  //     maximizable: false, //禁止双击放大
+  //     frame: false, // 去掉顶部操作栏
+  //     parent: mainWindow,
+  //     modal: true,
+  //   });
+  //   if (isDev) {
+  //     win.webContents.openDevTools();
+  //   }
+  //   const urlLocation = isDev
+  //     ? require("path").join(__dirname, "/public/updateAppTip.html")
+  //     : `file://${path.join(__dirname, "./build/updateAppTip.html")}`;
+  //   win.loadURL(urlLocation);
+  //   win.once('ready-to-show', () => {
+  //     win.show();
+  //   });
+  // }, 500);
 
 });
-
 app.on("window-all-closed", () => {
   console.log("关闭USB插拔监控");
   windowOpen = false;
@@ -710,7 +606,6 @@ app.on("activate", () => {
     );
   }
 });
-
 let isCloseLoading = false;
 ipcMain.on("close-loading-window", function () {
   if (!isCloseLoading) {
@@ -718,7 +613,6 @@ ipcMain.on("close-loading-window", function () {
     loadingWindow.close();
   }
 });
-
 //登录窗口最小化
 ipcMain.on("window-min", function () {
   mainWindow.minimize();
@@ -755,7 +649,6 @@ function wind(width1, height1, data, min = {}) {
   mainWindow.setSize(width, height);
   Menu.setApplicationMenu(menu);
 }
-
 ipcMain.on("big", (e, data) => {
   let size = require("electron").screen.getPrimaryDisplay().workAreaSize;
   if (size.height >= 728 && size.height <= 860) {
@@ -767,14 +660,12 @@ ipcMain.on("big", (e, data) => {
   // mainWindow.setMinimumSize(show(800).height, show(900).height);
   // mainWindow.setSize(show(800).height, show(1000).height)
 });
-
 ipcMain.on("setting", (e, data) => {
   wind(850, 900, data);
   // mainWindow.setMaximumSize(show(850).height, show(900).height);
   // mainWindow.setMinimumSize(show(850).height, show(900).height);
   // mainWindow.setSize(show(850).height, show(1000).height)
 });
-
 ipcMain.on("Lowbig", (e, data) => {
   wind(800, 950, data);
   // mainWindow.setMaximumSize(show(800).height, show(1000).height);
@@ -811,17 +702,14 @@ ipcMain.on("small", (e, data) => {
   // mainWindow.setMinimumSize(width, height);
   // mainWindow.setSize(width, height);
 });
-
 ipcMain.on("changeFenBianLv", (e, data) => {
   // mainWindow.webContents.send("changeFenBianLv", true);
 });
-
 ipcMain.on("mesasure", (e, data) => {
   mainWindow.setMaximumSize(show(400).height, show(900).height);
   mainWindow.setMinimumSize(show(400).height, show(900).height);
   mainWindow.setSize(show(400).height, show(900).height);
 });
-
 ipcMain.on("num", (event, data) => {
   /**
    * 渲染端发来的数据
@@ -843,7 +731,6 @@ ipcMain.on("num", (event, data) => {
     // port.close()
   });
 });
-
 // 开启 开机自启动
 ipcMain.on("openAutoStart", () => {
   if (!isDev) {
@@ -868,7 +755,6 @@ ipcMain.on("clickUpdateBtn", () => {
   autoUpdater.autoDownload = false;
   autoUpdater.checkForUpdatesAndNotify();
 });
-
 ipcMain.on("usbdata", (event, data) => {
   /**
    *
@@ -898,7 +784,6 @@ ipcMain.on("qiehuan", (event, data) => {
   device && device.write(sendArr);
   device = null;
 });
-
 let writeTimer = null
 ipcMain.on("keyboardWriting", (event, data) => {
   if (data) {
@@ -911,7 +796,6 @@ ipcMain.on("keyboardWriting", (event, data) => {
     }, 500);
   }
 });
-
 //进入升级状态
 ipcMain.on("enterUpgrade", (event, data) => {
   /**
@@ -951,12 +835,8 @@ ipcMain.on("startUpload", (event, data) => {
 ipcMain.on("openDevTools", () => {
   mainWindow.webContents.openDevTools();
 });
-
-
-
 //发送了底座升级指令
-let dataArr = new Array(),
-  sendNum = 0;
+let dataArr = new Array(), sendNum = 0;
 ipcMain.on("updateBase", (event, data) => {
 
   if (data.state === "reset") {
@@ -970,7 +850,6 @@ ipcMain.on("updateBase", (event, data) => {
 
 
 });
-
 /**
  * @dec 根据升级文件的本地地址来获取到文件并对文件数据进行处理
  * @param {str} fileUrl  升级文件的地址
@@ -1008,16 +887,12 @@ function upgradeFileDataProcess(fileUrl) {
     enterUpgradeFlog = true;
   }
 }
-
-
-
 ipcMain.on("reUpload", (event, data) => {
   console.log("结束了");
   upload = false;
   enterUpgradeFlog = false;
   sendNum = 0;
 });
-
 /**
  *
  * @param {string} uri  文件下载地址
@@ -1056,18 +931,14 @@ function downFile(uri, fileName, path) {
     });
   });
 }
-
 /**
  * @dec 查看项目根目录下是否有download文件夹,如果不存在则直接创建一个
  */
 let oS = process.platform == 'darwin' ? 'Resources' : 'resources'
 const dirPathO = path.join(__dirname).split(oS)
-console.log('dirPathO', dirPathO);
 const relativePath = dirPathO[0];
-console.log('relativePath', relativePath);
 // 获取一个绝对路径的文件夹
 const dirPath = path.join(relativePath, "/download");
-console.log('dirPath', dirPath);
 //检测文件夹是否存在
 function createDir(fileName, uri,) {
   // 获取真实的绝对路径
@@ -1105,16 +976,10 @@ function checkFile(fileName, uri) {
   })
 
 }
-
-
-
-
 function sendUpload(params) {
   console.log(sendNum);
   if (sendNum < dataArr.length) {
     let value = dataArr[sendNum++];
-    // console.log("---升级发送的代码", value);
-
     device.write(value);
     let progress = parseFloat(((sendNum / dataArr.length) * 100).toFixed(2));
 
@@ -1123,12 +988,6 @@ function sendUpload(params) {
       data: `Upgrade progress：${progress}%`,
       progress,
     });
-    // if (`${progress}` !== '100.00') {
-
-    // } else {
-    //     // upload = false
-    //     mainWindow.webContents.send('uploadBaseInfo', { status: 'success', data: `update successed` })
-    // }
     if (`${progress}` === "100.00") {
       upload = false;
     }
@@ -1136,7 +995,6 @@ function sendUpload(params) {
     upload = false;
   }
 }
-
 /**
  *
  * 先全选，然后输入传进来的数据
