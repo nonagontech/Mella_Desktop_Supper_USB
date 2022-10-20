@@ -32,7 +32,6 @@ import moment from "moment";
 import electronStore from "../../../utils/electronStore";
 import "./measuredData.less";
 import {
-
   deletePetExamByExamId,
   ezyvetGetPetLatestExam,
   getPetExamByPetId,
@@ -40,7 +39,7 @@ import {
   updatePetExam,
   updateVitalsTemperatureByVitalId,
   vetspireGetPetLatestExam
-} from "../../../api";
+} from "./../../../api";
 import { addClamantPetExam } from './../../../api/mellaserver/exam'
 
 

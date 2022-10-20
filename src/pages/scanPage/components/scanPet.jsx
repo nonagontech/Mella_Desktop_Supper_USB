@@ -54,7 +54,6 @@ import catForelimbCircumference_D from "./../../../assets/img/catForelimbCircumf
 import amplification from './../../../assets/img/amplification.png';
 import shrink from './../../../assets/img/shrink.png';
 
-import { useUpdateEffect } from 'ahooks';
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
@@ -69,6 +68,9 @@ import {
 } from "../../../store/actions";
 import { px } from "../../../utils/px";
 import NumericInput from "./numericInput";
+import {
+  getRecentPetData
+} from "./../../../api";
 
 import _ from "lodash";
 
@@ -567,13 +569,6 @@ const ScanPet = ({
     }
     return () => { };
   }, [inputIndex]);
-  //监听点击遗漏弹窗里面的输入框
-  // useUpdateEffect(() => {
-  //   console.log('missInputIndex: ', missInputIndex);
-  //   if (missInputIndex < 9) {
-  //     missNewData[missInputIndex].focus();
-  //   }
-  // }, [missInputIndex])
   //监听切换
   useEffect(() => {
     switch (carouselIndex) {
@@ -693,7 +688,12 @@ const ScanPet = ({
       setWeightTipVisible(true)
     }
     return () => { };
-  }, [petId])
+  }, [petId]);
+  //获取上一次测量的体重
+  useEffect(() => {
+    getRecentPetData(petId);
+    return (() => { })
+  }, [])
 
   return (
     <>

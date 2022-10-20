@@ -59,21 +59,17 @@ const devWidth = 1920;
 const devHeight = 1080;
 //每次在检测到底座后都会发送打开底座的指令去打开底座,但是在发送升级指令后设备会断开重连检测.这就会导致在发送升级文件前会发送一段数据,导致mac升级时文件效验不通过,导致升级失败.因此加了此标志位,当发送了升级指令则为true,发送文件后重置为false
 let enterUpgradeFlog = false;
-
 let dataIndex = 0;
-
 let mainWindow = null;
+let updateWindow = null
 var port = null;
-
 app.allowRendererProcessReuse = false;
 const ex = process.execPath; //自启动的参数
-
 let device = null, //usb所在的设备
   file = "", //给底座进行升级的文件地址
   upload = false, //是否正在给底座进行升级
   deviceUSB = { productId: -1, vendorId: -1 };
 let HID = require("node-hid");
-
 let windowOpen = true;
 
 /**
@@ -485,43 +481,45 @@ function checkUpdate() {
     });
   });
   autoUpdater.on("update-available", (val) => {
-    dialog
-      .showMessageBox({
-        type: "info",
-        title: "App has a new version",
-        message:
-          "A new version is found, do you want to update it in the background?",
-        buttons: ["Yes", "No"],
-      })
-      .then((res) => {
-        if (res.response === 0) {
-          autoUpdater.downloadUpdate();
-        } else {
-          mainWindow.webContents.send("uploadMessage", {
-            payload: statusMessage.cencleUpdate,
-            output: null,
-          });
+    app.whenReady().then(() => {
+      updateWindow = new BrowserWindow({
+        width: 500,
+        height: 300,
+        maximizable: false, //禁止双击放大
+        frame: false, // 去掉顶部操作栏
+        parent: mainWindow,
+        modal: true,
+        resizable: false,
+        webPreferences: {
+          //是否注入nodeapi
+          nodeIntegration: true,
+          //渲染进程是否启用remote模块
+          enableRemoteModule: true,
+          contextIsolation: false,
         }
-      })
-      .catch((err) => {
-        console.log(err);
       });
+      // if (isDev) {
+      updateWindow.webContents.openDevTools();
+      // }
+      const urlLocation = isDev ? require("path").join(__dirname, "/public/updateAppTip.html") : `file://${path.join(__dirname, "./build/updateAppTip.html")}`;
+      updateWindow.loadURL(urlLocation);
+      updateWindow.webContents.on('did-finish-load', () => {
+        updateWindow.webContents.send('updateMessage', val)
+      })
+      updateWindow.on("closed", () => {
+        updateWindow = null;
+      });
+
+    })
   });
   autoUpdater.on("update-downloaded", (val) => {
-    console.log("update-downloaded", val);
-    mainWindow.webContents.send("uploadMessage", {
-      payload: statusMessage.downloadSuccess,
-      output: val,
-    });
-    dialog
-      .showMessageBox({
-        type: "info",
-        title: "Install",
-        message: "Do you want to install the update now?",
-        buttons: ["Yes", "No"],
-      })
+    dialog.showMessageBox({
+      type: "info",
+      title: "Install",
+      message: "Do you want to install the update now?",
+      buttons: ["Yes", "No"],
+    })
       .then((res) => {
-        console.log("安装更新", res);
         if (res.response === 0) {
           setImmediate(() => autoUpdater.quitAndInstall());
         } else {
@@ -536,24 +534,10 @@ function checkUpdate() {
       });
   });
   autoUpdater.on("download-progress", (data) => {
-
-
-    try {
-      mainWindow.setProgressBar(data.percent / 100, { mode: "normal" });
-      mainWindow.webContents.send("uploadMessage", {
-        payload: statusMessage.downLoading,
-        output: data.percent / 100,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    console.log('这个能够触发吗', data);
   });
   autoUpdater.on("update-not-available", (info) => {
-    console.log("当前版本为最新版本");
-    mainWindow.webContents.send("uploadMessage", {
-      payload: statusMessage.updateNotAva,
-      output: info,
-    });
+    console.log('最新版本', info);
   });
 }
 app.on("ready", () => {
@@ -562,39 +546,61 @@ app.on("ready", () => {
   createWindow();
   openUsb();
   // setTimeout(() => {
-  //   const win = new BrowserWindow({
-  //     width: 500,
-  //     height: 300,
-  //     maximizable: false, //禁止双击放大
-  //     frame: false, // 去掉顶部操作栏
-  //     parent: mainWindow,
-  //     modal: true,
-  //   });
-  //   if (isDev) {
-  //     win.webContents.openDevTools();
-  //   }
-  //   const urlLocation = isDev
-  //     ? require("path").join(__dirname, "/public/updateAppTip.html")
-  //     : `file://${path.join(__dirname, "./build/updateAppTip.html")}`;
-  //   win.loadURL(urlLocation);
-  //   win.once('ready-to-show', () => {
-  //     win.show();
-  //   });
+  //   app.whenReady().then(() => {
+  //     let val = {
+  //       tag: "v1.1.33",
+  //       version: "1.1.33",
+  //       files: [
+  //         {
+  //           url: "Mella-Super-Setup-1.1.33.exe",
+  //           sha512: "KaVB04etqL7bAxrGapG9t5O9uWG65pT09jM3W574AUw5h2aTy7smL37zayIl69lOIQtyizBKGKo+aczz3dzDsg==",
+  //           size: 240180201
+  //         }
+  //       ],
+  //       path: "Mella-Super-Setup-1.1.33.exe",
+  //       sha512: "KaVB04etqL7bAxrGapG9t5O9uWG65pT09jM3W574AUw5h2aTy7smL37zayIl69lOIQtyizBKGKo+aczz3dzDsg==",
+  //       releaseDate: "2022-10-19T11:11:32.511Z",
+  //       releaseName: "1.1.33",
+  //       releaseNotes: "<p>修复bug好多</p>"
+  //     }
+  //     updateWindow = new BrowserWindow({
+  //       width: 500,
+  //       height: 300,
+  //       maximizable: false, //禁止双击放大
+  //       frame: false, // 去掉顶部操作栏
+  //       parent: mainWindow,
+  //       modal: true,
+  //       resizable: false,
+  //       webPreferences: {
+  //         //是否注入nodeapi
+  //         nodeIntegration: true,
+  //         //渲染进程是否启用remote模块
+  //         enableRemoteModule: true,
+  //         contextIsolation: false,
+  //       }
+  //     });
+  //     // if (isDev) {
+  //     updateWindow.webContents.openDevTools();
+  //     // }
+  //     const urlLocation = isDev ? require("path").join(__dirname, "/public/updateAppTip.html") : `file://${path.join(__dirname, "./build/updateAppTip.html")}`;
+  //     updateWindow.loadURL(urlLocation);
+  //     updateWindow.webContents.on('did-finish-load', () => {
+  //       updateWindow.webContents.send('updateMessage', val)
+  //     })
+  //     updateWindow.on("closed", () => {
+  //       updateWindow = null;
+  //     });
+
+  //   })
   // }, 500);
 
 });
 app.on("window-all-closed", () => {
-  console.log("关闭USB插拔监控");
   windowOpen = false;
-  console.log(1);
   usbDetect.stopMonitoring();
-  console.log(2);
   close_USB_Communication();
-  console.log(3);
   device && device.close();
-  console.log(4);
   fenbianlvTimer && clearInterval(fenbianlvTimer);
-  console.log("退出");
   app.quit();
 });
 app.on("activate", () => {
@@ -625,10 +631,25 @@ ipcMain.on("window-max", function () {
     mainWindow.maximize();
   }
 });
+//关闭主界面
 ipcMain.on("window-close", function () {
+  updateWindow && updateWindow.close();
   loadingWindow && loadingWindow.close();
   mainWindow.close();
 });
+//关闭更新提示窗口
+ipcMain.on('update-close', () => {
+  updateWindow.close();
+})
+//开始更新
+ipcMain.on('start-update', () => {
+  autoUpdater.downloadUpdate();
+  autoUpdater.on("download-progress", (data) => {
+    updateWindow.webContents.send('startUpdate', data);
+    // console.log('开始更新进度', data);
+  });
+
+})
 function wind(width1, height1, data, min = {}) {
   let width = show(width1).height;
   let height = show(height1).height;
@@ -905,18 +926,11 @@ function downFile(uri, fileName, path) {
   if (`${uri}`.indexOf('https') === 0) {
     downType = https
   }
-
   downType.get(uri, (res) => {
-    console.log('状态码：', res.statusCode);
-    console.log('请求头：', res.headers);
-    // Open file in local filesystem
     const file = fs.createWriteStream(path);
-    // Write data into local file
     res.pipe(file);
-    // Close the file
     file.on('finish', () => {
       file.close();
-      console.log(`File downloaded!`);
       upgradeFileDataProcess(path)
     });
     res.on('data', (d) => {
