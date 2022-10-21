@@ -646,7 +646,7 @@ ipcMain.on('start-update', () => {
   autoUpdater.downloadUpdate();
   autoUpdater.on("download-progress", (data) => {
     updateWindow.webContents.send('startUpdate', data);
-    // console.log('开始更新进度', data);
+    console.log('开始更新进度main', data);
   });
 
 })

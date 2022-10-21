@@ -121,6 +121,9 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
               </div>
             </div>
             <div className="tableBox">
+              <div className="temperatureTitleBox">
+                <p className="temperatureTitle">History</p>
+              </div>
               <HistoryTable tableColumnType='temperature' />
             </div>
           </>

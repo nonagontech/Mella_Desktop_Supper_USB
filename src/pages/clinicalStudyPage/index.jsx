@@ -601,7 +601,7 @@ const ClinicalStudy = ({
 
     if (`${Temp}` !== "NaN" && Temp) {
       temp =
-        units === "℉" ? parseInt((Temp * 1.8 + 32) * 10) / 10 : Temp.toFixed(1);
+        units === "℉" ? _.round((Temp * 1.8 + 32), 1) : Temp.toFixed(1);
     }
     let lowFlog = false;
     if (unit === "℃") {
@@ -619,17 +619,17 @@ const ClinicalStudy = ({
         className="Tem"
         style={{
           color: temColor,
-          right: px(100),
-          bottom: mTop(120),
+          right: px(70),
+          bottom: mTop(250),
           pointerEvents: "none",
         }}
       >
         {mellaConnectStatus !== "isMeasuring" ? (
           showHistoryEchart ? (
             <>
-              <span style={{ fontSize: px(46), fontWeight: "bold" }}>
+              <span style={{ fontSize: px(42), fontWeight: "bold" }}>
                 {temp}{" "}
-                <sup style={{ fontSize: px(28), fontWeight: "bold" }}>
+                <sup style={{ fontSize: px(26), fontWeight: "bold" }}>
                   {units}
                 </sup>
               </span>
@@ -678,7 +678,6 @@ const ClinicalStudy = ({
     );
   };
   const handleChange = (index) => {
-    console.log("---------", index);
     setFurLength(index);
   };
   //Exam Details内容
@@ -1108,7 +1107,7 @@ const ClinicalStudy = ({
             tem = "";
 
           let endValue =
-            text > 55 ? text : parseInt((text * 1.8 + 32) * 10) / 10;
+            text > 55 ? text : _.round((text * 1.8 + 32), 1);
           let min = 100.4,
             max = 102.56;
 
@@ -1134,7 +1133,7 @@ const ClinicalStudy = ({
               if (text > 55) {
                 tem = `${text}${units}`;
               } else {
-                tem = `${parseInt((text * 1.8 + 32) * 10) / 10}${units}`;
+                tem = `${_.round((text * 1.8 + 32), 1)}${units}`;
               }
             }
           }
@@ -1173,7 +1172,7 @@ const ClinicalStudy = ({
           // console.log('肛温的值：', text);
           let num = text;
           if (text !== null) {
-            num = (text * 1.8 + 32).toFixed(1);
+            num = _.round((text * 1.8 + 32), 1);
           }
 
           return (

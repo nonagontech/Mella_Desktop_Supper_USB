@@ -99,7 +99,7 @@ const MeasuredData = ({
       render: (text, record) => {
         let num = parseFloat(text);
         if (isHua) {
-          num = parseInt((num * 1.8 + 32) * 10) / 10;
+          num = _.round((num * 1.8 + 32), 1);
         } else {
           num = num.toFixed(1);
         }
@@ -186,12 +186,12 @@ const MeasuredData = ({
     };
     return (
       <>
-        <p style={{ color:  color(mellaMeasureValue)  }} className="ProgressTitle">
+        <p style={{ color: color(mellaMeasureValue) }} className="ProgressTitle">
           {getTemp(percent)}
-          <span style={{ color: color(mellaMeasureValue)  }} className="symbol">{`${isHua ? "℉" : "℃"
+          <span style={{ color: color(mellaMeasureValue) }} className="symbol">{`${isHua ? "℉" : "℃"
             }`}</span>
         </p>
-        <p style={{ color:  color(mellaMeasureValue)  }} className="ProgressTitle">
+        <p style={{ color: color(mellaMeasureValue) }} className="ProgressTitle">
           {title()}
         </p>
       </>
@@ -321,9 +321,9 @@ const MeasuredData = ({
   };
   const getTemp = (percent) => {
 
-    let num = parseFloat(mellaMeasureValue);
+    let num = mellaMeasureValue;
     if (isHua) {
-      num = (num * 1.8 + 32).toFixed(1);
+      num = _.round((num * 1.8 + 32), 1);
     } else {
       num = parseFloat(num.toFixed(1));
     }
@@ -476,7 +476,7 @@ const MeasuredData = ({
     setPetTemperatureData([]);
     setTotal(0);
     getPetTemperatureData(1);
-    return(() => {})
+    return (() => { })
   }, [petId]);
 
 
