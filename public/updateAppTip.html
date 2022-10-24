@@ -22,7 +22,7 @@
     const [startUpdate, setStartUpdate] = React.useState('');
 
     ipcRenderer.on('updateMessage', (event, message) => {
-      console.log(message);
+      console.log('接收到更新进度', message);
       setUpdateMessage({
         size: message.files[0].size / (1024 * 1024),
         version: message.version,
@@ -31,7 +31,6 @@
     });
 
     ipcRenderer.on('startUpdate', (event, message) => {
-      console.log('message: ', message);
       setStartUpdate(message);
     })
     //稍后更新

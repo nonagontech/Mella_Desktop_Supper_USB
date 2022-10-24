@@ -498,9 +498,9 @@ function checkUpdate() {
           contextIsolation: false,
         }
       });
-      if (isDev) {
+      // if (isDev) {
       updateWindow.webContents.openDevTools();
-      }
+      // }
       const urlLocation = isDev ? require("path").join(__dirname, "/public/updateAppTip.html") : `file://${path.join(__dirname, "./build/updateAppTip.html")}`;
       updateWindow.loadURL(urlLocation);
       updateWindow.webContents.on('did-finish-load', () => {
