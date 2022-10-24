@@ -29,7 +29,7 @@ const NumericInput = (props) => {
     onClick();
   }
   //修改样式
-  let bordercolor = onKey === index ? '#e1206d' : '#d9d9d9';
+  let bordercolor = onKey === index ? '#D5B019' : '#d9d9d9';
 
 
   return (

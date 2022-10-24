@@ -12,12 +12,12 @@ const baseURL = `${mellaserverBaseUrl}/exam`
 
 
 /**
- * @dec 体重保存
+ * @dec 温度保存和体重保存
  * @param {*} params
  * @returns
  */
 export const addClamantPetExam = (params) => {
-    return postJson(`${baseURL}/addClamantPetExam`, params)
+  return postJson(`${baseURL}/addClamantPetExam`, params)
 }
 
 /**
@@ -26,7 +26,7 @@ export const addClamantPetExam = (params) => {
  * @returns
  */
 export const getClinicalDataByExamId = (examId) => {
-    return get(`${baseURL}/getClinicalDataByExamId/${examId}`, "")
+  return get(`${baseURL}/getClinicalDataByExamId/${examId}`, "")
 }
 /**
  * @dec 获取宠物上一次测量体重，体长，温度的结果和时间
@@ -34,5 +34,5 @@ export const getClinicalDataByExamId = (examId) => {
  * @returns
  */
 export const getRecentPetData = (petId) => {
-  return get(`${baseURL}/getRecentPetData/${petId}`,"");
+  return get(`${baseURL}/getRecentPetData?petId=${petId}`, "");
 }

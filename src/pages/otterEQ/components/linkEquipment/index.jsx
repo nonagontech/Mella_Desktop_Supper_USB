@@ -40,11 +40,6 @@ const LinkEquipment = ({ petMessage, hardwareMessage, cutPageType, qsmConnectSta
 
 
   const body = () => {
-    // if(qsmConnectStatus ==='disconnected'){
-    //   return (
-
-    //   )
-    // }
     if (!nextType) {
       return (
         <>
@@ -66,10 +61,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage, cutPageType, qsmConnectSta
       } else {
         cutPageType('swabPetEarPage')
       }
-
-
     }
-
   }
 
 
