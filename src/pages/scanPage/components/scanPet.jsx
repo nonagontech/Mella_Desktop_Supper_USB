@@ -737,9 +737,10 @@ const ScanPet = ({
         >
           <Radio.Button
             value="in"
+            className="inButton"
             style={{
-              background: radioValue === "in" ? "#e1206d" : "#fff",
-              borderColorRight: radioValue === "in" ? "#e1206d" : "#fff",
+              background: radioValue === "in" ? "#D5B019" : "#FFFFFF",
+              borderColor: radioValue === "in" ? "#D5B019" : "#B3B3B3",
               borderRadius: "20px",
               borderTopRightRadius: "0px",
               borderBottomRightRadius: "0px",
@@ -751,8 +752,8 @@ const ScanPet = ({
             value="cm"
             className="cmButton"
             style={{
-              background: radioValue === "cm" ? "#e1206d" : "#fff",
-              borderColorRight: radioValue === "cm" ? "#e1206d" : "#fff",
+              background: radioValue === "cm" ? "#D5B019" : "#FFFFFF",
+              borderColor: radioValue === "cm" ? "#D5B019" : "#B3B3B3",
               borderRadius: "20px",
               borderTopLeftRadius: "0px",
               borderBottomLeftRadius: "0px",

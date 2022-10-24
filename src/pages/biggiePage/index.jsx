@@ -41,7 +41,6 @@ const BiggirPage = ({
   const [isSavePMS, setIsSavePMS] = useState(false);
   const [saveLoad, setSaveLoad] = useState(false);
   const [isHaveSaveBtn, setIsHaveSaveBtn] = useState(true);
-  console.log('------', fat);
 
   const _saveWeight = () => {
     let params = {
@@ -54,7 +53,6 @@ const BiggirPage = ({
       impedance: impedance ? impedance : null
     };
     setSaveLoad(true);
-    console.log("---体重保存入参--：", params);
     addClamantPetExam(params)
       .then((res) => {
         setSaveLoad(false);

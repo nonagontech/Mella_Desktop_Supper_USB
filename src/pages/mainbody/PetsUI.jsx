@@ -14,7 +14,8 @@ import redjinggao from './../../assets/img/redjinggao.png'
 import orgicn from './../../assets/img/orgicn.png'
 import deivceAdd from "./../../assets/img/hardList-add.png";
 
-import { px } from '../../utils/px'
+import { px } from '../../utils/px';
+import { changeThemeColor } from '../../utils/commonFun';
 
 import { connect } from 'react-redux'
 import { petSortTypeFun, petDetailInfoFun, setPetListArrFun } from '../../store/actions';
@@ -29,7 +30,19 @@ let storage = window.localStorage;
 
 const { Option } = Select;
 
-const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, petDetailInfo, setPetListArrFun, petListArr, selectHardwareType, rulerConnectStatus, selectHardwareInfo, receiveBroadcastHardwareInfo }) => {
+const PetsUI = ({
+  bodyHeight,
+  petSortTypeFun,
+  petSortType,
+  petDetailInfoFun,
+  petDetailInfo,
+  setPetListArrFun,
+  petListArr,
+  selectHardwareType,
+  rulerConnectStatus,
+  selectHardwareInfo,
+  receiveBroadcastHardwareInfo,
+}) => {
   const history = useHistory();
   //定义宠物列表数组
   const [petList, setPetList] = useState([])
@@ -37,10 +50,8 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
   const [showModal, setShowModal] = useState(false)
   //选中的宠物的详细信息
   const [selectPetDetail, setSelectPetDetail] = useState({})
-
   //获取宠物列表加载动画
   const [loading, setLoading] = useState(false)
-
   const [orgArr, setOrgArr] = useState([])
   const [workplaceJson, setWorkplaceJson] = useState({})
   const [connectionKey, setConnectionKey] = useState("")
@@ -49,7 +60,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
   const [workplaceName, setWorkplaceName] = useState("")
   const [workplaceId, setWorkplaceId] = useState()
   const [organizationName, setOrganizationName] = useState("")
-  const [organizationId, setOrganizationId] = useState()
+  const [color, setColor] = useState('#e1206d');//颜色切换
 
   //获取组织列表
   const getOrgList = () => {
@@ -230,7 +241,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     let options = petList.map((item, index) => {
       let itemBac = '', itemColor = '#141414'
       if (item.petId === petDetailInfo.petId) {
-        itemBac = '#e1206D'
+        itemBac = color
         itemColor = '#fff'
       }
       return (
@@ -320,20 +331,21 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
     )
 
   }
-
+  //设置宠物列表数据
   useEffect(() => {
-    //设置宠物列表数据
-    setPetList(petListArr)
+    setPetList(petListArr);
+    return (() => { });
   }, [petListArr])
   //获取组织列表
   useEffect(() => {
-    getOrgList()
-  }, [])
-
+    getOrgList();
+    _getExam();
+    return (() => { });
+  }, []);
+  //修改颜色
   useEffect(() => {
-    _getExam()
-  }, [])
-
+    setColor(changeThemeColor(selectHardwareType));
+  }, [selectHardwareType]);
 
   return (
     <div className="PetUI11" style={{ height: bodyHeight - px(100), }}>
@@ -408,7 +420,7 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
         <div className="walkBtn">
           <div
             className="walkbtnBox"
-            style={{ height: px(40), marginTop: px(15) }}
+            style={{ height: px(40), marginTop: px(15), backgroundColor: color }}
             onClick={() => {
               let json = {
                 isWalkIn: true,
@@ -416,7 +428,6 @@ const PetsUI = ({ bodyHeight, petSortTypeFun, petSortType, petDetailInfoFun, pet
                 petName: null,
                 owner: null,
                 breed: null,
-
               }
               petDetailInfoFun(json)
             }}

@@ -23,6 +23,8 @@ import reddog from "./../../../assets/images/reddog.png";
 import redother from "./../../../assets/images/redother.png";
 
 import electronStore from "../../../utils/electronStore";
+import { catv12Predict } from "../../../api";
+import { changeThemeColor } from "../../../utils/commonFun";
 
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
@@ -40,8 +42,6 @@ import moment from "moment";
 import _ from "lodash";
 
 import "./headerItem.less";
-import { catv12Predict } from "../../../api";
-
 const { Header } = Layout;
 const HeaderItem = ({
   petMessage,
@@ -76,6 +76,7 @@ const HeaderItem = ({
     selectHardwareType,
   } = hardwareMessage;
   const [value, setValue] = useState(0);
+  const [color, setColor] = useState('#e1206d');//颜色切换
   const saveCallBack = useRef();
   const callBack = () => {
     let random = null;
@@ -146,7 +147,7 @@ const HeaderItem = ({
     return (
       <Menu onClick={(item) => clilkMenu(item)} className="popBox">
         <Menu.Item className="topItem">
-          <div className="cardTopBox">
+          <div className="cardTopBox" style={{ backgroundColor: color }}>
             <div className="topLeftBox">
               {petPicture(91)}
               <p className="cardTitle">{showNameOrId()}</p>
@@ -313,6 +314,10 @@ const HeaderItem = ({
       clearInterval(timer);
     };
   }, [mellaConnectStatus]);
+
+  useEffect(() => {
+    setColor(changeThemeColor(selectHardwareType));
+  }, [selectHardwareType]);
 
   return (
     <div className="headerBox">

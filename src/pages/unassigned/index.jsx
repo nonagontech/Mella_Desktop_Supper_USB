@@ -1082,12 +1082,9 @@ export default class Unassigned extends Component {
                             clinicalDatagroupId:
                               seleceEmergencies.clinicalDatagroupId,
                           };
-                          console.log("分配的数据信息", parmes);
                           addAndSavePetExam(seleceEmergencies.historyId, parmes)
                             .then((res) => {
-                              console.log("----------", res);
                               if (res.flag === true) {
-                                console.log("分配成功");
                                 message.success("Assigned successfully");
                                 let arr = [];
                                 for (let i = 0; i < historyData.length; i++) {

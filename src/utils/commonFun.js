@@ -229,6 +229,27 @@ export const dogFatMass = (weight, hindlimbLength, upperTorsoCircumference, head
 export const dogBodyFatPercentage = (upperTorsoCircumference, lowerTorsoCircumference, hindlimbLength, headCircumference) => {
   return 0.71 * upperTorsoCircumference - 0.1 * ((lowerTorsoCircumference / 6) ** 2) - 5.78 * (hindlimbLength ** 0.8) + 26.56 * (lowerTorsoCircumference / headCircumference) + 2.06
 }
+/**
+ * @dec 切换主题颜色
+ * @param {*} selectHardwareType 选择的硬件类型
+ * @returns 颜色
+ */
+export const changeThemeColor = (selectHardwareType) => {
+  switch (selectHardwareType) {
+    case 'mellaPro':
+      return '#e1206d';
+    case 'biggie':
+      return '#12ADE4';
+    case 'tape':
+      return '#D5B019';
+    case 'otterEQ':
+      return '#FFA132';
+    case 'mabel':
+      return '#F78F2F';
+    default:
+      return '#e1206d';
+  }
+}
 
 
 

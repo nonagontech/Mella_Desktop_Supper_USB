@@ -3,7 +3,12 @@ import { Menu, Popover, Button, Modal } from "antd";
 import { createFromIconfontCN, LoadingOutlined } from '@ant-design/icons';
 
 import help from "./../../assets/images/help.png";
+import biggieHelp from "./../../assets/images/biggieHelp.png";
+import tabbyHelp from "./../../assets/images/tabbyHelp.png";
+import otterEQHelp from "./../../assets/images/otterEQHelp.png";
+import mabelHelp from "./../../assets/images/mabelHelp.png";
 import message from "./../../assets/images/message.png";
+import biggieMessage from "./../../assets/images/biggieMessage.png";
 import dog from "./../../assets/images/reddog.png";
 import cat from "./../../assets/images/redcat.png";
 import other from "./../../assets/images/redother.png";
@@ -32,12 +37,7 @@ import { getPetInfoByRFID } from "../../api";
 
 import "./heard.less";
 
-const { SubMenu } = Menu;
-const MyIcon = createFromIconfontCN({
-  scriptUrl: "//at.alicdn.com/t/font_2326495_7b2bscbhvvt.js",
-});
 
-const allPetList = electronStore.get("doctorExam");
 let storage = window.localStorage;
 let ipcRenderer = window.electron.ipcRenderer;
 let mouseoutTimer = null;
@@ -50,15 +50,13 @@ let matchingTimer = null;
  */
 
 const Heard = ({
-  onReturn,
   onSearch,
-
   blueSearch,
   setMenuNum,
-  menuNum,
   setSelectHardwareType,
   petListArr,
-  petDetailInfoFun
+  petDetailInfoFun,
+  selectHardwareType,
 }) => {
   let history = useHistory();
 
@@ -121,6 +119,7 @@ const Heard = ({
     },
   ];
   const [size, setSize] = useState({ height: px(47) });
+  const [color, setColor] = useState({ backgroundColor: '#e1206d' })
   const [headerRef, setHeaderRef] = useState();
 
   const uploadMessage = (e, data) => {
@@ -563,7 +562,6 @@ const Heard = ({
        * toUpperCase（）方法：将字符串统一转成大写
        *
        */
-      // let list = allPetList
       let list = petListArr || []
 
       let searchData = [];
@@ -887,7 +885,6 @@ const Heard = ({
   //设备列表界面
   const devices = () => {
     let userId = storage.userId;
-    // electronStore.delete(`${userId}-deviceList`)
     let deviceList = electronStore.get(`${userId}-deviceList`);
     console.log("---", deviceList);
     if (!deviceList) {
@@ -908,17 +905,6 @@ const Heard = ({
       //默认字母小写，手动转大写
       return result.toLowerCase(); //另toLowerCase()转小写
     }
-
-    // deviceList = [
-    //   // { name: 'Add Device', deviceType: 'add', macId: '0' },
-    //   { name: 'malla001', deviceType: 'mellaHome', macId: '11:22:33:44:55:66' },
-    //   { name: 'malla002', deviceType: 'mellaPro', macId: '11:22:33:44:51:66' },
-    //   { name: 'malla003', deviceType: 'mellaHome', macId: '11:22:33:44:35:66' },
-    //   { name: 'biggie00222222222222221', deviceType: 'biggie', macId: '11:24:33:44:55:66' },
-    //   { name: 'malla001', deviceType: 'biggie', macId: '11:22:33:44:25:66' },
-    //   { name: 'Charlie001', deviceType: 'rfid', macId: '11:22:33:44:56:66' },
-    // ]
-
     let options = deviceList.map((item, index) => {
       return (
         <li
@@ -1322,9 +1308,76 @@ const Heard = ({
 
     setMacMatchPetList(searchData);
   };
+  //分配walk-in记录图标
+  const onWalkIn = () => {
+    switch (selectHardwareType) {
+      case 'mellaPro':
+        return (
+          <img
+            src={message}
+            alt=""
+            style={{ height: px(25), width: px(25) }}
+          />
+        );
+      case 'biggie':
+        return (
+          <img
+            src={biggieMessage}
+            alt=""
+            style={{ height: px(25), width: px(25) }}
+          />
+        );
+      case 'tape':
+        return (
+          null
+        );
+      case 'otterEQ':
+        return (
+          null
+        );
+      case 'mabel':
+        return (
+          null
+        );
+      default:
+        return (
+          null
+        );
+    }
+  }
+  //帮助图标切换
+  const onHelp = () => {
+    switch (selectHardwareType) {
+      case 'mellaPro':
+        return (
+          <img src={help} alt="" style={{ height: px(25) }} />
+        );
+      case 'biggie':
+        return (
+          <img src={biggieHelp} alt="" style={{ height: px(25) }} />
+        );
+      case 'tape':
+        return (
+          <img src={tabbyHelp} alt="" style={{ height: px(25) }} />
+        );
+      case 'otterEQ':
+        return (
+          <img src={otterEQHelp} alt="" style={{ height: px(25) }} />
+        );
+      case 'mabel':
+        return (
+          <img src={mabelHelp} alt="" style={{ height: px(25) }} />
+        );
+
+      default:
+        return (
+          <img src={help} alt="" style={{ height: px(25) }} />
+        );
+    }
+
+  }
 
   useEffect(() => {
-    console.log("mac列表为空,初始化");
     mouseoutTimer && clearTimeout(mouseoutTimer);
     setBluDevice([]);
     return () => {
@@ -1350,14 +1403,41 @@ const Heard = ({
   useEffect(() => {
     //监听屏幕窗口改变
     setSize({ height: 47 });
-  }, [window.screen.availWidth])
+  }, [window.screen.availWidth]);
+  //切换头部颜色
+  useEffect(() => {
+    switch (selectHardwareType) {
+      case 'mellaPro':
+        setColor({ backgroundColor: '#e1206d' });
+        break;
+      case 'biggie':
+        setColor({ backgroundColor: '#12ADE4' });
+        break;
+      case 'tape':
+        setColor({ backgroundColor: '#D5B019' });
+        break;
+      case 'otterEQ':
+        setColor({ backgroundColor: '#FFA132' });
+        break;
+      case 'mabel':
+        setColor({ backgroundColor: '#F78F2F' });
+        break;
+      default:
+        setColor({ backgroundColor: '#e1206d' });
+        break;
+    }
+    return (() => { })
+  }, [selectHardwareType]);
 
   return (
     <div id="heardUI">
-      <div id="heardUITop" />
+      <div
+        id="heardUITop"
+        style={{ ...color }}
+      />
       <div
         id="heard"
-        style={size}
+        style={{ ...size, ...color }}
         ref={(val) => {
           setHeaderRef(val);
         }}
@@ -1483,18 +1563,19 @@ const Heard = ({
               className="message"
               onClick={() => history.push("/menuOptions/unassigned")}
             >
-              <img
-                src={message}
-                alt=""
-                style={{ height: px(25), width: px(25) }}
-              />
+
+              {
+                onWalkIn()
+              }
             </div>
             <div
               className="help"
               style={{ margin: `0 ${px(25)}px` }}
               onClick={() => history.push("/menuOptions/help")}
             >
-              <img src={help} alt="" style={{ height: px(25) }} />
+              {
+                onHelp()
+              }
             </div>
           </div>
           <div className="min_close" style={{ paddingRight: px(15) }}>
@@ -1608,6 +1689,7 @@ export default connect(
   state => ({
     menuNum: state.userReduce.menuNum,
     petListArr: state.petReduce.petListArr,
+    selectHardwareType: state.hardwareReduce.selectHardwareType,
   }),
   { setMenuNum, setSelectHardwareType, petDetailInfoFun }
 )(Heard)
