@@ -67,8 +67,10 @@
     "pack": "electron-builder --dir",
     "disk": "electron-builder",
     "release": "cross-env GH_TOKEN=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  electron-builder",
+    "releasemac": "yarn cleanmac && cross-env GH_TOKEN=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  electron-builder",
     "clear": "rd /s/q dist1 && md dist1",
-    "analyze": "source-map-explorer 'build/static/js/*.js'"
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "cleanmac": "rm -rf dist1 && mkdir dist1"
   },
   "homepage": "./",
   "eslintConfig": {
