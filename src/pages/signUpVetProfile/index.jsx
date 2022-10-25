@@ -381,9 +381,7 @@ export default class VetPrifile extends Component {
         />
 
         <Modal
-
-          visible={visible}
-          // visible={true}
+          open={visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           width={330}

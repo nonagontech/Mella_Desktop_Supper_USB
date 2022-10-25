@@ -3859,8 +3859,7 @@ export default class NorMalMeasurement extends Component {
             Edit Note
           </div>
         }
-        visible={visible}
-        // visible={true}
+        open={visible}
         onCancel={this.handleCancel}
         modalRender={(modal) => (
           <Draggable
@@ -4426,9 +4425,7 @@ export default class NorMalMeasurement extends Component {
         {/* {this._table()} */}
 
         <Modal
-
-          visible={this.state.err07Visible}
-          // visible={true}
+          open={this.state.err07Visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           width={330}
@@ -4465,9 +4462,7 @@ export default class NorMalMeasurement extends Component {
         </Modal>
 
         <Modal
-
-          visible={this.state.err07Visible}
-          // visible={true}
+          open={this.state.err07Visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           width={330}

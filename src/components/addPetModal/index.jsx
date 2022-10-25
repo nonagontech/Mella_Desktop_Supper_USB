@@ -149,7 +149,7 @@ const AddPetModal = ({ visible, width, title, destroyOnClose, value, onConfirm, 
     <>
       <Modal
         title="Add a Pet"
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCancel}
         centered
         maskClosable={false}

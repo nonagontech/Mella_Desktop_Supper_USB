@@ -3101,11 +3101,9 @@ export default class Mesasure extends Component {
             Distribute the history of emergencies
           </div>
         }
-        visible={visible}
-        // visible={true}
+        open={visible}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
-
         modalRender={(modal) => (
           <Draggable
             disabled={disabled}
@@ -3248,8 +3246,7 @@ export default class Mesasure extends Component {
             Modification history information
           </div>
         }
-        visible={editVisible}
-        // visible={true}
+        open={editVisible}
         onCancel={() => { that.setState({ editVisible: false, }); }}
         modalRender={(modal) => (
           <Draggable
@@ -3536,9 +3533,7 @@ export default class Mesasure extends Component {
 
 
         <Modal
-
-          visible={this.state.err07Visible}
-          // visible={true}
+          open={this.state.err07Visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           width={330}

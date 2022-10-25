@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { Modal, message } from "antd";
+import { Modal, message, Button } from "antd";
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 import Heard from "../../utils/heard/Heard";
 import { px, win, timerFun } from "../../utils/px";
 import electronStore from "../../utils/electronStore";
 import { compareObject } from "../../utils/current";
 import { compareArray } from "../../utils/current";
+import { versionComarision } from '../../utils/commonFun';
 
 import HardAndPetsUI from "./HardAndPetsUI";
 import HardWareTypeUI from "./hardWareTypeUI";
@@ -49,6 +51,9 @@ import {
   setReceiveBroadcastHardwareInfoFun,
 } from "../../store/actions";
 
+import { getInfoOfLatestDevice } from '../../api/mellaserver/mellarecord';
+
+
 import "./mainbody.less";
 
 
@@ -67,6 +72,7 @@ let clinicalYuce = [],
   clinicalIndex = 0;
 
 let storage = window.localStorage;
+const { confirm } = Modal;
 
 class App extends Component {
   state = {
@@ -84,7 +90,9 @@ class App extends Component {
     //点击菜单的序号
     clickMenuIndex: "1",
     err07Visible: false,
-    units: '℉'
+    units: '℉',
+    localVersion: '',//底座版本号
+    updateBaseLaterType: false,//底座是否在延迟更新
   };
   componentDidMount() {
     ipcRenderer.send("big", win());
@@ -120,7 +128,10 @@ class App extends Component {
         units: '℉'
       })
     }
-
+    //获取插入底座设备的版本信息
+    ipcRenderer.send('usbdata', { command: '08', arr: [''] });//这里会导致出现已连接状态TODO
+    //获取底座是否延迟更新
+    ipcRenderer.on('updateBaseLaterType', this.updateBaseLaterType);
 
   }
   componentWillUnmount() {
@@ -129,6 +140,7 @@ class App extends Component {
     ipcRenderer.removeListener("changeFenBianLv", this.changeFenBianLv);
     ipcRenderer.removeListener("sned", this._send);
     ipcRenderer.removeListener("noUSB", this._noUSB);
+    ipcRenderer.removeListener("updateBaseLaterType", this.updateBaseLaterType);
     this.detectTimer && clearInterval(this.detectTimer);
     this.rulerTimer && clearTimeout(this.rulerTimer);
     message.destroy();
@@ -136,7 +148,6 @@ class App extends Component {
   //检测到props里的hardwareList更新
   UNSAFE_componentWillReceiveProps(prevProps) {
     //对比props里的hardwareList和state里的hardwareList是否相同
-
     if (!compareArray(prevProps.hardwareList, this.state.devicesTypeList)) {
       let showHardWareTypeList = [].concat(prevProps.hardwareList);
       showHardWareTypeList.push({
@@ -154,23 +165,15 @@ class App extends Component {
       });
     }
   }
-
+  updateBaseLaterType = (e, data) => {
+    console.log('data:453534534 ', data);
+    this.setState({
+      updateBaseLaterType: data
+    })
+  }
   changeFenBianLv = (e) => {
     let ipcRenderer = window.electron.ipcRenderer;
-    // ipcRenderer.send('small')
     ipcRenderer.send("big", win());
-    // this.setState({}, () => {
-    //   if (this.props.test) {
-    //     if (this.props.test.current) {
-    //       this.props.test.current.getEchartsInstance().dispose();
-    //       this.props.test.current.getEchartsInstance().clear();
-    //       setTimeout(() => {
-    //         this.props.test.current.getEchartsInstance().resize();
-    //       }, 500);
-    //     }
-    //   }
-    // });
-
   };
   //获取本地设置
   getLocalSetting = () => {
@@ -190,21 +193,62 @@ class App extends Component {
   };
   //检测USB设备发来的信息
   _send = (e, data) => {
-    // console.log('检测USB设备发来的信息', data)
     //data就是测量的数据，是十进制的数字
     this.command(data)();
+    //获取到了版本信息,此底座不是很老版本
+    if (data[2] === 136) {
+      let localVersion = `${data[6]}.${data[7]}.${data[8]}`;
+      console.log('插入底座的版本是: ', localVersion);
+      this.setState({ localVersion: localVersion }, () => {
+        this.cloudVersion();
+      });
+    }
   };
+  //询问网端底座最新的版本号
+  cloudVersion = () => {
+    getInfoOfLatestDevice('mellabase')
+      .then((res) => {
+        if (res.flag) {
+          let { firmwareVersion } = res.data
+          let cloudBigtolocal = versionComarision(firmwareVersion, this.state.localVersion);//true则为线上底座版本大于当前底座版本需要升级
+          if (cloudBigtolocal && !this.state.updateBaseLaterType) {
+            confirm({
+              icon: <ExclamationCircleOutlined />,
+              content: <div>A new version of your base has been detected. Whether to go to update?</div>,
+              centered: true,
+              okText: 'To Update',
+              cancelText: 'Update Later',
+              className: 'updateBaseTip',
+              onOk: () => { this.props.history.push('/menuOptions/advancedsettings') },
+              onCancel: () => {
+                ipcRenderer.send('update-base-later');
+              },
+            });
+          } else {
+
+          }
+        } else {
+          message.error('Description Failed to obtain the base version');
+        }
+      })
+      .catch((res) => {
+        message.error('Description Failed to obtain the base version');
+      })
+  }
+
   //监听是否有USB设备,true代表没有USB设备，false代表有USB设备
   _noUSB = (e, data) => {
     if (data === false) {
+      //获取插入设备的版本信息
+      ipcRenderer.send('usbdata', { command: '08', arr: [''] });
       message.destroy();
     } else {
       if (this.state.isHaveUsbDevice) {
         message.destroy();
         if (this.props.selectHardwareType !== "otterEQ") {
           message.error("The base is not detected. Please insert the base", 0);
+          Modal.destroyAll();
         }
-
       }
     }
     if (data === this.props.isHaveUsbDevice) {
@@ -805,7 +849,7 @@ class App extends Component {
           if (impedance !== biggieBodyFat) {
             setBiggieBodyFatFun(impedance);
           }
-        } else if (bluName.indexOf("MaeBowl") !== -1 && bluData.length > 10) {
+        } else if (bluName.indexOf("MaeBowl") !== -1 && bluData.length > 15) {
           function getVal(shi) {
             if (`${shi}`.length < 2) {
               return `0${shi}`;
@@ -825,9 +869,7 @@ class App extends Component {
           //定义控制字
           let control = bluData[11];
           //定义重量
-          let weight = `${getVal(bluData[12].toString(16))}${getVal(
-            bluData[13].toString(16)
-          )}`
+          let weight = `${getVal(bluData[12].toString(16))}${getVal(bluData[13].toString(16))}`
           weight = parseInt(weight, 16);
           let arr11 = bluData[14]
           weight = weight / Math.pow(10, parseInt(arr11[0]));
@@ -1267,8 +1309,7 @@ class App extends Component {
           {this.body()}
         </div>
         <Modal
-          visible={this.state.err07Visible}
-          // visible={true}
+          open={this.state.err07Visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           width={330}

@@ -190,7 +190,7 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
     <>
       <Modal
         title="Assign Measurement"
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCancel}
         centered
         maskClosable={false}

@@ -89,7 +89,7 @@ const Demo = (props) => {
       </ImgCrop>
 
       <Modal
-        visible={previewVisible}
+        open={previewVisible}
         title={previewTitle}
         footer={null}
         onCancel={() => { setPreviewVisible(false) }}

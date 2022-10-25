@@ -322,7 +322,7 @@ const PetsUI = ({
         style={{ width: '70%', marginLeft: px(15) }}
         value={organizationName}
         onChange={selectOrgFn}
-        dropdownClassName="selectOrgUI"
+        popupClassName="selectOrgUI"
         bordered={false}
         suffixIcon={<img src={xia} alt="" width={px(15)} style={{ marginLeft: px(10) }} />}
       >

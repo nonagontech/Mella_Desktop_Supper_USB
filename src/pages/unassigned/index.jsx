@@ -593,7 +593,7 @@ export default class Unassigned extends Component {
           // end
           ></div>
         }
-        visible={visible}
+        open={visible}
         onOk={this.handleOk}
         onCancel={this.closeHandleCancel}
         modalRender={(modal) => (

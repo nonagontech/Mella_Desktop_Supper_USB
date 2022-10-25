@@ -1604,7 +1604,6 @@ const Heard = ({
         {deviceModel && devices()}
 
         <MyModal
-          // visible={true}
           visible={modalVis}
           element={
             <div

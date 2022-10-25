@@ -19,7 +19,7 @@ const AssignPetPopovers = ({ getassignVisible ,onCancel}) => {
   return (
     <>
       <Modal
-        visible={assignVisible}
+        open={assignVisible}
         maskClosable={false}
         destroyOnClose={true}
         centered

@@ -88,7 +88,7 @@ const SelectPetBreed = ({ visible, width, title, destroyOnClose, value, onSelect
     <>
       <Modal
         title="Choose Breed"
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCancel}
         centered
         maskClosable={false}

@@ -254,7 +254,7 @@ const EnrolledPlan = ({ petMessage, hardwareMessage, bodyHeight,setSelectHardwar
       </div>
       <Modal
         title="Send Feeding Plan to Mabel"
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCancel}
         centered
         maskClosable={false}

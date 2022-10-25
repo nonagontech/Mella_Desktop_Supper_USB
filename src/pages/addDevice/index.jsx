@@ -324,19 +324,6 @@ export default class AddDevice extends Component {
       } else {
         if (devicesList.length === 0) {
           return <div className="flex" style={{ width: '100%', height: '100%', position: 'relative' }}>
-            {/* < MyModal
-              visible={true}
-              element={
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-                  <div className="loadIcon" style={{ marginBottom: MTop(5) }}>
-                    <LoadingOutlined style={{ fontSize: 30, color: '#fff', marginTop: mTop(-30), }} />
-                  </div>
-                  <p>
-                    {'searching...'}
-                  </p>
-                </div>
-              }
-            /> */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', marginBottom: px(130) }}>
               <div className="loadIcon" style={{ marginBottom: MTop(5) }}>
                 <LoadingOutlined style={{ fontSize: 30, color: '#8a8a8a', marginTop: mTop(-30), }} />

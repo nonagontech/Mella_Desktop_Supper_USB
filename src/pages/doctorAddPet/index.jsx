@@ -257,9 +257,7 @@ class DoctorAddPet extends Component {
     let { petSpecies, dogImg, catImg, otherImg, imgurl } = this.state
     this.avatar = selectphoto
     return (
-      <div className="petSpecies"
-        style={{ height: mTop(80), }}
-      >
+      <div className="petSpecies">
         <div className="l">
           <p style={{ color: '#A0A0A0', fontSize: '16px' }}>Pet Species</p>
           <div className="selectSpecies">
@@ -302,7 +300,6 @@ class DoctorAddPet extends Component {
                 </div>
               }
               getinfo={(val) => {
-                console.log('我是父组件，从子组件获取到的数据位：', val);
                 if (val) {
                   this.setState({
                     imageId: val
@@ -746,10 +743,11 @@ class DoctorAddPet extends Component {
   };
 
   render() {
-    const { closeColor, closebgc, minbgc, disabled, petSpeciesBreedId, isModalVisible, confirmLoading } = this.state
+    const { isModalVisible, confirmLoading } = this.state
     return (
-      <Spin spinning={this.state.spin} size="large">
-        <div id="doctorAddPet">
+
+      <div id="doctorAddPet">
+        <Spin spinning={this.state.spin} size="large" className='doctorAddPetSpin'>
           <div className="heard">
             <Heard />
           </div>
@@ -762,6 +760,11 @@ class DoctorAddPet extends Component {
             {this._weight()}
           </div>
           <div className="editPetInfo_foot"  >
+            <div className='save'
+              onClick={() => { this.props.history.goBack() }}
+            >
+              cancel
+            </div>
             <div className="save"
               onClick={() => {
                 if (!this.state.patientId) {
@@ -784,7 +787,6 @@ class DoctorAddPet extends Component {
                 })
                 checkPatientId(params)
                   .then(res => {
-                    console.log(res);
                     if (res.flag === false) {
                       this.setState({
                         spin: false
@@ -834,11 +836,9 @@ class DoctorAddPet extends Component {
                           this.setState({
                             spin: false
                           })
-                          console.log(res);
                           if (res.flag === true) {
                             message.success('Added successfully')
                             this.handleOk();
-                            // this.props.history.goBack()
                           }
                           else {
                             message.error('add failed')
@@ -860,11 +860,13 @@ class DoctorAddPet extends Component {
                     console.log(err);
                   })
               }}
-            >Save</div>
+            >
+              Save
+            </div>
           </div>
           <Modal
             title=""
-            visible={isModalVisible}
+            open={isModalVisible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
             centered
@@ -895,8 +897,9 @@ class DoctorAddPet extends Component {
               })
             }}
           />
-        </div>
-      </Spin>
+        </Spin>
+      </div>
+
     )
   }
 }

@@ -1380,8 +1380,7 @@ const ClinicalStudy = ({
             Modification history information
           </div>
         }
-        visible={editVisible}
-        // visible={true}
+        open={editVisible}
         onCancel={() => {
           setEditVisible(false);
         }}

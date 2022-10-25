@@ -413,7 +413,7 @@ const HistoryTable = ({
             Edit Note
           </div>
         }
-        visible={visible}
+        open={visible}
         onCancel={handleCancel}
         modalRender={(modal) => (
           <Draggable

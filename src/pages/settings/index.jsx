@@ -594,9 +594,7 @@ export default class Settings extends Component {
         <MyModal
           visible={this.state.isSave}
           element={
-            <div className='isSave'
-            //  style={{ borderRadius: `${px(20)}px`, backgroundColor: '#fff' }}
-            >
+            <div className='isSave'>
               <img src={redJinggao} alt="" style={{ width: px(50), margin: `${px(25)}px 0` }} />
               <p>Settings changed - save?</p>
               <div className="btn" style={{ margin: `${px(30)}px 0` }} >

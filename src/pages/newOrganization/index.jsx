@@ -448,8 +448,7 @@ export default class NewOrganization extends Component {
               remind
             </div>
           }
-          visible={visible}
-          // visible={true}
+          open={visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           width={330}

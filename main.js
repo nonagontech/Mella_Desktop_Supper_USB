@@ -7,8 +7,6 @@ const Store = require("electron-store");
 const fs = require("fs");
 const https = require('https');
 const http = require('http')
-
-
 const {
   app,
   BrowserView,
@@ -61,7 +59,9 @@ const devHeight = 1080;
 let enterUpgradeFlog = false;
 let dataIndex = 0;
 let mainWindow = null;
-let updateWindow = null
+let updateWindow = null;//桌面端更新提示弹窗
+let updateBaseWindow = null;//底座插入时检测是否更新弹窗
+let updateBaseLaterType = false;//底座是否延迟更新，false是不延迟更新
 var port = null;
 app.allowRendererProcessReuse = false;
 const ex = process.execPath; //自启动的参数
@@ -88,6 +88,7 @@ let windowOpen = true;
 let usbDetect = require("usb-detection");
 usbDetect.startMonitoring();
 usbDetect.on("add", function (device) {
+  console.log('插入了USB设备');
   mainWindow.webContents.send("usbDetect", true);
 });
 usbDetect.on("remove", function (device) {
@@ -108,8 +109,7 @@ usbDetect.on("remove", function (device) {
 
 function openUsb() {
   //搜索底座存不存在，不存在就去展示
-  let flog = false,
-    path = ""; //usb所在的接口路径
+  let flog = false, path = ""; //usb所在的接口路径
   let devices = HID.devices();
   device = null; //这里一定要清理一下，不然退出的话会有异常
   for (let i = 0; i < devices.length; i++) {
@@ -499,7 +499,7 @@ function checkUpdate() {
         }
       });
       if (isDev) {
-      updateWindow.webContents.openDevTools();
+        updateWindow.webContents.openDevTools();
       }
       const urlLocation = isDev ? require("path").join(__dirname, "/public/updateAppTip.html") : `file://${path.join(__dirname, "./build/updateAppTip.html")}`;
       updateWindow.loadURL(urlLocation);
@@ -540,59 +540,22 @@ function checkUpdate() {
     console.log('最新版本', info);
   });
 }
+//底座稍后更新的全局定时器
+function updateBaseLater() {
+  //是否延迟更新底座，false是不延迟更新
+  updateBaseLaterType = true;
+  mainWindow.webContents.send("updateBaseLaterType", updateBaseLaterType);
+  setTimeout(() => {
+    updateBaseLaterType = false;
+    mainWindow.webContents.send("updateBaseLaterType", updateBaseLaterType);
+  }, 1000 * 3600);
+}
 app.on("ready", () => {
   createLoadingWindow();
   checkUpdate();
   createWindow();
   openUsb();
-  // setTimeout(() => {
-  //   app.whenReady().then(() => {
-  //     let val = {
-  //       tag: "v1.1.33",
-  //       version: "1.1.33",
-  //       files: [
-  //         {
-  //           url: "Mella-Super-Setup-1.1.33.exe",
-  //           sha512: "KaVB04etqL7bAxrGapG9t5O9uWG65pT09jM3W574AUw5h2aTy7smL37zayIl69lOIQtyizBKGKo+aczz3dzDsg==",
-  //           size: 240180201
-  //         }
-  //       ],
-  //       path: "Mella-Super-Setup-1.1.33.exe",
-  //       sha512: "KaVB04etqL7bAxrGapG9t5O9uWG65pT09jM3W574AUw5h2aTy7smL37zayIl69lOIQtyizBKGKo+aczz3dzDsg==",
-  //       releaseDate: "2022-10-19T11:11:32.511Z",
-  //       releaseName: "1.1.33",
-  //       releaseNotes: "<p>修复bug好多</p>"
-  //     }
-  //     updateWindow = new BrowserWindow({
-  //       width: 500,
-  //       height: 300,
-  //       maximizable: false, //禁止双击放大
-  //       frame: false, // 去掉顶部操作栏
-  //       parent: mainWindow,
-  //       modal: true,
-  //       resizable: false,
-  //       webPreferences: {
-  //         //是否注入nodeapi
-  //         nodeIntegration: true,
-  //         //渲染进程是否启用remote模块
-  //         enableRemoteModule: true,
-  //         contextIsolation: false,
-  //       }
-  //     });
-  //     // if (isDev) {
-  //     updateWindow.webContents.openDevTools();
-  //     // }
-  //     const urlLocation = isDev ? require("path").join(__dirname, "/public/updateAppTip.html") : `file://${path.join(__dirname, "./build/updateAppTip.html")}`;
-  //     updateWindow.loadURL(urlLocation);
-  //     updateWindow.webContents.on('did-finish-load', () => {
-  //       updateWindow.webContents.send('updateMessage', val)
-  //     })
-  //     updateWindow.on("closed", () => {
-  //       updateWindow = null;
-  //     });
 
-  //   })
-  // }, 500);
 
 });
 app.on("window-all-closed", () => {
@@ -641,7 +604,7 @@ ipcMain.on("window-close", function () {
 ipcMain.on('update-close', () => {
   updateWindow.close();
 })
-//开始更新
+//开始更新桌面端程序
 ipcMain.on('start-update', () => {
   autoUpdater.downloadUpdate();
   autoUpdater.on("download-progress", (data) => {
@@ -650,6 +613,10 @@ ipcMain.on('start-update', () => {
   });
 
 })
+//延迟更新底座
+ipcMain.on('update-base-later', () => {
+  updateBaseLater();
+})
 function wind(width1, height1, data, min = {}) {
   let width = show(width1).height;
   let height = show(height1).height;
@@ -657,53 +624,35 @@ function wind(width1, height1, data, min = {}) {
     width = parseInt((width1 / devHeight) * data.height);
     height = parseInt((height1 / devHeight) * data.height);
   }
-
-  // mainWindow.setMaximumSize(width, height);
-
-  // mainWindow.setMinimumSize(width, height);
   if (min && min.width) {
     mainWindow.setMinimumSize(min.width, min.height)
   } else {
     mainWindow.setMinimumSize(width, height);
   }
-
   mainWindow.setSize(width, height);
   Menu.setApplicationMenu(menu);
 }
 ipcMain.on("big", (e, data) => {
+  //是否延迟更新底座
+  mainWindow.webContents.send("updateBaseLaterType", updateBaseLaterType);
   let size = require("electron").screen.getPrimaryDisplay().workAreaSize;
   if (size.height >= 728 && size.height <= 860) {
     wind(800, 640, data, { width: 800, height: 640 });
   } else {
     wind(900, 900, data, { width: 810, height: 810 });
   }
-  // mainWindow.setMaximumSize(show(800).height, show(900).height);
-  // mainWindow.setMinimumSize(show(800).height, show(900).height);
-  // mainWindow.setSize(show(800).height, show(1000).height)
 });
 ipcMain.on("setting", (e, data) => {
   wind(850, 900, data);
-  // mainWindow.setMaximumSize(show(850).height, show(900).height);
-  // mainWindow.setMinimumSize(show(850).height, show(900).height);
-  // mainWindow.setSize(show(850).height, show(1000).height)
 });
 ipcMain.on("Lowbig", (e, data) => {
   wind(800, 950, data);
-  // mainWindow.setMaximumSize(show(800).height, show(1000).height);
-  // mainWindow.setMinimumSize(show(800).height, show(950).height);
-  // mainWindow.setSize(show(800).height, show(950).height)
 });
 ipcMain.on("table", (e, data) => {
   wind(1100, 900, data);
-  // mainWindow.setMaximumSize(show(1100).height, show(900).height);
-  // mainWindow.setMinimumSize(show(1100).height, show(900).height);
-  // mainWindow.setSize(show(1100).height, show(900).height)
 });
 ipcMain.on("middle", (e, data) => {
   wind(700, 800, data);
-  // mainWindow.setMaximumSize(700, 800);
-  // mainWindow.setMinimumSize(700, 800);
-  // mainWindow.setSize(700, 800)
 });
 ipcMain.on("small", (e, data) => {
   let size = require("electron").screen.getPrimaryDisplay().workAreaSize;
@@ -909,7 +858,6 @@ function upgradeFileDataProcess(fileUrl) {
   }
 }
 ipcMain.on("reUpload", (event, data) => {
-  console.log("结束了");
   upload = false;
   enterUpgradeFlog = false;
   sendNum = 0;

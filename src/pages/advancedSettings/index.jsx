@@ -10,7 +10,6 @@ import { versionComarision } from '../../utils/commonFun';
 import { getInfoOfLatestDevice } from '../../api/mellaserver/mellarecord';
 
 let ipcRenderer = window.electron.ipcRenderer
-let storage = window.localStorage;
 let uploadType = ''
 export default class AdvancedSettings extends Component {
 
@@ -57,7 +56,7 @@ export default class AdvancedSettings extends Component {
   //底座发过来的指令信息
   _send = (event, data) => {
     //data就是测量的数据，是十进制的数字
-    console.log('_send', data);
+    // console.log('_send', data);
     let { isUpload } = this.state
 
     if (data[2] === 54) {
@@ -268,9 +267,7 @@ export default class AdvancedSettings extends Component {
 
     }
   }
-
   _upload1 = (val) => {
-
     let { isHaveBase } = this.state
     message.destroy()
     if (!isHaveBase) {
@@ -301,9 +298,6 @@ export default class AdvancedSettings extends Component {
       //2.如果能收到关闭指令，则发送开始升级指令
 
       //3.如果如果测试检测到usb插拔，则去发送文件
-
-
-
     }
   }
   //询问本地的版本号
@@ -311,7 +305,7 @@ export default class AdvancedSettings extends Component {
     this.setState({
       uploadText: 'Query the local version number',
     })
-    ipcRenderer.send('usbdata', { command: '08', arr: [''] })
+    ipcRenderer.send('usbdata', { command: '08', arr: [''] });
     this.localVersionTimer && clearTimeout(this.localVersionTimer)
     this.localVersionTimer = setTimeout(() => {
       //如果3秒后还没有收到桌面返回的版本号,则代表这是很老的底座程序,直接去下载文件升级
@@ -433,7 +427,6 @@ export default class AdvancedSettings extends Component {
 
         <MyModal
           visible={this.state.updateModal}
-          // visible={true}
           element={
             <div style={{ height: px(200), borderRadius: px(20) }} className="upload">
 
