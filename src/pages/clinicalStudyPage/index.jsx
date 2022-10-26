@@ -280,13 +280,13 @@ const ClinicalStudy = ({
 
             let time = null;
             if (
-              modifiedTime &&
-              `${modifiedTime}` !== "" &&
-              `${modifiedTime}` !== `undefined`
+              createTime &&
+              `${createTime}` !== "" &&
+              `${createTime}` !== `undefined`
             ) {
-              time = modifiedTime;
-            } else {
               time = createTime;
+            } else {
+              time = modifiedTime;
             }
             let json = {
               time,

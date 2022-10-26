@@ -66,6 +66,8 @@ import {
   setRulerConfirmCountFun,
   setSelectHardwareType
 } from "../../../store/actions";
+
+import { KgtoLb } from '../../../utils/commonFun';
 import { px } from "../../../utils/px";
 import NumericInput from "./numericInput";
 import {
@@ -73,6 +75,7 @@ import {
 } from "./../../../api";
 
 import _ from "lodash";
+import moment from "moment/moment";
 
 import "./scanPet.less";
 
@@ -87,7 +90,7 @@ const ScanPet = ({
 }) => {
   let history = useHistory();
   let { petSpeciesBreedId, petId, weight } = petMessage;
-  let { rulerMeasureValue, rulerConfirmCount, rulerUnit, rulerConnectStatus, selectHardwareInfo, receiveBroadcastHardwareInfo } = ruleMessage;
+  let { rulerMeasureValue, rulerConfirmCount, rulerUnit, rulerConnectStatus, selectHardwareInfo, receiveBroadcastHardwareInfo, biggieUnit } = ruleMessage;
   const [radioValue, setRadioValue] = useState("in");//单位
   const [inputIndex, setInputIndex] = useState(-1);//输入框下标
   const [missInputIndex, setMissInputIndex] = useState(0);//输入框下标
@@ -116,6 +119,9 @@ const ScanPet = ({
   const [lookType, setLookType] = useState(false);//用户查看局部放大图片
   const [weightTipVisible, setWeightTipVisible] = useState(false);//体重是否为空的弹窗
   const [missMeasureVisible, setMissMeasureVisible] = useState(false);//是否有遗漏测量的弹窗
+  const [lastWeightValue, setLastWeightValue] = useState('')//最近一次的体重值
+  const [lastWeightTimeValue, setLastWeightTimeValue] = useState('')//最近一次的体重测量时间
+
   let newData = [];
   let missNewData = [];
 
@@ -556,6 +562,41 @@ const ScanPet = ({
     }
 
   }
+  //获取上一次测量的体重
+  const getRecentPet = () => {
+    getRecentPetData(petId)
+      .then((res) => {
+        if (res.weight) {
+          setLastWeightValue(biggieUnit === 'kg' ? res.weight.weight : KgtoLb(res.weight.weight));
+          setLastWeightTimeValue(res.weight.createTime);
+        } else if (res.ruler.weight) {
+          setLastWeightValue(biggieUnit === 'kg' ? res.ruler.weight : KgtoLb(res.ruler.weight));
+          setLastWeightTimeValue(res.ruler.createTime);
+        } else {
+          setLastWeightValue('');
+          setLastWeightTimeValue('');
+        }
+      })
+      .catch((err) => {
+        message.error('The latest data cannot be obtained');
+      })
+  }
+  //判断上一次测量的体重是否超过一个月
+  const judgeWightTime = () => {
+    let newTime = moment();
+    let diffTime = newTime.diff(moment(lastWeightTimeValue), 'month');
+    if (diffTime >= 1 && lastWeightValue) {
+      return (
+        <p className="historyWeightWarningTitle">Last date Weighed was {moment(lastWeightTimeValue).format("LL")}.Please
+          <a onClick={() => updatePetMessage()}>update the pet's weight</a>.
+        </p>
+      );
+    } else if (diffTime === 0 && lastWeightValue) {
+      return <p className="historyWeightTitle">Last Weighed {moment(lastWeightTimeValue).format("LL")}: {lastWeightValue} {biggieUnit === 'kg' ? 'kg' : 'lbs'}</p>
+    } else {
+      return null
+    }
+  }
 
   //监听点击界面中下一步按钮
   useEffect(() => {
@@ -691,15 +732,17 @@ const ScanPet = ({
   }, [petId]);
   //获取上一次测量的体重
   useEffect(() => {
-    getRecentPetData(petId);
+    getRecentPet();
     return (() => { })
-  }, [])
+  }, [petId]);
 
   return (
     <>
       <Content className="scanContentBox">
         <div className="historyWeightBox">
-          <p>Last Weighed Oct 20, 2022: 10 lbs</p>
+          {
+            judgeWightTime()
+          }
         </div>
         {
           lookType ?

@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, Progress, Layout, Carousel } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+
 import Animation_1 from "./../../../assets/img/Animation_1.png";
 import Animation_2 from "./../../../assets/img/Animation_2.png";
 import Animation_3 from "./../../../assets/img/Animation_3.png";
-// import HeaderItem from './headerItem';
+
 import { connect } from "react-redux";
 import {
   selectHardwareModalShowFun,
@@ -15,10 +16,11 @@ import {
   setMellaPredictValueFun,
   setMellaMeasurePartFun,
 } from "../../../store/actions";
-import _ from "lodash";
-import "./measurement.less";
 import { px } from "../../../utils/px";
 import electronStore from "../../../utils/electronStore";
+import _ from "lodash";
+
+import "./measurement.less";
 
 let storage = window.localStorage;
 const { Content, Header } = Layout;
@@ -101,7 +103,7 @@ const Measurement = ({ petMessage, hardwareMessage }) => {
     <>
       {/* <HeaderItem /> */}
       <Content className={"measureContentBox"}>
-        <div style={{ marginTop: px(33) }}>
+        <div style={{ marginTop: 16 }}>
           <Progress
             type="dashboard"
             percent={_.round(mellaMeasureValue, 1)}

@@ -9,6 +9,7 @@ import {
   Modal,
   Popconfirm,
   message,
+  Layout,
 } from "antd";
 import measuredTable_1 from "./../../../assets/img/measuredTable_1.png";
 import measuredTable_2 from "./../../../assets/img/measuredTable_2.png";
@@ -42,7 +43,7 @@ import {
 } from "./../../../api";
 import { addClamantPetExam } from './../../../api/mellaserver/exam'
 
-
+const { Content } = Layout;
 const MeasuredData = ({
   petMessage,
   hardwareMessage,
@@ -490,8 +491,8 @@ const MeasuredData = ({
 
   return (
     <>
-      <div className="measurementBox">
-        <div className="progress" style={{ height: px(400) }}>
+      <Content className="measurementBox">
+        <div className="progress">
           <Progress
             type="dashboard"
             percent={_.round(mellaMeasureValue, 1)}
@@ -505,33 +506,36 @@ const MeasuredData = ({
             }}
             className="measurementProgress"
           />
-          {!saveType && (
-            <div className="buttonBox">
-              <Button
-                style={{ backgroundColor: "#e1206d" }}
-                type="danger"
-                shape="round"
-                onClick={() => backConnectedPage()}
-              >
-                Discard
-              </Button>
-              <Button
-                style={{ backgroundColor: "#e1206d" }}
-                type="danger"
-                shape="round"
-                color="#e1206d"
-                onClick={() => saveData()}
-              >
-                Save
-              </Button>
-            </div>
-          )}
-        </div>
 
+          <div className="buttonBox">
+            {!saveType && (
+              <>
+                <Button
+                  style={{ backgroundColor: "#e1206d" }}
+                  type="danger"
+                  shape="round"
+                  onClick={() => backConnectedPage()}
+                >
+                  Discard
+                </Button>
+                <Button
+                  style={{ backgroundColor: "#e1206d" }}
+                  type="danger"
+                  shape="round"
+                  color="#e1206d"
+                  onClick={() => saveData()}
+                >
+                  Save
+                </Button>
+              </>
+            )}
+          </div>
+
+        </div>
         <div className="listTitleBox1">
           <p className="listTitle">History</p>
         </div>
-        <div className="table" onScrollCapture={onScrollCapture} style={{ height: mTop(300) }}>
+        <div className="table" onScrollCapture={onScrollCapture}>
           <Table
             rowKey={"examId"}
             columns={columns}
@@ -543,7 +547,7 @@ const MeasuredData = ({
             }}
           />
         </div>
-      </div>
+      </Content>
       {/*修改note弹窗 */}
       <Modal
         title={

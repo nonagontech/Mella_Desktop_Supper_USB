@@ -59,7 +59,7 @@ const initialState = {
   //mella预测返回值
   mellaPredictReturnValue: 0,
   //mella测量部位
-  mellaMeasurePart: '腋温',
+  mellaMeasurePart: '',//腋温，肛温，耳温
   //mella设备ID
   mellaDeviceId: '',
 

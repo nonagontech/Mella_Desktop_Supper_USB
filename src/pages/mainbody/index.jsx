@@ -200,7 +200,9 @@ class App extends Component {
       let localVersion = `${data[6]}.${data[7]}.${data[8]}`;
       console.log('插入底座的版本是: ', localVersion);
       this.setState({ localVersion: localVersion }, () => {
-        this.cloudVersion();
+        if (!this.state.updateBaseLaterType) {
+          this.cloudVersion();
+        }
       });
     }
   };
@@ -294,6 +296,7 @@ class App extends Component {
       this.props;
     if (mellaConnectStatus !== "disconnected") {
       setMellaConnectStatusFun("disconnected");
+      setMellaMeasurePartFun("");
     }
     setMellaDeviceIdFun("");
   };
@@ -340,7 +343,7 @@ class App extends Component {
       209, 193, 192, 129, 135, 238, 98, 97, 130, 208, 177, 194, 7, 99, 255, 182,
     ];
 
-    if (newArr[2] !== 7 && newArr[2] !== 255 && newArr[2] !== 182) {
+    if (newArr[2] !== 7 && newArr[2] !== 255 && newArr[2] !== 182 && newArr[2] !== 136) {
       initTime = new Date();
       num07 = 0;
       if (mellaConnectStatus === "disconnected") {

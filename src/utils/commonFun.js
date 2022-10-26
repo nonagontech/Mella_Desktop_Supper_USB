@@ -27,7 +27,7 @@ function FtoC(fahrenheit, decimal = 1) {
  * @param {Number} decimal 小数点位数
  * @return {Number} 磅
  */
-function KgtoLb(kg, decimal = 2) {
+export function KgtoLb(kg, decimal = 2) {
   let pound = kg * 2.2046;
   return parseFloat(pound.toFixed(decimal));
 }
@@ -38,7 +38,7 @@ function KgtoLb(kg, decimal = 2) {
  * @return {Number} 千克
  *
  */
-function LbtoKg(lb, decimal = 2) {
+export function LbtoKg(lb, decimal = 2) {
   let kilogram = lb / 2.2046;
   return parseFloat(kilogram.toFixed(decimal));
 }
