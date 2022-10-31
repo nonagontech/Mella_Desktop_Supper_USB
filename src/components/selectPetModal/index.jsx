@@ -24,7 +24,6 @@ import './index.less';
 import { listAllPetInfo } from '../../api';
 
 const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onCancel, onLoading, onAddPet }) => {
-  console.log('value: ', value);
   let storage = window.localStorage;
   const [isModalVisible, setIsModalVisible] = useState(false);//控制弹窗的显隐
   const [isdestroyOnClose, setIsdestroyOnClose] = useState(false);//是否清除弹窗里面的内容

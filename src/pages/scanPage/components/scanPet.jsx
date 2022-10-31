@@ -7,6 +7,7 @@ import {
   Button,
   message,
   Modal,
+  Spin,
 } from "antd";
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
@@ -76,6 +77,7 @@ import {
 
 import _ from "lodash";
 import moment from "moment/moment";
+import { useGetState } from 'ahooks';
 
 import "./scanPet.less";
 
@@ -89,8 +91,29 @@ const ScanPet = ({
   setSelectHardwareType,
 }) => {
   let history = useHistory();
-  let { petSpeciesBreedId, petId, weight } = petMessage;
-  let { rulerMeasureValue, rulerConfirmCount, rulerUnit, rulerConnectStatus, selectHardwareInfo, receiveBroadcastHardwareInfo, biggieUnit } = ruleMessage;
+  let {
+    petSpeciesBreedId,
+    petId,
+    weight,
+    torsoLength,
+    l2rarmDistance,
+    upperTorsoCircumference,
+    lowerTorsoCircumference,
+    h2tLength,
+    neckCircumference,
+    hindLimbLength,
+    foreLimbLength,
+    foreLimbCircumference
+  } = petMessage;
+  let {
+    rulerMeasureValue,
+    rulerConfirmCount,
+    rulerUnit,
+    rulerConnectStatus,
+    selectHardwareInfo,
+    receiveBroadcastHardwareInfo,
+    biggieUnit
+  } = ruleMessage;
   const [radioValue, setRadioValue] = useState("in");//单位
   const [inputIndex, setInputIndex] = useState(-1);//输入框下标
   const [missInputIndex, setMissInputIndex] = useState(0);//输入框下标
@@ -116,11 +139,23 @@ const ScanPet = ({
   const [missForelimbLengthValue, setMissForelimbLengthValue] = useState(""); //接收输入框的值
   const [missForelimbCircumferenceValue, setMissForelimbCircumferenceValue] = useState(""); //接收输入框的值
 
+  const [lastHeadValue, setLastHeadValue] = useState(""); //上一次测量的值
+  const [lastNeckValue, setLastNeckValue] = useState(""); //上一次测量的值
+  const [lastUpperValue, setLastUpperValue] = useState(""); //上一次测量的值
+  const [lastLowerValue, setLastLowerValue] = useState(""); //上一次测量的值
+  const [lastTorsoValue, setLastTorsoValue] = useState(""); //上一次测量的值
+  const [lastBodyValue, setLastBodyValue] = useState(""); //上一次测量的值
+  const [lastHindlimbValue, setLastHindlimbValue] = useState(""); //上一次测量的值
+  const [lastForelimbLengthValue, setLastForelimbLengthValue] = useState(""); //上一次测量的值
+  const [lastForelimbCircumferenceValue, setLastForelimbCircumferenceValue] = useState(""); //上一次测量的值
+
+  const [loding, setLoding] = useState(false);//界面加载
   const [lookType, setLookType] = useState(false);//用户查看局部放大图片
   const [weightTipVisible, setWeightTipVisible] = useState(false);//体重是否为空的弹窗
   const [missMeasureVisible, setMissMeasureVisible] = useState(false);//是否有遗漏测量的弹窗
-  const [lastWeightValue, setLastWeightValue] = useState('')//最近一次的体重值
-  const [lastWeightTimeValue, setLastWeightTimeValue] = useState('')//最近一次的体重测量时间
+  const [lastWeightValue, setLastWeightValue] = useState('');//最近一次的体重值
+  const [lastWeightTimeValue, setLastWeightTimeValue] = useState('');//最近一次的体重测量时间
+  const [lastRuleTimeValue, setLastRuleTimeValue] = useState('');//最近一次的尺子测量时间
 
   let newData = [];
   let missNewData = [];
@@ -449,6 +484,7 @@ const ScanPet = ({
       }
     }
   };
+  //放大输入框的值
   const onValue = () => {
     switch (inputIndex) {
       case 0:
@@ -473,6 +509,7 @@ const ScanPet = ({
         return headValue;
     }
   }
+  //放大输入框的输入事件
   const onOnChange = () => {
     switch (inputIndex) {
       case 0:
@@ -501,29 +538,31 @@ const ScanPet = ({
   const historyData = () => {
     switch (carouselIndex) {
       case 1:
-        return <Space className="historyData">
-          <p>7</p>
-          <p>10</p>
-          <p>20</p>
-          <p>15</p>
-        </Space>;
+        return (
+          <Space className="historyData">
+            <p>{lastHeadValue}</p>
+            <p>{lastNeckValue}</p>
+            <p>{lastUpperValue}</p>
+            <p>{lastLowerValue}</p>
+          </Space>
+        );
       case 2:
         return <Space className="historyData">
-          <p>14</p>
-          <p>16</p>
-          <p>8</p>
-          <p>9</p>
+          <p>{lastTorsoValue}</p>
+          <p>{lastBodyValue}</p>
+          <p>{lastHindlimbValue}</p>
+          <p>{lastForelimbLengthValue}</p>
         </Space>;
       case 3:
         return <Space className="historyData">
-          <p>8</p>
+          <p>{lastForelimbCircumferenceValue}</p>
         </Space>;
       default:
         return <Space className="historyData">
-          <p>7</p>
-          <p>10</p>
-          <p>20</p>
-          <p>15</p>
+          <p>{lastHeadValue}</p>
+          <p>{lastNeckValue}</p>
+          <p>{lastUpperValue}</p>
+          <p>{lastLowerValue}</p>
         </Space>;
     }
   }
@@ -562,22 +601,73 @@ const ScanPet = ({
     }
 
   }
-  //获取上一次测量的体重
+  //获取上一次测量的体重和上一次的尺子测量值
   const getRecentPet = () => {
+    setLoding(true);
     getRecentPetData(petId)
       .then((res) => {
-        if (res.weight) {
-          setLastWeightValue(biggieUnit === 'kg' ? res.weight.weight : KgtoLb(res.weight.weight));
-          setLastWeightTimeValue(res.weight.createTime);
-        } else if (res.ruler.weight) {
-          setLastWeightValue(biggieUnit === 'kg' ? res.ruler.weight : KgtoLb(res.ruler.weight));
-          setLastWeightTimeValue(res.ruler.createTime);
+        setLoding(false);
+        if (res.msg === 'success') {
+          if (res.ruler.updateTime) {
+            //上一次测量尺子历史记录
+            setLastBodyValue(petLengthDataConvert(res.ruler.l2rarmDistance));
+            setLastLowerValue(petLengthDataConvert(res.ruler.lowerTorsoCircumference));
+            setLastUpperValue(petLengthDataConvert(res.ruler.upperTorsoCircumference));
+            setLastNeckValue(petLengthDataConvert(res.ruler.neckCircumference));
+            setLastHeadValue(petLengthDataConvert(res.ruler.h2tLength));
+            setLastTorsoValue(petLengthDataConvert(res.ruler.torsoLength));
+            setLastHindlimbValue(petLengthDataConvert(res.ruler.hindLimbLength));
+            setLastForelimbLengthValue(petLengthDataConvert(res.ruler.foreLimbLength));
+            setLastForelimbCircumferenceValue(petLengthDataConvert(res.ruler.foreLimbCircumference));
+            //上一次测量尺子的时间
+            setLastRuleTimeValue(res.ruler.updateTime);
+            //上一次测量尺子回显到输入框
+            setBodyValue(petLengthDataConvert(res.ruler.l2rarmDistance));
+            setLowerValue(petLengthDataConvert(res.ruler.lowerTorsoCircumference));
+            setUpperValue(petLengthDataConvert(res.ruler.upperTorsoCircumference));
+            setNeckValue(petLengthDataConvert(res.ruler.neckCircumference));
+            setHeadValue(petLengthDataConvert(res.ruler.h2tLength));
+            setTorsoValue(petLengthDataConvert(res.ruler.torsoLength));
+            setHindlimbValue(petLengthDataConvert(res.ruler.hindLimbLength));
+            setForelimbLengthValue(petLengthDataConvert(res.ruler.foreLimbLength));
+            setForelimbCircumferenceValue(petLengthDataConvert(res.ruler.foreLimbCircumference));
+          } else {
+            //上一次测量尺子历史记录
+            setLastBodyValue(petLengthDataConvert(""));
+            setLastLowerValue(petLengthDataConvert(""));
+            setLastUpperValue(petLengthDataConvert(""));
+            setLastNeckValue(petLengthDataConvert(""));
+            setLastHeadValue(petLengthDataConvert(""));
+            setLastTorsoValue(petLengthDataConvert(""));
+            setLastHindlimbValue(petLengthDataConvert(""));
+            setLastForelimbLengthValue(petLengthDataConvert(""));
+            setLastForelimbCircumferenceValue(petLengthDataConvert(""));
+            //上一次测量尺子的时间
+            setLastRuleTimeValue("");
+            //上一次测量尺子回显到输入框
+            setBodyValue(petLengthDataConvert(""));
+            setLowerValue(petLengthDataConvert(""));
+            setUpperValue(petLengthDataConvert(""));
+            setNeckValue(petLengthDataConvert(""));
+            setHeadValue(petLengthDataConvert(""));
+            setTorsoValue(petLengthDataConvert(""));
+            setHindlimbValue(petLengthDataConvert(""));
+            setForelimbLengthValue(petLengthDataConvert(""));
+            setForelimbCircumferenceValue(petLengthDataConvert(""));
+          }
+          if (res.weight) {
+            setLastWeightValue(biggieUnit === 'kg' ? res.weight.weight : KgtoLb(res.weight.weight));
+            setLastWeightTimeValue(res.weight.createTime);
+          } else {
+            setLastWeightValue('');
+            setLastWeightTimeValue('');
+          }
         } else {
-          setLastWeightValue('');
-          setLastWeightTimeValue('');
+          message.error('The latest data cannot be obtained');
         }
       })
       .catch((err) => {
+        setLoding(false);
         message.error('The latest data cannot be obtained');
       })
   }
@@ -598,6 +688,18 @@ const ScanPet = ({
     }
   }
 
+  //监听切换了宠物
+  useEffect(() => {
+    setInputIndex(0);
+    setCarouselIndex(1);
+    //获取上一次测量的体重
+    getRecentPet();
+    //检测宠物体重是否为空
+    if (!weight) {
+      setWeightTipVisible(true)
+    }
+    return () => { };
+  }, [petId]);
   //监听点击界面中下一步按钮
   useEffect(() => {
     console.log("inputIndex", inputIndex);
@@ -643,32 +745,6 @@ const ScanPet = ({
     }
     return () => { };
   }, [rulerConfirmCount]);
-  //监听切换了宠物
-  useEffect(() => {
-    setInputIndex(0);
-    setCarouselIndex(1);
-    let {
-      torsoLength,
-      l2rarmDistance,
-      upperTorsoCircumference,
-      lowerTorsoCircumference,
-      h2tLength,
-      neckCircumference,
-      hindLimbLength,
-      foreLimbLength,
-      foreLimbCircumference
-    } = petMessage;
-    setBodyValue(petLengthDataConvert(l2rarmDistance));
-    setLowerValue(petLengthDataConvert(lowerTorsoCircumference));
-    setUpperValue(petLengthDataConvert(upperTorsoCircumference));
-    setNeckValue(petLengthDataConvert(neckCircumference));
-    setHeadValue(petLengthDataConvert(h2tLength));
-    setTorsoValue(petLengthDataConvert(torsoLength));
-    setHindlimbValue(petLengthDataConvert(hindLimbLength));
-    setForelimbLengthValue(petLengthDataConvert(foreLimbLength));
-    setForelimbCircumferenceValue(petLengthDataConvert(foreLimbCircumference));
-    return () => { };
-  }, [petId]);
   //监听用户点击了硬件中的下一步按钮和拉动皮尺
   useEffect(() => {
     if (inputIndex < 9) {
@@ -723,244 +799,238 @@ const ScanPet = ({
 
     }
   }, [rulerConfirmCount, rulerMeasureValue]);
-  //检测宠物体重是否为空
-  useEffect(() => {
-    if (!weight) {
-      setWeightTipVisible(true)
-    }
-    return () => { };
-  }, [petId]);
-  //获取上一次测量的体重
-  useEffect(() => {
-    getRecentPet();
-    return (() => { })
-  }, [petId]);
 
   return (
     <>
       <Content className="scanContentBox">
-        <div className="historyWeightBox">
+        <Spin spinning={loding} size="large" wrapperClassName="scanPageLoding">
+          <div className="historyWeightBox">
+            {
+              judgeWightTime()
+            }
+          </div>
           {
-            judgeWightTime()
+            lookType ?
+              (
+                <>
+                  <div className="lookImageBox">
+                    {changeLookImage()}
+                    < img src={shrink} className="checkImage" onClick={() => onLookImage(false)} />
+                  </div>
+                  <div className="lookInputBox">
+                    <NumericInput
+                      value={onValue()}
+                      onChange={onOnChange()}
+                      onClick={() => clickInput(inputIndex)}
+                      index={inputIndex}
+                      indexkey={inputIndex}
+                      changesize={'32px'}
+                    />
+                  </div>
+                </>
+              ) :
+              (
+                <div className="scanImageBox">
+                  {changeImage()}
+                  < img src={amplification} className="checkImage" onClick={() => onLookImage(true)} />
+                </div>
+              )
           }
-        </div>
-        {
-          lookType ?
-            (
-              <>
-                <div className="lookImageBox">
-                  {changeLookImage()}
-                  < img src={shrink} className="checkImage" onClick={() => onLookImage(false)} />
-                </div>
-                <div className="lookInputBox">
-                  <NumericInput
-                    value={onValue()}
-                    onChange={onOnChange()}
-                    onClick={() => clickInput(inputIndex)}
-                    index={inputIndex}
-                    onKey={inputIndex}
-                    ChangeSize={'32px'}
-                  />
-                </div>
-              </>
-            ) :
-            (
-              <div className="scanImageBox">
-                {changeImage()}
-                < img src={amplification} className="checkImage" onClick={() => onLookImage(true)} />
-              </div>
-            )
-        }
-        {/*选择单位框*/}
-        <Radio.Group
-          value={radioValue}
-          onChange={changeRadio}
-          buttonStyle="solid"
-          className="selectLengthUnit"
-        >
-          <Radio.Button
-            value="in"
-            className="inButton"
-            style={{
-              background: radioValue === "in" ? "#D5B019" : "#FFFFFF",
-              borderColor: radioValue === "in" ? "#D5B019" : "#B3B3B3",
-              borderRadius: "20px",
-              borderTopRightRadius: "0px",
-              borderBottomRightRadius: "0px",
-            }}
+          {/*选择单位框*/}
+          <Radio.Group
+            value={radioValue}
+            onChange={changeRadio}
+            buttonStyle="solid"
+            className="selectLengthUnit"
           >
-            in
-          </Radio.Button>
-          <Radio.Button
-            value="cm"
-            className="cmButton"
-            style={{
-              background: radioValue === "cm" ? "#D5B019" : "#FFFFFF",
-              borderColor: radioValue === "cm" ? "#D5B019" : "#B3B3B3",
-              borderRadius: "20px",
-              borderTopLeftRadius: "0px",
-              borderBottomLeftRadius: "0px",
-            }}
-          >
-            cm
-          </Radio.Button>
-        </Radio.Group>
-        {/**输入框 */}
-        <div className="slideshowBox" style={{ height: px(100) }}>
-          <div className="leftImageBox" onClick={() => letfClick()}>
-            <LeftOutlined style={{ fontSize: '24px', visibility: carouselIndex === 1 ? 'hidden' : 'visible' }} />
-          </div>
-          <div className="scollInputGroup">
-            {/*第一列输入框*/}
-            <Input.Group
-              className="inputGroupItem"
-              style={{ display: carouselIndex === 1 ? "" : "none" }}
+            <Radio.Button
+              value="in"
+              className="inButton"
+              style={{
+                background: radioValue === "in" ? "#D5B019" : "#FFFFFF",
+                borderColor: radioValue === "in" ? "#D5B019" : "#B3B3B3",
+                borderRadius: "20px",
+                borderTopRightRadius: "0px",
+                borderBottomRightRadius: "0px",
+              }}
             >
-              <Space className="inputItemBox">
-                <div className="inputItem">
-                  <p className="inputTitle">Head Circumference</p>
-                  <NumericInput
-                    value={headValue}
-                    onChange={setHeadValue}
-                    getinput={inputEl}
-                    onClick={() => clickInput(0)}
-                    index={inputIndex}
-                    onKey={0}
-                  />
-                </div>
-                <div className="inputItem">
-                  <p className="inputTitle">Neck Circumference</p>
-                  <NumericInput
-                    value={neckValue}
-                    onChange={setNeckValue}
-                    getinput={inputEl}
-                    onClick={() => clickInput(1)}
-                    index={inputIndex}
-                    onKey={1}
-                  />
-                </div>
-                <div className="inputItem">
-                  <p className="inputTitle">Upper Torso Circumference</p>
-                  <NumericInput
-                    value={upperValue}
-                    onChange={setUpperValue}
-                    getinput={inputEl}
-                    onClick={() => clickInput(2)}
-                    index={inputIndex}
-                    onKey={2}
-                  />
-                </div>
-                <div className="inputItem">
-                  <p className="inputTitle">Lower Torso Circumference</p>
-                  <NumericInput
-                    value={lowerValue}
-                    onChange={setLowerValue}
-                    getinput={inputEl}
-                    onClick={() => clickInput(3)}
-                    index={inputIndex}
-                    onKey={3}
-                  />
-                </div>
-              </Space>
-            </Input.Group>
-            {/*第二列输入框*/}
-            <Input.Group
-              className="inputGroupItem"
-              style={{ display: carouselIndex === 2 ? "" : "none" }}
+              in
+            </Radio.Button>
+            <Radio.Button
+              value="cm"
+              className="cmButton"
+              style={{
+                background: radioValue === "cm" ? "#D5B019" : "#FFFFFF",
+                borderColor: radioValue === "cm" ? "#D5B019" : "#B3B3B3",
+                borderRadius: "20px",
+                borderTopLeftRadius: "0px",
+                borderBottomLeftRadius: "0px",
+              }}
             >
-              <Space className="inputItemBox">
-                <div className="inputItem">
-                  <p className="inputTitle">Full Torso Length</p>
-                  <NumericInput
-                    value={torsoValue}
-                    onChange={setTorsoValue}
-                    getinput={inputEl}
-                    onClick={() => clickInput(4)}
-                    index={inputIndex}
-                    onKey={4}
-                  />
-                </div>
-                <div className="inputItem">
-                  <p className="inputTitle">Full Body Length</p>
-                  <NumericInput
-                    value={bodyValue}
-                    onChange={setBodyValue}
-                    getinput={inputEl}
-                    onClick={() => clickInput(5)}
-                    index={inputIndex}
-                    onKey={5}
-                  />
-                </div>
-                <div className="inputItem">
-                  <p className="inputTitle">Hindlimb Length</p>
-                  <NumericInput
-                    value={hindlimbValue}
-                    onChange={setHindlimbValue}
-                    getinput={inputEl}
-                    onClick={() => clickInput(6)}
-                    index={inputIndex}
-                    onKey={6}
-                  />
-                </div>
-                <div className="inputItem">
-                  <p className="inputTitle">Forelimb Length</p>
-                  <NumericInput
-                    value={forelimbLengthValue}
-                    onChange={setForelimbLengthValue}
-                    getinput={inputEl}
-                    onClick={() => clickInput(7)}
-                    index={inputIndex}
-                    onKey={7}
-                  />
-                </div>
-              </Space>
-            </Input.Group>
-            {/*第三列输入框*/}
-            <Input.Group
-              className="inputGroupItem"
-              style={{ display: carouselIndex === 3 ? "" : "none" }}
-            >
-              <Space className="inputItemBox">
-                <div className="inputItem">
-                  <p className="inputTitle">Forelimb Circumference</p>
-                  <NumericInput
-                    value={forelimbCircumferenceValue}
-                    onChange={setForelimbCircumferenceValue}
-                    getinput={inputEl}
-                    onClick={() => clickInput(8)}
-                    index={inputIndex}
-                    onKey={8}
-                  />
-                </div>
-              </Space>
-            </Input.Group>
+              cm
+            </Radio.Button>
+          </Radio.Group>
+          {/**输入框 */}
+          <div className="slideshowBox" style={{ height: px(100) }}>
+            <div className="leftImageBox" onClick={() => letfClick()}>
+              <LeftOutlined style={{ fontSize: '24px', visibility: carouselIndex === 1 ? 'hidden' : 'visible' }} />
+            </div>
+            <div className="scollInputGroup">
+              {/*第一列输入框*/}
+              <Input.Group
+                className="inputGroupItem"
+                style={{ display: carouselIndex === 1 ? "" : "none" }}
+              >
+                <Space className="inputItemBox">
+                  <div className="inputItem">
+                    <p className="inputTitle">Head Circumference</p>
+                    <NumericInput
+                      value={headValue}
+                      onChange={setHeadValue}
+                      onInput={inputEl}
+                      onClick={() => clickInput(0)}
+                      index={inputIndex}
+                      indexkey={0}
+                    />
+                  </div>
+                  <div className="inputItem">
+                    <p className="inputTitle">Neck Circumference</p>
+                    <NumericInput
+                      value={neckValue}
+                      onChange={setNeckValue}
+                      onInput={inputEl}
+                      onClick={() => clickInput(1)}
+                      index={inputIndex}
+                      indexkey={1}
+                    />
+                  </div>
+                  <div className="inputItem">
+                    <p className="inputTitle">Upper Torso Circumference</p>
+                    <NumericInput
+                      value={upperValue}
+                      onChange={setUpperValue}
+                      onInput={inputEl}
+                      onClick={() => clickInput(2)}
+                      index={inputIndex}
+                      indexkey={2}
+                    />
+                  </div>
+                  <div className="inputItem">
+                    <p className="inputTitle">Lower Torso Circumference</p>
+                    <NumericInput
+                      value={lowerValue}
+                      onChange={setLowerValue}
+                      onInput={inputEl}
+                      onClick={() => clickInput(3)}
+                      index={inputIndex}
+                      indexkey={3}
+                    />
+                  </div>
+                </Space>
+              </Input.Group>
+              {/*第二列输入框*/}
+              <Input.Group
+                className="inputGroupItem"
+                style={{ display: carouselIndex === 2 ? "" : "none" }}
+              >
+                <Space className="inputItemBox">
+                  <div className="inputItem">
+                    <p className="inputTitle">Full Torso Length</p>
+                    <NumericInput
+                      value={torsoValue}
+                      onChange={setTorsoValue}
+                      onInput={inputEl}
+                      onClick={() => clickInput(4)}
+                      index={inputIndex}
+                      indexkey={4}
+                    />
+                  </div>
+                  <div className="inputItem">
+                    <p className="inputTitle">Full Body Length</p>
+                    <NumericInput
+                      value={bodyValue}
+                      onChange={setBodyValue}
+                      onInput={inputEl}
+                      onClick={() => clickInput(5)}
+                      index={inputIndex}
+                      indexkey={5}
+                    />
+                  </div>
+                  <div className="inputItem">
+                    <p className="inputTitle">Hindlimb Length</p>
+                    <NumericInput
+                      value={hindlimbValue}
+                      onChange={setHindlimbValue}
+                      onInput={inputEl}
+                      onClick={() => clickInput(6)}
+                      index={inputIndex}
+                      indexkey={6}
+                    />
+                  </div>
+                  <div className="inputItem">
+                    <p className="inputTitle">Forelimb Length</p>
+                    <NumericInput
+                      value={forelimbLengthValue}
+                      onChange={setForelimbLengthValue}
+                      onInput={inputEl}
+                      onClick={() => clickInput(7)}
+                      index={inputIndex}
+                      indexkey={7}
+                    />
+                  </div>
+                </Space>
+              </Input.Group>
+              {/*第三列输入框*/}
+              <Input.Group
+                className="inputGroupItem"
+                style={{ display: carouselIndex === 3 ? "" : "none" }}
+              >
+                <Space className="inputItemBox">
+                  <div className="inputItem">
+                    <p className="inputTitle">Forelimb Circumference</p>
+                    <NumericInput
+                      value={forelimbCircumferenceValue}
+                      onChange={setForelimbCircumferenceValue}
+                      onInput={inputEl}
+                      onClick={() => clickInput(8)}
+                      index={inputIndex}
+                      indexkey={8}
+                    />
+                  </div>
+                </Space>
+              </Input.Group>
+            </div>
+            <div className="rightImageBox" onClick={() => rightClick()}>
+              <RightOutlined style={{ fontSize: '24px', visibility: carouselIndex === 3 ? 'hidden' : 'visible' }} />
+            </div>
           </div>
-          <div className="rightImageBox" onClick={() => rightClick()}>
-            <RightOutlined style={{ fontSize: '24px', visibility: carouselIndex === 3 ? 'hidden' : 'visible' }} />
-          </div>
-        </div>
-        {/*历史测量数据展示*/}
-        <div className="historyBox">
-          <div className="historyTimeBox">
-            <p>Previously Measured on 06-20-22</p>
-          </div>
-          <div className="historyDataBox">
-            {historyData()}
-          </div>
+          {/*历史测量数据展示*/}
+          <div className="historyBox">
+            <div className="historyTimeBox">
+              {
+                lastRuleTimeValue && (
+                  <p>{`Previously Measured on ${moment(lastRuleTimeValue).format('L')}`}</p>
+                )
+              }
+            </div>
+            <div className="historyDataBox">
+              {historyData()}
+            </div>
 
-        </div>
-        {/*下一步 */}
-        <div className="nextBtnBox">
-          <Button
-            type="primary"
-            shape="round"
-            size="large"
-            className="nextBtn"
-            onClick={inputIndex > 7 ? finishScan : switchFocus}
-          >
-            {inputIndex > 7 ? "Calculate" : "Next"}
-          </Button>
-        </div>
+          </div>
+          {/*下一步 */}
+          <div className="nextBtnBox">
+            <Button
+              type="primary"
+              shape="round"
+              size="large"
+              className="nextBtn"
+              onClick={inputIndex > 7 ? finishScan : switchFocus}
+            >
+              {inputIndex > 7 ? "Calculate" : "Next"}
+            </Button>
+          </div>
+        </Spin>
       </Content>
       <Modal
         open={weightTipVisible}
@@ -1032,10 +1102,10 @@ const ScanPet = ({
                     <NumericInput
                       value={missHeadValue}
                       onChange={setMissHeadValue}
-                      getinput={missInputEl}
+                      onInput={missInputEl}
                       onClick={() => missClickInput(0)}
                       index={missInputIndex}
-                      onKey={0}
+                      indexkey={0}
                     />
                   </div>
 
@@ -1049,10 +1119,10 @@ const ScanPet = ({
                     <NumericInput
                       value={missNeckValue}
                       onChange={setMissNeckValue}
-                      getinput={missInputEl}
+                      onInput={missInputEl}
                       onClick={() => missClickInput(1)}
                       index={missInputIndex}
-                      onKey={1}
+                      indexkey={1}
                     />
                   </div>
 
@@ -1066,10 +1136,10 @@ const ScanPet = ({
                     <NumericInput
                       value={missUpperValue}
                       onChange={setMissUpperValue}
-                      getinput={missInputEl}
+                      onInput={missInputEl}
                       onClick={() => missClickInput(2)}
                       index={missInputIndex}
-                      onKey={2}
+                      indexkey={2}
                     />
                   </div>
                 )
@@ -1082,10 +1152,10 @@ const ScanPet = ({
                     <NumericInput
                       value={missLowerValue}
                       onChange={setMissLowerValue}
-                      getinput={missInputEl}
+                      onInput={missInputEl}
                       onClick={() => missClickInput(3)}
                       index={missInputIndex}
-                      onKey={3}
+                      indexkey={3}
                     />
                   </div>
                 )
@@ -1098,10 +1168,10 @@ const ScanPet = ({
                     <NumericInput
                       value={missTorsoValue}
                       onChange={setMissTorsoValue}
-                      getinput={missInputEl}
+                      onInput={missInputEl}
                       onClick={() => missClickInput(4)}
                       index={missInputIndex}
-                      onKey={4}
+                      indexkey={4}
                     />
                   </div>
                 )
@@ -1114,10 +1184,10 @@ const ScanPet = ({
                     <NumericInput
                       value={missBodyValue}
                       onChange={setMissBodyValue}
-                      getinput={missInputEl}
+                      onInput={missInputEl}
                       onClick={() => missClickInput(5)}
                       index={missInputIndex}
-                      onKey={5}
+                      indexkey={5}
                     />
                   </div>
                 )
@@ -1130,10 +1200,10 @@ const ScanPet = ({
                     <NumericInput
                       value={missHindlimbValue}
                       onChange={setMissHindlimbValue}
-                      getinput={missInputEl}
+                      onInput={missInputEl}
                       onClick={() => missClickInput(6)}
                       index={missInputIndex}
-                      onKey={6}
+                      indexkey={6}
                     />
                   </div>
                 )
@@ -1146,10 +1216,10 @@ const ScanPet = ({
                     <NumericInput
                       value={missForelimbLengthValue}
                       onChange={setMissForelimbLengthValue}
-                      getinput={missInputEl}
+                      onInput={missInputEl}
                       onClick={() => missClickInput(7)}
                       index={missInputIndex}
-                      onKey={7}
+                      indexkey={7}
                     />
                   </div>
                 )
@@ -1162,10 +1232,10 @@ const ScanPet = ({
                     <NumericInput
                       value={missForelimbCircumferenceValue}
                       onChange={setMissForelimbCircumferenceValue}
-                      getinput={missInputEl}
+                      onInput={missInputEl}
                       onClick={() => missClickInput(8)}
                       index={missInputIndex}
-                      onKey={8}
+                      indexkey={8}
                     />
                   </div>
                 )

@@ -340,9 +340,14 @@ class DoctorAddPet extends Component {
         <div className="r">
           <p >Pet Birthday</p>
           <div className="infoInput" >
-            <p style={{ weight: '60px', height: '27px', padding: 0, margin: 0 }} onClick={() => {
-              document.getElementById('calendar').style.display = 'block'
-            }}>{this.state.birthday}</p>
+            <p
+              style={{ weight: '60px', height: '27px', padding: 0, margin: 0 }}
+              onClick={() => {
+                document.getElementById('calendar').style.display = 'block'
+              }}
+            >
+              {this.state.birthday}
+            </p>
             <div className="calendar" id="calendar" style={{ left: px(-50), top: px(-50) }}>
               <Calendar
                 fullscreen={false}
@@ -411,7 +416,6 @@ class DoctorAddPet extends Component {
                 }}
                 value={birthdayValue}
                 onSelect={(value) => {
-                  console.log(value);
                   this.setState({
                     birthday: moment(value).format('MMMM D, YYYY')
 
@@ -425,7 +429,6 @@ class DoctorAddPet extends Component {
 
 
       </div>
-
     )
   }
   _ownName = () => {
@@ -637,10 +640,11 @@ class DoctorAddPet extends Component {
 
     )
   }
-  handleOk = () => {
+  handleOk = (petId) => {
     let params = {
       patientId: this.state.patientId,
-      doctorId: storage.userId
+      doctorId: storage.userId,
+      petId: petId,
     }
     if (storage.lastWorkplaceId) {
       params.workplaceId = storage.lastWorkplaceId
@@ -733,12 +737,17 @@ class DoctorAddPet extends Component {
         }
       })
       .catch(err => {
+        this.setState({
+          confirmLoading: false,
+          isModalVisible: false
+        });
         message.error('Jump Failure');
       })
   };
   handleCancel = () => {
     this.setState({
-      isModalVisible: false
+      isModalVisible: false,
+      confirmLoading: false,
     })
   };
 
@@ -838,7 +847,7 @@ class DoctorAddPet extends Component {
                           })
                           if (res.flag === true) {
                             message.success('Added successfully')
-                            this.handleOk();
+                            this.handleOk(res.data.petId);
                           }
                           else {
                             message.error('add failed')
@@ -849,7 +858,6 @@ class DoctorAddPet extends Component {
                             spin: false
                           })
                           message.error('add failed')
-                          console.log(err);
                         })
                     }
                   })

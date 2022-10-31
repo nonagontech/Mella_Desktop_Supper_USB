@@ -1,12 +1,11 @@
-import React, {
-} from 'react';
+import { useEffect } from 'react';
 import { Input } from 'antd';
 import _ from 'lodash';
 import './numericInput.less'
-import { useEffect } from 'react';
+
 
 const NumericInput = (props) => {
-  const { value, onChange, getinput, onClick, onKey, index, ChangeSize = '' } = props;
+  const { value, onChange, onInput, onClick, indexkey, index, changesize = '' } = props;
   //输入框输入
   const handleChange = (e) => {
     const { value: inputValue } = e.target;
@@ -29,7 +28,7 @@ const NumericInput = (props) => {
     onClick();
   }
   //修改样式
-  let bordercolor = onKey === index ? '#D5B019' : '#d9d9d9';
+  let bordercolor = indexkey === index ? '#D5B019' : '#d9d9d9';
 
 
   return (
@@ -39,9 +38,9 @@ const NumericInput = (props) => {
       onChange={handleChange}
       onBlur={handleBlur}
       maxLength={10}
-      ref={getinput}
+      ref={onInput}
       onClick={handleClick}
-      style={{ borderColor: bordercolor, textAlign: "center", fontSize: ChangeSize }}
+      style={{ borderColor: bordercolor, textAlign: "center", fontSize: changesize }}
     />
   );
 

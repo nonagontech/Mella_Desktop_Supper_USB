@@ -1317,6 +1317,7 @@ const Heard = ({
             src={message}
             alt=""
             style={{ height: px(25), width: px(25) }}
+            onClick={() => history.push({ pathname: "/menuOptions/unassigned", deviceType: 0 })}
           />
         );
       case 'biggie':
@@ -1325,6 +1326,7 @@ const Heard = ({
             src={biggieMessage}
             alt=""
             style={{ height: px(25), width: px(25) }}
+            onClick={() => history.push({ pathname: "/menuOptions/unassigned", deviceType: 1 })}
           />
         );
       case 'tape':
@@ -1561,7 +1563,6 @@ const Heard = ({
           <div className="heardCenter">
             <div
               className="message"
-              onClick={() => history.push("/menuOptions/unassigned")}
             >
 
               {

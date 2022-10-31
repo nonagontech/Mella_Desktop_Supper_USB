@@ -107,7 +107,6 @@ const ClinicalStudy = ({
   const [WeightValue, setWeightValue] = useState('');
   const echartsElement = useRef(null);
   const clinicalRef = useRef(null);
-  const [assignVisible, setAssignVisible] = useState(false);
   const [seleceEmergencies, setSeleceEmergencies] = useState({});
   const [lastWorkplaceId, setLastLastWorkplaceId] = useState('');
   const [selectPetVisible, setSelectPetVisible] = useState(false);//选择宠物弹窗显隐
@@ -133,6 +132,7 @@ const ClinicalStudy = ({
       setWindowWidth(clinicalRef.current.offsetWidth);
     }
   };
+  //临床测试数据保存
   const addClinical = () => {
     let emerData = [];
     let { Eci, wen0, wen1 } = echarsData;
@@ -238,6 +238,7 @@ const ClinicalStudy = ({
       }
     }, 500);
   };
+  //获取宠物历史记录
   const _getHistory11 = (petId) => {
     let historys = [];
     setLoading(true);
@@ -364,6 +365,7 @@ const ClinicalStudy = ({
     let data = {
       pageSize: pageSize,
       currPage: currPage,
+      deviceType: 0,
     }
     getPetExamByDoctorId(storage.userId, data)
       .then((res) => {
@@ -1610,6 +1612,7 @@ const ClinicalStudy = ({
     let parmes = {
       petId: value.petId,
       clinicalDatagroupId: seleceEmergencies.clinicalDatagroupId,
+
     };
     addAndSavePetExam(seleceEmergencies.historyId, parmes)
       .then((res) => {

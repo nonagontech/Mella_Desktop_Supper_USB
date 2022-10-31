@@ -170,7 +170,6 @@ const HeaderItem = ({
     );
   };
   const clilkMenu = (item) => {
-    console.log("---item", item);
     if (item.key === "editPetInfo" && !petMessage.isWalkIn) {
       //跳转到编辑宠物信息页面
       history.push("/page9");
@@ -187,12 +186,9 @@ const HeaderItem = ({
     let url = "/clinical/catv12Predict";
     catv12Predict(parame)
       .then((res) => {
-        console.log("res", res);
         let ipcRenderer = window.electron.ipcRenderer;
         if (res.message === "Success") {
           let prediction = res.result.prediction.toFixed(2);
-          console.log("------yuce", prediction);
-
           let num = parseFloat(parseFloat(prediction).toFixed(1));
           setMellaPredictReturnValueFun(num);
 

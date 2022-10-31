@@ -8,14 +8,22 @@ import UploadImg from "./../../utils/uploadImg/UploadImg";
 import { px, MTop } from "./../../utils/px";
 import electronStore from "./../../utils/electronStore";
 import MyModal from "./../../utils/myModal/MyModal";
+import SelectPetModal from "../../components/selectPetModal";
+import AddPetModal from "../../components/addPetModal";
 
 import moment from "moment";
 import Draggable from "react-draggable";
 
 import "./index.less";
 import {
-  getPetExamByDoctorId, selectBreedBySpeciesId, listAllPetInfo, checkPatientId, addDeskPet, addAndSavePetExam, deletePetExamByExamId
-} from './../../api'
+  getPetExamByDoctorId,
+  selectBreedBySpeciesId,
+  listAllPetInfo,
+  checkPatientId,
+  addDeskPet,
+  addAndSavePetExam,
+  deletePetExamByExamId,
+} from './../../api';
 
 let storage = window.localStorage;
 const { Option } = Select;
@@ -52,30 +60,28 @@ export default class Unassigned extends Component {
     pageSize: 10,//数量
     currPage: 1,//页码
     total: 0,//总数
+    deviceType: 0,//未分配类型
+    addPetId: '',//添加新宠物的id
+    selectPetModalLoading: false,//选择宠物弹窗加载
+    addPetVisible: false,//添加宠物弹窗
+    addPetModalLoading: false,//添加宠物弹窗加载
   };
 
   componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer;
-    let { height, width } = window.screen;
-    let windowsHeight = height > width ? width : height;
     ipcRenderer.send("big");
+    ipcRenderer.on("changeFenBianLv", this.changeFenBianLv);
     let getBreed = electronStore.get("getBreed");
     if (getBreed) {
       this.setState({
         breedArr: getBreed,
       });
     }
-    ipcRenderer.on("changeFenBianLv", this.changeFenBianLv);
-    this._getEmergencyHistory(1);
-    const timer = setTimeout(() => {
-      this._getBreed();
-      clearTimeout(timer);
-    }, 3000);
-    this.gerAllPetMsg();
-    // let list = electronStore.get("doctorExam");
-    // this.setState({
-    //   petListData: list || [],
-    // });
+    this.setState({
+      deviceType: this.props.history.location.deviceType
+    }, () => {
+      this._getEmergencyHistory(1);
+    })
   }
   componentWillUnmount() {
     message.destroy();
@@ -113,6 +119,7 @@ export default class Unassigned extends Component {
     let data = {
       pageSize: this.state.pageSize,
       currPage: currPage,
+      deviceType: this.state.deviceType,
     }
     getPetExamByDoctorId(storage.userId, data)
       .then((res) => {
@@ -196,76 +203,6 @@ export default class Unassigned extends Component {
         });
       });
   };
-  //获取宠物类别
-  _getBreed = () => {
-    selectBreedBySpeciesId({ speciesId: 1 })
-      .then((res) => {
-        if (res.code === 0) {
-          let arr = [];
-          res.petlist.map((item, index) => {
-            let data = {
-              petSpeciesBreedId: item.petSpeciesBreedId,
-              breedName: item.breedName,
-              speciesId: 1,
-            };
-
-            arr.push(data);
-          });
-
-          selectBreedBySpeciesId({ speciesId: 2 })
-            .then((res) => {
-              if (res.code === 0) {
-                res.petlist.map((item, index) => {
-                  let data = {
-                    petSpeciesBreedId: item.petSpeciesBreedId,
-                    breedName: item.breedName,
-                    speciesId: 2,
-                  };
-                  arr.push(data);
-                });
-
-                console.log("----品种集合：", arr);
-                electronStore.set("getBreed", arr);
-                this.setState({
-                  breedArr: arr,
-                });
-              }
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  //获取所有宠物详情信息
-  gerAllPetMsg = () => {
-    let params = {
-      doctorId: storage.userId,
-      offset: 0,
-      size: 100,
-    }
-    if (storage.lastWorkplaceId) {
-      params.workplaceId = storage.lastWorkplaceId
-    }
-    if (storage.lastOrganization) {
-      params.organizationId = storage.lastOrganization
-    }
-    listAllPetInfo(params)
-      .then((res) => {
-        console.log('res: ', res);
-        if (res.flag === true && res.data) {
-          this.setState({
-            petListData: res.data,
-          })
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      })
-  }
   _search = (value = "") => {
     let list = this.state.historyData;
     let searchData = [];
@@ -281,521 +218,7 @@ export default class Unassigned extends Component {
       serchExamData: searchData,
     });
   };
-  //搜索宠物
-  _searchPet = (value = "") => {
-    let list = this.state.petListData;
-    let searchData = [];
-    let keyWord = value || this.state.searchText;
-    for (let i = 0; i < list.length; i++) {
-      let name = list[i].petName ? list[i].petName.toLowerCase() : "";
-      let rfid = list[i].rfid ? list[i].rfid.toLowerCase() : "";
-      let patientId = list[i].patientId ? list[i].patientId.toLowerCase() : "";
-
-      if (
-        `${name}`.indexOf(keyWord.toLowerCase()) !== -1 ||
-        `${rfid}`.indexOf(keyWord.toLowerCase()) !== -1 ||
-        `${patientId}`.indexOf(keyWord.toLowerCase()) !== -1
-      ) {
-        searchData.push(list[i]);
-      }
-    }
-
-    this.setState({
-      searchPetList: searchData,
-    });
-  };
   draggleRef = React.createRef();
-  handleOk = (e) => {
-    this.setState({
-      visible: false,
-      assignPatientId: "",
-      assignPetName: "",
-      assignOwnerName: "",
-      assignBreed: "",
-      assignBreedId: "",
-      assignPetAge: "",
-      assignPetWeight: "",
-      assignPetId: "",
-      assignPetImgUrl: "",
-    });
-  };
-  //新增宠物取消新增事件
-  handleCancel = (e) => {
-    this.setState({
-      visible: false,
-      assignVisible: true,
-      assignPatientId: "",
-      assignPetName: "",
-      assignOwnerName: "",
-      assignBreed: "",
-      assignBreedId: "",
-      assignPetAge: "",
-      assignPetWeight: "",
-      assignPetId: "",
-      assignPetImgUrl: "",
-      imgId: -1,
-    });
-  };
-  //新增宠物弹窗关闭事件
-  closeHandleCancel = (e) => {
-    this.setState({
-      visible: false,
-      assignPatientId: "",
-      assignPetName: "",
-      assignOwnerName: "",
-      assignBreed: "",
-      assignBreedId: "",
-      assignPetAge: "",
-      assignPetWeight: "",
-      assignPetId: "",
-      assignPetImgUrl: "",
-      search: '',
-      selectPetId: '',
-      imgId: -1,
-    });
-  }
-  onStart = (event, uiData) => {
-    const { clientWidth, clientHeight } = window?.document?.documentElement;
-    const targetRect = this.draggleRef?.current?.getBoundingClientRect();
-    this.setState({
-      bounds: {
-        left: -targetRect?.left + uiData?.x,
-        right: clientWidth - (targetRect?.right - uiData?.x),
-        top: -targetRect?.top + uiData?.y,
-        bottom: clientHeight - (targetRect?.bottom - uiData?.y),
-      },
-    });
-  };
-  _select = (value, data) => {
-    console.log(value, data); //value的值为id
-    this.setState({
-      assignBreedId: value,
-      assignBreed: data.children,
-    });
-  };
-  _modal = () => {
-    let that = this;
-    function getPetInfoByPatientId() {
-      switch (storage.identity) {
-        case "1":
-          console.log("我是vetspire查找");
-          break;
-        case "2":
-          console.log("我是ezyVet查找");
-          let params = {
-            animalId: that.state.assignPatientId,
-            organizationId: 4,
-          };
-          let paramsArray = [];
-          Object.keys(params).forEach((key) =>
-            paramsArray.push(key + "=" + params[key])
-          );
-          let url =
-            "http://ec2-3-214-224-72.compute-1.amazonaws.com:8080/mellaserver/petall/getPetInfoByAnimalId";
-          // 判断是否地址拼接的有没有 ？,当没有的时候，使用 ？拼接第一个参数，如果有参数拼接，则用&符号拼接后边的参数
-          if (url.search(/\?/) === -1) {
-            url = url + "?" + paramsArray.join("&");
-          } else {
-            url = url + "&" + paramsArray.join("&");
-          }
-          fetch(url, {
-            method: "GET",
-            headers: {
-              authorization: `Bearer ${storage.ezyVetToken}`,
-            },
-          })
-            .then((response) => response.json())
-            .then((res) => {
-              console.log("res", res);
-              this.setState({
-                spin: false,
-              });
-              if (res.flag === true) {
-                //有宠物，进入1
-                let petArr = res.data;
-                if (petArr.length > 1) {
-                  petArr.sort(function (a, b) {
-                    return a.createTime > b.createTime ? 1 : -1;
-                  });
-                }
-                console.log(petArr);
-
-                let { petId } = petArr;
-                // assign(petId)
-              } else {
-                //没有宠物
-                message.error("There are no pets under this patientID");
-              }
-            })
-            .catch((err) => {
-              console.log(err);
-              message.error("There are no pets under this patientID");
-            });
-
-          break;
-
-        case "3":
-          console.log("我是一般医生查找");
-          let datas = {
-            patientId: that.state.assignPatientId,
-            doctorId: storage.userId
-          }
-          if (storage.lastWorkplaceId) {
-            datas.workplaceId = storage.lastWorkplaceId
-          }
-          if (storage.lastOrganization) {
-            datas.organizationId = storage.lastOrganization
-          }
-
-          checkPatientId(datas)
-            .then((res) => {
-              if (res.flag === true) {
-                that.setState({
-                  assignPetId: that.state.assignPatientId,
-                });
-                message.success("This patientID will work");
-              } else {
-                that.setState({
-                  assignPetId: '',
-                });
-                message.error("The patientID already exists");
-              }
-            })
-            .catch((err) => {
-              that.setState({
-                inputDisabled: false,
-                assignPetName: "",
-                assignOwnerName: "",
-                assignBreed: "",
-                assignBreedId: "",
-                assignPetAge: "",
-                assignPetWeight: "",
-                assignPetId: "",
-                assignPetImgUrl: "",
-              });
-              console.log(err);
-            });
-          break;
-        default:
-          break;
-      }
-    }
-    //将测量信息给分配宠物
-    const assignPet = () => {
-      let petMsg = {
-        petName: this.state.assignPetName,
-        age: this.state.assignPetAge,
-        petSpeciesBreedId: this.state.assignBreedId,
-        owner: this.state.assignOwnerName,
-        doctorId: storage.userId
-      }
-      if (this.state.imgId !== -1 && this.state.imgId) {
-        petMsg.imageId = this.state.imgId
-      }
-      if (this.state.assignPetWeight) {
-        petMsg.weight = parseFloat(this.state.assignPetWeight).toFixed(2)
-      }
-      if (storage.lastWorkplaceId) {
-        petMsg.workplaceId = storage.lastWorkplaceId
-      }
-      if (storage.lastOrganization) {
-        petMsg.organizationId = storage.lastOrganization
-      }
-      this.setState({
-        modalLoading: true,
-      })
-      addDeskPet(this.state.assignPatientId, petMsg)
-        .then((res) => {
-          if (res.flag === true) {
-            let parmes = {
-              petId: res.data.petId,
-              clinicalDatagroupId: that.state.seleceEmergencies.clinicalDatagroupId,
-            };
-            addAndSavePetExam(that.state.seleceEmergencies.historyId, parmes)
-              .then((res) => {
-                this.setState({
-                  modalLoading: false,
-                })
-                if (res.flag === true) {
-                  message.success("Assigned successfully");
-                  that._getEmergencyHistory(1);
-                  that.setState({
-                    visible: false,
-                    assignPatientId: "",
-                    assignPetName: "",
-                    assignOwnerName: "",
-                    assignBreed: "",
-                    assignBreedId: "",
-                    assignPetAge: "",
-                    assignPetWeight: "",
-                    assignPetId: "",
-                    assignPetImgUrl: "",
-                    imgId: -1,
-                  });
-                } else {
-                  message.error("Assignment failed");
-                }
-              })
-              .catch((err) => {
-                this.setState({
-                  modalLoading: false,
-                })
-                console.log(err);
-                message.error("Assignment failed");
-              });
-          } else {
-            this.setState({
-              modalLoading: false,
-            })
-            message.error('Failed to create a pet')
-          }
-        })
-        .catch((err) => {
-          this.setState({
-            modalLoading: false,
-          })
-          console.log('err: ', err);
-          message.error('Failed to create a pet')
-        })
-    };
-    let { disabled, bounds, visible } = this.state;
-    let options = this.state.breedArr.map((d) => (
-      <Option key={d.petSpeciesBreedId}>{d.breedName}</Option>
-    ));
-    return (
-
-      <Modal
-        maskClosable={false}
-        wrapClassName={"web1"} //对话框外部的类名，主要是用来修改这个modal的样式的
-        destroyOnClose={true}
-        title={
-          <div
-            style={{
-              width: "100%",
-              cursor: "move",
-              height: "30px",
-              textAlign: "center",
-            }}
-            onMouseOver={() => {
-              if (disabled) {
-                this.setState({
-                  disabled: false,
-                });
-              }
-            }}
-            onMouseOut={() => {
-              this.setState({
-                disabled: true,
-              });
-            }}
-            onFocus={() => { }}
-            onBlur={() => { }}
-          // end
-          ></div>
-        }
-        open={visible}
-        onOk={this.handleOk}
-        onCancel={this.closeHandleCancel}
-        modalRender={(modal) => (
-          <Draggable
-            disabled={disabled}
-            bounds={bounds}
-            onStart={(event, uiData) => this.onStart(event, uiData)}
-          >
-            <div ref={this.draggleRef}>{modal}</div>
-          </Draggable>
-        )}
-        footer={[]} // 设置footer为空，去掉 取消 确定默认按钮
-      >
-        <Spin spinning={this.state.modalLoading}>
-          <div id="unassignedModal">
-            <div className="title">
-              Assign <br />
-              Measurement to
-            </div>
-
-            <div className="addPhoto">
-              <UploadImg
-                getImg={(val) => {
-                  this.setState({
-                    imgId: val.imageId,
-                  });
-                }}
-                imgUrl={this.state.assignPetImgUrl}
-                disable={this.state.inputDisabled}
-              />
-            </div>
-
-            <div className="item">
-              <p>Patient ID:</p>
-              <Input
-                value={this.state.assignPatientId}
-                bordered={false}
-                onChange={(item) => {
-                  this.setState({
-                    assignPatientId: item.target.value,
-                  });
-                }}
-                onKeyDown={(e) => {
-                  if (e.keyCode === 13) {
-                    getPetInfoByPatientId();
-                  }
-                  if (e.keyCode === 27) {
-                    this.setState({
-                      assignPatientId: "",
-                    });
-                  }
-                }}
-                onBlur={() => {
-                  if (this.state.assignPatientId.length > 0) {
-                    getPetInfoByPatientId();
-                  }
-                }}
-              />
-            </div>
-
-            <div className="item">
-              <p>Pet Name:</p>
-              <Input
-                disabled={this.state.inputDisabled}
-                value={this.state.assignPetName}
-                bordered={false}
-                onChange={(item) => {
-                  this.setState({
-                    assignPetName: item.target.value,
-                  });
-                }}
-              />
-            </div>
-
-            <div className="item">
-              <p>Owner Name:</p>
-              <Input
-                disabled={this.state.inputDisabled}
-                value={this.state.assignOwnerName}
-                bordered={false}
-                onChange={(item) => {
-                  this.setState({
-                    assignOwnerName: item.target.value,
-                  });
-                }}
-              />
-            </div>
-            <div className="item">
-              <p>Breed:</p>
-              <div className="infoInput">
-                <Select
-                  disabled={this.state.inputDisabled}
-                  showSearch
-                  style={{ width: "100%" }}
-                  bordered={false}
-                  value={this.state.assignBreed}
-                  placeholder="Search to Select"
-                  optionFilterProp="children"
-                  listHeight={256}
-                  onSelect={(value, data) => this._select(value, data)}
-                  filterOption={(input, option) =>
-                    option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                    0
-                  }
-                  filterSort={(optionA, optionB) =>
-                    optionA.children
-                      .toLowerCase()
-                      .localeCompare(optionB.children.toLowerCase())
-                  }
-                >
-                  {options}
-                </Select>
-              </div>
-            </div>
-            <div className="item">
-              <p>Pet Age:</p>
-              <Input
-                disabled={this.state.inputDisabled}
-                value={this.state.assignPetAge}
-                bordered={false}
-                onChange={(item) => {
-                  this.setState({
-                    assignPetAge: item.target.value,
-                  });
-                }}
-              />
-            </div>
-            <div className="item">
-              <p>Pet Weight:</p>
-              <Input
-                disabled={this.state.inputDisabled}
-                value={this.state.assignPetWeight}
-                bordered={false}
-                onChange={(item) => {
-                  this.setState({
-                    assignPetWeight: item.target.value,
-                  });
-                }}
-              />
-
-              <div className="unit">{`kg`}</div>
-            </div>
-
-            <div className="btnF">
-              <div className="btn" onClick={this.handleCancel}>
-                Cancel
-              </div>
-              <div
-                className="btn"
-                onClick={() => {
-                  if (this.state.assignPatientId === '') {
-                    message.error('patientID can not be empty!');
-                  } else if (this.state.assignPetId === '') {
-                    message.error("The patientID already exists");
-                  } else if (this.state.assignPatientId !== '' && this.state.assignPetId !== '') {
-                    assignPet();
-                  }
-                }}
-              >
-                Apportion
-              </div>
-            </div>
-          </div>
-        </Spin>
-      </Modal>
-    );
-  };
-  //获取当前组织所有宠物信息
-  _list = () => {
-    const { search, petListData, searchPetList } = this.state;
-    let data = search.length > 0 ? searchPetList : petListData;
-    let option = data.map((item, index) => {
-      let male = item.gender === 0 ? "Female" : "Male";
-      return (
-        <li
-          key={item.petId}
-          onClick={() => {
-            this.setState({
-              selectPetId: item.petId,
-            });
-          }}
-        >
-          <div className="item">
-            <span className="petName" style={{ margin: `${px(5)}px 0` }}>
-              {item.petName ? item.petName : 'unknown'}
-            </span>
-            <span
-              className="petName"
-              style={{ margin: `${px(5)}px 0` }}
-            >{`,${item.age} yrs,`}</span>
-            <span className="petName" style={{ margin: `${px(5)}px 0` }}>
-              {male}
-            </span>
-          </div>
-          {this.state.selectPetId === item.petId ? (
-            <span className="search">&#xe614;</span>
-          ) : null}
-        </li>
-      );
-    });
-    return <ul>{option}</ul>;
-  };
   //表格滚动
   onScrollCapture = () => {
     // 滚动的容器
@@ -812,27 +235,100 @@ export default class Unassigned extends Component {
       this._getEmergencyHistory(this.state.currPage + 1);
     }
   }
+  //选择宠物进行分配
+  assignPet = (value) => {
+    this.setState({ selectPetModalLoading: true });
+    let parmes = {
+      petId: value.petId,
+      clinicalDatagroupId: this.state.seleceEmergencies.clinicalDatagroupId,
+    };
+    addAndSavePetExam(this.state.seleceEmergencies.historyId, parmes)
+      .then((res) => {
+        this.setState({ selectPetModalLoading: false });
+        if (res.flag === true) {
+          message.success("Assigned successfully");
+          this.setState({
+            assignVisible: false,
+            addPetId: ''
+          })
+          this._getEmergencyHistory(1);
+        } else {
+          message.error("Assignment failed");
+        }
+
+      })
+      .catch((err) => {
+        message.error("Assignment failed");
+        this.setState({ selectPetModalLoading: false });
+      })
+
+
+  }
+  //添加宠物弹窗显示
+  onAddPet = () => {
+    this.setState({
+      addPetId: '',
+      addPetVisible: true,
+      assignVisible: false,
+    })
+  }
+  //添加新宠物
+  addNewPet = (value) => {
+    let data = {
+      ...value,
+      weight: value.weight === '' ? '' : parseFloat(value.weight).toFixed(2),
+    };
+    if (storage.lastWorkplaceId) {
+      data.workplaceId = storage.lastWorkplaceId
+    }
+    if (storage.lastOrganization) {
+      data.organizationId = storage.lastOrganization
+    }
+    if (storage.userId) {
+      data.doctorId = storage.userId
+    }
+    this.setState({ addPetModalLoading: true }, () => {
+      addDeskPet(value.patientId, data)
+        .then((res) => {
+          this.setState({ addPetModalLoading: false })
+          if (res.flag === true) {
+            message.success('Adding pets successfully');
+            this.setState({
+              addPetId: res.data.petId,
+              addPetVisible: false,
+              assignVisible: true,
+            })
+          } else {
+            message.error('patientId already exists');
+          }
+        })
+        .catch((err) => {
+          message.error('system exception');
+        })
+    });
+
+  }
+  //删除分配记录
+  deletePetExam = (key, record) => {
+    deletePetExamByExamId(key, '')
+      .then((res) => {
+        if (res.flag === true) {
+          const historyData = [...this.state.historyData];
+          this.setState({
+            historyData: historyData.filter((item) => item.historyId !== key),
+          });
+        } else {
+          message.error('Fail to delete')
+        }
+      }
+      )
+      .catch((err) => {
+        message.error('system exception');
+      })
+  }
 
   render() {
-    let { loading, disabled, historyData, searchText, serchExamData } =
-      this.state;
-    const _del = (key, record) => {
-      deletePetExamByExamId(key, '')
-        .then(
-          (res) => {
-            if (res.flag === true) {
-              console.log("删除成功");
-              const historyData = [...this.state.historyData];
-              console.log(historyData);
-              this.setState({
-                historyData: historyData.filter((item) => item.historyId !== key),
-              });
-            } else {
-              console.log("删除失败");
-            }
-          }
-        );
-    };
+    let { loading, disabled, historyData, searchText, serchExamData } = this.state;
 
     const columns = [
       {
@@ -853,7 +349,7 @@ export default class Unassigned extends Component {
             >
               <Popconfirm
                 title="Sure to delete?"
-                onConfirm={() => _del(record.historyId, record)}
+                onConfirm={() => this.deletePetExam(record.historyId, record)}
               >
                 <img src={del} alt="" width={25} style={{ marginRight: "8px" }} />
               </Popconfirm>
@@ -1000,124 +496,44 @@ export default class Unassigned extends Component {
               className="tableStyle"
             />
           </div>
-          {this._modal()}
         </div>
         {
           this.state.assignVisible && (
-            <MyModal
+            <SelectPetModal
               visible={this.state.assignVisible}
-              element={
-                <div className="myfindOrg">
-                  <div className="orgHeard">
-                    <div className="titleicon" style={{ marginTop: px(5) }}>
-                      <div
-                        onClick={() => {
-                          this.setState({
-                            assignVisible: false,
-                            search: '',
-                            selectPetId: '',
-                          });
-                        }}
-                      >
-                        <img src={Close} alt="" style={{ width: px(25) }} />
-                      </div>
-                    </div>
-                    <div
-                      className="text"
-                      onMouseOver={() => {
-                        if (disabled) {
-                          this.setState({
-                            disabled: false,
-                          });
-                        }
-                      }}
-                      onMouseOut={() => {
-                        this.setState({
-                          disabled: true,
-                        });
-                      }}
-                    >
-                      Assign Measurement
-                    </div>
-                    <div className="searchBox">
-                      <Input
-                        placeholder=" &#xe61b; Search Pet"
-                        bordered={false}
-                        allowClear={true}
-                        value={this.state.search}
-                        onChange={(item) => {
-                          this.setState({
-                            search: item.target.value,
-                          });
-                          this._searchPet(item.target.value);
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="list">{this._list()}</div>
-                  <div className="foot">
-                    <div
-                      className="btnn flex"
-                      style={{ height: px(45) }}
-                      onClick={() => {
-                        this.setState({
-                          assignVisible: false,
-                          visible: true,
-                        });
-                      }}
-                    >
-                      <p>+Add New Pet</p>
-                    </div>
-                    <div
-                      className="btnn flex"
-                      style={{ height: px(45) }}
-                      onClick={() => {
-                        if (!this.state.selectPetId) {
-                          message.error("Please select a pet to assign");
-                        } else {
-                          let { selectPetId, seleceEmergencies, historyData } =
-                            this.state;
-                          let parmes = {
-                            petId: selectPetId,
-                            clinicalDatagroupId:
-                              seleceEmergencies.clinicalDatagroupId,
-                          };
-                          addAndSavePetExam(seleceEmergencies.historyId, parmes)
-                            .then((res) => {
-                              if (res.flag === true) {
-                                message.success("Assigned successfully");
-                                let arr = [];
-                                for (let i = 0; i < historyData.length; i++) {
-                                  const element = historyData[i];
-                                  if (
-                                    seleceEmergencies.clinicalDatagroupId !==
-                                    element.clinicalDatagroupId
-                                  ) {
-                                    arr.push(element);
-                                  }
-                                }
-
-                                this.setState({
-                                  assignVisible: false,
-                                  historyData: arr,
-                                });
-                              } else {
-                                message.error("Assignment failed");
-                              }
-                            })
-                            .catch((err) => {
-                              console.log(err);
-                              message.error("Assignment failed");
-                            });
-                        }
-                      }}
-                    >
-                      <p>Confirm</p>
-                    </div>
-                  </div>
-                </div>
-                // </Spin>
-              }
+              destroyOnClose
+              width={400}
+              value={this.state.addPetId}
+              onCancel={() => {
+                this.setState({
+                  assignVisible: false,
+                  addPetId: ''
+                })
+              }}
+              onAddPet={() => this.onAddPet()}
+              onSelect={(value) => {
+                this.assignPet(value);
+              }}
+              onLoading={this.state.selectPetModalLoading}
+            />
+          )
+        }
+        {
+          this.state.addPetVisible && (
+            <AddPetModal
+              visible={this.state.addPetVisible}
+              destroyOnClose
+              width={400}
+              onCancel={() => {
+                this.setState({
+                  addPetVisible: false,
+                  assignVisible: true,
+                })
+              }}
+              onConfirm={(value) => {
+                this.addNewPet(value);
+              }}
+              onLoading={this.state.addPetModalLoading}
             />
           )
         }

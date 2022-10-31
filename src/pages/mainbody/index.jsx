@@ -166,7 +166,6 @@ class App extends Component {
     }
   }
   updateBaseLaterType = (e, data) => {
-    console.log('data:453534534 ', data);
     this.setState({
       updateBaseLaterType: data
     })

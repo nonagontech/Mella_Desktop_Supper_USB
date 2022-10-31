@@ -196,7 +196,6 @@ const PetsUI = ({
         petList.sort((a, b) => { return a.gender >= b.gender ? 1 : -1 })
         break;
     }
-    console.log(petList);
     return petList
   }
   const menu = () => {
@@ -222,16 +221,14 @@ const PetsUI = ({
       )
     })
     return (
-      <Menu onClick={({ key, }) => {
-        console.log('----', key);
-        petSortTypeFun(key)
-
-        let petArr = dataSort(petList, key,)
-        setPetList(petArr)
-        setPetListArrFun(petArr)
-
-
-      }}>
+      <Menu
+        onClick={({ key, }) => {
+          petSortTypeFun(key)
+          let petArr = dataSort(petList, key,)
+          setPetList(petArr)
+          setPetListArrFun(petArr)
+        }}
+      >
         {options}
 
       </Menu>
