@@ -19,19 +19,14 @@
   const MessageBox = () => {
     const [updateMessage, setUpdateMessage] = React.useState({});
     const [startUpdate, setStartUpdate] = React.useState('');
-
+    //获取更新内容
     ipcRenderer.on('updateMessage', (event, message) => {
-      console.log('接收到更新进度', message);
       setUpdateMessage({
         size: message.files[0].size / (1024 * 1024),
         version: message.version,
         releaseNotes: message.releaseNotes
       });
     });
-
-    ipcRenderer.on('startUpdate', (event, message) => {
-      setStartUpdate(message);
-    })
     //稍后更新
     const onClickLater = () => {
       ipcRenderer.send('update-close');
@@ -43,7 +38,7 @@
     return (
       <div id="contreBox">
         <img id="updateLogo" src="./assets/img/mella.png" alt="" height="112px" />
-        <p id="title">{`发现新版本${updateMessage.version}(${updateMessage.size ? updateMessage.size.toFixed(2) : ''}M)`}</p>
+        <p id="title">{`Discover a new version${updateMessage.version}(${updateMessage.size ? updateMessage.size.toFixed(2) : ''}M)`}</p>
         <div
           id="updateMessage"
           dangerouslySetInnerHTML={{
@@ -92,13 +87,9 @@
     flex-direction: column;
   }
 
-  /* #updateLogo {
-    margin-bottom: 16px;
+  #updateLogo {
+    margin-top: 16px;
   }
-
-  #updateMessage {
-    margin-bottom: 16px;
-  } */
 
   #btnItem {
     background-color: #e1206d;
@@ -110,6 +101,10 @@
 
   #btnItem:nth-child(1) {
     margin-right: 32px;
+  }
+
+  #btnBox {
+    margin-bottom: 16px;
   }
 </style>
 

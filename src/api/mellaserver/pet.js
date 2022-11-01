@@ -15,8 +15,8 @@ const baseURL = `${mellaserverBaseUrl}/pet`
  * @param {string} params
  * @returns 返回一个接口
  */
-export const getPetExamByDoctorId = (userId,params) => {
-    return get(`${baseURL}/getPetExamByDoctorId/${userId}`, params)
+export const getPetExamByDoctorId = (userId, params) => {
+  return get(`${baseURL}/getPetExamByDoctorId/${userId}`, params)
 }
 
 
@@ -25,7 +25,7 @@ export const getPetExamByDoctorId = (userId,params) => {
  * @param {json} params { speciesId: 1 } 物种id
  */
 export const selectBreedBySpeciesId = (params) => {
-    return postJson(`${baseURL}/selectBreedBySpeciesId`, params)
+  return postJson(`${baseURL}/selectBreedBySpeciesId`, params)
 }
 
 
@@ -35,7 +35,7 @@ export const selectBreedBySpeciesId = (params) => {
  * @returns 返回一个接口
  */
 export const checkPatientId = (params) => {
-    return get(`${baseURL}/checkPatientId`, params)
+  return get(`${baseURL}/checkPatientId`, params)
 }
 
 
@@ -46,7 +46,7 @@ export const checkPatientId = (params) => {
  * @returns
  */
 export const addDeskPet = (patientid, params) => {
-    return postJson(`${baseURL}/addDeskPet/${patientid}`, params)
+  return postJson(`${baseURL}/addDeskPet/${patientid}`, params)
 }
 
 
@@ -57,7 +57,7 @@ export const addDeskPet = (patientid, params) => {
  * @returns
  */
 export const addAndSavePetExam = (examId, params) => {
-    return postJson(`${baseURL}/addAndSavePetExam/${examId}`, params)
+  return postJson(`${baseURL}/addAndSavePetExam/${examId}`, params)
 }
 
 /**
@@ -67,7 +67,7 @@ export const addAndSavePetExam = (examId, params) => {
  * @returns
  */
 export const deletePetExamByExamId = (examId, params = '') => {
-    return del(`${baseURL}/deletePetExamByExamId/${examId}`, params)
+  return del(`${baseURL}/deletePetExamByExamId/${examId}`, params)
 }
 
 
@@ -76,8 +76,8 @@ export const deletePetExamByExamId = (examId, params = '') => {
  * @param {string} petId
  * @returns
  */
-export const getPetExamByPetId = (petId,params) => {
-    return get(`${baseURL}/getPetExamByPetId/${petId}`, params)
+export const getPetExamByPetId = (petId, params) => {
+  return get(`${baseURL}/getPetExamByPetId/${petId}`, params)
 }
 
 
@@ -87,7 +87,7 @@ export const getPetExamByPetId = (petId,params) => {
  * @returns
  */
 export const addClamantPetExam = (params) => {
-    return postJson(`${baseURL}/addClamantPetExam`, params)
+  return postJson(`${baseURL}/addClamantPetExam`, params)
 }
 
 /**
@@ -97,7 +97,7 @@ export const addClamantPetExam = (params) => {
  * @returns
  */
 export const updatePetExam = (examId, params) => {
-    return postJson(`${baseURL}/updatePetExam/${examId}`, params)
+  return postJson(`${baseURL}/updatePetExam/${examId}`, params)
 }
 
 
@@ -109,7 +109,7 @@ export const updatePetExam = (examId, params) => {
  * @returns
  */
 export const updatePetInfo = (petId, params) => {
-    return postJson(`${baseURL}/updatePetInfo/${petId}`, params)
+  return postJson(`${baseURL}/updatePetInfo/${petId}`, params)
 }
 
 /**
@@ -120,7 +120,7 @@ export const updatePetInfo = (petId, params) => {
  * @returns
  */
 export const updatePetInfo1 = (userId, petId, params) => {
-    return postJson(`${baseURL}/updatePetInfo/${userId}/${petId}`, params)
+  return postJson(`${baseURL}/updatePetInfo/${userId}/${petId}`, params)
 }
 
 
@@ -131,7 +131,7 @@ export const updatePetInfo1 = (userId, petId, params) => {
  * @returns
  */
 export const getPetExamAndClinicalByPetId = (petId,) => {
-    return get(`${baseURL}/getPetExamAndClinicalByPetId/${petId}`, '')
+  return get(`${baseURL}/getPetExamAndClinicalByPetId/${petId}`, '')
 }
 
 
@@ -143,7 +143,7 @@ export const getPetExamAndClinicalByPetId = (petId,) => {
  * @returns
  */
 export const getPetInfoByPatientIdAndPetId = (params,) => {
-    return postJson(`${baseURL}/getPetInfoByPatientIdAndPetId`, params)
+  return postJson(`${baseURL}/getPetInfoByPatientIdAndPetId`, params)
 }
 
 
@@ -153,7 +153,7 @@ export const getPetInfoByPatientIdAndPetId = (params,) => {
  * @returns
  */
 export const listPetsLike = (params,) => {
-    return postJson(`${baseURL}/listPetsLike`, params)
+  return postJson(`${baseURL}/listPetsLike`, params)
 }
 
 /**
@@ -161,8 +161,17 @@ export const listPetsLike = (params,) => {
  * @param {*} params
  * @returns
  */
- export const deletePetByPetId = (params,) => {
+export const deletePetByPetId = (params,) => {
   return postJson(`${baseURL}/deletePetByPetId`, params)
+}
+/**
+ * @dec 用户搜索宠物
+ * @param {*} userId
+ * @param {*} params
+ * @returns
+ */
+export const getPetByPetNameOrPatientId = (userId, params) => {
+  return get(`${baseURL}/getPetByPetNameOrPatientId/${userId}`, params);
 }
 
 

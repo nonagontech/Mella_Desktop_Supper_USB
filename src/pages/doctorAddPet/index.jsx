@@ -640,7 +640,7 @@ class DoctorAddPet extends Component {
 
     )
   }
-  handleOk = (petId) => {
+  handleOk = (petId = '') => {
     let params = {
       patientId: this.state.patientId,
       doctorId: storage.userId,
@@ -875,7 +875,7 @@ class DoctorAddPet extends Component {
           <Modal
             title=""
             open={isModalVisible}
-            onOk={this.handleOk}
+            onOk={() => this.handleOk()}
             onCancel={this.handleCancel}
             centered
             destroyOnClose

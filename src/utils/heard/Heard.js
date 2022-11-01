@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, Popover, Button, Modal } from "antd";
+import { Menu, Popover, Button, Modal, message } from "antd";
 import { createFromIconfontCN, LoadingOutlined } from '@ant-design/icons';
 
 import help from "./../../assets/images/help.png";
@@ -7,7 +7,7 @@ import biggieHelp from "./../../assets/images/biggieHelp.png";
 import tabbyHelp from "./../../assets/images/tabbyHelp.png";
 import otterEQHelp from "./../../assets/images/otterEQHelp.png";
 import mabelHelp from "./../../assets/images/mabelHelp.png";
-import message from "./../../assets/images/message.png";
+import messageImg from "./../../assets/images/message.png";
 import biggieMessage from "./../../assets/images/biggieMessage.png";
 import dog from "./../../assets/images/reddog.png";
 import cat from "./../../assets/images/redcat.png";
@@ -33,7 +33,7 @@ import moment from 'moment'
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 
-import { getPetInfoByRFID } from "../../api";
+import { getPetInfoByRFID, getPetByPetNameOrPatientId } from "../../api";
 
 import "./heard.less";
 
@@ -306,13 +306,8 @@ const Heard = ({
         </div>
       );
     } else {
-      // console.log('-----展示', petList.length);
       if (petList.length > 0) {
         //找到了宠物，展示出来
-
-        // let petList = electronStore.get('doctorExam')
-        // console.log(petList);
-
         let option = petList.map((item, index) => {
           let { speciesId, url } = item;
 
@@ -428,16 +423,11 @@ const Heard = ({
     if (search.length > 0) {
       setVisible(true);
       setLoading(true);
-
       //搜索分成两种，一种是通过手输入数据搜索，一种是通过RFID扫描过后搜索
-
       if (search.length === 15 && isNumber(search)) {
         //这是RFID扫描后的搜索
-
         getPetInfoByRFID(search, storage.lastOrganization)
           .then((res) => {
-            console.log("----RFID搜索结果", res);
-
             if (res.flag === true && res.data) {
               let {
                 createTime,
@@ -512,42 +502,42 @@ const Heard = ({
               res.flag === true &&
               res.msg === "该组织下无此宠物信息"
             ) {
-              console.log("找到了但是不是在这个组织下");
               setLoading(false);
               setModalVis(true);
               setIsNotFound(false);
               setValue("");
               setVisible(false);
-
-              // this.setState({
-              //   loading: false,
-              //   modalVis: true,
-              //   isNotFound: false,
-              //   heardSearchText: ''
-              // })
             } else {
-              console.log("没有找到");
               setLoading(false);
               setModalVis(true);
               setIsNotFound(true);
               setValue("");
               setVisible(false);
-
-              // this.setState({
-              //   loading: false,
-              //   modalVis: true,
-              //   isNotFound: true,
-              //   heardSearchText: ''
-              // })
             }
           })
           .catch((err) => {
-            console.log("抛出异常:", err);
             setLoading(false);
           });
         return;
       }
+      let params = {
+        searchValue: search,
+      }
+      if (storage.lastOrganization) {
+        params.orgId = storage.lastOrganization
+      }
+      getPetByPetNameOrPatientId(storage.userId, params)
+        .then((res) => {
+          if (res.msg === 'success') {
+            setPetList(res.success)
+          } else {
+            message.warning('system error');
+          }
+        })
+        .catch((err) => {
+          message.error('system error')
 
+        })
       /**
        * 使用indexof方法实现模糊查询
        *     语法：stringObject.indexOf(searchvalue, fromindex)
@@ -562,32 +552,23 @@ const Heard = ({
        * toUpperCase（）方法：将字符串统一转成大写
        *
        */
-      let list = petListArr || []
-
-      let searchData = [];
-      let keyWord = search;
-      for (let i = 0; i < list.length; i++) {
-        let petName = list[i].petName ? list[i].petName.toLowerCase() : ''
-        let patientId = list[i].patientId ? list[i].patientId.toLowerCase() : ''
-        let rfid = list[i].rfid || ''
-        if (`${petName}`.indexOf(keyWord.toLowerCase()) !== -1
-          || `${patientId}`.indexOf(keyWord.toLowerCase()) !== -1
-          || `${rfid}`.indexOf(keyWord) !== -1
-        ) {
-          searchData.push(list[i]);
-        }
-      }
-      // console.log('找到的宠物', searchData);
-      console.log(
-        "---搜索词：",
-        search,
-        "---搜索数组：",
-        list,
-        "----搜索结果：",
-        searchData
-      );
+      // let list = petListArr || [];
+      // let searchData = [];
+      // let keyWord = search;
+      // for (let i = 0; i < list.length; i++) {
+      //   let petName = list[i].petName ? list[i].petName.toLowerCase() : '';
+      //   let patientId = list[i].patientId ? list[i].patientId.toLowerCase() : '';
+      //   let rfid = list[i].rfid || '';
+      //   if (
+      //     `${petName}`.indexOf(keyWord.toLowerCase()) !== -1 ||
+      //     `${patientId}`.indexOf(keyWord.toLowerCase()) !== -1 ||
+      //     `${rfid}`.indexOf(keyWord) !== -1
+      //   ) {
+      //     searchData.push(list[i]);
+      //   }
+      // }
+      // setPetList(searchData);
       setLoading(false);
-      setPetList(searchData);
     } else {
       setVisible(false);
     }
@@ -1314,7 +1295,7 @@ const Heard = ({
       case 'mellaPro':
         return (
           <img
-            src={message}
+            src={messageImg}
             alt=""
             style={{ height: px(25), width: px(25) }}
             onClick={() => history.push({ pathname: "/menuOptions/unassigned", deviceType: 0 })}
@@ -1467,7 +1448,6 @@ const Heard = ({
                       left: px(40),
                     }}
                   />
-
                   <div className="manuBodyList" style={{ marginTop: px(13) }}>
                     {menuList()}
                   </div>

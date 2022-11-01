@@ -608,10 +608,9 @@ ipcMain.on('update-close', () => {
 ipcMain.on('start-update', () => {
   autoUpdater.downloadUpdate();
   autoUpdater.on("download-progress", (data) => {
-    updateWindow.webContents.send('startUpdate', data);
     console.log('开始更新进度main', data);
   });
-
+  updateWindow.close();
 })
 //延迟更新底座
 ipcMain.on('update-base-later', () => {

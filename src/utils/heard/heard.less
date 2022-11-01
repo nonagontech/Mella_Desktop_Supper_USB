@@ -222,10 +222,31 @@
           padding: 0;
           width: 100%;
 
+          &::-webkit-scrollbar-track {
+            background-color: transparent;
+            border-radius: 4px;
+          }
+
+          &::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+            background-color: transparent;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            background-color: #A2A3A5;
+          }
+
+          &::-webkit-scrollbar-thumb:hover {
+            background-color: #747474;
+          }
+
           li {
             margin: 0;
             padding: 0;
             width: 100%;
+            cursor: pointer;
 
             .item {
               width: 100%;

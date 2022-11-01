@@ -4,6 +4,8 @@ import {
   Menu,
   Select,
   Tooltip,
+  Spin,
+  message
 } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
@@ -21,7 +23,8 @@ import { connect } from 'react-redux'
 import { petSortTypeFun, petDetailInfoFun, setPetListArrFun } from '../../store/actions';
 import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types'
-import moment from 'moment'
+import moment from 'moment';
+import _ from 'lodash';
 
 import './mainbody.less'
 import { listAllPetInfo } from '../../api';
@@ -61,6 +64,9 @@ const PetsUI = ({
   const [workplaceId, setWorkplaceId] = useState()
   const [organizationName, setOrganizationName] = useState("")
   const [color, setColor] = useState('#e1206d');//颜色切换
+  const [pageSize, setPageSize] = useState(20); // 每页20条
+  const [total, setTotal] = useState(0);//宠物列表数据的总条数
+  const [currPage, setCurrPage] = useState(1);//页码
 
   //获取组织列表
   const getOrgList = () => {
@@ -136,11 +142,12 @@ const PetsUI = ({
 
   }
   //获取宠物列表数据
-  const _getExam = () => {
+  const _getExam = (currPage = 1) => {
+    setLoading(true);
     let params = {
       doctorId: storage.userId,
-      offset: 0,
-      size: 10,
+      pageSize: pageSize,
+      currPage: currPage,
     }
     if (storage.lastWorkplaceId) {
       params.workplaceId = storage.lastWorkplaceId
@@ -148,25 +155,32 @@ const PetsUI = ({
     if (storage.lastOrganization) {
       params.organizationId = storage.lastOrganization
     }
-    setLoading(true)
+    //TODO逻辑好像还有问题
     listAllPetInfo(params)
       .then(res => {
-        setLoading(false)
-        if (res.flag === true && res.data) {
-          let oldList = res.data
-          let petArr = dataSort(oldList)
-          setPetList(petArr)
-          setPetListArrFun(petArr)
-        } else {
-          setPetList([])
-          setPetListArrFun([])
+        setLoading(false);
+        if (res.flag === true) {
+          setTotal(res.data.count);
+          let newArr = [];
+          if (currPage === 1) {
+            newArr = res.data.data;
+          } else {
+            let oldArr = petList;
+            let arr = res.data.data;
+            newArr = [...oldArr, ...arr];
+          }
+          setPetList(newArr);
+          setPetListArrFun(newArr);
+        } else if (res.msg === '用户没有关联任何宠物') {
+          message.warn('The user is not associated with any pets');
+          setPetList([]);
+          setPetListArrFun([]);
         }
       })
       .catch(err => {
-        setLoading(false)
-        console.log(err);
-        setPetList([])
-        setPetListArrFun([])
+        setLoading(false);
+        setPetList([]);
+        setPetListArrFun([]);
       })
   }
   const dataSort = (data, key,) => {
@@ -234,6 +248,7 @@ const PetsUI = ({
       </Menu>
     );
   }
+  //宠物列表
   const petListUI = () => {
     let options = petList.map((item, index) => {
       let itemBac = '', itemColor = '#141414'
@@ -242,7 +257,7 @@ const PetsUI = ({
         itemColor = '#fff'
       }
       return (
-        <li key={index} >
+        <li key={item.petId} >
           <div className='petItem'
             style={{ padding: `${px(7)}px 0 ${px(7)}px ${px(20)}px`, fontSize: 14, backgroundColor: itemBac, color: itemColor }}
             onClick={() => {
@@ -254,51 +269,64 @@ const PetsUI = ({
               } else {
                 petDetailInfoFun(item)
               }
-              // petDetailInfoFun(item)
             }}
           >
             {`${item.patientId}, ${item.petName}`}
           </div>
         </li >
       )
-
-    })
+    });
+    //加载图标
+    const antIcon = (
+      <LoadingOutlined
+        style={{
+          fontSize: 24,
+          color: color,
+        }}
+        spin
+      />
+    );
 
     return (
-      <div className="petList" style={{ marginTop: px(10) }}>
-        {loading ?
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', width: '100%', height: '100%' }}>
-            <div className="loadIcon" style={{ marginBottom: px(5) }}>
-              <LoadingOutlined style={{ fontSize: 30, color: '#141414', marginTop: px(-30), }} />
-            </div>
-            <p style={{ color: '#141414' }}>loading... </p>
-          </div>
-          :
-          <ul>
-            {options}
-          </ul>}
-
+      <div className="petList" onScrollCapture={onScrollCapture}>
+        <ul>
+          {options}
+        </ul>
+        <Spin spinning={loading} indicator={antIcon} />
       </div>
     )
   }
+  //滚动监听
+  const onScrollCapture = () => {
+    // 滚动的容器
+    let tableEleNodes = document.querySelectorAll(`.petList ul`)[0];
+    //是否滚动到底部
+    let bottomType = Math.round(tableEleNodes?.scrollTop) + tableEleNodes?.clientHeight === tableEleNodes?.scrollHeight;
+    if (bottomType) {
+      if (currPage === _.ceil(total / pageSize)) {
+        return false;
+      }
+      setCurrPage(currPage + 1);
+      _getExam(currPage + 1);
+    }
+  }
+  //组织列表
   const selectOrgUI = () => {
     const selectOrgFn = (value, option) => {
-      setOrganizationName(value)
-      storage.roleId = option.roleid
-      storage.lastOrganization = option.organizationid
-      storage.connectionKey = option.connectionkey
+      setPetList([]);
+      setTotal(0);
+      setCurrPage(1);
+      setOrganizationName(value);
+      storage.roleId = option.roleid;
+      storage.lastOrganization = option.organizationid;
+      storage.connectionKey = option.connectionkey;
       try {
         let key = parseInt(selectOrgId);
         let lastWorkplaceId = workplaceJson[key][0].workplaceId;
         storage.lastWorkplaceId = lastWorkplaceId;
-
-      } catch (error) {
-
-      }
+      } catch (error) { }
       _getExam()
-
     }
-
     let options = orgArr.map((item, index) => {
       if (index === 1) {
       }
@@ -370,7 +398,6 @@ const PetsUI = ({
             <Tooltip placement='bottom' title='Add an organization'>
               <div
                 className="addImgBox"
-                // onClick={() => history.push("/uesr/logUp/JoinOrganizationByOption")}
                 onClick={() => history.push("/menuOptions/NewOrg")}
 
               >
@@ -381,7 +408,6 @@ const PetsUI = ({
                   style={{ marginLeft: px(12) }}
                 />
               </div>
-
             </Tooltip>
           </div>
         </div>

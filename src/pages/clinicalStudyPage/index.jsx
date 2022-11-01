@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Layout, message, Input, Modal, Table, Popconfirm, Select } from "antd";
+import { Layout, message, Input, Modal, Table, Popconfirm, Select, Radio } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
 import edit from "./../../assets/images/edit.png";
@@ -117,6 +117,7 @@ const ClinicalStudy = ({
   const [pageSize, setPageSize] = useState(10); // 每页10条
   const [total, setTotal] = useState(0);//历史数据的总条数
   const [currPage, setCurrPage] = useState(1);//页码
+  const [excludeType, setExcludeType] = useState(0);//0不排除，1排除，默认0
 
   //分辨率变化
   const chartsBox = useCallback((node) => {
@@ -178,7 +179,8 @@ const ClinicalStudy = ({
         memo: notes,
         petVitalTypeId: petVitalId,
         clinicalDataEntityList: emerData,
-        anusTemperature: referenceT
+        anusTemperature: referenceT,
+        exclude: excludeType,
       };
       if (storage.roleId === `1`) {
         datas.userId = storage.userId;
@@ -879,9 +881,24 @@ const ClinicalStudy = ({
             />
           </div>
         </div>
+        <div className="child">
+          <div className="item">
+            <p className="labelTitle" style={{ width: "140px" }}>Exclude Data: </p>
+            <Radio.Group onChange={excludeChange} value={excludeType}>
+              <Radio value={1}>YES</Radio>
+              <Radio value={0}>NO</Radio>
+            </Radio.Group>
+          </div>
+          <div className="item" style={{ width: '225px' }}>
+          </div>
+        </div>
       </div>
     );
   };
+  //用户选择是否排除该条数据
+  const excludeChange = (e) => {
+    setExcludeType(e.target.value);
+  }
   //历史数据
   const _history = () => {
     const _del = (key, record) => {
