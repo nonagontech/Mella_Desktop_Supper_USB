@@ -217,7 +217,7 @@ class App extends Component {
               icon: <ExclamationCircleOutlined />,
               content: <div>A new version of your base has been detected. Whether to go to update?</div>,
               centered: true,
-              okText: 'To Update',
+              okText: 'Update',
               cancelText: 'Update Later',
               className: 'updateBaseTip',
               onOk: () => { this.props.history.push('/menuOptions/advancedsettings') },

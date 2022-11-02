@@ -27,6 +27,23 @@
         releaseNotes: message.releaseNotes
       });
     });
+
+    // React.useEffect(() => {
+    //   setUpdateMessage({
+    //     size: 800 / (1024 * 1024),
+    //     version: '1.2.3',
+    //     releaseNotes: `<p>Page loading of pet list and history
+    //       When the desktop is hot updated, click the download button to enter the background update
+    //       The exclude function is added in the clinical test</p><p>Page loading of pet list and history
+    //       When the desktop is hot updated, click the download button to enter the background update
+    //       The exclude function is added in the clinical test</p>
+    //       <p>Page loading of pet list and history
+    //       When the desktop is hot updated, click the download button to enter the background update
+    //       The exclude function is added in the clinical test</p>`
+    //   })
+    // }, [])
+
+
     //稍后更新
     const onClickLater = () => {
       ipcRenderer.send('update-close');
@@ -71,6 +88,7 @@
     margin-bottom: 16px;
     height: 400;
     overflow: auto;
+    height: 150px;
 
 
   }
@@ -86,7 +104,8 @@
   }
 
   #contreBox {
-    height: 700px;
+    /* height: 700px; */
+    height: 100%;
     width: 100%;
     background-color: #D5D5D5;
     display: flex;
