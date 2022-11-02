@@ -240,7 +240,7 @@ class EditPetInfo extends Component {
               petSpeciesBreedId
             }
           }
-          url = isNull(url)
+          // url = isNull(url)
           if (birthday != null) {
             birthday = moment(birthday).format('MMMM D, YYYY')
           }
@@ -272,13 +272,6 @@ class EditPetInfo extends Component {
             confirmSelectBreedJson,
             petSpeciesBreedId
           })
-          // switch (petSpeciesBreedId) {
-          //   case 1: this.selectWZ('cat'); break;
-          //   case 2: this.selectWZ('dog'); break;
-
-          //   default: this.selectWZ('other'); break;
-          // }
-
         } else {
           message.destroy()
           message.error('data load failed')
@@ -394,9 +387,7 @@ class EditPetInfo extends Component {
   //宠物详情第一列
   _petSpecies = () => {
     let { petSpecies, dogImg, catImg, otherImg, imgurl } = this.state
-
     this.avatar = imgurl ? imgurl : selectphoto
-
     return (
       <div className="petSpecies"
         style={{ marginTop: mTop(30) }}
@@ -440,7 +431,7 @@ class EditPetInfo extends Component {
             <Avatar
               init={
                 <div className="ciral ">
-                  <img src={this.avatar} alt="" id="touxiang" height="280px" />
+                  <img src={imgurl ? imgurl : selectphoto} alt="" id="touxiang" height="280px" />
                   <p style={{ fontSize: px(14), height: mTop(35) }}>Upload Photo</p>
                 </div>
               }
