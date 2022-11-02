@@ -483,8 +483,8 @@ function checkUpdate() {
   autoUpdater.on("update-available", (val) => {
     app.whenReady().then(() => {
       updateWindow = new BrowserWindow({
-        width: 500,
-        height: 300,
+        height: show(700).height,
+        width: show(500).height,
         maximizable: false, //禁止双击放大
         frame: false, // 去掉顶部操作栏
         parent: mainWindow,
