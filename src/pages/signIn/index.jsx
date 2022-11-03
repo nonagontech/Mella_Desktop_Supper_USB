@@ -249,9 +249,11 @@ export default class SignIn extends Component {
         if (res.code === 0 && res.msg === "success") {
           this.timer && clearInterval(this.timer);
           console.log("账号密码正确，登录进去了");
-          let { userWorkplace, lastOrganization, token } = res.success;
+          let { userWorkplace, lastOrganization, token, firstName, lastName } = res.success;
           storage.token = token;
           storage.userId = "";
+          storage.userName = `${lastName} ${firstName}`
+          storage.userEmail = email
           let data = {
             email: email.replace(/(^\s*)/g, ""),
             hash,
@@ -292,16 +294,16 @@ export default class SignIn extends Component {
             for (let i = 0; i < userWorkplace.length; i++) {
               const element = userWorkplace[i];
               if (element.organizationEntity) {
-                if (
-                  element.organizationEntity.organizationId === lastOrganization
-                ) {
+                if (element.organizationEntity.organizationId === lastOrganization) {
                   if (element.organizationEntity.connectionKey) {
                     connectionKey = element.organizationEntity.connectionKey;
                   }
                   if (element.roleId) {
                     console.log(element.roleId);
                     storage.roleId = element.roleId;
+
                   }
+                  storage.orgName = element.organizationEntity.name
 
                   break;
                 }
@@ -313,7 +315,7 @@ export default class SignIn extends Component {
             storage.userWorkplace = "";
             storage.connectionKey = "";
           }
-
+          console.log('storage.orgName', storage.orgName);
           this.props.history.push("/MainBody");
         }
       })

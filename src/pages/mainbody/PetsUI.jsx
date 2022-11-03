@@ -94,7 +94,7 @@ const PetsUI = ({
 
           setOrganizationName(name)
           setSelectOrgId(storage.lastOrganization)
-          setSelectOrgId(storage.lastOrganization)
+          storage.orgName = name
 
         }
 
@@ -320,6 +320,8 @@ const PetsUI = ({
       storage.roleId = option.roleid;
       storage.lastOrganization = option.organizationid;
       storage.connectionKey = option.connectionkey;
+      storage.orgName = option.value
+
       try {
         let key = parseInt(selectOrgId);
         let lastWorkplaceId = workplaceJson[key][0].workplaceId;

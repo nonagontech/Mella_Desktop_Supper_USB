@@ -207,10 +207,11 @@ export default class InviteTeam extends Component {
 
         if (res.code === 0 && res.msg === 'success') {
           console.log('账号密码正确，登录进去了');
-          let { userWorkplace, lastOrganization, token } = res.success
+          let { userWorkplace, lastOrganization, token, lastName, firstName } = res.success
           storage.token = token
           storage.userId = ''
-
+          storage.userName = `${lastName} ${firstName}`
+          storage.userEmail = email
           let data = {
             email: email.replace(/(^\s*)/g, ""),
             hash,

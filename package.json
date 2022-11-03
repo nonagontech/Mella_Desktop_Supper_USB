@@ -35,7 +35,7 @@
     "node-hid": "^2.1.1",
     "pinyin": "^2.11.2",
     "prop-types": "^15.7.2",
-    "qsm-otter-sdk": "^1.0.4",
+    "qsm-otter-sdk": "1.1.1",
     "react": "^17.0.1",
     "react-app-rewired": "^2.1.8",
     "react-dnd": "^16.0.1",

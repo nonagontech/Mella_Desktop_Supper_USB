@@ -82,8 +82,6 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
         setQsmConStatus(status)
       }
     }, 500);
-
-
   }
 
   /**
@@ -92,20 +90,30 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
    * @param {*} data 值为true 代表插入设备，false为拔掉设备
    */
   const usbDetect = async (e, data) => {
-    if (data) { // readQSMConnectionStatus()
-      readQSMConnectionStatus()
-    } else {
-      const connectionStatus = await SDK.readConnectionStatus()
+    // if (data) { // readQSMConnectionStatus()
+    //   readQSMConnectionStatus()
+    // } else {
+    //   const connectionStatus = await SDK.readConnectionStatus()
 
-      let a = typeof (connectionStatus)
-      console.log('插入情况', connectionStatus, a);
-      if (typeof (connectionStatus) === 'boolean') {
-        let status = connectionStatus ? 'connected' : 'disconnected'
-        setQsmConnectStatus(status)
-        setQsmConStatus(status)
-      }
+    //   let a = typeof (connectionStatus)
+    //   console.log('插入情况', connectionStatus, a);
+    //   if (typeof (connectionStatus) === 'boolean') {
+    //     let status = connectionStatus ? 'connected' : 'disconnected'
+    //     setQsmConnectStatus(status)
+    //     setQsmConStatus(status)
+    //   }
+    // }
+
+  }
+  let deviceStatus = null
+  const conectstatus = async () => {
+    deviceStatus = await SDK.readConnectionStatus()
+    console.log('connect', deviceStatus)
+    if (typeof (deviceStatus) === 'boolean') {
+      let status = deviceStatus ? 'connected' : 'disconnected'
+      setQsmConnectStatus(status)
+      setQsmConStatus(status)
     }
-
   }
 
   useEffect(() => {
@@ -113,6 +121,18 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
     return (() => { })
 
   }, [petMessage.petId])
+
+  useEffect(() => {
+    console.log('连接监听');
+    navigator.serial.addEventListener("connect", conectstatus);
+    navigator.serial.addEventListener("disconnect", conectstatus);
+    return () => {
+      navigator.serial.removeEventListener("connect", conectstatus);
+      navigator.serial.removeEventListener("disconnect", conectstatus);
+    }
+  }, [])
+
+
 
 
   //监听usb的插拔
