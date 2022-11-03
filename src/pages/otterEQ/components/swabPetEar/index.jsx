@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import { Layout, Button, Input, Radio } from "antd";
 import { px } from "../../../../utils/px";
 import { connect } from "react-redux";
+
+
+
 import {
   selectHardwareModalShowFun,
   petSortTypeFun,
@@ -19,7 +22,8 @@ import _ from "lodash";
 import "./index.less";
 
 
-const SwabPetEar = ({ petMessage, hardwareMessage ,cutPageType}) => {
+
+const SwabPetEar = ({ petMessage, hardwareMessage, cutPageType }) => {
   let {
     petSpeciesBreedId,
   } = petMessage;
@@ -55,11 +59,11 @@ const SwabPetEar = ({ petMessage, hardwareMessage ,cutPageType}) => {
     } else {
       cutPageType('experimentalPage');
     }
+
   }
 
-  // useEffect(() => {
-  //   imagetypeEvent();
-  // },[value])
+
+
 
   return (
     <>

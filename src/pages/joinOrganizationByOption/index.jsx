@@ -134,9 +134,11 @@ export default class FindWorkplace extends Component {
 
         if (res.code === 0 && res.msg === 'success') {
           console.log('账号密码正确，登录进去了');
-          let { userWorkplace, lastOrganization, token } = res.success
+          let { userWorkplace, lastOrganization, token, lastName, firstName } = res.success
           storage.token = token
           storage.userId = ''
+          storage.userName = `${lastName} ${firstName}`
+          storage.userEmail = email
 
           let data = {
             email: email.replace(/(^\s*)/g, ""),
@@ -485,53 +487,53 @@ export default class FindWorkplace extends Component {
         <MyModal
           visible={isOrg}
           element={
-              <div className='myfindOrg' >
-                <div className="orgHeard">
-                  <div className="titleicon" style={{ marginTop: px(5) }}>
-                    <div></div>
-                    <div
-                      onClick={() => { this.setState({ isWorkplace: false, isOrg: false }) }}
-                    >
-                      <img src={Close} alt="" style={{ width: px(16) }} />
-                    </div>
+            <div className='myfindOrg' >
+              <div className="orgHeard">
+                <div className="titleicon" style={{ marginTop: px(5) }}>
+                  <div></div>
+                  <div
+                    onClick={() => { this.setState({ isWorkplace: false, isOrg: false }) }}
+                  >
+                    <img src={Close} alt="" style={{ width: px(16) }} />
                   </div>
-                  <div className="text"
-                    onMouseOver={() => {
-                      if (disabled) {
-                        this.setState({
-                          disabled: false,
-                        });
-                      }
-                    }}
-                    onMouseOut={() => {
+                </div>
+                <div className="text"
+                  onMouseOver={() => {
+                    if (disabled) {
                       this.setState({
-                        disabled: true,
+                        disabled: false,
                       });
-                    }}
+                    }
+                  }}
+                  onMouseOut={() => {
+                    this.setState({
+                      disabled: true,
+                    });
+                  }}
 
-                  >Find my organization</div>
-                  <div className="searchBox">
-                    <Input
-                      placeholder=" &#xe61b; Search organization"
-                      bordered={false}
-                      allowClear={true}
-                      value={this.state.search}
-                      onChange={this._search}
-                    />
-                  </div>
-                </div>
-                <div className="list">
-                  {this._list()}
-                </div>
-                <div className="foot">
-                  <Button
-                    text={'Join Organization'}
-                    onClick={this._goWorkplace}
+                >Find my organization</div>
+                <div className="searchBox">
+                  <Input
+                    placeholder=" &#xe61b; Search organization"
+                    bordered={false}
+                    allowClear={true}
+                    value={this.state.search}
+                    onChange={this._search}
                   />
-                  <span style={{ marginTop: px(20) }}>{`Don’t see your organization? `}</span>
-                  <a href="#" onClick={this._goNewOrg}>Create a new organization</a>
                 </div>
               </div>
+              <div className="list">
+                {this._list()}
+              </div>
+              <div className="foot">
+                <Button
+                  text={'Join Organization'}
+                  onClick={this._goWorkplace}
+                />
+                <span style={{ marginTop: px(20) }}>{`Don’t see your organization? `}</span>
+                <a href="#" onClick={this._goNewOrg}>Create a new organization</a>
+              </div>
+            </div>
           }
         />
         <MyModal
