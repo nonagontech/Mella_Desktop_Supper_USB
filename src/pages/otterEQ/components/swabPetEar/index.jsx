@@ -53,7 +53,7 @@ const SwabPetEar = ({ petMessage, hardwareMessage, cutPageType }) => {
     }
   }
 
-  const onClick = async () => {
+  const onClick = () => {
     if (value === 1) {
       setValue(2);
     } else {
