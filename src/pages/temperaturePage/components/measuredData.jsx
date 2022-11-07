@@ -168,9 +168,9 @@ const MeasuredData = ({
     if (_.toNumber(data) > 40) {
       return "#e1206d";
     } else if (_.inRange(_.round(_.toNumber(data)), 38, 40)) {
-      return "#58bde6";
-    } else {
       return "#98da86";
+    } else {
+      return "#58bde6";
     }
   };
   //圆滑里面的文字

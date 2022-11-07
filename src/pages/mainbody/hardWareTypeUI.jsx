@@ -147,21 +147,23 @@ const HardWareTypeUI = ({
       let devicesInfo = electronStore.get(
         `${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`
       );
-
       if (!devicesInfo) {
-        console.log('???', hard, hard.devices);
         if (hard.devices.length > 0) {
           devicesInfo = hard.devices[0];
-
           electronStore.set(
             `${storage.lastOrganization}-${storage.userId}-${hard.type}-selectDeviceInfo`,
             devicesInfo
           );
+        } else if (hard.devices.length === 0) {
+          devicesInfo = {
+            deviceType: hard.type,
+            examRoom: null,
+            mac: null,
+            name: null,
+          };
         }
-
       } else {
         let sameFlag = false;
-        console.log("============", hard.devices, devicesInfo);
         for (let i = 0; i < hard.devices.length; i++) {
           const element = hard.devices[i];
           if (
@@ -182,9 +184,6 @@ const HardWareTypeUI = ({
           );
         }
       }
-
-      console.log("保存的折本信息", devicesInfo);
-
       selectHardwareInfoFun(devicesInfo);
     }
   }, [devicesTypeList]);

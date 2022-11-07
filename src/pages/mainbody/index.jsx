@@ -263,7 +263,6 @@ class App extends Component {
   };
   //监听mella温度计是否与底座连接或断开
   _whether_to_connect_to_mella = () => {
-    // console.log("监听mella温度计是否与底座连接或断开");
     message.destroy();
     this.detectTimer && clearInterval(this.detectTimer);
     //2秒检测一次
@@ -274,7 +273,6 @@ class App extends Component {
       if (this.state.isHaveUsbDevice && mellaConnectStatus !== 'isMeasuring' && mellaConnectStatus !== 'disconnected') {
         if (exchangeNum % 2 === 0) {
           //让底座发送查询温度计信息指令
-          // console.log('获取温度计07');
           ipcRenderer.send("usbdata", { command: "07", arr: ["5A"] });
         } else {
           // console.log('获取温度计31');
@@ -291,8 +289,7 @@ class App extends Component {
   };
   //底座与温度计断开连接
   _disconnect_to_mella = () => {
-    let { setMellaConnectStatusFun, mellaConnectStatus, setMellaDeviceIdFun } =
-      this.props;
+    let { setMellaConnectStatusFun, mellaConnectStatus, setMellaDeviceIdFun, setMellaMeasurePartFun } = this.props;
     if (mellaConnectStatus !== "disconnected") {
       setMellaConnectStatusFun("disconnected");
       setMellaMeasurePartFun("");
@@ -406,7 +403,7 @@ class App extends Component {
           clinicalIndex = 0;
         }
         //现在探头0可能不存在，所以把探头0改为探头1
-        let temp0 = parseFloat(`${dataArr1[7]}.${dataArr1[4.18]}`);
+        let temp0 = parseFloat(`${dataArr1[7]}.${dataArr1[8]}`);
         let Temp = temp0;
         setMellaMeasureValueFun(Temp);
         if (mellaConnectStatus !== "isMeasuring") {
@@ -539,7 +536,6 @@ class App extends Component {
           5
         );
       },
-
       98: () => {
         //蓝牙连接断开
         console.log(
@@ -562,8 +558,6 @@ class App extends Component {
           ipcRenderer.send("usbdata", { command: "31", arr: ["5A"] });
           this.getIdTimer && clearTimeout(this.getIdTimer);
         }, 50);
-
-
         is97Time = new Date();
         this._connect_to_mella();
       },
@@ -581,12 +575,7 @@ class App extends Component {
         for (let i = 3; i < dataArr1.length - 2; i++) {
           id += dataArr1[i];
         }
-        // console.log(id, dataArr1[7]);
         setMellaDeviceIdFun(id);
-        // this.setState({
-        //   probeID: id,
-        //   petVitalTypeId: dataArr1[7]
-        // })
         if (dataArr1[7] === "01") {
           if (mellaMeasurePart !== "腋温") {
             setMellaMeasurePartFun("腋温");

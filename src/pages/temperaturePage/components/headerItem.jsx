@@ -238,7 +238,7 @@ const HeaderItem = ({
     };
 
     if (electronStore.get(`${storage.userId}-isClical`)) {
-      return _.isEqual(mellaConnectStatus, "disconnected") ? (
+      return _.isEqual(mellaConnectStatus, "disconnected")|| _.isEmpty(mellaMeasurePart) ? (
         <Avatar size={40} src={BluetoothNotConnected} />
       ) : (
         <Progress
@@ -251,7 +251,7 @@ const HeaderItem = ({
     } else {
       switch (selectHardwareType) {
         case "mellaPro":
-          return _.isEqual(mellaConnectStatus, "disconnected") ? (
+          return _.isEqual(mellaConnectStatus, "disconnected")|| _.isEmpty(mellaMeasurePart) ? (
             <Avatar size={40} src={BluetoothNotConnected} />
           ) : (
             <Progress

@@ -23,7 +23,7 @@ import PropTypes from 'prop-types';
 import "./index.less";
 
 const TemperaturePage = ({ petMessage, hardwareMessage, bodyHeight }) => {
-  let { mellaConnectStatus } = hardwareMessage;
+  let { mellaConnectStatus, mellaMeasurePart } = hardwareMessage;
   const [vibible, setVibible] = useState(false);
 
   //测量温度中的页面变化

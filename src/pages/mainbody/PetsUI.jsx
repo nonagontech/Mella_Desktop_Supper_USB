@@ -25,6 +25,7 @@ import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types'
 import moment from 'moment';
 import _ from 'lodash';
+import { useThrottleFn } from 'ahooks';
 
 import './mainbody.less'
 import { listAllPetInfo } from '../../api';
@@ -297,7 +298,7 @@ const PetsUI = ({
     )
   }
   //滚动监听
-  const onScrollCapture = () => {
+  const { run: onScrollCapture } = useThrottleFn(() => {
     // 滚动的容器
     let tableEleNodes = document.querySelectorAll(`.petList ul`)[0];
     //是否滚动到底部
@@ -309,7 +310,7 @@ const PetsUI = ({
       setCurrPage(currPage + 1);
       _getExam(currPage + 1);
     }
-  }
+  }, { wait: 1000 });
   //组织列表
   const selectOrgUI = () => {
     const selectOrgFn = (value, option) => {

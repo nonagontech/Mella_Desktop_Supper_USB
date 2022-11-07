@@ -5,8 +5,7 @@ import {
   Modal,
   message,
 } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
-
+import { ExclamationCircleOutlined, DownOutlined } from "@ant-design/icons";
 import { updatePetInfo1 } from "../../../api";
 import { petPicture, calculateAge, catLeanBodyMass, catFatMass, dogLeanBodyMass, dogFatMass, dogBodyFatPercentage } from '../../../utils/commonFun';
 
@@ -149,39 +148,41 @@ const CalculationResult = ({
 
   return (
     <Content className="calculationResultContentBox">
-      <div className="localityBox">
-        <div className="localityTitleBox">
-          <p className="localityTitle">Lean Body Mass</p>
-        </div>
-        <div className="circleBox">
-          <div className="dataBox">
-            <p>{getLeanBodyMass() ? `${getLeanBodyMass()}g` : ''}</p>
+      <div className="localityGroup">
+        <div className="localityBox">
+          <div className="circleBox">
+            <div className="dataBox">
+              <p>{getLeanBodyMass() ? `${getLeanBodyMass()}g` : ''}</p>
+            </div>
           </div>
+          <div className="localityTitleBox">
+            <p className="localityTitle">Lean Body Mass</p>
+          </div>
+          <DownOutlined />
+        </div>
+        <div className="localityBox">
+          <div className="circleBox">
+            <div className="dataBox">
+              <p>{getBodyFatPercent() ? `${getBodyFatPercent()}%` : ''}</p>
+            </div>
+          </div>
+          <div className="localityTitleBox">
+            <p className="localityTitle">Body Fat Percent</p>
+          </div>
+          <DownOutlined />
+        </div>
+        <div className="localityBox">
+          <div className="circleBox">
+            <div className="dataBox">
+              <p>{getFatMass() ? `${getFatMass()}g` : ''}</p>
+            </div>
+          </div>
+          <div className="localityTitleBox">
+            <p className="localityTitle">Fat Mass</p>
+          </div>
+          <DownOutlined />
         </div>
       </div>
-      <div className="localityBox">
-        <div className="localityTitleBox">
-          <p className="localityTitle">Fat Mass</p>
-        </div>
-        <div className="circleBox">
-          <div className="dataBox">
-            <p>{getFatMass() ? `${getFatMass()}g` : ''}</p>
-          </div>
-        </div>
-      </div>
-      <div className="localityBox">
-        <div className="localityTitleBox">
-          <p className="localityTitle">Body Fat Percent</p>
-        </div>
-        <div className="circleBox">
-          <div className="dataBox">
-            <p>{getBodyFatPercent() ? `${getBodyFatPercent()}%` : ''}</p>
-          </div>
-        </div>
-      </div>
-      {/* <div className="againMeasureBox">
-        <p onClick={() => onAgainMeasure()}>Measure Again</p>
-      </div> */}
       <div className="calculateBtnBox">
         <Button
           type="primary"
@@ -199,7 +200,7 @@ const CalculationResult = ({
           className="calculateBtn"
           onClick={() => onSave()}
         >
-          Calculate
+          Save
         </Button>
       </div>
     </Content>

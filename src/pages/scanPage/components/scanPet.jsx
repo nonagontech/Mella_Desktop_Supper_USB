@@ -748,7 +748,7 @@ const ScanPet = ({
   //监听用户点击了硬件中的下一步按钮和拉动皮尺
   useEffect(() => {
     if (inputIndex < 9) {
-      let { deviceType, mac } = selectHardwareInfo
+      let { deviceType, mac } = selectHardwareInfo;
       if (deviceType === 'tape') {
         if (mac === null || (mac && receiveBroadcastHardwareInfo.deviceType === 'tape' && receiveBroadcastHardwareInfo.macId === mac)) {
           switch (inputIndex) {
@@ -796,7 +796,6 @@ const ScanPet = ({
           }
         }
       }
-
     }
   }, [rulerConfirmCount, rulerMeasureValue]);
 

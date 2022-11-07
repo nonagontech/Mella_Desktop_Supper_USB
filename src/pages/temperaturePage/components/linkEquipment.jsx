@@ -51,13 +51,17 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
 
   //切换图片
   const checkImage = () => {
-    if (mellaMeasurePart === "腋温") {
-      return AxillaryPlacement;
-    } else if (mellaMeasurePart === "耳温") {
-      return EarPlacement;
-    } else {
-      return RectalPlacement;
+    switch (mellaMeasurePart) {
+      case "腋温":
+        return AxillaryPlacement;
+      case "耳温":
+        return EarPlacement;
+      case "肛温":
+        return RectalPlacement;
+      default:
+        break;
     }
+
   };
   //点击进入轮播图
   const clickIntoTip = () => {
@@ -106,7 +110,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
   return (
     <>
       <Content className={"temperatureContentBox"}>
-        {_.isEqual(mellaConnectStatus, "disconnected") ? (
+        {_.isEqual(mellaConnectStatus, "disconnected") || _.isEmpty(mellaMeasurePart) ? (
           <>
             <div className="startBox">
               <p className="startTitle">
