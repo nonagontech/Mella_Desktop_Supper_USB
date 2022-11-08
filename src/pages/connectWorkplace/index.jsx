@@ -3,6 +3,7 @@ import { Select, Input, Button } from "antd";
 import Heart from "../../utils/heard/Heard";
 import { px } from "../../utils/px";
 import "./index.less";
+import Integration from "./components/Integration";
 
 const { Option } = Select;
 let storage = window.localStorage;
@@ -113,7 +114,9 @@ export default class ConnectWorkplace extends Component {
       switchType: type
     });
   }
-  //
+  clickItem = () => {
+
+  }
 
   render() {
     let { orgArr, selectOrgId } = this.state;
@@ -121,11 +124,13 @@ export default class ConnectWorkplace extends Component {
       let bac =
         `${selectOrgId}` === `${item.organizationId}` ? "#e1206d" : "#fff";
       let col = `${selectOrgId}` === `${item.organizationId}` ? "#fff" : "#000";
+      console.log('---', this.state.selectRoleId);
       return (
         <li
           key={`${item.organizationId}`}
           style={{ background: bac, color: col }}
           onClick={() => {
+            console.log(item);
             this.setState({
               selectOrgId: item.organizationId,
               connectionKey: item.connectionKey,
@@ -165,61 +170,7 @@ export default class ConnectWorkplace extends Component {
               </div>
             </div>
           </div>
-          {
-            this.state.selectRoleId === '3' && (
-              <div className="middle">
-                <div className="middleTitle">
-                  <p style={{ fontSize: px(28), fontWeight: "700" }}>
-                    Integration
-                  </p>
-                </div>
-                <div className="switchBox">
-                  <div
-                    className="left"
-                    onClick={() => this.onSwitchIntegration('vetspire')}
-                    style={{ backgroundColor: this.state.switchType === 'vetspire' ? '#e1206d' : '#ed4784' }}
-                  >
-                    Vetspire
-                  </div>
-                  <div
-                    className="right"
-                    onClick={() => this.onSwitchIntegration('ezyvet')}
-                    style={{ backgroundColor: this.state.switchType === 'ezyvet' ? '#e1206d' : '#ed4784' }}
-
-                  >
-                    Ezyvet
-                  </div>
-                </div>
-                <div className="middleItemBox">
-                  <div className="middleItemLeft">
-                    <div className="left">
-                      <p>Test PMS Connection</p>
-                    </div>
-                    <div className="right">
-                      {
-                        this.state.switchType === 'vetspire' ? (
-                          <Input placeholder="Insert API Key" />
-                        ) : (
-                          <>
-                            <Input placeholder="Insert clientId" />
-                            <Input placeholder="Insert clientSecret" />
-                            <Input placeholder="Insert partnerId" />
-                          </>
-                        )
-                      }
-                    </div>
-                  </div>
-                  <div className="middleItemRight">
-                    <Button type="primary" shape="round" block >Test</Button>
-                    <p>Help me connect to a PMS</p>
-                    <Button type="primary" shape="round" block >Disconnect PMS</Button>
-                  </div>
-
-
-                </div>
-              </div>
-            )
-          }
+          {`${this.state.selectRoleId}` !== '4' && <Integration />}
 
           <div className="footer flex">
             <div

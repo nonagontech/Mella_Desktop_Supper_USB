@@ -192,6 +192,7 @@ class App extends Component {
   };
   //检测USB设备发来的信息
   _send = (e, data) => {
+    console.log(data);
     //data就是测量的数据，是十进制的数字
     this.command(data)();
     //获取到了版本信息,此底座不是很老版本

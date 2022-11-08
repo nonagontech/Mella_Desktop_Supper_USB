@@ -1,6 +1,6 @@
 {
   "name": "supermella",
-  "version": "v1.1.44",
+  "version": "v1.1.45",
   "main": "main.js",
   "private": true,
   "author": {
@@ -160,5 +160,6 @@
         }
       ]
     }
-  }
+  },
+  "proxy": "https://api.trial.ezyvet.com/v1"
 }

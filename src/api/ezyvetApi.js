@@ -86,14 +86,12 @@ export const postFormData = (url, data) => {
     })
 }
 //封装post请求
-export const postJson = (url, data) => {
+export const postJson = (url, data, header = { 'Content-Type': 'application/json' }) => {
     return service({
         method: 'post',
         url,
         data,
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        headers: header
     })
 }
 //封装post请求

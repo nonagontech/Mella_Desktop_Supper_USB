@@ -17,6 +17,7 @@ import BluetoothNotConnected from "./../../../assets/img/BluetoothNotConnected.p
 import AxillaryBluetooth from "./../../../assets/img/AxillaryBluetooth.png"; //腋温图片
 import RectalBluetoothIcon from "./../../../assets/img/RectalBluetoothIcon.png"; //肛温图片
 import EarBluetoothIcon from "./../../../assets/img/EarBluetoothIcon.png"; //耳温图片
+import Connect from './../../../assets/img/connect.png'
 import connectBle from "./../../../assets/img/connectBle.png";
 import redcat from "./../../../assets/images/redcat.png";
 import reddog from "./../../../assets/images/reddog.png";
@@ -228,17 +229,20 @@ const HeaderItem = ({
   //判断仪器是否连接从而判断选择什么图片
   const isConnect = () => {
     const checkImage = () => {
-      if (mellaMeasurePart === "腋温") {
-        return AxillaryBluetooth;
-      } else if (mellaMeasurePart === "耳温") {
-        return EarBluetoothIcon;
-      } else {
-        return RectalBluetoothIcon;
+      switch (mellaMeasurePart) {
+        case "腋温": return AxillaryBluetooth;
+        case "耳温": return EarBluetoothIcon;
+        case "肛温": return RectalBluetoothIcon;
+        case "": return Connect;
+
+        default:
+          break;
       }
+
     };
 
     if (electronStore.get(`${storage.userId}-isClical`)) {
-      return _.isEqual(mellaConnectStatus, "disconnected")|| _.isEmpty(mellaMeasurePart) ? (
+      return _.isEqual(mellaConnectStatus, "disconnected") || _.isEmpty(mellaMeasurePart) ? (
         <Avatar size={40} src={BluetoothNotConnected} />
       ) : (
         <Progress
@@ -251,7 +255,7 @@ const HeaderItem = ({
     } else {
       switch (selectHardwareType) {
         case "mellaPro":
-          return _.isEqual(mellaConnectStatus, "disconnected")|| _.isEmpty(mellaMeasurePart) ? (
+          return _.isEqual(mellaConnectStatus, "disconnected") ? (
             <Avatar size={40} src={BluetoothNotConnected} />
           ) : (
             <Progress

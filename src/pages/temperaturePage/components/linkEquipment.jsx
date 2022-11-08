@@ -6,6 +6,7 @@ import PressButton_Pro from "./../../../assets/img/PressButton_Pro.png";
 import AxillaryPlacement from "./../../../assets/img/AxillaryPlacement.png"; //腋温底部图片
 import EarPlacement from "./../../../assets/img/EarPlacement.png"; //耳温底部图片
 import RectalPlacement from "./../../../assets/img/RectalPlacement.png"; //肛温底部图片
+import Reading from './../../../assets/img/Reading.png'
 import Standing_Dog from "./../../../assets/img/Standing_Dog.png";
 import Standing_Cat from "./../../../assets/img/Standing_Cat.png";
 import Sitting_Dog from "./../../../assets/img/Sitting_Dog.png";
@@ -58,8 +59,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
         return EarPlacement;
       case "肛温":
         return RectalPlacement;
-      default:
-        break;
+      case "": return Reading
     }
 
   };
@@ -98,19 +98,22 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
   }, [type, mellaConnectStatus]);
 
   useEffect(() => {
-    if (mellaMeasurePart === '腋温') {
-      setTitle('Ready, place under foreleg');
-    } else if (mellaMeasurePart === '耳温') {
-      setTitle('Ready, place in ear');
-    } else {
-      setTitle('Ready, place in anus');
+    switch (mellaMeasurePart) {
+      case '腋温': setTitle('Ready, place under foreleg'); break;
+      case '耳温': setTitle('Ready, place in ear'); break;
+      case '肛温': setTitle('Ready, place in anus'); break;
+      case '': setTitle('Reading Probe Information'); break;
+
+      default:
+        break;
     }
+
   }, [mellaMeasurePart])
 
   return (
     <>
       <Content className={"temperatureContentBox"}>
-        {_.isEqual(mellaConnectStatus, "disconnected") || _.isEmpty(mellaMeasurePart) ? (
+        {_.isEqual(mellaConnectStatus, "disconnected") ? (
           <>
             <div className="startBox">
               <p className="startTitle">

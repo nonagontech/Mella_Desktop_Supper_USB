@@ -31,8 +31,10 @@
       position: relative;
       width: 100%;
       height: 40%;
+      // flex: 1;
       padding-left: 5%;
       padding-right: 5%;
+      background-color: 'red';
 
       .title {
         display: flex;
@@ -129,6 +131,8 @@
 
       .middleItemBox {
         display: flex;
+        flex-direction: row;
+        justify-content: space-between;
 
         .middleItemLeft {
           width: 65%;
@@ -166,7 +170,7 @@
         }
 
         .middleItemRight {
-          width: 35%;
+          width: 30%;
 
           p {
             font-size: 14px;
@@ -185,6 +189,11 @@
             align-items: center;
           }
         }
+      }
+
+      .myModal {
+        top: 0;
+        left: 0;
       }
     }
 
