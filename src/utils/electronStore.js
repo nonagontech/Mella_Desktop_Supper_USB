@@ -1,6 +1,6 @@
 import { devType } from './../config/config'
 let electronStore = {}
-if (devType === 'react') {
+if (`${devType}` === 'react') {
 
 
   const localStorage = window.localStorage;
@@ -29,7 +29,7 @@ if (devType === 'react') {
   }
 
 
-} else if (devType === 'electron') {
+} else if (`${devType}` === 'electron') {
   const Store = window.require('electron-store');
   const store = new Store();
 
