@@ -1115,7 +1115,7 @@
     return function (collection, predicate, fromIndex) {
       var iterable = Object(collection);
       if (!isArrayLike(collection)) {
-        var iteratee = baseIteratee(predicate, 3);
+        var iteratee = baseIteratee(predicate);
         collection = keys(collection);
         predicate = function (key) { return iteratee(iterable[key], key, iterable); };
       }
@@ -1575,7 +1575,7 @@
     if (index < 0) {
       index = nativeMax(length + index, 0);
     }
-    return baseFindIndex(array, baseIteratee(predicate, 3), index);
+    return baseFindIndex(array, baseIteratee(predicate), index);
   }
 
   /**

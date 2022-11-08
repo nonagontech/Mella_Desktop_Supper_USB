@@ -62,7 +62,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage, cutPageType, qsmConnectSta
     let serial_number = serialNumber;
     let API_KEY = "EX1QrGQTwPAjkJ0p7EEG7A"
     let ACCESS_TOKEN = "ZQh5q7Uv1UPsC8RY0eDoSf3eYrMzDHxYkJExG13k"
-    console.log('verify入参', { user_id, practice_id, serial_number, serial_number, API_KEY, ACCESS_TOKEN });
+
     await SDK.verifyInstrument(API_KEY, ACCESS_TOKEN, user_id, practice_id, serial_number)
       .then(res => {
         console.log('verify', res)

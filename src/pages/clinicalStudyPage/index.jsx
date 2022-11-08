@@ -1218,7 +1218,6 @@ const ClinicalStudy = ({
         align: "center",
         className: `${isflog ? "operation" : ""}`,
         ellipsis: true,
-        align: "center",
         render: (text, record, index) => {
           switch (record.placement) {
             case 1:
