@@ -43,16 +43,16 @@ export const px = (val) => {
 
 export const mTop = (val) => {
   return val
-  let width = parseInt(window.screen.availWidth);
-  let height = parseInt(window.screen.availHeight);
-  if (width < height) {
-    let a = width;
-    width = height;
-    height = a;
-  }
+  // let width = parseInt(window.screen.availWidth);
+  // let height = parseInt(window.screen.availHeight);
+  // if (width < height) {
+  //   let a = width;
+  //   width = height;
+  //   height = a;
+  // }
 
-  // console.log('mTop',val, parseInt(val / devHeight * height))
-  return parseInt((val / devHeight) * height);
+  // // console.log('mTop',val, parseInt(val / devHeight * height))
+  // return parseInt((val / devHeight) * height);
 };
 
 export const fs = (val) => {
@@ -71,9 +71,9 @@ export const pX = (val) => {
 };
 export const MTop = (val) => {
   return val
-  let windowWidth = document.documentElement.clientHeight;
-  console.log("px", windowWidth);
-  return parseInt((windowWidth / 375) * val);
+  // let windowWidth = document.documentElement.clientHeight;
+  // console.log("px", windowWidth);
+  // return parseInt((windowWidth / 375) * val);
 };
 
 let windowssize = {
