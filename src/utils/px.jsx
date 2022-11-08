@@ -27,32 +27,10 @@ if (width < height) {
 
 export const px = (val) => {
   return val
-  // let width = parseInt(window.screen.availWidth);
-  // let height = parseInt(window.screen.availHeight);
-
-
-
-  // if (width < height) {
-  //   let a = width;
-  //   width = height;
-  //   height = a;
-  // }
-
-  // return parseInt((val / devWidth) * width);
 };
 
 export const mTop = (val) => {
   return val
-  // let width = parseInt(window.screen.availWidth);
-  // let height = parseInt(window.screen.availHeight);
-  // if (width < height) {
-  //   let a = width;
-  //   width = height;
-  //   height = a;
-  // }
-
-  // // console.log('mTop',val, parseInt(val / devHeight * height))
-  // return parseInt((val / devHeight) * height);
 };
 
 export const fs = (val) => {
@@ -71,9 +49,6 @@ export const pX = (val) => {
 };
 export const MTop = (val) => {
   return val
-  // let windowWidth = document.documentElement.clientHeight;
-  // console.log("px", windowWidth);
-  // return parseInt((windowWidth / 375) * val);
 };
 
 let windowssize = {
@@ -89,10 +64,6 @@ export const win = () => {
     width = height;
     height = a;
   }
-  // let win1 = JSON.stringify({
-  //   width, height
-  // })
-
   return {
     width: 1920,
     height: 1080,
@@ -101,22 +72,5 @@ export const win = () => {
 
 let timer = null;
 export const timerFun = () => {
-  // console.log("jianting1------------");
-  // timer && clearInterval(timer);
-  // timer = setInterval(() => {
-  //   let width = parseInt(window.screen.availWidth);
-  //   let height = parseInt(window.screen.availHeight);
-  //   if (width < height) {
-  //     let a = width;
-  //     width = height;
-  //     height = a;
-  //   }
-  //   // console.log('jianting1', windowssize, { width, height });
-  //   if (width !== windowssize.width || height !== windowssize.height) {
-  //     windowssize.width = width;
-  //     windowssize.height = height;
-  //     let ipcRenderer = window.electron.ipcRenderer;
-  //     ipcRenderer.send("changeFenBianLv", windowssize);
-  //   }
-  // }, 2000);
+
 };
