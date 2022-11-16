@@ -94,6 +94,7 @@ class EditPetInfo extends Component {
     confirmSelectUserJson: {},
     petUrl: '',
     deletePetModalVisible: false,
+    rfid: '',
   }
 
   componentDidMount() {
@@ -227,7 +228,7 @@ class EditPetInfo extends Component {
               break
             }
           }
-          let { petId, petName, lastName, firstName, breedName, isMix, birthday, weight, url, gender, speciesId, petSpeciesBreedId } = datas
+          let { petId, petName, lastName, firstName, breedName, isMix, birthday, weight, url, gender, speciesId, petSpeciesBreedId, rfid } = datas
           if (isMix !== true) {
             isMix = false
           }
@@ -270,7 +271,8 @@ class EditPetInfo extends Component {
             initlastName: lastName,
             initfirstName: firstName,
             confirmSelectBreedJson,
-            petSpeciesBreedId
+            petSpeciesBreedId,
+            rfid
           })
         } else {
           message.destroy()
@@ -685,7 +687,7 @@ class EditPetInfo extends Component {
             </div>
           </div>
         </div>
-        <div className="r" >
+        {/* <div className="r" >
           <div className="max">
             Mix?
             <div className="selected"
@@ -695,6 +697,20 @@ class EditPetInfo extends Component {
             >
               {(this.state.isMix) ? (<img src={dui} alt="" width='20px' />) : (null)}
             </div>
+          </div>
+        </div> */}
+        <div className="l">
+          <p >RFID</p>
+          <div className="infoInput">
+            <Input
+              bordered={false}
+              value={this.state.rfid}
+              onChange={(item) => {
+                this.setState({
+                  rfid: item.target.value
+                })
+              }}
+            />
           </div>
         </div>
       </div>
@@ -813,11 +829,12 @@ class EditPetInfo extends Component {
   }
   //更新宠物信息
   save = () => {
-    let { petName, birthday, firstName, lastName, petSpeciesBreedId, isMix, weight, gender, unit, imageId, breedName, petId, confirmSelectBreedJson, confirmSelectUserJson } = this.state
+    let { petName, birthday, firstName, lastName, petSpeciesBreedId, isMix, weight, gender, unit, imageId, breedName, petId, confirmSelectBreedJson, confirmSelectUserJson, rfid } = this.state
     if (unit === 1) {
       weight = (0.45359 * weight).toFixed(2)
     }
     let data = {}
+
     if (this.state.patientId === this.state.oldPatientId) {
       data = {
         petName,
@@ -838,6 +855,9 @@ class EditPetInfo extends Component {
     }
     if (birthday) {
       data.birthday = moment(birthday).format('YYYY-MM-DD')
+    }
+    if (rfid) {
+      data.rfid = rfid
     }
     if (imageId !== -1) {
       data.imageId = imageId
@@ -916,6 +936,7 @@ class EditPetInfo extends Component {
           })
       }
     }
+
   }
   render() {
     const { closeColor, closebgc, minbgc } = this.state
@@ -971,9 +992,7 @@ class EditPetInfo extends Component {
             Delete Pet
           </div>
           <div className="save"
-            onClick={() => {
-              this.save();
-            }}
+            onClick={this.save}
           >Save Changes</div>
         </div>
         <MyModal

@@ -174,6 +174,11 @@ export const getPetByPetNameOrPatientId = (userId, params) => {
   return get(`${baseURL}/getPetByPetNameOrPatientId/${userId}`, params);
 }
 
+export const getPetInfoByRFID1 = (heardSearchText, lastOrganization) => {
+  return get(`${baseURL}/getPetInfoByRFID/${heardSearchText}/${lastOrganization}`, '')
+}
+
+
 
 
 

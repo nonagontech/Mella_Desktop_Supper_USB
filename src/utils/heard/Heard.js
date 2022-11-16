@@ -33,7 +33,7 @@ import moment from 'moment'
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 
-import { getPetInfoByRFID, getPetByPetNameOrPatientId } from "../../api";
+import { getPetInfoByRFID, getPetByPetNameOrPatientId, getPetInfoByRFID1 } from "../../api";
 
 import "./heard.less";
 
@@ -426,7 +426,7 @@ const Heard = ({
       //搜索分成两种，一种是通过手输入数据搜索，一种是通过RFID扫描过后搜索
       if (search.length === 15 && isNumber(search)) {
         //这是RFID扫描后的搜索
-        getPetInfoByRFID(search, storage.lastOrganization)
+        getPetInfoByRFID1(search, storage.lastOrganization)
           .then((res) => {
             if (res.flag === true && res.data) {
               let {
@@ -500,7 +500,7 @@ const Heard = ({
               setPetList(searchData);
             } else if (
               res.flag === true &&
-              res.msg === "该组织下无此宠物信息"
+              res.msg === "The organization has no information about this pet"
             ) {
               setLoading(false);
               setModalVis(true);
