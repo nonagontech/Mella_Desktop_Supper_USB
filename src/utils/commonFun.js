@@ -253,6 +253,55 @@ export const changeThemeColor = (selectHardwareType) => {
 
 
 
+/**
+ * @dec buffer转hex文本
+ * @param {*} buffer 
+ * @returns 
+ */
+export const buf2hex = (buffer) => {
+
+  return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' +
+    x.toString(16)).slice(-2)).join('');
+
+}
+/**
+ * @dec hex转buffer文本
+ * @param {*} hex 
+ * @returns 
+ */
+export const hex2buf = (hex) => {
+  return new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
+    return parseInt(h, 16)
+  }))
+}
+/**
+ * @dec 将hex字符串转换成十进制数字数组
+ * @param {string} hex 
+ */
+export const hex2arr = (hex) => {
+  let hexArr = [...hex];
+  let a, b;
+  let aIndex = 0;
+  let bIndex = 1;
+  let arr = [];
+
+  hexArr.forEach((str, index) => {
+    if (index % 2 === 0) {
+      a = str;
+      aIndex += 1
+    } else {
+      b = str
+      bIndex += 1
+    }
+    if (a && b && (bIndex - aIndex === 1)) {
+      arr.push(parseInt((a + b), 16))
+    }
+  });
+  return arr
+}
+
+
+
 
 
 

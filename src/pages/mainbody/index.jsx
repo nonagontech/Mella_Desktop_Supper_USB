@@ -55,6 +55,7 @@ import { getInfoOfLatestDevice } from '../../api/mellaserver/mellarecord';
 
 
 import "./mainbody.less";
+import { devType } from "../../config/config";
 
 
 // let ipcRenderer = window.require("electron").ipcRenderer;
@@ -111,7 +112,10 @@ class App extends Component {
     //检测是否有USB设备
     ipcRenderer.on("noUSB", this._noUSB);
     //定时查看mella温度计是否与底座连接或断开
-    this._whether_to_connect_to_mella();
+    if (devType === 'electron') {
+      this._whether_to_connect_to_mella();
+    }
+
 
     //获取本地设置
     this.getLocalSetting();
