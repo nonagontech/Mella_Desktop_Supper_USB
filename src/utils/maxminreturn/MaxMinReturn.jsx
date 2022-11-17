@@ -4,8 +4,10 @@ import rClose_red from "./../../assets/img/close-red.png";
 import rMin_white from "./../../assets/img/min-white.png";
 import rClose_white from "./../../assets/img/close-white.png";
 import './maxminreturn.less'
+import MinClose from '../minClose/MinClose';
+import { connect } from 'react-redux';
 
-export default class MaxMin extends Component {
+class MaxMin extends Component {
     state = {
         closebgc: '',
         minbgc: '',
@@ -57,6 +59,8 @@ export default class MaxMin extends Component {
         return (
             <div className="maxminreturn">
                 <div className="heard1">
+                    {this.props.systemType === 'mac' && <MinClose />}
+
                     <div
                         className=" iconfont icon-left heard"
                         onClick={this.props.onClick1}
@@ -64,32 +68,44 @@ export default class MaxMin extends Component {
                 </div>
 
 
-                <div className='headIconBox'>
+                {/* <div className='headIconBox'>
 
-                </div>
+                </div> */}
 
 
                 <div className="close123">
                     <div className="home iconfont icon-zhuye3"
                         onClick={this.props.onClick}
                     />
-                    <div
-                        className="min iconfont icon-64"
-                        onClick={this._min}
-                        onMouseEnter={this._minMove}
-                        onMouseLeave={this._minLeave}
-                        style={{ backgroundColor: minbgc }}
-                    ></div>
+                    {this.props.systemType !== 'mac' &&
+                        <>
+                            <div
+                                className="min iconfont icon-64"
+                                onClick={this._min}
+                                onMouseEnter={this._minMove}
+                                onMouseLeave={this._minLeave}
+                                style={{ backgroundColor: minbgc }}
+                            ></div>
 
-                    <div
-                        className="max iconfont icon-guanbi2"
-                        onClick={this._close}
-                        onMouseEnter={this._closeMove}
-                        onMouseLeave={this._closeLeave}
-                        style={{ backgroundColor: closebgc, color: closeColor }}
-                    ></div>
+                            <div
+                                className="max iconfont icon-guanbi2"
+                                onClick={this._close}
+                                onMouseEnter={this._closeMove}
+                                onMouseLeave={this._closeLeave}
+                                style={{ backgroundColor: closebgc, color: closeColor }}
+                            ></div>
+                        </>
+                    }
+
+
                 </div>
             </div>
         )
     }
 }
+export default connect(
+    (state) => ({
+        systemType: state.systemReduce.systemType
+    })
+
+)(MaxMin)

@@ -14,6 +14,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+
     .heaed {
       width: 100%;
       height: 40px;
@@ -21,24 +22,52 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 0 0 13px;
+      // padding: 0 0 0 13px;
     }
-    .body{
-      // background-color: pink;
+
+    .macheard {
+      margin-top: 12px;
+      width: 100%;
+      // height: 80px;
+      // background-color: hotpink;
+      display: flex;
+      position: relative;
+
+      // align-items: ;
+      // justify-content: center;
+      .macheardson {
+        -webkit-app-region: no-drag;
+        // background-color: red;
+        position: relative;
+        flex-direction: row;
+        display: flex;
+
+      }
+
+      .returnImg {
+        height: 20px;
+        position: absolute;
+        // right: 0px;
+        right: -24px;
+        bottom: -4px;
+        -webkit-app-region: no-drag;
+      }
     }
-    .load {
-      // background-color: pink;
-    }
+
+
+
     .l {
       width: 40px;
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+
       // background-color: pink;
       .mouseDiv {
         -webkit-app-region: no-drag;
       }
+
       .return {
         // background-color: pink;
         color: #c2bfc1;
@@ -61,19 +90,23 @@
       justify-content: center;
       position: relative;
       width: 100%;
+
       img {
         width: 230px;
         height: 230px;
       }
+
       .err {
         position: absolute;
         display: flex;
         align-items: center;
         flex-direction: column;
+
         .errText {
           font-size: 16px;
           font-weight: 600;
         }
+
         .btn {
           background-color: #e1206d;
           border-radius: 50px;
@@ -87,11 +120,13 @@
         }
       }
     }
+
     .logo {
       // background-color: pink;
       display: flex;
       justify-content: center;
     }
+
     .iconBox {
       -webkit-app-region: no-drag;
       z-index: 0;
@@ -99,28 +134,34 @@
       position: absolute;
       right: 0;
       top: 20px;
+
       .icon {
         font-size: 50px;
       }
     }
+
     .text {
       text-align: center;
       color: #141414;
       font-family: Arial, Helvetica, sans-serif;
       font-weight: bold;
       z-index: 999;
-      p{
+      margin: 0;
+
+      p {
         padding: 0;
         margin: 0;
         // line-height: 10px;
       }
     }
+
     .inpF {
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
       -webkit-app-region: no-drag;
+
       .inp {
         background-color: #f5f5f5;
         border-width: 0;
@@ -132,6 +173,7 @@
         margin-left: 6px;
         margin-bottom: 18px;
       }
+
       input::-webkit-input-placeholder,
       textarea::-webkit-input-placeholder {
         color: #827e92;
@@ -139,25 +181,30 @@
       }
 
     }
-    .littleText{
+
+    .littleText {
       width: 100%;
       color: #4A4A4A;
       text-align: center;
 
     }
+
     .stay {
       display: flex;
       justify-content: space-around;
       width: 100%;
+
       .remember {
         display: flex;
         align-items: center;
+
         p {
           color: #4a4a4a;
           font-size: 16px;
           margin: 0;
           padding: 0;
         }
+
         .box {
           width: 20px;
           height: 20px;
@@ -171,6 +218,7 @@
           -webkit-app-region: no-drag;
         }
       }
+
       .forgot {
         color: #e1206d;
         font-size: 16px;
@@ -179,6 +227,7 @@
         cursor: pointer;
       }
     }
+
     .button1 {
       display: flex;
       align-items: center;
@@ -188,7 +237,8 @@
       // background-color: #e7e7e7;
       background-color: pink;
     }
-    .button11{
+
+    .button11 {
       -webkit-app-region: no-drag;
       // background-color: pink;
       display: flex;
@@ -198,6 +248,7 @@
       width: 100%;
       border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;
+
       // margin-top: 70px;
       Button {
         width: 270px;
@@ -207,7 +258,8 @@
         font-size: 18px;
         height: 50px;
       }
-      .btn1{
+
+      .btn1 {
         background-color: #e1206D;
         // width: 70%;
         border-radius: 80px;
@@ -217,12 +269,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        p{
+
+        p {
           padding: 0;
           margin: 0;
         }
       }
     }
+
     .button {
       -webkit-app-region: no-drag;
       // background-color: pink;
@@ -231,6 +285,7 @@
       align-items: center;
       justify-content: center;
       width: 100%;
+
       // margin-top: 70px;
       Button {
         width: 270px;
@@ -240,7 +295,8 @@
         font-size: 18px;
         height: 50px;
       }
-      .btn1{
+
+      .btn1 {
         background-color: #e1206D;
         width: 70%;
         border-radius: 80px;
@@ -253,34 +309,41 @@
         justify-content: center;
       }
     }
+
     .text2 {
       margin-top: 12px;
+
       p {
         text-align: center;
         font-size: 17px;
         padding: 0;
         margin: 0;
+
         a {
           -webkit-app-region: no-drag;
           color: #dc6896;
         }
       }
     }
+
     .other {
       display: flex;
       justify-content: center;
       align-items: center;
       margin-top: 30px;
+
       .line {
         height: 1px;
         width: 100px;
         border: solid 1px #d8d8d8;
       }
+
       span {
         font-size: 14px;
         margin: 0 20px;
       }
     }
+
     .foot {
       margin-top: 20px;
       display: flex;
@@ -310,9 +373,11 @@
         // align-items: center;
         // justify-content: center;
       }
+
       p {
         color: #fff;
       }
+
       .modalChaild {
         background-color: #fff;
         // height: 80px;
@@ -320,11 +385,13 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+
         p {
           color: #000;
           text-align: center;
           width: 75%;
         }
+
         .modalbutton {
           display: flex;
           width: 100%;
@@ -383,6 +450,7 @@
 .button:active {
   opacity: 0.5;
 }
+
 Button:active {
   opacity: 0.5;
 }

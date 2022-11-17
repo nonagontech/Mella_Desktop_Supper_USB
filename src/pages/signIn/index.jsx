@@ -19,6 +19,7 @@ import MouseDiv from "./../../utils/mouseDiv/MouseDiv";
 import { addLogin } from "../../utils/axios";
 
 import "./index.less";
+import { connect } from "react-redux";
 
 let storage = window.localStorage;
 const MyIcon = createFromIconfontCN({
@@ -28,7 +29,7 @@ let num = 0;
 //有可能出现,登录成功跳转后获取到了二维码,这样就会导致出现一直轮询,未解决这个问题设置变量isSign
 let isSign = true;
 
-export default class SignIn extends Component {
+class SignIn extends Component {
   state = {
     isRemember: false,
     email: "",
@@ -414,11 +415,24 @@ export default class SignIn extends Component {
     return <img src={back_white} alt="" style={{ width: px(15) }} />;
   };
 
-  render() {
-    let { isCode, baseUrl } = this.state;
-    let code = isCode ? "icon-diannao-copy" : "icon-erweima-copy";
-    return (
-      <div id="signIn">
+  heard = () => {
+    if (this.props.systemType === 'mac') {
+      return (
+        <div className="macheard"  >
+          <div className="macheardson" >
+            <MinClose />
+            <img
+              onClick={() => {
+                this.props.history.push("/");
+              }}
+              src={back_hui} className={'returnImg'} />
+          </div>
+
+
+        </div>
+      )
+    } else {
+      return (
         <div
           className="heaed"
           style={{ paddingTop: px(10), paddingRight: px(20) }}
@@ -437,6 +451,17 @@ export default class SignIn extends Component {
             <MinClose />
           </div>
         </div>
+      )
+    }
+
+  }
+
+  render() {
+    let { isCode, baseUrl } = this.state;
+    let code = isCode ? "icon-diannao-copy" : "icon-erweima-copy";
+    return (
+      <div id="signIn">
+        {this.heard()}
 
         <div className="body">
           <div className="logo">
@@ -445,11 +470,9 @@ export default class SignIn extends Component {
           <div className="body" style={{ position: "relative" }}>
             <div
               className="text"
-            // style={{
-            //   fontSize: px(28),
-            //   marginBottom: px(20),
-            //   marginTop: px(30),
-            // }}
+              style={{
+                marginTop: '15px',
+              }}
             >
               Please enter email <br />
               and password
@@ -501,12 +524,9 @@ export default class SignIn extends Component {
 
               <div
                 className="text"
-              // style={{
-              //   fontSize: px(28),
-              //   lineHeight: px(1),
-              //   marginTop: px(10),
-              //   marginBottom: px(20),
-              // }}
+                style={{
+                  marginTop: '15px',
+                }}
               >
                 {"Or scan QR Code"}
               </div>
@@ -602,3 +622,9 @@ export default class SignIn extends Component {
     );
   }
 }
+
+export default connect(
+  (state) => ({
+    systemType: state.systemReduce.systemType
+  })
+)(SignIn)

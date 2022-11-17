@@ -5,11 +5,12 @@ import {
 } from 'antd';
 
 import temporaryStorage from '../../utils/temporaryStorage'
-import { px, mTop, win, timerFun } from '../../utils/px'
+import { px, mTop, win } from '../../utils/px'
 import MinClose from '../../utils/minClose/MinClose';
 import { version } from '../../utils/appversion';
 import logo from '../../assets/images/mella.png'
 import './index.less';
+import { connect } from 'react-redux';
 
 let storage = window.localStorage;
 //定义变量:连续点击了几次logo
@@ -18,17 +19,17 @@ let logoClick = 0;
 let logoTime = 0;
 let ipcRenderer = window.electron.ipcRenderer
 
-export default class Home extends Component {
+class Home extends Component {
   state = {
     imgurl: '',
     size: { width: 0, height: 0 }
   }
   componentDidMount() {
-    timerFun()
     ipcRenderer.send('close-loading-window', 1)
     ipcRenderer.send('small', win())
     storage.measurepatientId = '';
     temporaryStorage.logupVetInfo = {}
+    console.log('----===----', this.props.systemType);
   }
 
 
@@ -51,9 +52,12 @@ export default class Home extends Component {
     }
   }
   render() {
+
+    let daohang = this.props.systemType === 'mac' ? 'daohang mac' : 'daohang windows'
+
     return (
       <div id="home">
-        <div className="daohang" style={{ paddingTop: px(10), paddingRight: px(20) }}>
+        <div className={daohang} style={{ paddingTop: px(10), paddingRight: px(20), }}>
           <MinClose />
         </div>
         <div className='flex refresh' style={{ alignItems: 'flex-end', paddingRight: px(20) }}>
@@ -95,3 +99,9 @@ export default class Home extends Component {
     )
   }
 }
+
+export default connect(
+  (state) => ({
+    systemType: state.systemReduce.systemType
+  })
+)(Home)

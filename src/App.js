@@ -31,7 +31,19 @@ import ConnectWorkplace from './pages/connectWorkplace'
 import NewOrg from './pages/newOrg/index'
 import Team from './pages/team/index'
 import MainBody from './pages/mainbody'
+import { setSystemTypeFun } from './store/actions'
+import { connect } from 'react-redux'
 class App extends Component {
+
+  componentDidMount() {
+    this.getSystemType()
+  }
+  getSystemType = () => {
+    var agent = navigator.userAgent.toLowerCase();
+    console.log('agent', agent);
+    var isMac = /macintosh|mac os x/i.test(navigator.userAgent);
+    this.props.setSystemTypeFun(`${isMac ? "mac" : "windows"}`)
+  }
 
   render() {
     return (
@@ -74,4 +86,10 @@ class App extends Component {
     )
   }
 }
-export default App
+
+export default connect(
+  state => ({
+
+  }),
+  { setSystemTypeFun }
+)(App)

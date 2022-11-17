@@ -18,6 +18,7 @@ import { checkUser, deskRegistAWSSNS, registByAWSSES } from '../../api';
 import moment from 'moment';
 
 import './index.less';
+import { connect } from 'react-redux';
 
 const options = [
   { label: 'Dogs', value: 'Dogs' },
@@ -32,7 +33,7 @@ const options = [
   { label: 'Anaesthesia', value: 'Anaesthesia' },
   { label: 'Other', value: 'Other' },
 ]
-export default class VetPrifile extends Component {
+class VetPrifile extends Component {
 
   state = {
     code: 1,
@@ -427,4 +428,9 @@ export default class VetPrifile extends Component {
     )
   }
 }
+export default connect(
+  (state) => ({
+    systemType: state.systemReduce.systemType
+  })
+)(VetPrifile)
 

@@ -36,6 +36,7 @@ import { useHistory } from "react-router-dom";
 import { getPetInfoByRFID, getPetByPetNameOrPatientId, getPetInfoByRFID1 } from "../../api";
 
 import "./heard.less";
+import MinClose from "../minClose/MinClose";
 
 
 let storage = window.localStorage;
@@ -57,6 +58,7 @@ const Heard = ({
   petListArr,
   petDetailInfoFun,
   selectHardwareType,
+  systemType
 }) => {
   let history = useHistory();
 
@@ -1426,9 +1428,11 @@ const Heard = ({
         }}
       >
         <div className="l">
+          {systemType === 'mac' && <MinClose />}
+
           <div
             className="menuF"
-            style={{ marginLeft: px(40), marginRight: px(40) }}
+            style={{ marginLeft: px(20), marginRight: px(40) }}
           >
             <div
               className="menu"
@@ -1559,26 +1563,29 @@ const Heard = ({
               }
             </div>
           </div>
-          <div className="min_close" style={{ paddingRight: px(15) }}>
-            <div
-              className="min_icon"
-              onClick={MINCOLOSE.minClock}
-              style={{ backgroundColor: minbgc, height: px(47), width: px(47) }}
-              onMouseEnter={MINCOLOSE.minMouseEnter}
-              onMouseLeave={MINCOLOSE.minMouseLeave}
-            >
-              <img src={rMin} alt="" style={{ width: px(20) }} />
+          {systemType !== 'mac' && <>
+            <div className="min_close" style={{ paddingRight: px(15) }}>
+              <div
+                className="min_icon"
+                onClick={MINCOLOSE.minClock}
+                style={{ backgroundColor: minbgc, height: px(47), width: px(47) }}
+                onMouseEnter={MINCOLOSE.minMouseEnter}
+                onMouseLeave={MINCOLOSE.minMouseLeave}
+              >
+                <img src={rMin} alt="" style={{ width: px(20) }} />
+              </div>
+              <div
+                className="min_icon"
+                onClick={MINCOLOSE.closeClock}
+                style={{ backgroundColor: closebgc, height: px(47), width: px(47) }}
+                onMouseEnter={MINCOLOSE.closeMouseEnter}
+                onMouseLeave={MINCOLOSE.closeMouseLeave}
+              >
+                <img src={rClose} alt="" style={{ width: px(20) }} />
+              </div>
             </div>
-            <div
-              className="min_icon"
-              onClick={MINCOLOSE.closeClock}
-              style={{ backgroundColor: closebgc, height: px(47), width: px(47) }}
-              onMouseEnter={MINCOLOSE.closeMouseEnter}
-              onMouseLeave={MINCOLOSE.closeMouseLeave}
-            >
-              <img src={rClose} alt="" style={{ width: px(20) }} />
-            </div>
-          </div>
+          </>}
+
         </div>
 
         {modalvisible && modal()}
@@ -1670,6 +1677,8 @@ export default connect(
     menuNum: state.userReduce.menuNum,
     petListArr: state.petReduce.petListArr,
     selectHardwareType: state.hardwareReduce.selectHardwareType,
+    systemType: state.systemReduce.systemType
+
   }),
   { setMenuNum, setSelectHardwareType, petDetailInfoFun }
 )(Heard)

@@ -40,6 +40,7 @@ import {
 
 import './index.less';
 import _ from 'lodash';
+import MinClose from '../../utils/minClose/MinClose';
 
 const MyIcon = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_2326495_7b2bscbhvvt.js'
@@ -946,6 +947,11 @@ class EditPetInfo extends Component {
         <div className="close1">
           {/* 菜单 */}
           <div className="menu">
+            {this.props.systemType === 'mac' &&
+              <div style={{ marginRight: '8px' }}>
+                <MinClose />
+              </div>
+            }
             <MyIcon
               type='icon-fanhui4'
               className="icon"
@@ -959,23 +965,27 @@ class EditPetInfo extends Component {
             />
           </div>
           <div className="text">mella</div>
-          <div className='maxmin'>
-            <div
-              className="min iconfont icon-64"
-              onClick={this._min}
-              onMouseEnter={this._minMove}
-              onMouseLeave={this._minLeave}
-              style={{ backgroundColor: minbgc }}
-            ></div>
+          {this.props.systemType !== 'mac' ?
+            <div className='maxmin'>
+              <div
+                className="min iconfont icon-64"
+                onClick={this._min}
+                onMouseEnter={this._minMove}
+                onMouseLeave={this._minLeave}
+                style={{ backgroundColor: minbgc }}
+              ></div>
 
-            <div
-              className="max iconfont icon-guanbi2"
-              onClick={this._close}
-              onMouseEnter={this._closeMove}
-              onMouseLeave={this._closeLeave}
-              style={{ backgroundColor: closebgc, color: closeColor }}
-            ></div>
-          </div>
+              <div
+                className="max iconfont icon-guanbi2"
+                onClick={this._close}
+                onMouseEnter={this._closeMove}
+                onMouseLeave={this._closeLeave}
+                style={{ backgroundColor: closebgc, color: closeColor }}
+              ></div>
+            </div> :
+            <div style={{ width: '60px' }}></div>
+          }
+
         </div>
         <div className="editPetInfo_top">
           <div className="title">{`${this.state.patientId}, ${this.state.petName}`}</div>
@@ -1093,7 +1103,8 @@ class EditPetInfo extends Component {
 }
 export default connect(
   state => ({
-    petDetailInfo: state.petReduce.petDetailInfo
+    petDetailInfo: state.petReduce.petDetailInfo,
+    systemType: state.systemReduce.systemType
   }),
   { petDetailInfoFun }
 )(EditPetInfo)
