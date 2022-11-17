@@ -1432,7 +1432,7 @@ const Heard = ({
 
           <div
             className="menuF"
-            style={{ marginLeft: px(20), marginRight: px(40) }}
+            style={{ marginLeft: px(parseInt(`${systemType==='mac'?'20':'40'}`)), marginRight: px(40) }}
           >
             <div
               className="menu"
