@@ -810,8 +810,16 @@ let dataArr = new Array(), sendNum = 0;
 ipcMain.on("updateBase", (event, data) => {
 
   if (data.state === "reset") {
-    fileUrl = `${path.join(__dirname, "./build/reset.bin")}`;
-    upgradeFileDataProcess(fileUrl)
+    if (data.type === 'base') {
+
+      fileUrl = `${path.join(__dirname, "./build/upgrade.bin")}`;
+      upgradeFileDataProcess(fileUrl)
+    } else {
+      fileUrl = `${path.join(__dirname, "./build/reset.bin")}`;
+      upgradeFileDataProcess(fileUrl)
+    }
+
+
   } else {
     let { fileName, url } = data
     createDir(fileName, url)
@@ -942,7 +950,8 @@ function sendUpload(params) {
   console.log(sendNum);
   if (sendNum < dataArr.length) {
     let value = dataArr[sendNum++];
-    device.write(value);
+    device && device.write(value);
+
     let progress = parseFloat(((sendNum / dataArr.length) * 100).toFixed(2));
 
     mainWindow.webContents.send("uploadBaseInfo", {

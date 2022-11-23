@@ -8,9 +8,11 @@ import './index.less';
 import { getOta } from '../../api/mellaserver/backend';
 import { versionComarision } from '../../utils/commonFun';
 import { getInfoOfLatestDevice } from '../../api/mellaserver/mellarecord';
+import { localHardBinVersion } from '../../utils/appversion';
 
 let ipcRenderer = window.electron.ipcRenderer
 let uploadType = ''
+
 export default class AdvancedSettings extends Component {
 
   state = {
@@ -23,6 +25,7 @@ export default class AdvancedSettings extends Component {
     cloudVersion: '',
     filePath: '',
     isModalOpen: false,
+    errorFlog: false
   }
   componentDidMount() {
     ipcRenderer.send("big", win());
@@ -56,7 +59,12 @@ export default class AdvancedSettings extends Component {
   //底座发过来的指令信息
   _send = (event, data) => {
     //data就是测量的数据，是十进制的数字
-    // console.log('_send', data);
+    console.log('_send', data);
+    if (this.state.errorFlog) {
+      this.setState({
+        errorFlog: true
+      })
+    }
     let { isUpload } = this.state
 
     if (data[2] === 54) {
@@ -71,6 +79,7 @@ export default class AdvancedSettings extends Component {
 
     } else if (data[2] === 182) {
       //为0代表底座通讯关闭成功了
+
       if (data[3] === 0) {
         if (isUpload) {
           console.log('发送指令让底座进入升级状态');
@@ -104,11 +113,20 @@ export default class AdvancedSettings extends Component {
         if (progress === 0) {
           console.log('正在升级过程中检测到了拔插 前去发送升级文件', uploadType);
           if (uploadType === 'base') {
-            console.log('底座升级');
-            ipcRenderer.send('updateBase', { state: 'base', url: this.state.filePath, fileName: `mellabase${this.state.cloudVersion}` })
+            console.log('底座升级', this.state.cloudVersion);
+            //如果版本号和本地版本号一致则使用本地存放的硬件文件，如果没有云端版本或者，云端文件地址则也使用本地的升级文件包
+            if (localHardBinVersion === this.state.cloudVersion || !this.state.cloudVersion || !this.state.filePath) {
+
+              console.log('使用本地文件进行升级');
+              ipcRenderer.send('updateBase', { state: 'reset', type: 'base' })
+            } else {
+              ipcRenderer.send('updateBase', { state: 'base', url: this.state.filePath, fileName: `mellabase${this.state.cloudVersion}` })
+            }
+
+
           } else if (uploadType === 'reset') {
             console.log('底座出厂设置');
-            ipcRenderer.send('updateBase', { state: 'reset', })
+            ipcRenderer.send('updateBase', { state: 'reset', type: 'reset' })
           }
         } else if (progress === 100) {
           this.failTimer && clearTimeout(this.failTimer)
@@ -120,7 +138,7 @@ export default class AdvancedSettings extends Component {
             cloudVersion: '',
           })
           message.destroy()
-          message.success('Update Successful');
+          message.success('The update is successful. Please re plug the base');
           ipcRenderer.send('reUpload', {})
         } else {
           this.setState({
@@ -131,7 +149,7 @@ export default class AdvancedSettings extends Component {
             cloudVersion: '',
           })
           message.destroy()
-          message.error('Upgrade failed')
+          message.error('Upgrade failed, Please reinsert the base')
           ipcRenderer.send('reUpload', {})
         }
 
@@ -154,7 +172,7 @@ export default class AdvancedSettings extends Component {
             cloudVersion: '',
           })
           message.destroy()
-          message.error('Upgrade failed')
+          message.error('Upgrade failed, Please reinsert the base')
           ipcRenderer.send('reUpload', {})
         }
       }
@@ -209,7 +227,7 @@ export default class AdvancedSettings extends Component {
               cloudVersion: '',
             })
             message.destroy()
-            message.error('Upgrade failed')
+            message.error('Upgrade failed, Please reinsert the base')
             ipcRenderer.send('reUpload', {})
           }, 5000);
         }
@@ -240,6 +258,8 @@ export default class AdvancedSettings extends Component {
       this.setState({
         isUpload: false,
         updateModal: false,
+        localVersion: '',
+        cloudVersion: '',
       })
       message.destroy()
       message.error('No base device found, please plug it in and try again')
@@ -249,15 +269,24 @@ export default class AdvancedSettings extends Component {
         uploadText: 'Detect upgrade environment',
         isUpload: true,
         updateModal: true,
-        progress: 0
+        progress: 0,
+        errorFlog: true
       })
       uploadType = val
       //第一步，发送一个关闭通信的指令，看是否能够收到，如果收不到则判定底座已经在升级状态下，直接去发送文件
+      console.log('发送指令查看底座是否已经在升级状态');
+      ipcRenderer.send('usbdata', { command: '36', arr: ['00'] })
       const timer = setTimeout(() => {
-        console.log('发送指令查看底座是否已经在升级状态');
-        ipcRenderer.send('usbdata', { command: '36', arr: ['00'] })
+        if (this.state.errorFlog) {
+          this.setState({
+            uploadText: "Please manually plug and unplug the base"
+          })
+          ipcRenderer.send('startUpload', {})
+
+        }
         clearTimeout(timer)
-      }, 100);
+      }, 3000);
+
 
       //2.如果能收到关闭指令，则发送开始升级指令
 
@@ -287,17 +316,12 @@ export default class AdvancedSettings extends Component {
         progress: 0,
         localVersion: '',
         cloudVersion: '',
+        errorFlog: true
+
       }, () => {
         this.localVersion()
       })
       uploadType = val
-      //第一步,查询本地版本号
-
-
-
-      //2.如果能收到关闭指令，则发送开始升级指令
-
-      //3.如果如果测试检测到usb插拔，则去发送文件
     }
   }
   //询问本地的版本号
@@ -330,13 +354,26 @@ export default class AdvancedSettings extends Component {
               uploadText: 'Start getting upgrade files'
 
             })
-
-            //第一步，发送一个关闭通信的指令，看是否能够收到，如果收不到则判定底座已经在升级状态下，直接去发送文件
-            const timer = setTimeout(() => {
-              console.log('发送指令查看底座是否已经在升级状态');
+            this.setState({
+              errorFlog: true
+            }, () => {
               ipcRenderer.send('usbdata', { command: '36', arr: ['00'] })
+              console.log('发送指令查看底座是否已经在升级状态');
+            })
+
+
+
+            const timer = setTimeout(() => {
+              if (this.state.errorFlog) {
+
+                this.setState({
+                  uploadText: "Please manually plug and unplug the base"
+                })
+                ipcRenderer.send('startUpload', {})
+
+              }
               clearTimeout(timer)
-            }, 100);
+            }, 3000);
           } else {
             this.setState({
               updateModal: false
