@@ -31,6 +31,7 @@ import ConnectWorkplace from './pages/connectWorkplace'
 import NewOrg from './pages/newOrg/index'
 import Team from './pages/team/index'
 import MainBody from './pages/mainbody'
+import Subscriptions from './pages/subscriptions'
 import { setSystemTypeFun } from './store/actions'
 import { connect } from 'react-redux'
 class App extends Component {
@@ -71,6 +72,7 @@ class App extends Component {
           <Route exact path="/menuOptions/help" component={Help} />
           <Route exact path="/menuOptions/unassigned" component={Unassigned} />
           <Route exact path="/menuOptions/settings" component={Settings} />
+          <Route exact path="/menuOptions/subscriptions" component={Subscriptions} />
           <Route exact path="/menuOptions/advancedsettings" component={AdvancedSettings} />
           <Route exact path="/menuOptions/petAndParents" component={PetAndParents} />
           <Route exact path="/menuOptions/editParent" component={EditParent} />
@@ -80,6 +82,8 @@ class App extends Component {
           <Route exact path="/menuOptions/ConnectWorkplace" component={ConnectWorkplace} />
           <Route exact path="/menuOptions/NewOrg" component={NewOrg} />
           <Route exact path="/menuOptions/Team" component={Team} />
+
+
 
         </Switch>
       </HashRouter>

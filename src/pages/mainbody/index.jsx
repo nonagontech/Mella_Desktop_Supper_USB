@@ -202,7 +202,7 @@ class App extends Component {
     //获取到了版本信息,此底座不是很老版本
     if (data[2] === 136) {
       let localVersion = `${data[6]}.${data[7]}.${data[8]}`;
-      console.log('插入底座的版本是: ', localVersion);
+      console.log('插入底座的版本是: ', localVersion, this.state.updateBaseLaterType);
       this.setState({ localVersion: localVersion }, () => {
         if (!this.state.updateBaseLaterType) {
           this.cloudVersion();
@@ -214,6 +214,7 @@ class App extends Component {
   cloudVersion = () => {
     getInfoOfLatestDevice('mellabase')
       .then((res) => {
+
         if (res.flag) {
           let { firmwareVersion } = res.data
           let cloudBigtolocal = versionComarision(firmwareVersion, this.state.localVersion);//true则为线上底座版本大于当前底座版本需要升级
@@ -1189,6 +1190,17 @@ class App extends Component {
           },
         ],
       });
+      devicesTypeList.push({
+        type: "camera",
+        devices: [
+          {
+            name: "camera",
+            mac: "",
+            deviceType: "camera",
+            examRoom: "",
+          },
+        ],
+      });
     }
 
     let hardList = [].concat(devicesTypeList);
@@ -1209,6 +1221,7 @@ class App extends Component {
 
     let { bodyHeight, clickMenuIndex } = this.state;
     let measurePage = null;
+    //clickMenuIndex 点击菜单的序号
     switch (clickMenuIndex) {
       case "1":
         if (electronStore.get(`${storage.userId}-isClical`)) {

@@ -109,7 +109,7 @@ class SignIn extends Component {
             console.log("lunxin");
             this._polling();
 
-            if (num > 280) {
+            if (num > 200) {
               //超过280秒则去显示二维码过期，要重新获取
               this.setState({
                 isExpired: true,
@@ -117,7 +117,7 @@ class SignIn extends Component {
               num = 0;
               this.timer && clearInterval(this.timer);
             }
-          }, 1000);
+          }, 2000);
         } else {
           message.error("Failed to obtain QR code", 10);
           this.setState({

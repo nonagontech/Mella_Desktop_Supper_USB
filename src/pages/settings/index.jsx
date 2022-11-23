@@ -8,7 +8,7 @@ import {
 
 import redJinggao from '../../assets/img/redjinggao.png'
 
-import Heart from '../../utils/heard/Heard'
+import Heard from '../../utils/heard/Heard'
 import Slider from '../../utils/slider/Slider'
 import Button from '../../utils/button/Button'
 import electronStore from '../../utils/electronStore'
@@ -363,7 +363,7 @@ export default class Settings extends Component {
     return (
       <div id="settings">
         <div className="heard">
-          <Heart />
+          <Heard />
         </div>
 
 

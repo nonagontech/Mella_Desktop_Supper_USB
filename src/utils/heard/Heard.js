@@ -662,6 +662,7 @@ const Heard = ({
         break;
       case "7":
         console.log("billing");
+        history.push('/menuOptions/subscriptions')
         break;
 
       case "8":
@@ -1338,6 +1339,7 @@ const Heard = ({
           <img src={help} alt="" style={{ height: px(25) }} />
         );
       case 'biggie':
+      case 'camera':
         return (
           <img src={biggieHelp} alt="" style={{ height: px(25) }} />
         );
@@ -1353,6 +1355,8 @@ const Heard = ({
         return (
           <img src={mabelHelp} alt="" style={{ height: px(25) }} />
         );
+
+
 
       default:
         return (
@@ -1407,6 +1411,9 @@ const Heard = ({
       case 'mabel':
         setColor({ backgroundColor: '#F78F2F' });
         break;
+      case 'camera':
+        setColor({ backgroundColor: '#12ADE4' });
+        break;
       default:
         setColor({ backgroundColor: '#e1206d' });
         break;
@@ -1432,7 +1439,7 @@ const Heard = ({
 
           <div
             className="menuF"
-            style={{ marginLeft: px(parseInt(`${systemType==='mac'?'20':'40'}`)), marginRight: px(40) }}
+            style={{ marginLeft: px(parseInt(`${systemType === 'mac' ? '20' : '40'}`)), marginRight: px(40) }}
           >
             <div
               className="menu"

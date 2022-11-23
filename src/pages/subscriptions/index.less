@@ -1,0 +1,101 @@
+#subscriptions {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #fff;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    -webkit-app-region: no-drag;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
+
+    // align-items: center;
+
+
+    .body {
+        flex: 1;
+        width: 100%;
+        height: 100%;
+        // background-color: pink;
+        display: flex;
+        flex-direction: row;
+
+        .bodyLeft {
+            width: 280px;
+            height: 100%;
+            // background-color: hotpink;
+
+            .userInfo {
+                width: 100%;
+                height: 280px;
+                background-color: rgb(248, 235, 232);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+
+                img {
+                    width: 80px;
+                    height: 80px;
+                    border-radius: 80px;
+                }
+
+                .userName {
+                    margin-top: 12px;
+                    margin-bottom: 12px;
+                    font-size: 18px;
+                }
+
+                .endDate {
+                    text-align: center;
+                    font-size: 16px;
+                    color: rgb(158, 158, 158);
+                }
+
+                .subscribeBtn {
+                    margin-top: 20px;
+                    width: 150px;
+                }
+            }
+
+            .subLeftList {
+                margin-top: 40px;
+
+                ul {
+                    li {
+                        width: 100%;
+                        height: 50px;
+                        display: flex;
+                        align-items: center;
+                        // justify-content: center;
+                        cursor: pointer;
+                        -webkit-app-region: drag;
+                        padding-left: 50px;
+                    }
+                }
+            }
+        }
+
+        .bodyright {
+            flex: 1;
+            // background-color: pink;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+    }
+
+    .buyModal {
+        // width: '98%',
+        //  height: '90%', 
+        width: 98%;
+        height: 95%;
+        border-radius: 20px;
+    }
+}

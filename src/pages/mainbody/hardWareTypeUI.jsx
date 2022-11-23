@@ -13,6 +13,8 @@ import mabel from "./../../assets/img/hardList-mabel.png";
 import moveMabel from "./../../assets/img/moveMabel.png";
 
 import rfid from "./../../assets/img/hardList-rfid.png";
+import smalls from './../../assets/img/smalls.png'
+import cameraIcon from './../../assets/img/cameraIcon.png'
 import add from "./../../assets/img/hardList-add.png";
 
 import electronStore from "../../utils/electronStore";
@@ -62,6 +64,9 @@ const HardWareTypeUI = ({
       case "rfid":
         img = rfid;
         break;
+      case "camera":
+        img = onMouseEnterIndex === 5 ? cameraIcon : smalls
+        break
       case "add":
         img = add;
         break;
