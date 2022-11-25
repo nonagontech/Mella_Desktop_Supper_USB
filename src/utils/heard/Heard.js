@@ -661,8 +661,7 @@ const Heard = ({
         console.log("临床测试");
         break;
       case "7":
-        console.log("billing");
-        history.push('/menuOptions/subscriptions')
+        setMenuNum(e.index);
         break;
 
       case "8":

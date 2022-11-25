@@ -17,6 +17,7 @@ import BiggiePage from "../../pages/biggiePage";
 import ScanPage from "../../pages/scanPage";
 import AllPets from "../../pages/allPetsPage";
 import ScheduledPetPage from "../../pages/scheduledPetsPage";
+import Subscriptions from "../../pages/subscriptions";
 import AddScheduledPet from "../../pages/addScheduledPet";
 import ClininalStudy from "../../pages/clinicalStudyPage";
 import CombineScales from "../../pages/combineScales";
@@ -1221,6 +1222,7 @@ class App extends Component {
 
     let { bodyHeight, clickMenuIndex } = this.state;
     let measurePage = null;
+    console.log(clickMenuIndex +'@')
     //clickMenuIndex 点击菜单的序号
     switch (clickMenuIndex) {
       case "1":
@@ -1286,6 +1288,8 @@ class App extends Component {
             <ClininalStudy bodyHeight={bodyHeight} />
           </>
         );
+      case "7":
+        return <Subscriptions/>
       case "4":
         return (
           <MyAccount bodyHeight={bodyHeight} />
