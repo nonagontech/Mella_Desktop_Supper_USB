@@ -12,14 +12,15 @@ import MyModal from '../../utils/myModal/MyModal'
 import { win } from '../../utils/px'
 import defaultUserIcon from './../../assets/img/defaultUserIcon.png'
 
+import down from '../../assets/img/xia.png'
+import expand from '../../assets/img/expand.png'
+
 import "./index.less"
 
 let storage = window.localStorage;
 
 let num = 0
 
-const down = <Icon component={() => (<img src="../../assets/img/xia.png" />)} />
-const up = <Icon component={() => (<img src="../../assets/img/expand.png" />)} />
 
 export default class Subscriptions extends Component {
     state = {
@@ -89,14 +90,19 @@ export default class Subscriptions extends Component {
             loadings
         })
         console.log('params:', params);
+        console.log('storage', storage);
         buy(storage.userId, params)
             .then(res => {
                 console.log(res);
                 let buyItem = item.type
+                let payParams  = {
+                  organizationId: storage.lastOrganization,
+                  userId: storage.userId
+              }
                 if (res.code === 0 && res.msg === 'success') {
                     let { preOrderId } = res.data
                     let buyItem1 = buyItem
-                    payForOrder(preOrderId)
+                    payForOrder(preOrderId, payParams)
 
                         .then(res => {
                             let { code, message, url } = res
@@ -217,7 +223,6 @@ export default class Subscriptions extends Component {
 
 
     render() {
-        
         let { userUrl, userName, endDate, selectListIndex } = this.state
         let url = !userUrl ? defaultUserIcon : userUrl
 
@@ -267,7 +272,7 @@ export default class Subscriptions extends Component {
             width: '15%',
             key: 'version',
             render: () => (
-              <Tag color="#87d068">Active</Tag>
+              <Tag color="#87d068" style={{width: px(65), height: px(22), fontSize: 18}}>Active</Tag>
             )
           },
 
@@ -287,8 +292,6 @@ export default class Subscriptions extends Component {
                 <div className="top">
                   <div className="TitleItem flex" style={{ fontSize: 26, paddingLeft: px(20) }}>
                     <div className="title">Billing & Subscriptions</div>
-                <Icon component={() => (<img src="../../assets/img/expand.png" />)} />
-
                   </div>
 
                 </div>
@@ -317,6 +320,7 @@ export default class Subscriptions extends Component {
 
                 <div className="tableDiv" style={{ height: bodyHeight - px(250) }} >
                 <Table
+                    className='mainTable'
                     showHeader={false}
                     columns={columns}
                     pagination={false}
@@ -326,9 +330,9 @@ export default class Subscriptions extends Component {
                       expandIconColumnIndex: '4',
                       expandIcon: ({ expanded, onExpand, record }) =>
                                 expanded ? (
-                                  <up onClick={e => onExpand(record, e)} />
+                                  <Icon component={() => (<img src={expand} />)} onClick={e => onExpand(record, e)}  />
                                 ) : (
-                                  <down onClick={e => onExpand(record, e)} />
+                                  <Icon component={() => (<img src={down} />)} onClick={e => onExpand(record, e)} />
                                 )
                     }}
                     dataSource={data}

@@ -28,8 +28,8 @@ export const buy = (userId, params) => {
     return postJson(`${baseURL}/${userId}`, params)
 }
 //对订单进行付款
-export const payForOrder = (preOrderId,) => {
-    return postJson(`${baseURL}/payForOrder/${preOrderId}`, '')
+export const payForOrder = (preOrderId, params) => {
+    return postJson(`${baseURL}/payForOrder/${preOrderId}`, params)
 }
 
 
