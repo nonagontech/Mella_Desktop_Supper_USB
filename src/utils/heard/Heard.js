@@ -660,10 +660,10 @@ const Heard = ({
         history.push("/MainBody");
         console.log("临床测试");
         break;
-      case "7":
-        console.log("billing");
-        history.push('/menuOptions/subscriptions')
-        break;
+      // case "7":
+      //   console.log("billing");
+      //   history.push('/menuOptions/subscriptions')
+      //   break;
 
       case "8":
         setModalVisible(true);
