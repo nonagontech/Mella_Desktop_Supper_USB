@@ -1,21 +1,25 @@
-import { message } from 'antd'
+import { message, Tag, Space, Table  } from 'antd'
 import moment from 'moment/moment'
 import React, { Component } from 'react'
 
+import Icon, { DownOutlined, UpOutlined } from '@ant-design/icons';
+
+import { px } from '../../utils/px';
+
 import { buy, getOrderInfo, getPreOrderById, payForOrder } from '../../api'
 import BuySub from '../../components/buySub'
-import Heard from '../../utils/heard/Heard'
 import MyModal from '../../utils/myModal/MyModal'
 import { win } from '../../utils/px'
 import defaultUserIcon from './../../assets/img/defaultUserIcon.png'
-import ItemList from './components/itemList'
-import UserInfo from './components/userInfo'
 
 import "./index.less"
 
 let storage = window.localStorage;
 
 let num = 0
+
+const down = <Icon component={() => (<img src="../../assets/img/xia.png" />)} />
+const up = <Icon component={() => (<img src="../../assets/img/expand.png" />)} />
 
 export default class Subscriptions extends Component {
     state = {
@@ -213,34 +217,123 @@ export default class Subscriptions extends Component {
 
 
     render() {
+        
         let { userUrl, userName, endDate, selectListIndex } = this.state
         let url = !userUrl ? defaultUserIcon : userUrl
+
+        let bodyHeight = '90%'
+        try {
+          bodyHeight = document.getElementById('subscriptions').clientHeight
+        } catch (error) {
+
+        }
+        const expandedRowRender = () => {
+          const columns = [
+            {
+              title: 'Date',
+              dataIndex: 'date',
+              key: 'date',
+            },
+            {
+              title: 'Name',
+              dataIndex: 'name',
+              key: 'name',
+            },
+          ];
+          const data = [];
+          for (let i = 0; i < 5; ++i) {
+            data.push({
+              key: i.toString(),
+              date: '$5.00 per month',
+              name: '',
+            });
+          }
+          return <Table className="expandTable" showHeader={false} columns={columns} dataSource={data} pagination={false} />;
+        };
+        const columns = [
+          {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+          },
+          {
+            title: 'Platform',
+            dataIndex: 'platform',
+            key: 'platform',
+          },
+          {
+            title: 'Version',
+            dataIndex: 'version',
+            width: '15%',
+            key: 'version',
+            render: () => (
+              <Tag color="#87d068">Active</Tag>
+            )
+          },
+
+        ];
+        const data = [];
+        for (let i = 0; i < 3; ++i) {
+          data.push({
+            key: i.toString(),
+            name: 'Premium Monthly',
+            platform: 'Expires Jul 25, 2022',
+            version: 'Active',
+          });
+        }
         // let
         return (
             <div id="subscriptions">
-                <div className="heard">
-                    <Heard />
+                <div className="top">
+                  <div className="TitleItem flex" style={{ fontSize: 26, paddingLeft: px(20) }}>
+                    <div className="title">Billing & Subscriptions</div>
+                <Icon component={() => (<img src="../../assets/img/expand.png" />)} />
+
+                  </div>
+
                 </div>
-                <div className="body">
-                    <div className="bodyLeft">
-                        <UserInfo
-                            userUrl={url}
-                            userName={userName}
-                            endDate={endDate}
-                            btnFun={() => this.setState({ buyModal: true })}
-                        />
-                        <ItemList
-                            listIndex={selectListIndex}
-                            onClick={(index) => {
-                                this.setState({
-                                    selectListIndex: index
-                                })
-                            }}
-                        />
+
+                <div className="content flex">
+                  <div className="TitleItem flex" style={{ paddingLeft: px(20) }}>
+                    <div className="title" style={{ fontSize: 26 }}>My Subscriptions</div>
+                    <div className="subTitle">
+                      <p>View and manage</p>
+                      <p>the subscriptions you’ve purchased</p>
                     </div>
-                    <div className="bodyright">
-                        <p>{`${selectListIndex === 0 ? 'Subscription information' : 'Subscription History'}`}</p>
+                  </div>
+
+                  <div className="walkBtn1" style={{ marginLeft: px(50) }}>
+                    <div
+                      className="walkbtnBox"
+                      style={{ height: px(40), width: px(200) }}
+                      onClick={() => this.setState({ buyModal: true })}
+                    >
+                      <div className="walkText">Change Subscription</div>
                     </div>
+                    <div className="sub" style={{ marginTop: px(12) }}>Cancel Subscription</div>
+
+                  </div>
+                </div>
+
+                <div className="tableDiv" style={{ height: bodyHeight - px(250) }} >
+                <Table
+                    showHeader={false}
+                    columns={columns}
+                    pagination={false}
+                    expandable={{
+                      expandedRowRender,
+                      defaultExpandedRowKeys: ['0'],
+                      expandIconColumnIndex: '4',
+                      expandIcon: ({ expanded, onExpand, record }) =>
+                                expanded ? (
+                                  <up onClick={e => onExpand(record, e)} />
+                                ) : (
+                                  <down onClick={e => onExpand(record, e)} />
+                                )
+                    }}
+                    dataSource={data}
+                    size="small"
+                  />
                 </div>
 
                 <MyModal

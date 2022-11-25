@@ -300,6 +300,15 @@
   height: 100px;
 }
 
+/* 订阅 */
+#subscriptions .top .TitleItem{
+  height: 100px;
+}
+
+#subscriptions .content{
+  height: 150px;
+}
+
 /*用户个人信息界面*/
 .myAccountBox .accountForm .ant-form-item {
   margin-bottom: 24px;

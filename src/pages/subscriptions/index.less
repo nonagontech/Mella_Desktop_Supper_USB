@@ -17,85 +17,92 @@
     // align-items: center;
 
 
-    .body {
-        flex: 1;
-        width: 100%;
+    .top {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      // justify-content: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #979797;
+      position: relative;
+
+      .TitleItem {
+          color: #141414;
+          font-weight: bold;
+          font-size: larger;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+
+      }
+    }
+
+    .content {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      // justify-content: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e6e6e6;
+      position: relative;
+      .TitleItem {
+        width: 60%;
         height: 100%;
-        // background-color: pink;
+
         display: flex;
-        flex-direction: row;
-
-        .bodyLeft {
-            width: 280px;
-            height: 100%;
-            // background-color: hotpink;
-
-            .userInfo {
-                width: 100%;
-                height: 280px;
-                background-color: rgb(248, 235, 232);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-
-                img {
-                    width: 80px;
-                    height: 80px;
-                    border-radius: 80px;
-                }
-
-                .userName {
-                    margin-top: 12px;
-                    margin-bottom: 12px;
-                    font-size: 18px;
-                }
-
-                .endDate {
-                    text-align: center;
-                    font-size: 16px;
-                    color: rgb(158, 158, 158);
-                }
-
-                .subscribeBtn {
-                    margin-top: 20px;
-                    width: 150px;
-                }
-            }
-
-            .subLeftList {
-                margin-top: 40px;
-
-                ul {
-                    li {
-                        width: 100%;
-                        height: 50px;
-                        display: flex;
-                        align-items: center;
-                        // justify-content: center;
-                        cursor: pointer;
-                        -webkit-app-region: drag;
-                        padding-left: 50px;
-                    }
-                }
-            }
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        .title {
+          color: #141414;
+          font-weight: bold;
+          font-size: larger;
         }
+        .subTitle {
+        }
+      }
+      .walkBtn1 {
+        width: 40%;
+        height: 100%;
+        display: flex;
 
-        .bodyright {
-            flex: 1;
-            // background-color: pink;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        -webkit-app-region: no-drag;
+        // background-color: pink;
+
+        .walkbtnBox {
+            width: 80%;
+            background-color: #e1206d;
+            border-radius: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-
+            color: #fff;
         }
+        .sub {
+          color: #e1206d;
+          text-decoration: underline;
+        }
+      }
     }
 
     .buyModal {
         // width: '98%',
-        //  height: '90%', 
+        //  height: '90%',
         width: 98%;
         height: 95%;
         border-radius: 20px;
+    }
+
+    .expandTable {
+      .ant-table {
+        margin-left: -8px !important;
+      }
     }
 }
