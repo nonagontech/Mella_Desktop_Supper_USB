@@ -6,7 +6,7 @@
  * @createDate 20221121
  *
  */
-import { get, postJson, del, put } from '../api'
+import { get, postJson, postFormData, del, put } from '../api'
 import { mellaserverBaseUrl } from '../../config/config'
 const baseURL = `${mellaserverBaseUrl}/preOrder`
 
@@ -29,7 +29,7 @@ export const buy = (userId, params) => {
 }
 //对订单进行付款
 export const payForOrder = (preOrderId, params) => {
-    return postJson(`${baseURL}/payForOrder/${preOrderId}`, params)
+    return postFormData(`${baseURL}/payForOrder/${preOrderId}`, params)
 }
 
 

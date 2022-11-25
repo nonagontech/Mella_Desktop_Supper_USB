@@ -96,12 +96,12 @@ export default class Subscriptions extends Component {
                 console.log(res);
                 let buyItem = item.type
                 let payParams  = {
-                  organizationId: storage.lastOrganization,
+                  organizationId: storage.lastOrganization || null,
                   userId: storage.userId
               }
                 if (res.code === 0 && res.msg === 'success') {
                     let { preOrderId } = res.data
-                    let buyItem1 = buyItem
+                    let buyItem1 = buyItem 
                     payForOrder(preOrderId, payParams)
 
                         .then(res => {
