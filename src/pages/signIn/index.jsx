@@ -20,6 +20,7 @@ import { addLogin } from "../../utils/axios";
 
 import "./index.less";
 import { connect } from "react-redux";
+import MyModal from "../../utils/myModal/MyModal";
 
 let storage = window.localStorage;
 const MyIcon = createFromIconfontCN({
@@ -608,16 +609,11 @@ class SignIn extends Component {
           </div>
         </div>
 
-        {this.state.spin && (
-          <div className="modal">
-            <div className="loadIcon" style={{ marginBottom: px(5) }}>
-              <LoadingOutlined
-                style={{ fontSize: 30, color: "#fff", marginTop: px(-30) }}
-              />
-            </div>
-            <p>loading...</p>
-          </div>
-        )}
+
+        <MyModal
+          visible={this.state.spin}
+        />
+
       </div>
     );
   }
