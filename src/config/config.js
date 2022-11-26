@@ -27,4 +27,4 @@ export const rhapsodyBaseUrl = process.env.REACT_APP_RHAPSODY_BASE_URL
 
 export const devType = 'electron'
 
-console.log('122', mellaserverBaseUrl);
+console.log('1122', mellaserverBaseUrl);

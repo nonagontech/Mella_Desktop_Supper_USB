@@ -13,11 +13,13 @@ import {
   selectHardwareModalShowFun,
   petSortTypeFun,
   petDetailInfoFun,
-  setQsmConnectStatus
+  setQsmConnectStatus,
+  setQsmPart
 } from "../../store/actions";
 import PropTypes from 'prop-types';
 
 import "./index.less";
+import Result from "./components/result";
 
 
 // const ipcRenderer = window.require("electron").ipcRenderer;
@@ -25,20 +27,24 @@ let ipcRenderer = window.electron.ipcRenderer;
 const SDK = require("qsm-otter-sdk");
 
 const { Content, Header } = Layout;
-const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectStatus }) => {
+const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectStatus, setQsmPart }) => {
   const [cutPageType, setCutPageType] = useState('linkPage');
   const [qsmConStatus, setQsmConStatus] = useState('linkPage');
+  const [qsmPortName, setQsmPortName] = useState('')
   const changePage = () => {
     if (qsmConStatus === 'connected')
       switch (cutPageType) {
         case "linkPage":
           return <LinkEquipment cutPageType={getCutPageType} />;
+        // return <TimerPage cutPageType={getCutPageType} />;
         case "swabPetEarPage":
           return <SwabPetEar cutPageType={getCutPageType} />;
         case "experimentalPage":
           return <ExperimentalPage cutPageType={getCutPageType} />;
         case "timerPage":
           return <TimerPage cutPageType={getCutPageType} />;
+        case "result":
+          return <Result cutPageType={getCutPageType} />;
         default:
           break;
       } else {
@@ -66,7 +72,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
   const readQSMConnectionStatus = async () => {
     try {
       const pairInstrument = await SDK.pairInstrument()
-      console.log(pairInstrument)
+      console.log("🚀 ~ file: index.jsx ~ line 69 ~ readQSMConnectionStatus ~ pairInstrument", pairInstrument)
     } catch (error) {
       console.log('error', error);
     }
@@ -115,6 +121,10 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
       setQsmConStatus(status)
     }
   }
+  const getQsmPortName = (e, data) => {
+    setQsmPart(data)
+    setQsmPortName(data)
+  }
 
   useEffect(() => {
     setCutPageType('linkPage');
@@ -130,6 +140,12 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
       navigator.serial.removeEventListener("connect", conectstatus);
       navigator.serial.removeEventListener("disconnect", conectstatus);
     }
+  }, [])
+
+  useEffect(() => {
+    ipcRenderer.on('qsmPortName', getQsmPortName);
+    return () => { ipcRenderer.removeListener("qsmPortName", getQsmPortName); };
+
   }, [])
 
 
@@ -183,6 +199,7 @@ export default connect(
     selectHardwareModalShowFun,
     petSortTypeFun,
     petDetailInfoFun,
-    setQsmConnectStatus
+    setQsmConnectStatus,
+    setQsmPart
   }
 )(OtterEQPage);

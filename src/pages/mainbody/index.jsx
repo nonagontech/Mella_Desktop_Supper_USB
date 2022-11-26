@@ -57,6 +57,7 @@ import { getInfoOfLatestDevice } from '../../api/mellaserver/mellarecord';
 
 import "./mainbody.less";
 import { devType } from "../../config/config";
+import MotionCamera from "../motionCamera";
 
 
 // let ipcRenderer = window.require("electron").ipcRenderer;
@@ -253,7 +254,7 @@ class App extends Component {
     } else {
       if (this.state.isHaveUsbDevice) {
         message.destroy();
-        if (this.props.selectHardwareType !== "otterEQ") {
+        if (this.props.selectHardwareType !== "otterEQ" && this.props.selectHardwareType !== "camera") {
           message.error("The base is not detected. Please insert the base", 0);
           Modal.destroyAll();
         }
@@ -1222,7 +1223,6 @@ class App extends Component {
 
     let { bodyHeight, clickMenuIndex } = this.state;
     let measurePage = null;
-    console.log(clickMenuIndex +'@')
     //clickMenuIndex 点击菜单的序号
     switch (clickMenuIndex) {
       case "1":
@@ -1235,6 +1235,7 @@ class App extends Component {
           );
         } else {
           switch (selectHardwareType) {
+
             case "mellaPro":
               measurePage = <TemperaturePage bodyHeight={bodyHeight} />;
 
@@ -1252,6 +1253,10 @@ class App extends Component {
             case "mabel":
               measurePage = <MabelPage bodyHeight={bodyHeight} />;
               break;
+
+            case "camera":
+            // measurePage = <MotionCamera bodyHeight={bodyHeight} />;
+
 
             default:
               break;
@@ -1289,7 +1294,7 @@ class App extends Component {
           </>
         );
       case "7":
-        return <Subscriptions/>
+        return <Subscriptions />
       case "4":
         return (
           <MyAccount bodyHeight={bodyHeight} />

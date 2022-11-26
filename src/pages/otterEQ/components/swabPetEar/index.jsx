@@ -9,6 +9,7 @@ import {
   selectHardwareModalShowFun,
   petSortTypeFun,
   petDetailInfoFun,
+  setQsmEarPart
 } from "../../../../store/actions";
 
 import DogLeftEar from "../../../../assets/img/DogLeftEar.png";
@@ -23,7 +24,7 @@ import "./index.less";
 
 
 
-const SwabPetEar = ({ petMessage, hardwareMessage, cutPageType }) => {
+const SwabPetEar = ({ petMessage, hardwareMessage, cutPageType, setQsmEarPart, qsmMessage }) => {
   let {
     petSpeciesBreedId,
   } = petMessage;
@@ -54,13 +55,19 @@ const SwabPetEar = ({ petMessage, hardwareMessage, cutPageType }) => {
   }
 
   const onClick = () => {
-    if (value === 1) {
-      setValue(2);
-    } else {
-      cutPageType('experimentalPage');
-    }
+    //这里需要将qsm的耳朵记录下来
+    setQsmEarPart(value)
+    cutPageType('experimentalPage');
+    // if (value === 1) {
+    //   setValue(2);
+    // } else {
+    //   cutPageType('experimentalPage');
+    // }
 
   }
+  useEffect(() => {
+    setValue(qsmMessage.qsmEarPart)
+  }, [])
 
 
 
@@ -92,10 +99,13 @@ export default connect(
   (state) => ({
     petMessage: state.petReduce.petDetailInfo,
     hardwareMessage: state.hardwareReduce,
+    qsmMessage: state.qsmReduce
+
   }),
   {
     selectHardwareModalShowFun,
     petSortTypeFun,
     petDetailInfoFun,
+    setQsmEarPart
   }
 )(SwabPetEar);
