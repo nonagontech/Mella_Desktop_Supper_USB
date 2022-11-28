@@ -154,7 +154,12 @@ const Result = ({ petMessage, cutPageType, setQsmTimeType, qsmMessage }) => {
                 if (`${error}`.indexOf(`Failed to execute 'open' on 'SerialPort': The port is already open.`) !== -1) {
                     if (num < 3) {
                         num++
-                        qsmPart.close()
+                        try {
+                            qsmPart.close()
+                        } catch (error) {
+
+                        }
+
                         setTimeout(() => {
                             runMeasurement()
                         }, 2000);
