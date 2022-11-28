@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Layout, Button, Input, Radio } from "antd";
+import { Layout, Button, Input, Radio, message } from "antd";
 import { px } from "../../../../utils/px";
 import { connect } from "react-redux";
 import {
@@ -25,12 +25,14 @@ import success from "../../../../assets/images/success.png";
 import moment from "moment";
 import _ from "lodash";
 import "./index.less";
+import MyModal from "../../../../utils/myModal/MyModal";
 
 
 let storage = window.localStorage;
 
 const Result = ({ petMessage, cutPageType, setQsmTimeType, qsmMessage }) => {
     const [value, setValue] = useState(1);
+    const [visible, setVisible] = useState(false)
 
     const cutTitle = () => {
         switch (value) {
@@ -60,6 +62,7 @@ const Result = ({ petMessage, cutPageType, setQsmTimeType, qsmMessage }) => {
     }
 
     const onClick = () => {
+
         switch (value) {
             case 1: setValue(value + 1); break;
 
@@ -75,17 +78,30 @@ const Result = ({ petMessage, cutPageType, setQsmTimeType, qsmMessage }) => {
                 }
                 let pet = {
                     id: petId,
-                    name: petName,
-                    dob: birthday,
                     species,
                 }
-                let pet_owner = {
-                    // id:userId||storage.userId
-                    id: userId,
-                    name: firstName,
-                    family_name: lastName,
-                    phone
+                if (petName) {
+                    pet.name = petName;
                 }
+                if (birthday) {
+                    pet.dob = birthday;
+                }
+
+
+                let pet_owner = {
+                    id: userId || storage.userId,
+                }
+                if (firstName) {
+                    pet_owner.name = firstName
+                }
+                if (lastName) {
+                    pet_owner.family_name = lastName
+                }
+                if (phone) {
+                    pet_owner.phone = phone
+                }
+
+
                 let { qsmEarPart, qsmTimeType } = qsmMessage
                 let kind = qsmEarPart === 1 ? 1 : 0
                 let sample_area = qsmTimeType
@@ -107,15 +123,51 @@ const Result = ({ petMessage, cutPageType, setQsmTimeType, qsmMessage }) => {
         let API_KEY = "EX1QrGQTwPAjkJ0p7EEG7A"
         let ACCESS_TOKEN = "ZQh5q7Uv1UPsC8RY0eDoSf3eYrMzDHxYkJExG13k"
         let user_id = storage.userId;
+        console.log("🚀 ~ file: index.jsx ~ line 115 ~ RunMeasurement ~ storage.userId", storage.userId)
         let practice_id = storage.lastOrganization;
         const SDK = require("qsm-otter-sdk");
-        console.log('入参：', { qsmPart, API_KEY, ACCESS_TOKEN, user_id, practice_id, pet_owner, pet, test });
-        try {
-            const res = await SDK.runMeasurement(qsmPart, API_KEY, ACCESS_TOKEN, user_id, practice_id, pet_owner, pet, test)
-            console.log("🚀 ~ file: index.jsx ~ line 112 ~ RunMeasurement ~ res", res)
-        } catch (error) {
 
+        let num = 0
+
+        async function runMeasurement() {
+            try {
+                console.log('入参：', { qsmPart, API_KEY, ACCESS_TOKEN, user_id, practice_id, pet_owner, pet, test, num });
+                setVisible(true)
+                const res = await SDK.runMeasurement(qsmPart, API_KEY, ACCESS_TOKEN, user_id, practice_id, pet_owner, pet, test)
+                // let res = { status: 200 }
+                setVisible(false)
+
+
+                console.log("🚀 ~ file: index.jsx ~ line 112 ~ RunMeasurement ~ res", res)
+                if (res.status === 200) {
+                    message.success(res.data.message)
+                    // qsmPart.close()
+                    console.log('关闭弹窗并调到下一页');
+                    setValue(3)
+                } else {
+                    message.error(res.statusText)
+                }
+
+
+
+            } catch (error) {
+                if (`${error}`.indexOf(`Failed to execute 'open' on 'SerialPort': The port is already open.`) !== -1) {
+                    if (num < 3) {
+                        num++
+                        qsmPart.close()
+                        setTimeout(() => {
+                            runMeasurement()
+                        }, 2000);
+
+                    }
+                } else {
+                    setVisible(false)
+                }
+                console.error('error', error)
+            }
         }
+        runMeasurement()
+
 
     }
     const btnText = () => {
@@ -130,11 +182,8 @@ const Result = ({ petMessage, cutPageType, setQsmTimeType, qsmMessage }) => {
                 break;
         }
     }
-
-
-
     return (
-        <>
+        <div className="qsmResult">
             <div className="topBox">
                 <p className="topTitle" style={{ fontSize: px(40) }}>
                     {cutTitle()}
@@ -146,7 +195,8 @@ const Result = ({ petMessage, cutPageType, setQsmTimeType, qsmMessage }) => {
             <div className="bottomBox">
                 <Button type="primary" shape="round" style={{ width: px(400), height: px(40) }} onClick={onClick}>{btnText()}</Button>
             </div>
-        </>
+            <MyModal visible={visible} />
+        </div>
     );
 
 };

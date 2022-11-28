@@ -36,7 +36,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
       switch (cutPageType) {
         case "linkPage":
           return <LinkEquipment cutPageType={getCutPageType} />;
-        // return <TimerPage cutPageType={getCutPageType} />;
+        // return <Result cutPageType={getCutPageType} />;
         case "swabPetEarPage":
           return <SwabPetEar cutPageType={getCutPageType} />;
         case "experimentalPage":
@@ -73,6 +73,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
     try {
       const pairInstrument = await SDK.pairInstrument()
       console.log("🚀 ~ file: index.jsx ~ line 69 ~ readQSMConnectionStatus ~ pairInstrument", pairInstrument)
+      setQsmPart(pairInstrument)
     } catch (error) {
       console.log('error', error);
     }
@@ -142,11 +143,11 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
     }
   }, [])
 
-  useEffect(() => {
-    ipcRenderer.on('qsmPortName', getQsmPortName);
-    return () => { ipcRenderer.removeListener("qsmPortName", getQsmPortName); };
+  // useEffect(() => {
+  //   ipcRenderer.on('qsmPortName', getQsmPortName);
+  //   return () => { ipcRenderer.removeListener("qsmPortName", getQsmPortName); };
 
-  }, [])
+  // }, [])
 
 
 

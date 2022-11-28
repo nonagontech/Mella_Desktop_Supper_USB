@@ -117,7 +117,11 @@ const ExperimentalPage = ({ petMessage, hardwareMessage, cutPageType, setQsmTime
     if (value !== 5) {
       setValue(value + 1)
     } else {
-      cutPageType('timerPage');
+      if (type === 0) {
+        cutPageType('timerPage');
+      } else {
+        cutPageType('result');
+      }
     }
   }
   useEffect(() => {
