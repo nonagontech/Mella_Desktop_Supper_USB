@@ -114,7 +114,7 @@ const Result = ({ petMessage, cutPageType, setQsmTimeType, qsmMessage }) => {
             const res = await SDK.runMeasurement(qsmPart, API_KEY, ACCESS_TOKEN, user_id, practice_id, pet_owner, pet, test)
             console.log("🚀 ~ file: index.jsx ~ line 112 ~ RunMeasurement ~ res", res)
         } catch (error) {
-
+         console.log(error)
         }
 
     }

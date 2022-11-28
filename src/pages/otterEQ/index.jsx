@@ -73,6 +73,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
     try {
       const pairInstrument = await SDK.pairInstrument()
       console.log("🚀 ~ file: index.jsx ~ line 69 ~ readQSMConnectionStatus ~ pairInstrument", pairInstrument)
+      setQsmPart(pairInstrument)
     } catch (error) {
       console.log('error', error);
     }
@@ -105,7 +106,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
     //   console.log('插入情况', connectionStatus, a);
     //   if (typeof (connectionStatus) === 'boolean') {
     //     let status = connectionStatus ? 'connected' : 'disconnected'
-    //     setQsmConnectStatus(status)
+    //     setQsmConnectStatus(status)setQsmPart
     //     setQsmConStatus(status)
     //   }
     // }
@@ -142,11 +143,11 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
     }
   }, [])
 
-  useEffect(() => {
-    ipcRenderer.on('qsmPortName', getQsmPortName);
-    return () => { ipcRenderer.removeListener("qsmPortName", getQsmPortName); };
+  // useEffect(() => {
+  //   ipcRenderer.on('qsmPortName', getQsmPortName);
+  //   return () => { ipcRenderer.removeListener("qsmPortName", getQsmPortName); };
 
-  }, [])
+  // }, [])
 
 
 

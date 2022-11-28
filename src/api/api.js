@@ -84,6 +84,19 @@ export const postFormData = (url, data) => {
         }
     })
 }
+
+//封装post请求
+export const postFormData2 = (url, data) => {
+  return service({
+      method: 'post',
+      url,
+      params: data,
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+      }
+  })
+}
+
 //封装post请求
 export const postJson = (url, data) => {
     return service({

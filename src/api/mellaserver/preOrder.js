@@ -6,7 +6,7 @@
  * @createDate 20221121
  *
  */
-import { get, postJson, postFormData, del, put } from '../api'
+import { get, postJson, postFormData, postFormData2, del, put } from '../api'
 import { mellaserverBaseUrl } from '../../config/config'
 const baseURL = `${mellaserverBaseUrl}/preOrder`
 
@@ -29,14 +29,14 @@ export const buy = (userId, params) => {
 }
 //对订单进行付款
 export const payForOrder = (preOrderId, params) => {
-    return postFormData(`${baseURL}/payForOrder/${preOrderId}`, params)
+    return postFormData2(`${baseURL}/payForOrder/${preOrderId}`, params)
 }
-
+// 更新
 
 /**
  * 根据订单号获取订单是否支付、过期等
- * @param {string} preOrderId 
- * @returns 
+ * @param {string} preOrderId
+ * @returns
  */
 export const getPreOrderById = (preOrderId,) => {
     return get(`${baseURL}/getPreOrderById/${preOrderId}`, '')
