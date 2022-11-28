@@ -330,7 +330,7 @@ function createWindow() {
     console.log('----------------', portList);
     //Add listeners to handle ports being added or removed before the callback for `select-serial-port`
     //is called.
-    mainWindow.webContents.send("qsmPortName", portList[0].serialNumber);
+    mainWindow.webContents.send("qsmPortName", portList[0]);
     mainWindow.webContents.session.on('serial-port-added', (event, port) => {
       console.log('serial-port-added FIRED WITH', port)
       //Optionally update portList to add the new port

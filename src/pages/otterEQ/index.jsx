@@ -36,7 +36,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
       switch (cutPageType) {
         case "linkPage":
           return <LinkEquipment cutPageType={getCutPageType} />;
-        // return <TimerPage cutPageType={getCutPageType} />;
+        // return <Result cutPageType={getCutPageType} />;
         case "swabPetEarPage":
           return <SwabPetEar cutPageType={getCutPageType} />;
         case "experimentalPage":

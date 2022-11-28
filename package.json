@@ -28,6 +28,7 @@
     "electron-packager": "^15.4.0",
     "electron-store": "^8.0.1",
     "electron-updater": "^4.3.9",
+    "html2canvas": "^1.4.1",
     "http-proxy-middleware": "^2.0.1",
     "less": "^4.1.0",
     "less-loader": "^7.2.1",

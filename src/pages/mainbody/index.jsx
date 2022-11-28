@@ -1255,7 +1255,7 @@ class App extends Component {
               break;
 
             case "camera":
-            // measurePage = <MotionCamera bodyHeight={bodyHeight} />;
+              measurePage = <MotionCamera bodyHeight={bodyHeight} />;
 
 
             default:

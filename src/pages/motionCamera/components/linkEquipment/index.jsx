@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import html2canvas from 'html2canvas';
 import { Button, Input, Card, List, Image, } from "antd";
 import { InfoCircleFilled } from "@ant-design/icons";
 
@@ -20,13 +21,24 @@ import "./index.less";
 import { px } from "../../../../utils/px";
 import MyModal from "../../../../utils/myModal/MyModal";
 
+let loadVidio = false
+let timer = null
 const LinkEquipment = ({ petMessage, }) => {
   let history = useHistory();
-  const [ip, setIp] = useState('192.168.0.202');
+  const [ip, setIp] = useState('');
   const [showIp, setShowIp] = useState('')
-
+  const [loading, setLoading] = useState(false)
   const next = () => {
+    setLoading(true)
     setIp(showIp)
+    loadVidio = false
+    timer && clearTimeout(timer)
+    timer = setTimeout(() => {
+      if (!loadVidio) {
+        console.log('视频加载失败，前往重新获取');
+        setLoading(false)
+      }
+    }, 5000);
   }
 
   const inputIp = () => {
@@ -35,7 +47,7 @@ const LinkEquipment = ({ petMessage, }) => {
         <div className="title">Please enter the IP<br />address</div>
 
         <div className="middleBox">
-          <Input placeholder="192.168.0.203" className="middleInput" style={{ width: px(300), height: px(50) }}
+          <Input placeholder="192.168.0.204" className="middleInput" style={{ width: px(300), height: px(50) }}
             value={showIp}
             onChange={(val) => setShowIp(val.target.value)}
           />
@@ -46,7 +58,26 @@ const LinkEquipment = ({ petMessage, }) => {
       </div>
     )
   }
-  const takePhoto = () => {
+  const takePhoto = async () => {
+
+    // // let res = await html2canvas(document.getElementById('aphoto'), { useCORS: true })
+    // // console.log("🚀 ~ file: index.jsx ~ line 65 ~ takePhoto ~ res", res)
+    // console.log('电控');
+    // html2canvas(document.getElementById('aphoto'), {
+    //   allowTaint: false,
+    //   useCORS: true,
+    //   proxy: 'http://192.168.0.203:81'
+    // }).then(function (canvas) {
+    //   console.log(canvas);
+    //   // toImage
+    //   const dataImg = new Image()
+    //   dataImg.src = canvas.toDataURL('image/png')
+    //   const alink = document.createElement("a");
+    //   alink.href = dataImg.src;
+    //   alink.download = "testImg.jpg";
+    //   alink.click();
+    // });
+
 
   }
   const urlErrModal = () => {
@@ -64,12 +95,26 @@ const LinkEquipment = ({ petMessage, }) => {
     return (
       <div className="vidio">
         <div className="vidioFa">
-          <img
-            onError={(err) => {
-              console.log("🚀 ~ file: index.jsx ~ line 59 ~ vidio ~ err", err)
-            }}
+          <div id="aphoto">
+            <img
+              onError={(err) => {
+                console.log("🚀 ~ file: index.jsx ~ line 59 ~ vidio ~ err", err)
+                timer && clearTimeout(timer)
+                setLoading(false)
+              }}
+              onLoad={e => {
+                console.log('e', e);
+                setLoading(false)
+                loadVidio = true
+                timer && clearTimeout(timer)
+              }}
 
-            src={`http://${ip}:81`} />
+              src={`http://${ip}:81`} />
+          </div>
+
+
+
+
         </div>
         <div
           className="btn"
@@ -79,8 +124,8 @@ const LinkEquipment = ({ petMessage, }) => {
         </div>
 
         <MyModal
-          visible={true}
-          element={urlErrModal()}
+          visible={loading}
+        // element={urlErrModal()}
         />
 
 
@@ -93,12 +138,19 @@ const LinkEquipment = ({ petMessage, }) => {
 
   }
 
+  // useEffect(() => {
+  //   setIp('')
+  // }, [])
+
+
+
 
 
   return (
     <div id="motionCameraBody">
+      {ip ? vidio() : inputIp()}
       {/* {inputIp()} */}
-      {vidio()}
+      {/* {vidio()} */}
     </div>
   );
 };
