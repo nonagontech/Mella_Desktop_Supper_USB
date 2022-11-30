@@ -126,14 +126,6 @@ const Result = ({ petMessage, cutPageType, setQsmTimeType, qsmMessage }) => {
         console.log("🚀 ~ file: index.jsx ~ line 115 ~ RunMeasurement ~ storage.userId", storage.userId)
         let practice_id = storage.lastOrganization;
         const SDK = require("qsm-otter-sdk");
-<<<<<<< HEAD
-        console.log('入参：', { qsmPart, API_KEY, ACCESS_TOKEN, user_id, practice_id, pet_owner, pet, test });
-        try {
-            const res = await SDK.runMeasurement(qsmPart, API_KEY, ACCESS_TOKEN, user_id, practice_id, pet_owner, pet, test)
-            console.log("🚀 ~ file: index.jsx ~ line 112 ~ RunMeasurement ~ res", res)
-        } catch (error) {
-         console.log(error)
-=======
 
         let num = 0
 
@@ -178,7 +170,6 @@ const Result = ({ petMessage, cutPageType, setQsmTimeType, qsmMessage }) => {
                 }
                 console.error('error', error)
             }
->>>>>>> 399aa00c2c093e5021d18025c6726da3fbbb9b83
         }
         runMeasurement()
 
