@@ -24,6 +24,7 @@ let num = 0
 
 export default class Subscriptions extends Component {
     state = {
+        subscriptionData: [],   // 订阅列表的数据集合
         userUrl: '',
         userName: '',
         endDate: '',
@@ -43,17 +44,19 @@ export default class Subscriptions extends Component {
     getOrderInfo = () => {
         getOrderInfo(storage.userId)
             .then(res => {
-                // console.log('res', res);
+                console.log('res', res);
                 let { msg, success, code } = res
                 if (code === 0 && msg === 'success') {
                     let { firstName, imageUrl, isExpired, lastName, preOrderId, endTime } = success[0]
+                    let tempData = success
                     let endDate = moment(endTime).format('MMMM D, YYYY')
                     endDate = isExpired === 0 ? endDate : ''
+                    console.log('tempData', tempData);
                     this.setState({
+                        subscriptionData: tempData,
                         userName: `${lastName} ${firstName}`,
                         userUrl: imageUrl,
                         endDate
-
                     })
                 }
             })
@@ -98,10 +101,10 @@ export default class Subscriptions extends Component {
                 let payParams  = {
                   organizationId: storage.lastOrganization || null,
                   userId: storage.userId
-              }
+                }
                 if (res.code === 0 && res.msg === 'success') {
                     let { preOrderId } = res.data
-                    let buyItem1 = buyItem 
+                    let buyItem1 = buyItem
                     payForOrder(preOrderId, payParams)
 
                         .then(res => {
@@ -219,11 +222,23 @@ export default class Subscriptions extends Component {
             })
     }
 
+    typeText = (text) => {
+      switch (text) {
+        case 1:
+          return 'Premium Monthly';
+        case 2:
+          return 'Premium Yearly';
+        case 3:
+          return 'Free Trial';
+        default:
+          return '';
+      }
+    }
 
 
 
     render() {
-        let { userUrl, userName, endDate, selectListIndex } = this.state
+        let { userUrl, userName, endDate, selectListIndex, subscriptionData } = this.state
         let url = !userUrl ? defaultUserIcon : userUrl
 
         let bodyHeight = '90%'
@@ -235,58 +250,74 @@ export default class Subscriptions extends Component {
         const expandedRowRender = () => {
           const columns = [
             {
-              title: 'Date',
-              dataIndex: 'date',
-              key: 'date',
+              title: '',
+              dataIndex: 'quotaType',
+              key: 'quotaType',
+              align: "center",
+              render: (text, record, index) => {
+                return <p style={{ textAlign: "center" }}>{text}</p>;
+              },
             },
             {
-              title: 'Name',
-              dataIndex: 'name',
+              title: '',
+              dataIndex: 'startTime',
               key: 'name',
+              render: (text, record) => <p>Start Date: {moment(text).format("MMM D, YYYY")}</p>,
             },
           ];
-          const data = [];
-          for (let i = 0; i < 5; ++i) {
-            data.push({
-              key: i.toString(),
-              date: '$5.00 per month',
-              name: '',
-            });
-          }
-          return <Table className="expandTable" showHeader={false} columns={columns} dataSource={data} pagination={false} />;
+          return <Table className="expandTable" showHeader={false} columns={columns} dataSource={tableData} pagination={false} />;
         };
         const columns = [
           {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: '',
+            dataIndex: 'quotaType',
+            key: 'quotaType',
+            render: (text, record, index) => {
+              if (text === 1) {
+                return <p>Premium Monthly</p>;
+              } else if (text === 2) {
+                return <p>Premium Yearly</p>;
+              } else if (text === 3) {
+                return <p>Free Trialy</p>;
+              } else {
+                return '';
+              }
+            },
           },
           {
-            title: 'Platform',
-            dataIndex: 'platform',
-            key: 'platform',
+            title: '',
+            dataIndex: 'endTime',
+            key: 'endTime',
+            align: "left",
+            render: (text, record) => <p>Expires {moment(text).format("MMM D, YYYY")}</p>,
           },
           {
-            title: 'Version',
-            dataIndex: 'version',
-            width: '15%',
-            key: 'version',
-            render: () => (
-              <Tag color="#87d068" style={{width: px(65), height: px(22), fontSize: 18}}>Active</Tag>
-            )
+            title: '',
+            dataIndex: 'isExpired',
+            width: '20%',
+            key: 'isExpired',
+            render: (text, index) => {
+              if (text === 0) {
+                return <Tag color="#87d068" style={{width: px(65), height: px(22), fontSize: 18}}>Active</Tag>
+              } else {
+                return <Tag color="#4a4a4a" style={{width: px(65), height: px(22), fontSize: 18}}>Expired</Tag>
+
+              }
+            }
           },
 
         ];
-        const data = [];
-        for (let i = 0; i < 3; ++i) {
-          data.push({
-            key: i.toString(),
-            name: 'Premium Monthly',
-            platform: 'Expires Jul 25, 2022',
-            version: 'Active',
-          });
-        }
+        // const data = [];
+        // for (let i = 0; i < 3; ++i) {
+        //   data.push({
+        //     key: i.toString(),
+        //     name: 'Premium Monthly',
+        //     platform: 'Expires Jul 25, 2022',
+        //     version: 'Active',
+        //   });
+        // }
         // let
+        let tableData = subscriptionData;
         return (
             <div id="subscriptions">
                 <div className="top">
@@ -324,6 +355,7 @@ export default class Subscriptions extends Component {
                     showHeader={false}
                     columns={columns}
                     pagination={false}
+                    rowKey={(columns) => columns.orderId}
                     expandable={{
                       expandedRowRender,
                       defaultExpandedRowKeys: ['0'],
@@ -335,7 +367,7 @@ export default class Subscriptions extends Component {
                                   <Icon component={() => (<img src={down} />)} onClick={e => onExpand(record, e)} />
                                 )
                     }}
-                    dataSource={data}
+                    dataSource={tableData}
                     size="small"
                   />
                 </div>

@@ -106,7 +106,7 @@ const OtterEQPage = ({ petMessage, hardwareMessage, bodyHeight, setQsmConnectSta
     //   console.log('插入情况', connectionStatus, a);
     //   if (typeof (connectionStatus) === 'boolean') {
     //     let status = connectionStatus ? 'connected' : 'disconnected'
-    //     setQsmConnectStatus(status)
+    //     setQsmConnectStatus(status)setQsmPart
     //     setQsmConStatus(status)
     //   }
     // }

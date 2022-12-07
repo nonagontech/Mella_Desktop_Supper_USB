@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import html2canvas from 'html2canvas';
+// import html2canvas from 'html2canvas';
 import { Button, Input, Card, List, Image, } from "antd";
 import { InfoCircleFilled } from "@ant-design/icons";
 
