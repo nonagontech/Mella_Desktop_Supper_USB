@@ -340,7 +340,7 @@ class VetPrifile extends Component {
                 <input
                   type="Password"
                   value={password1}
-                  placeholder="Confirm  Password"
+                  placeholder="Confirm Password"
                   onChange={(value) => {
                     let data = value.target.value
                     this.setState({
@@ -360,7 +360,7 @@ class VetPrifile extends Component {
 
         <div className="foot">
           <div className="footText"
-          >Already have an accoun? <a href="#" onClick={this._signIn}> Sign In</a></div>
+          >Already have an account? <a href="#" onClick={this._signIn}> Sign In</a></div>
 
           {/* 按钮 */}
           <div className="btn" style={{ padding: `${px(40)}px 0` }}>

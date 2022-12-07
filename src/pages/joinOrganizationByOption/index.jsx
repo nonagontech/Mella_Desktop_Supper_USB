@@ -403,7 +403,7 @@ export default class FindWorkplace extends Component {
         </div>
 
         <div className="body">
-          <div className="text">Join an Organization</div>
+          <div className="text">Find My Organization</div>
 
           <div className="way" style={{ marginTop: px(20), marginBottom: px(60) }}>
             <div className="item" style={{ paddingTop: px(60) }}
@@ -420,7 +420,7 @@ export default class FindWorkplace extends Component {
               </div>
               <div className="r">
 
-                <div className="title">Search organization</div>
+                <div className="title">Type Organization Name</div>
 
                 <div className="arrow">
                   <MyIcon type='icon-jiantou2' className="icon" />
@@ -514,7 +514,7 @@ export default class FindWorkplace extends Component {
                 >Find my organization</div>
                 <div className="searchBox">
                   <Input
-                    placeholder=" &#xe61b; Search organization"
+                    placeholder=" &#xe61b; Type Organization Name"
                     bordered={false}
                     allowClear={true}
                     value={this.state.search}
