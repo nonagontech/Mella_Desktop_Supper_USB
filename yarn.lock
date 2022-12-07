@@ -13941,10 +13941,10 @@ qs@~6.5.2:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.3.tgz#3aeeffc91967ef6e35c0e488ef46fb296ab76aad"
   integrity sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==
 
-qsm-otter-sdk@^1.2.2:
-  version "1.2.2"
-  resolved "https://qsmdiagnostics.jfrog.io/artifactory/api/npm/qsm-npm/qsm-otter-sdk/-/qsm-otter-sdk-1.2.2.tgz#8f368aa6d4d6fd3ba37472b09aa640d5530a866a"
-  integrity sha512-yBGhEuS5KcdA70KdnFq1bPO9q2PhZO4Ph5REXvy2hqtu9M9h9ksjrDGA8RK+xfCWcCiO5uB9tc5KEyhqmokZHA==
+qsm-otter-sdk@^1.2.3:
+  version "1.2.3"
+  resolved "https://qsmdiagnostics.jfrog.io/artifactory/api/npm/qsm-npm/qsm-otter-sdk/-/qsm-otter-sdk-1.2.3.tgz#4c15c20d6795694750b9fcb9b1b0c3a8270c16ea"
+  integrity sha512-Ugs0WM1p+y97tlSK2r8qNFRmZHxSySmX8MX0H/JJ4j+ZTnoePswhsZw02Bs3LAbZyPpuT66vcckTYgSS3GqmiA==
   dependencies:
     "@types/w3c-web-serial" "^1.0.2"
     axios "^1.1.3"
