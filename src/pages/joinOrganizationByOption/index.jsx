@@ -5,6 +5,7 @@ import {
   Input,
   Spin
 } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import { createFromIconfontCN } from '@ant-design/icons';
 
 import Close from '../../assets/img/close.png'
@@ -247,19 +248,16 @@ export default class FindWorkplace extends Component {
     let data = (search.length > 0) ? searchData : listData
     let option = data.map((item, index) => {
       return <li key={item.organizationId}
+      className={ this.state.selectId.organizationId === item.organizationId ? 'highlight' : null }
         onClick={() => {
           this.setState({
             selectId: item
           })
           console.log(item);
           temporaryStorage.logupSelectOrganization = item
-
-
         }}
-
       >
-        <div className="item"> {item.name}</div>
-
+        <div className="item">{item.name}</div>
         {(this.state.selectId.organizationId === item.organizationId ? <span className="search">&#xe614;</span> : null)}
       </li>
     })
@@ -420,7 +418,7 @@ export default class FindWorkplace extends Component {
               </div>
               <div className="r">
 
-                <div className="title">Type Organization Name</div>
+                <div className="title">Search Organization</div>
 
                 <div className="arrow">
                   <MyIcon type='icon-jiantou2' className="icon" />
@@ -470,7 +468,7 @@ export default class FindWorkplace extends Component {
 
               }}>
               <div className="iconBox">
-                <MyIcon type='icon-guanbi2' className="icon" />
+                <MyIcon type='icon-no' className="icon" />
               </div>
               <div className="r">
                 <div className="listtext">
@@ -514,7 +512,8 @@ export default class FindWorkplace extends Component {
                 >Find my organization</div>
                 <div className="searchBox">
                   <Input
-                    placeholder=" &#xe61b; Type Organization Name"
+                    placeholder="Type Organization Name"
+                    prefix={<SearchOutlined />}
                     bordered={false}
                     allowClear={true}
                     value={this.state.search}

@@ -50,8 +50,10 @@
           margin-right: 10px;
 
           .icon {
+            vertical-align: -4px;
+            // margin-top: 1px;
             color: #8e8e93;
-            font-size: 20px;
+            font-size: 18px;
             // background-color: hotpink;
           }
         }
@@ -123,6 +125,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        font-family: "PingFangSC-Regular";
         background-color: rgba(212, 208, 208, 0.4);
         border-radius: 5px;
         -webkit-app-region: no-drag;
@@ -163,25 +166,34 @@
       width: 100%;
       -webkit-app-region: no-drag;
       height: 55%;
+      overflow-y: auto;
+
 
       ul {
         -webkit-app-region: no-drag;
-        overflow-y: auto;
         height: 100%;
         width: 100%;
         margin: 0;
         padding: 0;
-
+        .highlight {
+          background-color: #e1206d;
+          color: #fff;
+        }
         li {
           -webkit-app-region: no-drag;
-          padding: 0;
           height: 35px;
-          padding-left: 8px;
-          border-bottom: #d3d3d3 solid 1px;
+          line-height: 35px;
+          padding: 0 18px;
+          margin: 0 18px;
           font-size: 16px;
+          border-bottom: #d3d3d3 solid 1px;
+
+          // padding: 0;
+          // height: 35px;
+          // padding-left: 8px;
           display: flex;
           justify-content: space-between;
-          margin: 0 18px 5px;
+          // margin: 0 18px 5px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;

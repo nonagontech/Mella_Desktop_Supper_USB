@@ -3,6 +3,14 @@ import rMin_red from "./../../assets/img/min-red.png";
 import rClose_red from "./../../assets/img/close-red.png";
 import rMin_white from "./../../assets/img/min-white.png";
 import rClose_white from "./../../assets/img/close-white.png";
+
+import { px } from '../../utils/px';
+import back_white from "./../../assets/img/back-white.png";
+import back_hui from "./../../assets/img/back-hui.png";
+import MouseDiv from "./../../utils/mouseDiv/MouseDiv";
+
+
+
 import './maxminreturn.less'
 import MinClose from '../minClose/MinClose';
 import { connect } from 'react-redux';
@@ -54,46 +62,50 @@ class MaxMin extends Component {
         // this.props.history.push('/')
     }
 
+    beforeDiv = () => {
+      return <img src={back_hui} alt="" style={{ width: px(15) }} />;
+    };
+    afterDiv = () => {
+      return <img src={back_white} alt="" style={{ width: px(15) }} />;
+    };
+
+
     render() {
         const { closeColor, closebgc, minbgc } = this.state
         return (
             <div className="maxminreturn">
                 <div className="heard1">
                     {this.props.systemType === 'mac' && <MinClose />}
-
-                    <div
+                    {/* <div
                         className=" iconfont icon-left heard"
                         onClick={this.props.onClick1}
-                    />
+                    /> */}
+                    <MouseDiv
+                        className="mouseDiv"
+                        beforeDiv={this.beforeDiv}
+                        afterDiv={this.afterDiv}
+                        divClick={this.props.onClick1}
+                      />
                 </div>
-
-
                 {/* <div className='headIconBox'>
-
                 </div> */}
-
-
                 <div className="close123">
-                    <div className="home iconfont icon-zhuye3"
+                    {/* <div className="home iconfont icon-zhuye3"
                         onClick={this.props.onClick}
-                    />
+                    /> */}
                     {this.props.systemType !== 'mac' &&
                         <>
-                            <div
-                                className="min iconfont icon-64"
-                                onClick={this._min}
-                                onMouseEnter={this._minMove}
-                                onMouseLeave={this._minLeave}
-                                style={{ backgroundColor: minbgc }}
-                            ></div>
+                          <div
+                            className="heaed"
+                            // style={{ paddingRight: px(20) }}
+                          >
+                            <div className="l">
 
-                            <div
-                                className="max iconfont icon-guanbi2"
-                                onClick={this._close}
-                                onMouseEnter={this._closeMove}
-                                onMouseLeave={this._closeLeave}
-                                style={{ backgroundColor: closebgc, color: closeColor }}
-                            ></div>
+                            </div>
+                            <div className="r">
+                              <MinClose />
+                            </div>
+                          </div>
                         </>
                     }
 

@@ -12,6 +12,13 @@ import countryList from '../../utils/areaCode/country';
 import temporaryStorage from '../../utils/temporaryStorage'
 import { px } from '../../utils/px';
 import MyModal from '../../utils/myModal/MyModal'
+import MinClose from '../../utils/minClose/MinClose';
+import back_white from "./../../assets/img/back-white.png";
+import back_hui from "./../../assets/img/back-hui.png";
+import MouseDiv from "./../../utils/mouseDiv/MouseDiv";
+
+
+
 
 import { checkUser, deskRegistAWSSNS, registByAWSSES } from '../../api';
 
@@ -153,7 +160,6 @@ class VetPrifile extends Component {
 
     registByAWSSES(params)
       .then(res => {
-
         this.setState({
           loadVisible: false
         })
@@ -196,6 +202,51 @@ class VetPrifile extends Component {
     this.props.history.push('/page11')
   }
 
+  beforeDiv = () => {
+    return <img src={back_hui} alt="" style={{ width: px(15) }} />;
+  };
+  afterDiv = () => {
+    return <img src={back_white} alt="" style={{ width: px(15) }} />;
+  };
+
+  heard = () => {
+    if (this.props.systemType === 'mac') {
+      return (
+        <div className="macheard"  >
+          <div className="macheardson" >
+            <MinClose />
+            <img
+              onClick={() => {
+                this.props.history.push("/");
+              }}
+              src={back_hui} className={'returnImg'} />
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div
+          className="heaed"
+          style={{ paddingTop: px(10), paddingRight: px(20) }}
+        >
+          <div className="l">
+            <MouseDiv
+              className="mouseDiv"
+              beforeDiv={this.beforeDiv}
+              afterDiv={this.afterDiv}
+              divClick={() => {
+                this.props.history.push("/");
+              }}
+            />
+          </div>
+          <div className="r">
+            <MinClose />
+          </div>
+        </div>
+      )
+    }
+
+  }
 
 
   render() {
@@ -205,10 +256,11 @@ class VetPrifile extends Component {
       <div id="vetPrifile" >
         {/* 关闭缩小 */}
         <div className="heard">
-          <MaxMin
+          {/* <MaxMin
             onClick={() => { this.props.history.push('/') }}
             onClick1={() => this.props.history.push('/')}
-          />
+          /> */}
+          {this.heard()}
         </div>
         <div className="body">
           <div className="text"

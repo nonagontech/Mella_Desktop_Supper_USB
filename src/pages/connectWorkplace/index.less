@@ -67,6 +67,11 @@
           width: 100%;
           border: 1px solid #D8D8D8;
           height: 100%;
+          .org {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
 
           ul {
             height: 100%;
@@ -219,5 +224,185 @@
         }
       }
     }
+  }
+
+  .myfindOrg {
+    border-radius: 15px;
+    width: 40%;
+    background-color: #fff;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 75%;
+
+    .orgHeard {
+      height: 25%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+
+      .titleicon {
+        display: flex;
+        width: 85%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .text {
+        text-align: center;
+        font-size: 26px;
+      }
+
+      .searchBox {
+        width: 90%;
+        height: 35px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-family: "PingFangSC-Regular";
+        background-color: rgba(212, 208, 208, 0.4);
+        border-radius: 5px;
+        -webkit-app-region: no-drag;
+        margin: 15px 0;
+
+        .icon {
+          color: #7b7474;
+          padding: 0;
+          font-size: 22px;
+          margin: 0 10px;
+          font-weight: 300;
+        }
+
+        input {
+          flex: 1;
+          width: 100%;
+          -webkit-app-region: no-drag;
+          border: 0;
+          padding: 0;
+        }
+
+        input::-webkit-input-placeholder {
+          color: #4a4a4a;
+          font-family: 'iconfont';
+        }
+
+        .btn {
+          display: none;
+          background-color: #fff;
+          height: 100%;
+          padding: 0 0 0 13px;
+        }
+      }
+    }
+
+    .list {
+      display: flex;
+      width: 100%;
+      -webkit-app-region: no-drag;
+      height: 55%;
+      overflow-y: auto;
+
+
+      ul {
+        -webkit-app-region: no-drag;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        .highlight {
+          background-color: #e1206d;
+          color: #fff;
+        }
+        li {
+          -webkit-app-region: no-drag;
+          height: 35px;
+          line-height: 35px;
+          padding: 0 18px;
+          margin: 0 18px;
+          font-size: 16px;
+          border-bottom: #d3d3d3 solid 1px;
+
+          // padding: 0;
+          // height: 35px;
+          // padding-left: 8px;
+          display: flex;
+          justify-content: space-between;
+          // margin: 0 18px 5px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+
+          .item {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .search {
+            font-family: 'iconfont';
+            margin-right: 10px;
+          }
+        }
+      }
+
+      ul::-webkit-scrollbar {
+        width: 0 !important;
+      }
+    }
+
+    .foot {
+      height: 20%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #e7e7e7;
+      justify-content: center;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+
+      #button {
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        p {
+          padding: 0;
+          margin: 0;
+        }
+      }
+
+      span {
+        font-size: 13px;
+
+        a {
+          color: #e1206d;
+        }
+      }
+
+      a {
+        font-size: 13px;
+        color: #e1206d;
+      }
+    }
+
+    .ant-modal-footer {
+      background-color: #e7e7e7;
+      border-bottom-left-radius: 20px;
+    }
+  }
+}
+
+#vetPrifileModal {
+  border-top: #d3cece solid 1px;
+  padding: 20px 20px 0px;
+  p {
+    padding-bottom: 50px;
+    border-bottom: #d3cece dashed 1px;
   }
 }

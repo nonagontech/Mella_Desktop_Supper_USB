@@ -28,7 +28,7 @@ import MyModal from './../myModal/MyModal'
 import { version, updateTime } from "./../appversion";
 
 import { connect } from 'react-redux'
-import { setMenuNum, setSelectHardwareType, petDetailInfoFun } from '../../store/actions';
+import { setMenuNum, setSelectHardwareType, petDetailInfoFun, setMenuActive } from '../../store/actions';
 import moment from 'moment'
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
@@ -55,13 +55,16 @@ const Heard = ({
   blueSearch,
   setMenuNum,
   setSelectHardwareType,
+  setMenuActive,
   petListArr,
   petDetailInfoFun,
   selectHardwareType,
-  systemType
+  systemType,
+  activeIndex,        // 菜单高亮
 }) => {
   let history = useHistory();
 
+  const [placeContent, setPlaceholder] = useState('Search Pet')
   const [minbgc, setMinbgc] = useState('')        //最小化的背景颜色
   const [closebgc, setClosebgc] = useState('')    //关闭按钮的背景色
   const [rMin, setRMin] = useState(rMin_red)      //最小化的图标
@@ -591,7 +594,8 @@ const Heard = ({
       { name: "Log Out", index: "9" },
     ];
     let menuOption = menulistArr.map((item, index) => {
-      let pColor = menuMouseOverIndex === item.index ? "#e1206d" : "#1a1a1a";
+      let pColor = menuMouseOverIndex === item.index ? "#e1206d" : null;
+      let activeColor = activeIndex === item.index ? "#e1206d" : "#1a1a1a";
       return (
         <li
           key={item.index}
@@ -612,7 +616,7 @@ const Heard = ({
             menuMouseOut();
           }}
         >
-          <div className="item">
+          <div className="item" style={{ color: activeColor }}>
             <p style={{ color: pColor }}>{item.name}</p>
           </div>
         </li>
@@ -625,8 +629,7 @@ const Heard = ({
     mouseoutTimer && clearTimeout(mouseoutTimer);
     setMenuVisible(false);
     setMenuMouseOverIndex("");
-    console.log("click ", e);
-
+    setMenuActive(e.index)
     switch (e.index) {
       case "1":
         history.push("/MainBody");
@@ -1468,12 +1471,14 @@ const Heard = ({
 
           <div className="search" style={{ width: px(300) }}>
             <input
-              placeholder="Search Pet    &#xe63f;"
+              placeholder={`${placeContent}`}
               style={{ fontSize: px(16), paddingLeft: px(20) }}
               value={value}
               onChange={(text) => {
                 inputChange(text);
               }}
+              onFocus={() => setPlaceholder('')}
+              onBlur={() => setPlaceholder('Search Pet')}
               onKeyUp={(e) => {
                 // console.log(e);
                 if (e.keyCode === 13) {
@@ -1683,8 +1688,8 @@ export default connect(
     menuNum: state.userReduce.menuNum,
     petListArr: state.petReduce.petListArr,
     selectHardwareType: state.hardwareReduce.selectHardwareType,
-    systemType: state.systemReduce.systemType
-
+    systemType: state.systemReduce.systemType,
+    activeIndex: state.systemReduce.activeIndex
   }),
-  { setMenuNum, setSelectHardwareType, petDetailInfoFun }
+  { setMenuNum, setSelectHardwareType, petDetailInfoFun, setMenuActive }
 )(Heard)

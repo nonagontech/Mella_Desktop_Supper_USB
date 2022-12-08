@@ -428,8 +428,6 @@ class SignIn extends Component {
               }}
               src={back_hui} className={'returnImg'} />
           </div>
-
-
         </div>
       )
     } else {

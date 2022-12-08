@@ -98,7 +98,6 @@ const VerifyEmail = () => {
 
   }
 
-
   return (
     <div id="verifyEmail">
       <div className="heard">
