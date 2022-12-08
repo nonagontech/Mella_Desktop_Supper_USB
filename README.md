@@ -52,6 +52,10 @@ $ yarn start
   yarn win
   ```
 
+## 代码提交
+- 如果是需要代码打包，则要修改.git/config中的url为git@github.com:nonagontech/Mella_Desktop_Supper_USB.git
+- 如果代码提交拉取，则要修改.git/config中的url为git@192.168.0.15:hushaojie/Mella_Desktop_Super_USB.git
+
 
 ## 打包
 - 将package.json中的version进行加一
