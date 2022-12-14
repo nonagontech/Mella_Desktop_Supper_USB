@@ -214,6 +214,24 @@ export default class AdvancedSettings extends Component {
           uploadText: data.data,
           progress: data.progress
         })
+        this.timer && clearTimeout(this.timer)
+        if (data.progress < 10) {
+          this.timer && clearTimeout(this.timer)
+          this.timer = setTimeout(() => {
+            this.setState({
+              isUpload: false,
+              updateModal: false,
+              progress: 0,
+              localVersion: '',
+              cloudVersion: '',
+            })
+            message.destroy()
+            message.error('Upgrade failed, Try again after unplugging the sled')
+            ipcRenderer.send('reUpload', {})
+
+          }, 1000);
+        }
+
         if (data.progress === 100) {
           console.log('进度到达100了');
           this.failTimer && clearTimeout(this.failTimer)
