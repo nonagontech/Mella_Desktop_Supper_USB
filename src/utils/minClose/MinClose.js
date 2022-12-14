@@ -16,9 +16,9 @@ import { connect } from 'react-redux';
 let ipcRenderer = window.electron.ipcRenderer
 
 /**
- * 
- * @param {string} minHeight 最小化、最大化方块的宽高 
- * @param {number} imgWidth 最小化、最大化图片的高度 
+ *
+ * @param {string} minHeight 最小化、最大化方块的宽高
+ * @param {number} imgWidth 最小化、最大化图片的高度
  * @returns  封装了最小化和关闭按钮，有鼠标移入、移出的动画
  */
 const MinClose = ({ minHeight, imgWidth, systemType }) => {
@@ -73,6 +73,7 @@ const MinClose = ({ minHeight, imgWidth, systemType }) => {
         <>
           <div
             className='macStyle'
+            // style={{ marginLeft: '21px' }}
             onClick={closeClock}
             onMouseEnter={closeMouseEnter}
             onMouseLeave={closeMouseLeave}

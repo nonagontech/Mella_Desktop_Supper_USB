@@ -3,6 +3,7 @@ import { Image, Layout } from "antd";
 import { connect } from "react-redux";
 import PressButton_Pro from "./../../../assets/img/PressButton_Pro.png";
 import biggieonscale from "./../../../assets/img/biggieonscale.png";
+import connectScale from "../../../assets/img/connectScale.png"
 import {
   selectHardwareModalShowFun,
   petSortTypeFun,
@@ -18,15 +19,32 @@ import "./linkEquipment.less";
 
 const { Content, Header } = Layout;
 
-const LinkEquipment = ({ petMessage, hardwareMessage }) => {
+const LinkEquipment = ({ petMessage, hardwareMessage, biggieConnectStatus, biggieBodyFat }) => {
   let { mellaConnectStatus } = hardwareMessage;
   const [saveNum, setSaveNum] = useState(0);
   return (
     <>
       <div className={"linkBox"}>
         <div className="startBox">
-          <img src={biggieonscale}></img>
-          <p className="startTitle">Ready, place pet onto scale</p>
+          {
+            biggieConnectStatus == 'disconnected' ? (
+              <>
+                <img className="scaleImg" src={connectScale}></img>
+                <p className="startTitle">Connect scale to start</p>
+              </>
+
+            ) : biggieConnectStatus == 'connected' ?  (
+              <>
+                <img src={biggieonscale}></img>
+                <p className="startTitle">Ready, place pet onto scale</p>
+              </>
+            ) : ''
+          }
+
+              {/* <img src={biggieonscale}></img>
+                <p className="startTitle">Ready, place pet onto scale</p> */}
+
+
         </div>
       </div>
     </>
@@ -36,6 +54,8 @@ export default connect(
   (state) => ({
     petMessage: state.petReduce.petDetailInfo,
     hardwareMessage: state.hardwareReduce,
+    biggieConnectStatus: state.hardwareReduce.biggieConnectStatus,
+    biggieBodyFat: state.hardwareReduce.biggieBodyFat
   }),
   {
     selectHardwareModalShowFun,

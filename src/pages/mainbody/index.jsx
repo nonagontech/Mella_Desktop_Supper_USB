@@ -608,6 +608,7 @@ class App extends Component {
         }
       },
       255: () => {
+        console.log('newArr', newArr);
         let length = newArr.length;
         let frameLength = newArr[1]; //帧长
         let itemLength = newArr[3] + 1; //数据位的长度   13
@@ -655,7 +656,7 @@ class App extends Component {
           dataIndex = itemLength;
           itemLength = itemLength + newArr[dataIndex + 3] + 1;
         }
-        // console.log('硬件名称', bluName, '-----硬件数据', bluData);
+        console.log('硬件名称', bluName, '-----硬件数据', bluData);
         let { setReceiveBroadcastHardwareInfoFun, hardwareReduce } = this.props;
 
         let { receiveBroadcastHardwareInfo } = hardwareReduce;
@@ -775,7 +776,16 @@ class App extends Component {
           ) {
             setRulerConfirmCountFun(parseInt(confirmBtn[0], 16));
           }
-        } else if (bluName.indexOf("Biggie") !== -1 && bluData.length > 13) {
+        } else if (bluName.indexOf("Biggie") !== -1) {
+          this.timeER && clearTimeout(this.timeER)
+          this.timeER = setTimeout(() => {
+            setBiggieConnectStatusFun('disconnected')
+          }, 3000)
+          if(bluData.length == 0 ) {
+            setBiggieConnectStatusFun('connected')
+          } else if ( bluData.length <= 13 ) {
+            return ;
+          }
           // console.log("biggie", bluData);
           if (bluData[0] !== "aa") {
             return;
@@ -819,6 +829,7 @@ class App extends Component {
           weight = weight / Math.pow(10, parseInt(arr11[0]));
 
           let weightUnits = arr11[1] === "1" ? "lb" : "kg";
+
           let biggieStatus = "isMeasuring";
           switch (weightControl) {
             case 1:
@@ -833,6 +844,9 @@ class App extends Component {
             default:
               break;
           }
+
+
+
           if (biggieStatus !== biggieConnectStatus) {
             setBiggieConnectStatusFun(biggieStatus);
           }

@@ -53,13 +53,14 @@ const CalculationResult = ({
   }
   //用户点击保存
   const onSave = () => {
-    Modal.confirm({
-      title: "Confirm",
-      icon: <ExclamationCircleOutlined />,
-      content: "Whether To Save Data",
-      top: "40vh",
-      onOk: saveData,
-    });
+    // Modal.confirm({
+    //   title: "Confirm",
+    //   icon: <ExclamationCircleOutlined />,
+    //   content: "Whether To Save Data",
+    //   top: "40vh",
+    //   onOk: saveData,
+    // });
+    saveData()
   }
   //in-cm转换
   const in_cm = (val) => {
@@ -152,7 +153,7 @@ const CalculationResult = ({
         <div className="localityBox">
           <div className="circleBox">
             <div className="dataBox">
-              <p>{getLeanBodyMass() ? `${getLeanBodyMass()}g` : ''}</p>
+              <p>{getLeanBodyMass() > 0 ? `${getLeanBodyMass()}g` : '—'}</p>
             </div>
           </div>
           <div className="localityTitleBox">
@@ -163,7 +164,7 @@ const CalculationResult = ({
         <div className="localityBox">
           <div className="circleBox">
             <div className="dataBox">
-              <p>{getBodyFatPercent() ? `${getBodyFatPercent()}%` : ''}</p>
+              <p>{getBodyFatPercent() > 0 ? `${getBodyFatPercent()}%` : '—'}</p>
             </div>
           </div>
           <div className="localityTitleBox">
@@ -174,7 +175,7 @@ const CalculationResult = ({
         <div className="localityBox">
           <div className="circleBox">
             <div className="dataBox">
-              <p>{getFatMass() ? `${getFatMass()}g` : ''}</p>
+              <p>{getFatMass() > 0 ? `${getFatMass()}g` : '—'}</p>
             </div>
           </div>
           <div className="localityTitleBox">

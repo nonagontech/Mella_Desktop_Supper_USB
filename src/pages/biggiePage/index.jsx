@@ -238,7 +238,12 @@ const BiggirPage = ({
   }, [biggieBodyWeight]);
   //宠物变了,要设置为未连接
   useEffect(() => {
-    setBiggieConnectStatusFun("disconnected")
+    let {
+      biggieConnectStatus,
+    } = hardwareReduce;
+    if(biggieConnectStatus != 'disconnected') {
+      setBiggieConnectStatusFun("connected")
+    }
   }, [petDetailInfo]);
 
   return (
@@ -267,7 +272,7 @@ const BiggirPage = ({
                   isIbs={unit === "lb"}
                   onPress={_saveWeight}
                   discardOnPress={() =>
-                    setBiggieConnectStatusFun("disconnected")
+                    setBiggieConnectStatusFun("connected")
                   }
                   issave={isSavePMS}
                   isHaveSaveBtn={isHaveSaveBtn}
