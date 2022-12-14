@@ -19,7 +19,7 @@ import "./linkEquipment.less";
 
 const { Content, Header } = Layout;
 
-const LinkEquipment = ({ petMessage, hardwareMessage, biggieConnectStatus }) => {
+const LinkEquipment = ({ petMessage, hardwareMessage, biggieConnectStatus, biggieBodyFat }) => {
   let { mellaConnectStatus } = hardwareMessage;
   const [saveNum, setSaveNum] = useState(0);
   return (
@@ -27,18 +27,22 @@ const LinkEquipment = ({ petMessage, hardwareMessage, biggieConnectStatus }) => 
       <div className={"linkBox"}>
         <div className="startBox">
           {
-            biggieConnectStatus != 'disconnected' ? (
-              <>
-                <img src={biggieonscale}></img>
-                <p className="startTitle">Ready, place pet onto scale</p>
-              </>
-            ) : (
+            biggieConnectStatus == 'disconnected' ? (
               <>
                 <img className="scaleImg" src={connectScale}></img>
                 <p className="startTitle">Connect scale to start</p>
               </>
-            )
+
+            ) : biggieConnectStatus == 'connected' ?  (
+              <>
+                <img src={biggieonscale}></img>
+                <p className="startTitle">Ready, place pet onto scale</p>
+              </>
+            ) : ''
           }
+
+              {/* <img src={biggieonscale}></img>
+                <p className="startTitle">Ready, place pet onto scale</p> */}
 
 
         </div>
@@ -50,7 +54,8 @@ export default connect(
   (state) => ({
     petMessage: state.petReduce.petDetailInfo,
     hardwareMessage: state.hardwareReduce,
-    biggieConnectStatus: state.hardwareReduce.biggieConnectStatus
+    biggieConnectStatus: state.hardwareReduce.biggieConnectStatus,
+    biggieBodyFat: state.hardwareReduce.biggieBodyFat
   }),
   {
     selectHardwareModalShowFun,
