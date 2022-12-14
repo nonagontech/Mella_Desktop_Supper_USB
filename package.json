@@ -1,6 +1,6 @@
 {
   "name": "supermella",
-  "version": "v1.1.52",
+  "version": "v1.1.53",
   "main": "main.js",
   "private": true,
   "author": {
@@ -68,8 +68,8 @@
     "rebuild": "yarn electron-rebuild -v 19.0.17",
     "pack": "electron-builder --dir",
     "disk": "electron-builder",
-    "release": "cross-env GH_TOKEN=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  electron-builder",
-    "releasemac": "yarn cleanmac && cross-env GH_TOKEN=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  electron-builder",
+    "release": "cross-env GH_TOKEN=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  electron-builder",
+    "releasemac": "yarn cleanmac && cross-env GH_TOKEN=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  electron-builder",
     "clear": "rd /s/q dist1 && md dist1",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "cleanmac": "rm -rf dist1 && mkdir dist1"
