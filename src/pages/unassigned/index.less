@@ -33,22 +33,28 @@ p {
       width: 90%;
       justify-content: space-between;
 
-      input {
-        -webkit-app-region: no-drag;
-        border: 0;
-        padding: 0;
-        margin: 0;
-        background-color: rgba(118, 118, 128, 0.12);
-        border-radius: 50px;
+      .searchBox {
         width: 80%;
-        padding-left: 10%;
+        height: 35px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-radius: 50px;
+        background-color: rgba(118, 118, 128, 0.12);
+        input {
+          flex: 1;
+          width: 100%;
+          -webkit-app-region: no-drag;
+          border: 0;
+          padding: 0;
+        }
+        input::-webkit-input-placeholder {
+          color: #838388;
+          font-size: 14px;
+          font-family: 'Arial Regular';
+        }
       }
 
-      input::-webkit-input-placeholder {
-        color: #3c3c43;
-        font-size: 14px;
-        font-family: 'iconfont';
-      }
 
       .searchBtn {
         -webkit-app-region: no-drag;
@@ -75,14 +81,41 @@ p {
       align-items: center;
       justify-content: center;
 
+      .ant-table-bordered {
+        // 去掉竖边框线
+        .ant-table-tbody > tr >td:not(:last-child) {
+            border-right: 0px !important;
+        }
+        .ant-table-thead > tr >th:not(:last-child) {
+            border-right: 0px !important;
+        }
+
+        .ant-table-tbody > tr >td:not(:last-child) {
+          border-bottom: 1px  solid #F2F2F2 !important;
+        }
+        .ant-table-thead > tr > th:not(:last-child) {
+          border-bottom: 1px  solid #F2F2F2 !important;
+        }
+        .ant-table-thead > tr > th {
+          font-weight: 700;
+          font-family: "Arial Regular";
+        }
+      }
+
+
+      // //设置外边框颜色
+      // .ant-table-tbody > tr:last-child > th {
+      //   border-bottom-color: red !important;
+      // }
+
       .assign {
+        font-family: 'Arial Regular';
         height: 28px;
         background-color: #e1206d;
         border-radius: 40px;
         color: #fff;
         cursor: pointer;
         font-weight: bold;
-        font-family: Futura Std;
         align-items: center;
         text-align: center;
         display: flex;
@@ -207,8 +240,8 @@ p {
           }
 
           input::-webkit-input-placeholder {
-            color: #4a4a4a;
-            font-family: iconfont;
+            color: #838388;
+            font-family: 'Arial Regular';
           }
 
           .btn {

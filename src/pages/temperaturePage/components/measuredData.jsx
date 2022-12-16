@@ -11,6 +11,8 @@ import {
   message,
   Layout,
 } from "antd";
+import xia_hui from "./../../../assets/img/xia_hui.png";
+import exportHis from "./../../../assets/img/exportHis.png"
 import measuredTable_1 from "./../../../assets/img/measuredTable_1.png";
 import measuredTable_2 from "./../../../assets/img/measuredTable_2.png";
 import measuredTable_3 from "./../../../assets/img/measuredTable_3.png";
@@ -59,6 +61,7 @@ const MeasuredData = ({
     let historyElement = document.querySelectorAll(".measurementBox .table");
     hisHe = historyElement[0].clientHeight - mTop(60);
   } catch (error) { }
+
   const [petTemperatureData, setPetTemperatureData] = useState([]); //存储宠物历史温度数据
   const [disabled, setDisabled] = useState(true); //model是否可拖拽
   const [visible, setVisible] = useState(false); //model框是否显示
@@ -75,6 +78,26 @@ const MeasuredData = ({
   const [pageSize, setPageSize] = useState(10); // 每页10条
   const [total, setTotal] = useState(0);//历史数据的总条数
   const [currPage, setCurrPage] = useState(1);//页码
+
+  let btnList = [
+    {
+      name: 'Date',
+      data: 'Nov 26'
+    },
+    {
+      name: 'Time',
+      data: '09:05 AM'
+    },
+    {
+      name: 'Temperature',
+      data: '101.2 ',
+      unit: '%F'
+    },
+    {
+      name: 'Placement',
+      data: 'dog'
+    }
+  ]
 
   //表格渲染
   const columns = [
@@ -492,60 +515,92 @@ const MeasuredData = ({
   return (
     <>
       <Content className="measurementBox">
-        <div className="progress">
-          <Progress
-            type="dashboard"
-            percent={_.round(mellaMeasureValue, 1)}
-            gapDegree={30}
-            // width={px(260)}
-            strokeWidth={"8"}
-            format={(percent) => ProgressTitle(percent)}
-            strokeColor={{
-              "0%": "#7bd163",
-              "100%": "#19ade4",
-            }}
-            className="measurementProgress"
-          />
+        <div className="container">
+          {/* <div className="progress">
+            <Progress
+              type="dashboard"
+              percent={_.round(mellaMeasureValue, 1)}
+              gapDegree={30}
+              // width={px(260)}
+              strokeWidth={"8"}
+              format={(percent) => ProgressTitle(percent)}
+              strokeColor={{
+                "0%": "#7bd163",
+                "100%": "#19ade4",
+              }}
+              className="measurementProgress"
+            />
 
-          <div className="buttonBox">
-            {!saveType && (
-              <>
-                <Button
-                  style={{ backgroundColor: "#e1206d" }}
-                  type="danger"
-                  shape="round"
-                  onClick={() => backConnectedPage()}
-                >
-                  Discard
-                </Button>
-                <Button
-                  style={{ backgroundColor: "#e1206d" }}
-                  type="danger"
-                  shape="round"
-                  color="#e1206d"
-                  onClick={() => saveData()}
-                >
-                  Save
-                </Button>
-              </>
-            )}
+
+          </div> */}
+          <div className="bottomContent">
+            <div className="measureContent">
+              {btnList.map((item, index) => (
+                  // <li key={index}>
+                  //   <>
+                  //     <img src={data.img} alt="" />
+                  //     <p>{data.title}</p>
+                  //   </>
+                  // </li>
+                <div key={index} className="item">
+                    <>
+                    <p className="pSt1">{item.name}</p>
+                    <p className="pSt2">{item.data}</p>
+                    </>
+                </div>
+              ))}
+            </div>
+            <div className="buttonBox">
+              {!saveType && (
+                <>
+                  <Button
+                    style={{ backgroundColor: "#e1206d" }}
+                    className="btn"
+                    type="danger"
+                    shape="round"
+                    onClick={() => backConnectedPage()}
+                  >
+                    Measure Again
+                  </Button>
+                  <Button
+                    style={{ backgroundColor: "#e1206d"}}
+                    className="btn"
+                    type="danger"
+                    shape="round"
+                    color="#e1206d"
+                    onClick={() => saveData()}
+                  >
+                    Save
+                  </Button>
+                </>
+              )}
+            </div>
+            <div className="scrollHistory">
+              <span className="his">Hisory</span>
+              <img src={xia_hui} style={{width: px(20)}} alt="" />
+            </div>
           </div>
-
-        </div>
-        <div className="listTitleBox1">
-          <p className="listTitle">History</p>
-        </div>
-        <div className="table" onScrollCapture={onScrollCapture}>
-          <Table
-            rowKey={"examId"}
-            columns={columns}
-            dataSource={petTemperatureData}
-            className="measuredTable"
-            pagination={false}
-            scroll={{
-              y: '80%'
-            }}
-          />
+          <div className="hisTable">
+            <div className="listTitleBox1">
+              <p className="listTitle">Temperature History</p>
+            </div>
+            <div className="table" onScrollCapture={onScrollCapture}>
+              <Table
+                rowKey={"examId"}
+                columns={columns}
+                dataSource={petTemperatureData}
+                className="measuredTable"
+                pagination={false}
+                scroll={{
+                  y: '80%'
+                }}
+              />
+            </div>
+            <Button className="exportBtn">
+              <img src={exportHis} alt="" style={{width: '30px', marginRight: '10px'}} />
+              Export History
+            </Button>
+          </div>
         </div>
       </Content>
       {/*修改note弹窗 */}

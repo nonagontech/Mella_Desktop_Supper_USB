@@ -649,7 +649,8 @@ const Heard = ({
         break;
       case "5":
         //跳转到设置
-        history.push("/menuOptions/settings");
+        history.push("/MainBody");
+        setMenuNum(e.index);
         break;
       case "6":
         if (e.name === "Exit Clinical Study Mode") {
@@ -1303,7 +1304,10 @@ const Heard = ({
             src={messageImg}
             alt=""
             style={{ height: px(25), width: px(25) }}
-            onClick={() => history.push({ pathname: "/menuOptions/unassigned", deviceType: 0 })}
+            onClick={() => {
+              setMenuNum('Unassigned0')
+              // history.push({ pathname: "/menuOptions/unassigned", deviceType: 0 })
+            }}
           />
         );
       case 'biggie':
@@ -1312,7 +1316,10 @@ const Heard = ({
             src={biggieMessage}
             alt=""
             style={{ height: px(25), width: px(25) }}
-            onClick={() => history.push({ pathname: "/menuOptions/unassigned", deviceType: 1 })}
+            onClick={() => {
+              setMenuNum('Unassigned1')
+              // history.push({ pathname: "/menuOptions/unassigned", deviceType: 1 })
+            }}
           />
         );
       case 'tape':

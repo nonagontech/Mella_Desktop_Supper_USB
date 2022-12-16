@@ -8,7 +8,9 @@ import start from "./../../assets/img/start.png";
 import placement_gang from "./../../assets/images/placement_gang.png";
 import placement_er from "./../../assets/images/placement_er.png";
 import palcement_ye from "./../../assets/images/palcement_ye.png";
-
+import thrDot from "./../../assets/img/thrDot.png"
+import measuringDots from "./../../assets/img/measuringDots.png"
+import TempReady from "./../../assets/img/TempReady.png"
 import HeaderItem from "./../temperaturePage/components/headerItem";
 import { px, mTop } from "../../utils/px";
 import electronStore from "../../utils/electronStore";
@@ -103,7 +105,7 @@ const ClinicalStudy = ({
     right: 0,
   });
   const [memo, setMemo] = useState("");
-  const [windowWidth, setWindowWidth] = useState(px(500));
+  const [windowWidth, setWindowWidth] = useState(px(600));
   const [WeightValue, setWeightValue] = useState('');
   const echartsElement = useRef(null);
   const clinicalRef = useRef(null);
@@ -567,9 +569,11 @@ const ClinicalStudy = ({
     return option;
   };
   const _status = () => {
+    // let mellaConnectStatus = 'complete'
     let text = "",
       unit = "",
       temColor = "";
+    // let Temp = 35;
     let Temp = parseFloat(temperature);
     if (mellaConnectStatus === "disconnected") {
       if (!showHistoryEchart) {
@@ -623,8 +627,8 @@ const ClinicalStudy = ({
         className="Tem"
         style={{
           color: temColor,
-          right: px(70),
-          bottom: mTop(250),
+          right: px(5),
+          bottom: mTop(200),
           pointerEvents: "none",
         }}
       >
@@ -657,9 +661,11 @@ const ClinicalStudy = ({
                 </sup>
               </span>
               <br />
-              <span style={{ fontSize: px(32), fontWeight: "bold" }}>
+              <img src={thrDot} alt="" style={{ height: '20px', position: "absolute", bottom: "140px", right: '20px' }} />
+              <img src={TempReady} alt="" style={{ height: '250px', position: "absolute", bottom: "-140px", right: 0 }} />
+              {/* <span style={{ fontSize: px(32), fontWeight: "bold" }}>
                 {text}
-              </span>
+              </span> */}
             </>
           )
         ) : lowFlog ? (
@@ -671,11 +677,13 @@ const ClinicalStudy = ({
           </>
         ) : (
           <>
+            <img src={measuringDots} alt="" style={{ height: '20px', position: "absolute", bottom: "140px", right: '50px' }} />
             <span style={{ fontSize: px(46), fontWeight: "bold" }}>
               {temp}{" "}
               <sup style={{ fontSize: px(28), fontWeight: "bold" }}>{unit}</sup>
             </span>
             <br />
+            <div style={{ position: "absolute", bottom: '-140px', right: '50px', color: '#3b3a3a', fontSize: '17px', fontFamily: 'VAG Rounded Std',fontWeight: 'bold' }}>Measuring...</div>
           </>
         )}
       </div>
@@ -1612,7 +1620,7 @@ const ClinicalStudy = ({
         <ReactECharts
           option={getOption()}
           theme="Imooc"
-          style={{ height: 'auto', width: 'auto' }}
+          style={{ height: 'auto', width: '70%' }}
           notMerge={true}
           lazyUpdate={true}
           ref={echartsElement}
@@ -1870,7 +1878,7 @@ const ClinicalStudy = ({
         </div>
         <div
           className="clinicalBody"
-          style={{ width: "100%", height: bodyHeight - px(100) }}
+          style={{ width: "100%", height: bodyHeight - px(70) }}
         >
           <div className="clinical_top">
             <div className="r">

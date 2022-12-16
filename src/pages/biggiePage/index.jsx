@@ -282,10 +282,12 @@ const BiggirPage = ({
               </div>
             </div>
           ) : (
-            <LinkEquipment />
+            <div style={{ height: connectStatus !== "disconnected" ? '50%' : '100%'}}>
+              <LinkEquipment />
+            </div>
           )}
           {
-            !_.isEmpty(petDetailInfo) && (
+            !_.isEmpty(petDetailInfo) && connectStatus !== "disconnected" && (
               <div className="bottomContent">
                 <div className="biggeTitleBox">
                   <p className="biggeTitle">History</p>

@@ -53,7 +53,7 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
     listAllPetInfo(params)
       .then((res) => {
         setLoading(false);
-        if (res.flag === true) {
+        if (res.flag) {
           let newData = [];
           _.map(res.data, (item, index) => {
             newData.push({
@@ -69,6 +69,7 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
             })
           });
           setPetList(_.orderBy(newData, ['petIndex'], ['desc']));
+          setLoading(false);
         }
       })
       .catch((err) => {
@@ -202,7 +203,7 @@ const SelectPet = ({ visible, width, title, destroyOnClose, value, onSelect, onC
           <div className='modalContentBox'>
             <div className="searchBox">
               <Input
-                placeholder="Search Name"
+                placeholder="Search Pet"
                 bordered={false}
                 allowClear={true}
                 prefix={<SearchOutlined />}

@@ -127,7 +127,7 @@ export default class InviteTeam extends Component {
   };
 
   _next = () => {
-    let { isAddDoctor } = this.props.location
+    let { isAddDoctor } = this.props
     message.destroy()
     let { tags } = this.state
     let { userId } = !isAddDoctor ? temporaryStorage.logupSuccessData : storage
@@ -285,7 +285,7 @@ export default class InviteTeam extends Component {
   }
 
   _food = () => {
-    if (!this.props.location.isAddDoctor) {
+    if (!this.props.isAddDoctor) {
 
     }
   }
@@ -301,11 +301,11 @@ export default class InviteTeam extends Component {
       <div id="inviteTeam" >
         {/* 关闭缩小 */}
         <div className="heard">
-          <MaxMin
+          {/* <MaxMin
             onClick={() => { this.props.history.push('/') }}
             onClick1={() => this.props.history.goBack()}
-          />
-          <div className="text">Invite your Team</div>
+          /> */}
+          <div className="text">Invite your Team11</div>
 
           <div className="addF">
             <p>To:</p>
@@ -361,7 +361,7 @@ export default class InviteTeam extends Component {
           style={{ padding: `${px(40)}px 0` }}
         >
           {
-            !this.props.location.isAddDoctor && <Button
+            !this.props.isAddDoctor && <Button
               type="primary"
               shape="round"
               size='large'

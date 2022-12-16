@@ -18,7 +18,11 @@ import ScanPage from "../../pages/scanPage";
 import AllPets from "../../pages/allPetsPage";
 import ScheduledPetPage from "../../pages/scheduledPetsPage";
 import Subscriptions from "../../pages/subscriptions";
+import Settings from "../settings";
 import AddScheduledPet from "../../pages/addScheduledPet";
+import PetAndParents from "../../pages/petAndParents"
+import InviteTeam from "../../pages/inviteTeam"
+import Unassigned from "../../pages/unassigned"
 import ClininalStudy from "../../pages/clinicalStudyPage";
 import CombineScales from "../../pages/combineScales";
 import OtterEQPage from '../../pages/otterEQ';
@@ -29,7 +33,6 @@ import EnrolledPlan from '../enrolledPlan';
 
 import ModalClose from "../../assets/img/ModalClose.png"
 import DetectBase from "../../assets/img/DetectBase.png"
-// import baseNotDetectedModal from "../../components/baseNotDetectedModal";
 
 
 
@@ -264,7 +267,7 @@ class App extends Component {
           this.setState({
             baseModalVisible: true
           })
-          message.error("The base is not detected. Please insert the base", 0);
+          // message.error("The base is not detected. Please insert the base", 0);
           Modal.destroyAll();
         }
       }
@@ -1306,12 +1309,30 @@ class App extends Component {
         return <AddDevice bodyHeight={bodyHeight} />;
       // 配置左侧菜单
       case "AddPet":
-        return <DoctorAddPet bodyHeight={bodyHeight} />;
+        return <DoctorAddPet />;
       case "3":
         return <ScheduledPetPage bodyHeight={bodyHeight} />;
-
+      case "5":
+        return <Settings />
+      case "PetAndParents":
+        return <PetAndParents />;
       case "AddScheduledPet":
         return <AddScheduledPet bodyHeight={bodyHeight} />;
+      // 配置菜单
+      case "Unassigned0":
+        return <Unassigned deviceType={0} />;
+      case "Unassigned1":
+        return <Unassigned deviceType={1} />;
+      case "InviteTeam":
+        return <InviteTeam isAddDoctor={true} />;
+        //   case "AddScheduledPet":
+        // return <AddScheduledPet />;
+        // case "AddScheduledPet":
+        // return <AddScheduledPet />;
+        // case "AddScheduledPet":
+        // return <AddScheduledPet />;
+        // case "AddScheduledPet":
+        // return <AddScheduledPet />;
       case "6":
         return (
           <>
@@ -1389,9 +1410,6 @@ class App extends Component {
             </div>
           </div>
         </Modal>
-        {/* <baseNotDetectedModal
-          visible={this.state.baseModalVisible}
-        ></baseNotDetectedModal> */}
          <Modal
           open={this.state.baseModalVisible}
           onOk={this.handleOk}

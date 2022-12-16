@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Table, Popconfirm, Modal, Input, message, Select, Spin } from "antd";
-
+import { SearchOutlined } from '@ant-design/icons';
 import Heard from "./../../utils/heard/Heard";
 import del from "./../../assets/images/del.png";
 import Close from "./../../assets/img/close.png";
@@ -78,7 +78,7 @@ export default class Unassigned extends Component {
       });
     }
     this.setState({
-      deviceType: this.props.history.location.deviceType
+      deviceType: this.props.deviceType
     }, () => {
       this._getEmergencyHistory(1);
     })
@@ -378,11 +378,12 @@ export default class Unassigned extends Component {
         },
       },
       {
-        title: " Pet Description",
+        title: "Pet Description",
         dataIndex: "description",
         key: "description",
         ellipsis: true,
         align: "center",
+        width: 150,
         render: (text, record, index) => {
           return <p style={{ width: "70px" }}>{text}</p>;
         },
@@ -436,8 +437,7 @@ export default class Unassigned extends Component {
     ];
     let tableData = searchText.length > 0 ? serchExamData : historyData;
     return (
-      <div id="unassigned">
-        <Heard />
+      <div id="unassigned" style={{ height: this.props.bodyHeight }}>
         <div className="body">
           <div
             className="title"
@@ -450,27 +450,32 @@ export default class Unassigned extends Component {
             Unassigned Measurements
           </div>
           <div className="input" style={{ marginBottom: px(10) }}>
-            <input
-              type="text"
-              placeholder="&#xe628; Search Pet Name or Description"
-              value={this.state.searchText}
-              onChange={(e) => {
-                this.setState({
-                  searchText: e.target.value,
-                });
-                this._search(e.target.value);
-              }}
-              onKeyUp={(e) => {
-                if (e.keyCode === 13) {
-                  this._search();
-                }
-                if (e.keyCode === 27) {
+            <div className="searchBox">
+              <Input
+                placeholder="Search Pet Name or Description"
+                bordered={false}
+                value={this.state.searchText}
+                allowClear={true}
+                prefix={<SearchOutlined />}
+                onChange={(e) => {
                   this.setState({
-                    searchText: "",
+                    searchText: e.target.value,
                   });
-                }
-              }}
-            />
+                  this._search(e.target.value);
+                }}
+                onKeyUp={(e) => {
+                  if (e.keyCode === 13) {
+                    this._search();
+                  }
+                  if (e.keyCode === 27) {
+                    this.setState({
+                      searchText: "",
+                    });
+                  }
+                }}
+              />
+            </div>
+
             <div
               className="searchBtn"
               style={{ height: px(35), fontSize: px(18) }}
@@ -479,11 +484,14 @@ export default class Unassigned extends Component {
               <p>Search</p>
             </div>
           </div>
-          <div className="tableBox" onScrollCapture={() => this.onScrollCapture()}>
+          <div className="tableBox"  onScrollCapture={() => this.onScrollCapture()}>
             <Table
               style={{
                 width: "95%",
+                margin: "0 auto",
+                border: '1px solid #979797'
               }}
+              bordered
               loading={loading}
               columns={columns}
               dataSource={tableData}

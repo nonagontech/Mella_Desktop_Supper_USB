@@ -16,10 +16,12 @@ import { px, win } from '../../utils/px';
 import MyModal from '../../utils/myModal/MyModal'
 
 import './index.less'
+import { connect } from 'react-redux';
+import { setMenuNum } from '../../store/actions'
 
 const { Option } = Select;
 let storage = window.localStorage
-export default class Settings extends Component {
+class Settings extends Component {
 
   state = {
     self_tarting: false,      //自启动，
@@ -362,11 +364,6 @@ export default class Settings extends Component {
 
     return (
       <div id="settings">
-        <div className="heard">
-          <Heard />
-        </div>
-
-
         <div className="body">
           <div className="setting">
             {/* 桌面设计 */}
@@ -426,7 +423,11 @@ export default class Settings extends Component {
                 <div className="title">User Admin</div>
 
                 <div className="item" style={{ marginBottom: px(10) }}>
-                  <div className="l" onClick={() => { this.props.history.push('/menuOptions/ConnectWorkplace') }}>
+                  <div className="l" onClick={() => {
+                    this.props.setMenuNum('ConnectWorkplace')
+                    // this.props.history.push('/menuOptions/ConnectWorkplace') }
+                  }}
+                  >
                     <div className="text">{`Org & Practice Profiles`}</div>
                     <div className="rightIcon">&#xe60c;</div>
 
@@ -434,8 +435,8 @@ export default class Settings extends Component {
 
 
                   <div className="l" onClick={() => {
-                    this.props.history.push({ pathname: '/uesr/logUp/InviteTeam', isAddDoctor: true })
-                    // this.props.history.push('/uesr/logUp/InviteTeam')
+                    this.props.setMenuNum('InviteTeam')
+                    // this.props.history.push({ pathname: '/uesr/logUp/InviteTeam', isAddDoctor: true })
                   }}>
                     <div className="text">Invite Your Team</div>
                     <div className="rightIcon">&#xe60c;</div>
@@ -461,8 +462,10 @@ export default class Settings extends Component {
 
 
                   <div className="l "
-                    onClick={() => this.props.history.push('/menuOptions/petAndParents')}
-
+                    onClick={() =>
+                      this.props.setMenuNum('PetAndParents')
+                      // this.props.history.push('/menuOptions/petAndParents')
+                    }
                     style={{ marginTop: '25px', }}>
                     <div className="text">Pet and Parents Profile Management</div>
                     <div className="rightIcon">&#xe60c;</div>
@@ -631,3 +634,10 @@ export default class Settings extends Component {
     )
   }
 }
+
+export default connect(
+  state => ({
+
+  }),
+  {  setMenuNum }
+)(Settings)

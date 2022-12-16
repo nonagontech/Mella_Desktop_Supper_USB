@@ -3,7 +3,10 @@ import React, { Component } from 'react'
 import {
   Select,
   Button,
+  Input
 } from 'antd'
+
+import { SearchOutlined } from '@ant-design/icons';
 
 import parent from '../../assets/img/parent.png'
 import dog from '../../assets/images/reddog.png'
@@ -271,16 +274,13 @@ class PetAndParents extends Component {
   render() {
     return (
       <div id="PetAndParents">
-        <div className="heard">
-          <Heart />
-        </div>
         <div className="body">
-          <div className='titleBox'>
+        <div className='titleBox'>
             <h1 style={{ fontSize: px(20) }}>{`Pet & Parents Profile Management`}</h1>
           </div>
           <div className="search">
             <div className="searchL">
-              <input
+              {/* <input
                 type="text"
                 style={{ paddingLeft: px(25), height: px(34) }}
                 placeholder="&#xe62c; Search "
@@ -288,7 +288,18 @@ class PetAndParents extends Component {
                 onChange={(text) => {
                   this.inputChange(text)
                 }}
-              />
+              /> */}
+              <Input
+                style={{ height: px(34) }}
+                prefix={<SearchOutlined />}
+                bordered={false}
+                placeholder="Search"
+                value={this.state.searchText}
+                onChange={(text) => {
+                  this.inputChange(text)
+                }}
+              >
+              </Input>
             </div>
             <Button
               type="primary"

@@ -366,9 +366,10 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
               padding: 0,
               margin: 0,
               width: '95%',
+              border: '1px solid #979797'
             }}
             rowKey={data => data.id}
-            bordered={false}
+            bordered
             columns={columns}
             dataSource={(heardSearchText.length === 0) ? petListArr : searchData}
             loading={loading}

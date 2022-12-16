@@ -757,10 +757,7 @@ class DoctorAddPet extends Component {
 
       <div id="doctorAddPet">
         <Spin spinning={this.state.spin} size="large" className='doctorAddPetSpin'>
-          <div className="heard">
-            <Heard />
-          </div>
-          <div className="editPetInfo_top" >
+          <div className="editPetInfo_top">
             <div className="title" style={{ marginBottom: px(20), marginTop: px(20) }}>{`New Pet`}</div>
             <div className="line"></div>
             {this._petSpecies()}

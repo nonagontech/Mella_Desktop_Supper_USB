@@ -38,6 +38,7 @@ const TemperaturePage = ({ petMessage, hardwareMessage, bodyHeight }) => {
       case "connected":
         return <LinkEquipment />;
       case "disconnected":
+        // return <MeasuredData />;
         return <LinkEquipment />;
       default:
         break;

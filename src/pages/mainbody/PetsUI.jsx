@@ -20,7 +20,7 @@ import { px } from '../../utils/px';
 import { changeThemeColor } from '../../utils/commonFun';
 
 import { connect } from 'react-redux'
-import { petSortTypeFun, petDetailInfoFun, setPetListArrFun } from '../../store/actions';
+import { petSortTypeFun, petDetailInfoFun, setPetListArrFun, setMenuNum } from '../../store/actions';
 import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types'
 import moment from 'moment';
@@ -46,6 +46,7 @@ const PetsUI = ({
   rulerConnectStatus,
   selectHardwareInfo,
   receiveBroadcastHardwareInfo,
+  setMenuNum
 }) => {
   const history = useHistory();
   //定义宠物列表数组
@@ -430,7 +431,10 @@ const PetsUI = ({
           <Tooltip placement='bottom' title='Add a Pet'>
             <div
               className="addImgBox"
-              onClick={() => history.push("/pet/doctorAddPet")}
+              onClick={() =>
+                setMenuNum('AddPet')
+                // history.push("/pet/doctorAddPet")
+              }
             >
               <img
                 src={deivceAdd}
@@ -485,5 +489,5 @@ export default connect(
     selectHardwareInfo: state.hardwareReduce.selectHardwareInfo,
     receiveBroadcastHardwareInfo: state.hardwareReduce.receiveBroadcastHardwareInfo,
   }),
-  { petSortTypeFun, petDetailInfoFun, setPetListArrFun }
+  { petSortTypeFun, petDetailInfoFun, setPetListArrFun, setMenuNum }
 )(PetsUI)

@@ -2,7 +2,6 @@
   font-family: Arial;
   background-color: #fff;
   // background-color: pink;
-  flex: 1;
   width: 100%;
   height: 100%;
   justify-content: center;
@@ -45,6 +44,19 @@
 
       .searchL {
         width: 568px;
+        border-radius: 40px;
+        background-color: rgba(118, 118, 128, 0.12);
+        input {
+          flex: 1;
+          width: 100%;
+          font-family: 'Aria';
+        }
+
+        input::-webkit-input-placeholder {
+          color: #3c3c43;
+          font-size: 14px;
+          font-family: 'Arial Regular';
+        }
       }
 
       .ant-btn {
@@ -55,21 +67,7 @@
         }
       }
 
-      input {
-        border: 0;
-        padding: 0;
-        margin: 0;
-        background-color: rgba(118, 118, 128, 0.12);
-        width: 100%;
-        border-radius: 40px;
-        font-family: 'Aria';
-      }
 
-      input::-webkit-input-placeholder {
-        color: #3c3c43;
-        font-size: 14px;
-        font-family: 'iconfont';
-      }
 
       .searchr {
         display: flex;
