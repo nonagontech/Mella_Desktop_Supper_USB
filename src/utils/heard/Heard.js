@@ -1368,6 +1368,12 @@ const Heard = ({
 
   }
 
+  const jiantou = () => {
+    return (
+      <span class="icon iconfont">&#xe61b;</span>
+    )
+  }
+
   useEffect(() => {
     mouseoutTimer && clearTimeout(mouseoutTimer);
     setBluDevice([]);
@@ -1471,14 +1477,19 @@ const Heard = ({
 
           <div className="search" style={{ width: px(300) }}>
             <input
-              placeholder={`${placeContent}`}
+              // 后续修改，不知道怎么在模板字符串里添加字体图标
+              placeholder="Search Pet  &#xe61f;"
+              // &#xe61f;
+              // placeholder={`${placeContent}`}
+
               style={{ fontSize: px(16), paddingLeft: px(20) }}
               value={value}
               onChange={(text) => {
                 inputChange(text);
               }}
-              onFocus={() => setPlaceholder('')}
-              onBlur={() => setPlaceholder('Search Pet')}
+              // 后续修改，鼠标聚焦清除placeholder
+              // onFocus={() => setPlaceholder('')}
+              // onBlur={() => setPlaceholder('Search Pet')}
               onKeyUp={(e) => {
                 // console.log(e);
                 if (e.keyCode === 13) {
@@ -1526,12 +1537,14 @@ const Heard = ({
                 ) : null}
               </div>
             ) : (
-              <div className="searchIconFa">
-                <span
-                  className=" iconfont icon-sousuo searchIcon"
-                  style={{ fontSize: px(25) }}
-                />
-              </div>
+              // <div className="searchIconFa">
+              //   <span
+              //     className=" iconfont icon-sousuo searchIcon"
+              //     style={{ fontSize: px(25) }}
+              //   />
+              // </div>
+              <>
+              </>
             )}
 
             {visible ? (

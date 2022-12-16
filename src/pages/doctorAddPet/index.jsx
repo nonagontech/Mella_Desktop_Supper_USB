@@ -294,8 +294,8 @@ class DoctorAddPet extends Component {
           <div className="img">
             <Avatar
               init={
-                <div className="ciral ">
-                  <img src={this.avatar} alt="" id="touxiang" height="280px" />
+                <div className="ciral">
+                  <img src={this.avatar} alt="" id="touxiang"/>
                   <p style={{ fontSize: px(14), height: mTop(35) }}>Upload Photo</p>
                 </div>
               }
@@ -762,6 +762,7 @@ class DoctorAddPet extends Component {
           </div>
           <div className="editPetInfo_top" >
             <div className="title" style={{ marginBottom: px(20), marginTop: px(20) }}>{`New Pet`}</div>
+            <div className="line"></div>
             {this._petSpecies()}
             {this._petName()}
             {this._ownName()}

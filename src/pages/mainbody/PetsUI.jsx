@@ -446,7 +446,8 @@ const PetsUI = ({
         <div className="walkBtn">
           <div
             className="walkbtnBox"
-            style={{ height: px(40), marginTop: px(15), backgroundColor: color }}
+            // 根据主题变换颜色，现在都要改成#e1206d
+            style={{ height: px(40), marginTop: px(15), backgroundColor: '#e1206d' }}
             onClick={() => {
               let json = {
                 isWalkIn: true,
@@ -482,7 +483,7 @@ export default connect(
     selectHardwareType: state.hardwareReduce.selectHardwareType,
     rulerConnectStatus: state.hardwareReduce.rulerConnectStatus,
     selectHardwareInfo: state.hardwareReduce.selectHardwareInfo,
-    receiveBroadcastHardwareInfo: state.hardwareReduce.receiveBroadcastHardwareInfo
+    receiveBroadcastHardwareInfo: state.hardwareReduce.receiveBroadcastHardwareInfo,
   }),
   { petSortTypeFun, petDetailInfoFun, setPetListArrFun }
 )(PetsUI)

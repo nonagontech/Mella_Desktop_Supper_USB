@@ -113,11 +113,11 @@ const MyAccount = ({ bodyHeight }) => {
           <Row>
             <Col flex={1} className="leftColBox">
               <Form.Item valuePropName="fileList" name="imageId" className="imageFormItem">
-                <div style={{ display: 'grid', justifyItems: 'center', alignItems: 'center' }}>
+                <div className="upImg" style={{ display: 'grid', justifyItems: 'center', alignItems: 'center' }}>
                   <Avatar
                     init={
                       <div className="ciral">
-                        <img src={imgUrl ? imgUrl : changePhoto} alt="" id="touxiang" height="300px" />
+                        <img src={imgUrl ? imgUrl : changePhoto} alt="" id="touxiang" />
                         <p style={{ fontSize: px(14), height: mTop(35) }}>Change Photo</p>
                       </div>
                     }

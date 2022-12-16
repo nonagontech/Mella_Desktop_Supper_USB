@@ -1,7 +1,8 @@
 import React, { Component, } from 'react'
 import {
   Button,
-  message
+  message,
+  Radio,
 } from 'antd';
 
 import temporaryStorage from '../../utils/temporaryStorage'
@@ -34,7 +35,10 @@ class Home extends Component {
 
 
 
-
+  _signUP = () => {
+    console.log('1');
+    this.props.history.push('/uesr/logUp/VetPrifile')
+  }
 
   _openUtils = () => {
     console.log('点击来了', logoClick);
@@ -83,9 +87,18 @@ class Home extends Component {
             Sign In
           </Button>
         </div>
-        <p className="text" style={{ marginTop: mTop(5), marginBottom: mTop(5) }}>New to Mella?</p>
+        <div className="text"  style={{ marginTop: mTop(5), marginBottom: mTop(5) }}>New to Mella? <p onClick={this._signUP} style={{textDecoration: 'underline' }}>Sign Up</p></div>
         <div className="create" style={{ marginBottom: mTop(20), marginTop: px(25) }}>
           <Button
+            type="primary"
+            shape="round"
+            size='large'
+            // onClick={() => { this.props.history.push('/uesr/logUp/VetPrifile') }}
+            className="createBtn"
+          >
+            Quick Start
+          </Button>
+          {/* <Button
             type="primary"
             shape="round"
             size='large'
@@ -93,8 +106,15 @@ class Home extends Component {
             className="createBtn"
           >
             Create an Account
-          </Button>
+          </Button> */}
         </div>
+        <div className="text"  style={{ marginTop: mTop(5), marginBottom: mTop(5) }}>
+          <p style={{ width: '350px', fontSize: '18px', color: '#ffc4db', textAlign: 'left' }}>
+          <Radio></Radio>I have read and agreed to the <p></p>
+           <span style={{ marginLeft: '22px', textDecoration: 'underline', color: '#fff' }}>Terms and Services</span> and <span style={{ color: '#fff', textDecoration: 'underline' }}>Privacy Policy</span>
+          </p>
+        </div>
+
       </div>
     )
   }

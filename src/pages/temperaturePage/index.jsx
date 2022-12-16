@@ -7,6 +7,7 @@ import MeasuredData from "./components/measuredData";
 import HeaderItem from "./components/headerItem";
 
 import { connect } from "react-redux";
+import SelectPatient from '../../assets/img/SelectPatient.png'
 import {
   selectHardwareModalShowFun,
   petSortTypeFun,
@@ -51,7 +52,8 @@ const TemperaturePage = ({ petMessage, hardwareMessage, bodyHeight }) => {
           </div>
         </div>
         {_.isEmpty(petMessage) ? (
-          <div className="chackPatientBox" style={{ height: bodyHeight - 100 }}>
+          <div className="chackPatientBox" style={{ height: bodyHeight - 100,  flexDirection: 'column'}}>
+            <img style={{ width: '500px' }} src={SelectPatient} alt="" />
             <p className="chackPatientTitle">Select a patient</p>
           </div>
         ) : (

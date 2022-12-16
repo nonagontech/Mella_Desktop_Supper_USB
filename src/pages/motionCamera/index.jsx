@@ -12,6 +12,7 @@ import {
   petDetailInfoFun,
 } from "../../store/actions";
 import PropTypes from 'prop-types';
+import SelectPatient from '../../assets/img/SelectPatient.png'
 
 import "./index.less";
 
@@ -31,7 +32,8 @@ const MotionCamera = ({ petMessage, hardwareMessage, bodyHeight }) => {
         </div>
       </div>
       {_.isEmpty(petMessage) ? (
-        <div className="chackPatientBox" style={{ height: bodyHeight - 100 }}>
+        <div className="chackPatientBox" style={{ height: bodyHeight - 100, flexDirection: 'column'}}>
+          <img style={{ width: '500px' }} src={SelectPatient} alt="" />
           <p className="chackPatientTitle">Select a patient</p>
         </div>
       ) : (

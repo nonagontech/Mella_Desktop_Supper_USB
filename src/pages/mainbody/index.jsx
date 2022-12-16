@@ -27,6 +27,10 @@ import TemperaturePage from "../../pages/temperaturePage";
 import MabelPage from "../mabelPage";
 import EnrolledPlan from '../enrolledPlan';
 
+import ModalClose from "../../assets/img/ModalClose.png"
+import DetectBase from "../../assets/img/DetectBase.png"
+// import baseNotDetectedModal from "../../components/baseNotDetectedModal";
+
 
 
 import { connect } from "react-redux";
@@ -58,6 +62,7 @@ import { getInfoOfLatestDevice } from '../../api/mellaserver/mellarecord';
 import "./mainbody.less";
 import { devType } from "../../config/config";
 import MotionCamera from "../motionCamera";
+import DoctorAddPet from "../doctorAddPet";
 
 
 // let ipcRenderer = window.require("electron").ipcRenderer;
@@ -96,6 +101,7 @@ class App extends Component {
     units: '℉',
     localVersion: '',//底座版本号
     updateBaseLaterType: false,//底座是否在延迟更新
+    baseModalVisible: false,  // 控制弹窗显隐
   };
   componentDidMount() {
     ipcRenderer.send("big", win());
@@ -255,6 +261,9 @@ class App extends Component {
       if (this.state.isHaveUsbDevice) {
         message.destroy();
         if (this.props.selectHardwareType !== "otterEQ" && this.props.selectHardwareType !== "camera") {
+          this.setState({
+            baseModalVisible: true
+          })
           message.error("The base is not detected. Please insert the base", 0);
           Modal.destroyAll();
         }
@@ -1295,6 +1304,9 @@ class App extends Component {
         return <CombineScales bodyHeight={bodyHeight} />;
       case "AddDevice":
         return <AddDevice bodyHeight={bodyHeight} />;
+      // 配置左侧菜单
+      case "AddPet":
+        return <DoctorAddPet bodyHeight={bodyHeight} />;
       case "3":
         return <ScheduledPetPage bodyHeight={bodyHeight} />;
 
@@ -1375,6 +1387,31 @@ class App extends Component {
                 OK
               </button>
             </div>
+          </div>
+        </Modal>
+        {/* <baseNotDetectedModal
+          visible={this.state.baseModalVisible}
+        ></baseNotDetectedModal> */}
+         <Modal
+          open={this.state.baseModalVisible}
+          onOk={this.handleOk}
+          centered
+          onCancel={() => this.setState({ baseModalVisible: false })}
+          width={430}
+          footer={[]}
+          className="baseNotDetected"
+        >
+          <div className="modalContainer">
+            <img src={ModalClose} alt="" width={50} height={50} />
+            <div className="title">
+              <span>Base Not Detected</span>
+            </div>
+            <div className="content">
+              <p>Please connect your </p>
+              <p>charging base to computer </p>
+              <p>or <span style={{textDecoration: 'underline', color: '#E1206D'}}>update your base.</span> </p>
+            </div>
+            <img style={{marginBottom: '20px'}} src={DetectBase} alt="" width={280} height={200} />
           </div>
         </Modal>
       </div>

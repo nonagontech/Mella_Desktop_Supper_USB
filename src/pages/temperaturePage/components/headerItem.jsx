@@ -191,7 +191,7 @@ const HeaderItem = ({
           <div className="cardTopBox" style={{ backgroundColor: color }}>
             <div className="topLeftBox">
               {petPicture(91)}
-              <p className="cardTitle">{showNameOrId()}</p>
+              <p className="cardTitle" style={{ fontWeight: 700 }} >{showNameOrId()}</p>
               <p className="cardTitle">{ownerName()}</p>
             </div>
             <div className="topRightBox">
@@ -201,6 +201,9 @@ const HeaderItem = ({
               <p className="cardTitle">{breedName}</p>
             </div>
           </div>
+        </Menu.Item>
+        <Menu.Item key={"editPetInfo"} style={{ paddingLeft: '8px' }}>
+          <p className="itemList">Temperature History</p>
         </Menu.Item>
         <Menu.Item key={"editPetInfo"} style={{ paddingLeft: '8px' }}>
           <p className="itemList">Edit Pet Profile</p>

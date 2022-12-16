@@ -386,7 +386,7 @@ export default class Settings extends Component {
                 </div>
 
 
-                <div className="l" style={{ paddingLeft: px(50), paddingRight: px(50) }}>
+                <div className="l">
                   <div className="text">Units:</div>
                   <div className="unit">
 

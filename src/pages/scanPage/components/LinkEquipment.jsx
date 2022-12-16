@@ -13,6 +13,7 @@ import {
     setMellaPredictValueFun,
     setMellaMeasurePartFun
 } from '../../../store/actions';
+import SelectPatient from '../../../assets/img/SelectPatient.png'
 import _ from 'lodash';
 import './LinkEquipment.less';
 
@@ -23,7 +24,8 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
     return (
 
         <Content className={"contentBox"}>
-            <div className='chackPatientBox'>
+            <div className='chackPatientBox' style={{ flexDirection: 'column' }}>
+                <img style={{ width: '500px' }} src={SelectPatient} alt="" />
                 <p className='chackPatientTitle'>Select a patient</p>
             </div>
         </Content>
