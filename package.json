@@ -68,8 +68,8 @@
     "rebuild": "yarn electron-rebuild -v 19.0.17",
     "pack": "electron-builder --dir",
     "disk": "electron-builder",
-    "release": "cross-env GH_TOKEN=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  electron-builder",
-    "releasemac": "yarn cleanmac && cross-env GH_TOKEN=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  electron-builder",
+    "release": "cross-env GH_TOKEN=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  electron-builder",
+    "releasemac": "yarn cleanmac && cross-env GH_TOKEN=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  electron-builder",
     "clear": "rd /s/q dist1 && md dist1",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "cleanmac": "rm -rf dist1 && mkdir dist1"
