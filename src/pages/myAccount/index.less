@@ -14,34 +14,51 @@
     align-items: center;
   }
 
-  .ciral {
-    width: 100%;
-    height: 100%;
-    border-radius: 100px;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    position: relative;
-    z-index: 40;
-    padding: 0;
-    margin: 0;
+  .upImg {
+    .ant-upload-select-picture-card {
+      border: none;
+      border-radius: 100px;
 
-    img {
-      margin: 0 auto;
     }
 
-    .uploadImg {
-      display: none;
+    .ant-upload-list-picture-card .ant-upload-list-item {
+      border-radius: 100px;
+      .ant-upload-list-item-info {
+        border-radius: 100px;
+      }
     }
+    .ciral {
+      width: 100%;
+      height: 100%;
+      border-radius: 100px;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      z-index: 40;
+      padding: 0;
+      margin: 0;
 
-    p {
-      position: absolute;
-      bottom: 0px;
-      color: #fff;
-      font-size: 14px;
-      z-index: 38;
+      img {
+        border-radius: 100px;
+        height: 100%;
+        margin: 0 auto;
+      }
+
+      .uploadImg {
+        display: none;
+      }
+
+      p {
+        position: absolute;
+        bottom: 0px;
+        color: #fff;
+        font-size: 14px;
+        z-index: 38;
+      }
     }
   }
+
 
   .accountInput {
     border-bottom: solid 1px #cac6c6;

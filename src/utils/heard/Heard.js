@@ -649,7 +649,8 @@ const Heard = ({
         break;
       case "5":
         //跳转到设置
-        history.push("/menuOptions/settings");
+        history.push("/MainBody");
+        setMenuNum(e.index);
         break;
       case "6":
         if (e.name === "Exit Clinical Study Mode") {
@@ -1303,7 +1304,10 @@ const Heard = ({
             src={messageImg}
             alt=""
             style={{ height: px(25), width: px(25) }}
-            onClick={() => history.push({ pathname: "/menuOptions/unassigned", deviceType: 0 })}
+            onClick={() => {
+              setMenuNum('Unassigned0')
+              // history.push({ pathname: "/menuOptions/unassigned", deviceType: 0 })
+            }}
           />
         );
       case 'biggie':
@@ -1312,7 +1316,10 @@ const Heard = ({
             src={biggieMessage}
             alt=""
             style={{ height: px(25), width: px(25) }}
-            onClick={() => history.push({ pathname: "/menuOptions/unassigned", deviceType: 1 })}
+            onClick={() => {
+              setMenuNum('Unassigned1')
+              // history.push({ pathname: "/menuOptions/unassigned", deviceType: 1 })
+            }}
           />
         );
       case 'tape':
@@ -1366,6 +1373,12 @@ const Heard = ({
         );
     }
 
+  }
+
+  const jiantou = () => {
+    return (
+      <span class="icon iconfont">&#xe61b;</span>
+    )
   }
 
   useEffect(() => {
@@ -1471,14 +1484,19 @@ const Heard = ({
 
           <div className="search" style={{ width: px(300) }}>
             <input
-              placeholder={`${placeContent}`}
+              // 后续修改，不知道怎么在模板字符串里添加字体图标
+              placeholder="Search Pet  &#xe61f;"
+              // &#xe61f;
+              // placeholder={`${placeContent}`}
+
               style={{ fontSize: px(16), paddingLeft: px(20) }}
               value={value}
               onChange={(text) => {
                 inputChange(text);
               }}
-              onFocus={() => setPlaceholder('')}
-              onBlur={() => setPlaceholder('Search Pet')}
+              // 后续修改，鼠标聚焦清除placeholder
+              // onFocus={() => setPlaceholder('')}
+              // onBlur={() => setPlaceholder('Search Pet')}
               onKeyUp={(e) => {
                 // console.log(e);
                 if (e.keyCode === 13) {
@@ -1526,12 +1544,14 @@ const Heard = ({
                 ) : null}
               </div>
             ) : (
-              <div className="searchIconFa">
-                <span
-                  className=" iconfont icon-sousuo searchIcon"
-                  style={{ fontSize: px(25) }}
-                />
-              </div>
+              // <div className="searchIconFa">
+              //   <span
+              //     className=" iconfont icon-sousuo searchIcon"
+              //     style={{ fontSize: px(25) }}
+              //   />
+              // </div>
+              <>
+              </>
             )}
 
             {visible ? (

@@ -12,7 +12,9 @@ import {
   Progress,
   message
 } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+
+import xia from '../../../assets/img/xia.png'
+import { px } from '../../../utils/px'
 
 import BluetoothNotConnected from "./../../../assets/img/BluetoothNotConnected.png";
 import AxillaryBluetooth from "./../../../assets/img/AxillaryBluetooth.png"; //腋温图片
@@ -191,7 +193,7 @@ const HeaderItem = ({
           <div className="cardTopBox" style={{ backgroundColor: color }}>
             <div className="topLeftBox">
               {petPicture(91)}
-              <p className="cardTitle">{showNameOrId()}</p>
+              <p className="cardTitle" style={{ fontWeight: 700 }} >{showNameOrId()}</p>
               <p className="cardTitle">{ownerName()}</p>
             </div>
             <div className="topRightBox">
@@ -201,6 +203,9 @@ const HeaderItem = ({
               <p className="cardTitle">{breedName}</p>
             </div>
           </div>
+        </Menu.Item>
+        <Menu.Item style={{ paddingLeft: '8px' }}>
+          <p className="itemList">Temperature History</p>
         </Menu.Item>
         <Menu.Item key={"editPetInfo"} style={{ paddingLeft: '8px' }}>
           <p className="itemList">Edit Pet Profile</p>
@@ -842,7 +847,7 @@ const HeaderItem = ({
                     className="petMessageBox"
                     onClick={(e) => e.preventDefault()}
                   >
-                    {petPicture(40)}
+                    {petPicture(50)}
                     <div className="petMessageBox">
                       <p className="petName">
                         {!_.isEmpty(petMessage.patientId)
@@ -853,9 +858,7 @@ const HeaderItem = ({
                           ? petMessage.petName
                           : "unknown"}
                       </p>
-                      <DownOutlined
-                        style={{ fontSize: "22px", marginLeft: "10px" }}
-                      />
+                      <img src={xia} alt="" width={px(25)}  />
                     </div>
                   </div>
                 </Dropdown>

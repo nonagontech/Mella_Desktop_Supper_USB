@@ -65,10 +65,11 @@ class App extends Component {
           <Route exact path="/uesr/logUp/JoinOrganizationByOption" component={JoinOrganizationByOption} />
           <Route exact path="/uesr/logUp/VerifyEmail" component={VerifyEmail} />
           <Route exact path="/uesr/logUp/NewOrganization" component={NewOrganization} />
-          <Route exact path="/uesr/logUp/InviteTeam" component={InviteTeam} />
+          {/* <Route exact path="/uesr/logUp/InviteTeam" component={InviteTeam} /> */}
 
 
           <Route exact path="/pet/doctorAddPet" component={DoctorAddPet} />
+          <Route exact path="/menuOptions/InviteTeam" component={InviteTeam} />
           <Route exact path="/menuOptions/help" component={Help} />
           <Route exact path="/menuOptions/unassigned" component={Unassigned} />
           <Route exact path="/menuOptions/settings" component={Settings} />

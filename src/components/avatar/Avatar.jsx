@@ -67,7 +67,7 @@ const Demo = (props) => {
     <>
       <ImgCrop
         rotate={true}
-      // shape={'round'}
+        shape={'round'}
       // grid={true}
 
       >

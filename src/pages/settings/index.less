@@ -19,7 +19,7 @@
 
   .body {
     // overflow-y: auto;
-    height: calc(100% - 50px);
+    height: 100%;
     display: flex;
     align-items: center;
     width: 100%;
@@ -44,15 +44,17 @@
         .item {
           display: flex;
           flex-direction: row;
+          justify-content: space-between;
           margin-bottom: 10px;
 
           .l {
             display: flex;
-            flex: 1;
+            // flex: 1;
+            width: 45%;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            padding: 0 50px;
+            padding: 0;
 
             .text {
               color: #141414;
@@ -200,7 +202,7 @@
 
     .btnSave {
       width: 100%;
-      background-color: #e7e7e7;
+      background-color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;

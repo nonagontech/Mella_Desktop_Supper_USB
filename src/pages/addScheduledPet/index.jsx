@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { message } from 'antd';
+import { message, Button } from 'antd';
 import { createFromIconfontCN } from '@ant-design/icons';
 
 import dog from '../../assets/images/pinkdog.png'
@@ -245,28 +245,24 @@ const AddScheduledPet = ({ bodyHeight, setMenuNum }) => {
     }
     return (
         <div className='addScjediled' style={{ height: bodyHeight }}>
-            <div className="addDeviceTitle" style={{ height: px(100), fontSize: 26, paddingLeft: px(20) }}>Create New Scheduled </div>
-            <div className='addSBody' style={{ width: '100%', height: bodyHeight - px(100), }}>
-                {body()}
-
-
-                <div className='continueBox'>
-                    <div className='continueBtn'
-                        style={{ borderRadius: px(50), height: px(45), fontSize: px(20), }}
-                        onClick={() => {
-
-                            if (!patientId) {
-                                setMenuNum('3')
-                            } else {
-                                setIsSave(true)
-                            }
-                        }}
-                    >Continue</div>
+            <div className="addDeviceTitle" style={{ height: px(100), fontSize: 26, paddingLeft: px(20) }}>
+                <div>December 2022 </div>
+                <div style={{ width: '200px' }}>
+                    <Button
+                        type="primary"
+                        shape="round"
+                        size="large"
+                        block
+                    >
+                    Save
+                    </Button>
                 </div>
-
+            </div>
+            <div className='addSBody' style={{ width: '100%', height: bodyHeight - px(100), }}>
+            {body()}
             </div>
 
-            <MyModal
+            {/* <MyModal
                 visible={loading}
             />
             <MyModal
@@ -303,14 +299,7 @@ const AddScheduledPet = ({ bodyHeight, setMenuNum }) => {
                         </div>
                     </div>
                 }
-            />
-
-
-
-
-
-
-
+            /> */}
         </div >
 
     )

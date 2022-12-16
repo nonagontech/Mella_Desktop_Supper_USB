@@ -65,11 +65,11 @@ const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow
           selectHardwareModalShowFun(!selectHardwareModalShow)
         }}
       >
-        <div className="devicesName" style={{ fontSize: px(20) }}>
+        <div className="devicesName" style={{ fontSize: px(30) }}>
           {selectHardwareDetail.name || "No Equipment"}
         </div>
-        <div className="imgBox" style={{ marginLeft: px(7) }}>
-          <img src={xia} alt="" width={px(20)} />
+        <div className="imgBox" style={{ marginLeft: px(7)}}>
+          <img src={xia} alt="" width={px(25)} />
         </div>
         {selectHardwareModalShow && <HardListModal setInfo={(item) => {
           setSelectHardwareDetail(item)

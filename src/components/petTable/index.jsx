@@ -339,9 +339,18 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
         </div>
 
       </div>
-      <div className="heard2 flex" style={{ marginBottom: px(8), marginLeft: px(20) }}>
+      <div className="heard2 flex" style={{ marginBottom: px(8) }}>
         <div className="sort flex" >
           <p style={{ fontSize: px(16), marginRight: px(10) }}>Sort By:</p>
+          <Select
+            defaultValue={['Time']}
+            onChange={handleChange}
+            options={options}
+            className="selectFilter"
+          />
+        </div>
+        <div className="sort flex" style={{ justifyContent: 'flex-end' }} >
+          <p style={{ fontSize: px(16), marginRight: px(10) }}>Vet:</p>
           <Select
             defaultValue={['Time']}
             onChange={handleChange}
@@ -357,9 +366,10 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
               padding: 0,
               margin: 0,
               width: '95%',
+              border: '1px solid #979797'
             }}
             rowKey={data => data.id}
-            bordered={false}
+            bordered
             columns={columns}
             dataSource={(heardSearchText.length === 0) ? petListArr : searchData}
             loading={loading}

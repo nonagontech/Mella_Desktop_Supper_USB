@@ -123,20 +123,20 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
                 <br />
                 or Pair New Mella
               </p>
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', width: "100%" }}>
                 <img src={PressButton_Pro} className="PressButton_Pro" />
               </div>
             </div>
             <div className="tableBox">
               <div className="temperatureTitleBox">
-                <p className="temperatureTitle">History</p>
+                <p className="temperatureTitle">Temperature History</p>
               </div>
               <HistoryTable tableColumnType='temperature' />
             </div>
           </>
         ) : (
           <>
-            <div className="startBox">
+            <div className="startBox" style={{height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
               <p className="startTitle">
                 {!type
                   ? title

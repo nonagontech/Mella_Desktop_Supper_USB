@@ -18,7 +18,11 @@ import ScanPage from "../../pages/scanPage";
 import AllPets from "../../pages/allPetsPage";
 import ScheduledPetPage from "../../pages/scheduledPetsPage";
 import Subscriptions from "../../pages/subscriptions";
+import Settings from "../settings";
 import AddScheduledPet from "../../pages/addScheduledPet";
+import PetAndParents from "../../pages/petAndParents"
+import InviteTeam from "../../pages/inviteTeam"
+import Unassigned from "../../pages/unassigned"
 import ClininalStudy from "../../pages/clinicalStudyPage";
 import CombineScales from "../../pages/combineScales";
 import OtterEQPage from '../../pages/otterEQ';
@@ -26,6 +30,9 @@ import MyAccount from "../../pages/myAccount";
 import TemperaturePage from "../../pages/temperaturePage";
 import MabelPage from "../mabelPage";
 import EnrolledPlan from '../enrolledPlan';
+
+import ModalClose from "../../assets/img/ModalClose.png"
+import DetectBase from "../../assets/img/DetectBase.png"
 
 
 
@@ -58,6 +65,7 @@ import { getInfoOfLatestDevice } from '../../api/mellaserver/mellarecord';
 import "./mainbody.less";
 import { devType } from "../../config/config";
 import MotionCamera from "../motionCamera";
+import DoctorAddPet from "../doctorAddPet";
 
 
 // let ipcRenderer = window.require("electron").ipcRenderer;
@@ -96,6 +104,7 @@ class App extends Component {
     units: '℉',
     localVersion: '',//底座版本号
     updateBaseLaterType: false,//底座是否在延迟更新
+    baseModalVisible: false,  // 控制弹窗显隐
   };
   componentDidMount() {
     ipcRenderer.send("big", win());
@@ -255,7 +264,10 @@ class App extends Component {
       if (this.state.isHaveUsbDevice) {
         message.destroy();
         if (this.props.selectHardwareType !== "otterEQ" && this.props.selectHardwareType !== "camera") {
-          message.error("The base is not detected. Please insert the base", 0);
+          this.setState({
+            baseModalVisible: true
+          })
+          // message.error("The base is not detected. Please insert the base", 0);
           Modal.destroyAll();
         }
       }
@@ -1295,11 +1307,32 @@ class App extends Component {
         return <CombineScales bodyHeight={bodyHeight} />;
       case "AddDevice":
         return <AddDevice bodyHeight={bodyHeight} />;
+      // 配置左侧菜单
+      case "AddPet":
+        return <DoctorAddPet />;
       case "3":
         return <ScheduledPetPage bodyHeight={bodyHeight} />;
-
+      case "5":
+        return <Settings />
+      case "PetAndParents":
+        return <PetAndParents />;
       case "AddScheduledPet":
         return <AddScheduledPet bodyHeight={bodyHeight} />;
+      // 配置菜单
+      case "Unassigned0":
+        return <Unassigned deviceType={0} />;
+      case "Unassigned1":
+        return <Unassigned deviceType={1} />;
+      case "InviteTeam":
+        return <InviteTeam isAddDoctor={true} />;
+        //   case "AddScheduledPet":
+        // return <AddScheduledPet />;
+        // case "AddScheduledPet":
+        // return <AddScheduledPet />;
+        // case "AddScheduledPet":
+        // return <AddScheduledPet />;
+        // case "AddScheduledPet":
+        // return <AddScheduledPet />;
       case "6":
         return (
           <>
@@ -1375,6 +1408,28 @@ class App extends Component {
                 OK
               </button>
             </div>
+          </div>
+        </Modal>
+         <Modal
+          open={this.state.baseModalVisible}
+          onOk={this.handleOk}
+          centered
+          onCancel={() => this.setState({ baseModalVisible: false })}
+          width={430}
+          footer={[]}
+          className="baseNotDetected"
+        >
+          <div className="modalContainer">
+            <img src={ModalClose} alt="" width={50} height={50} />
+            <div className="title">
+              <span>Base Not Detected</span>
+            </div>
+            <div className="content">
+              <p>Please connect your </p>
+              <p>charging base to computer </p>
+              <p>or <span style={{textDecoration: 'underline', color: '#E1206D'}}>update your base.</span> </p>
+            </div>
+            <img style={{marginBottom: '20px'}} src={DetectBase} alt="" width={280} height={200} />
           </div>
         </Modal>
       </div>

@@ -20,7 +20,7 @@ import { px } from '../../utils/px';
 import { changeThemeColor } from '../../utils/commonFun';
 
 import { connect } from 'react-redux'
-import { petSortTypeFun, petDetailInfoFun, setPetListArrFun } from '../../store/actions';
+import { petSortTypeFun, petDetailInfoFun, setPetListArrFun, setMenuNum } from '../../store/actions';
 import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types'
 import moment from 'moment';
@@ -46,6 +46,7 @@ const PetsUI = ({
   rulerConnectStatus,
   selectHardwareInfo,
   receiveBroadcastHardwareInfo,
+  setMenuNum
 }) => {
   const history = useHistory();
   //定义宠物列表数组
@@ -430,7 +431,10 @@ const PetsUI = ({
           <Tooltip placement='bottom' title='Add a Pet'>
             <div
               className="addImgBox"
-              onClick={() => history.push("/pet/doctorAddPet")}
+              onClick={() =>
+                setMenuNum('AddPet')
+                // history.push("/pet/doctorAddPet")
+              }
             >
               <img
                 src={deivceAdd}
@@ -446,7 +450,8 @@ const PetsUI = ({
         <div className="walkBtn">
           <div
             className="walkbtnBox"
-            style={{ height: px(40), marginTop: px(15), backgroundColor: color }}
+            // 根据主题变换颜色，现在都要改成#e1206d
+            style={{ height: px(40), marginTop: px(15), backgroundColor: '#e1206d' }}
             onClick={() => {
               let json = {
                 isWalkIn: true,
@@ -482,7 +487,7 @@ export default connect(
     selectHardwareType: state.hardwareReduce.selectHardwareType,
     rulerConnectStatus: state.hardwareReduce.rulerConnectStatus,
     selectHardwareInfo: state.hardwareReduce.selectHardwareInfo,
-    receiveBroadcastHardwareInfo: state.hardwareReduce.receiveBroadcastHardwareInfo
+    receiveBroadcastHardwareInfo: state.hardwareReduce.receiveBroadcastHardwareInfo,
   }),
-  { petSortTypeFun, petDetailInfoFun, setPetListArrFun }
+  { petSortTypeFun, petDetailInfoFun, setPetListArrFun, setMenuNum }
 )(PetsUI)

@@ -63,14 +63,15 @@
 
   .heard2 {
     flex-direction: row;
-    justify-content: flex-start;
-    width: 90%;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 5%;
 
     .sort {
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
-      width: 40%;
+      width: 50%;
       .selectFilter{
         width: 50%;
       }
@@ -107,6 +108,27 @@
 
       &::-webkit-scrollbar-thumb:hover {
         background-color: #747474;
+      }
+    }
+
+    .ant-table-bordered {
+      // 去掉竖边框线
+      .ant-table-tbody > tr >td:not(:last-child) {
+          border-right: 0px !important;
+      }
+      .ant-table-thead > tr >th:not(:last-child) {
+          border-right: 0px !important;
+      }
+
+      .ant-table-tbody > tr >td:not(:last-child) {
+        border-bottom: 1px  solid #F2F2F2 !important;
+      }
+      .ant-table-thead > tr > th:not(:last-child) {
+        border-bottom: 1px  solid #F2F2F2 !important;
+      }
+      .ant-table-thead > tr > th {
+        font-weight: 700;
+        font-family: "Arial Regular";
       }
     }
 

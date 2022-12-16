@@ -54,7 +54,7 @@
 
 /*中间头部*/
 #mainbody .deviceAndPets .deviceAndPets-title {
-  height: 100px;
+  height: 70px;
 }
 
 /*中间宠物列表*/
@@ -65,7 +65,7 @@
 /*右边头部*/
 
 .headerContentBox {
-  height: 100px;
+  height: 70px;
 }
 
 .popBox {
@@ -98,14 +98,15 @@
 
 /*温度测量页面*/
 .temperatureContentBox .startBox .startTitle {
-  font-size: 32px;
+  font-size: 42px;
   line-height: 42px;
-  margin-top: 50px;
+  margin-top: 40px;
+  margin-bottom: 30px;
 }
 
 .temperatureContentBox .PressButton_Pro {
-  width: 300px;
-  height: 200px;
+  width: 100%;
+  /* height: 300px; */
 }
 
 .temperatureContentBox .checkImages {
@@ -136,8 +137,8 @@
 }
 
 .measurementBox .progress .measurementProgress .ant-progress-inner {
-  width: 260px !important;
-  height: 260px !important;
+  width: 400px !important;
+  height: 400px !important;
 }
 
 .measurementBox .buttonBox {
@@ -262,7 +263,7 @@
 /*医生添加宠物界面*/
 
 #doctorAddPet .editPetInfo_top {
-  height: 80%;
+  height: 85%;
 }
 
 #doctorAddPet .editPetInfo_foot {

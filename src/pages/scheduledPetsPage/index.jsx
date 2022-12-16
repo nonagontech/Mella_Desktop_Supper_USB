@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { } from 'antd';
-import { SyncOutlined } from '@ant-design/icons';
-
+import {
+  Modal,
+  Input,
+  message,
+  Spin,
+  Button,
+  Form,
+  Radio,
+  Col,
+  Row,
+  Checkbox,
+  Select,
+} from 'antd';
+import { SyncOutlined, SearchOutlined } from '@ant-design/icons';
 import { px } from '../../utils/px';
 import PetTable from '../../components/petTable';
 
@@ -13,6 +24,13 @@ import {
   setPetListArrFun
 } from '../../store/actions';
 
+import dog from '../../assets/images/pinkdog.png'
+import cat from '../../assets/images/pinkcat.png'
+import redDog from '../../assets/images/reddog.png'
+import redCat from '../../assets/images/redcat.png'
+import redother from '../../assets/images/redother.png'
+import other from '../../assets/images/other.png'
+
 import './index.less'
 import { pet_subscribe_page } from '../../api';
 
@@ -23,9 +41,17 @@ const ScheduledPetPage = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetList
   const [petListArr, setPetListArr] = useState([])
   //定义宠物列表是否加载中
   const [loading, setLoading] = useState(true)
+  // 添加预约宠物弹窗
+  const [addModal, setScheduleModal] = useState(false)
+  // 选择物种
+  const [wuzhong, setWuzhong] = useState('dog');
+  const [form] = Form.useForm();
 
   const [spin, setSpin] = useState(false)
 
+  const selsectwuzhong = (val) => {
+    setWuzhong(val);
+  }
 
   const _getExam = async () => {
     console.log('进来了');
@@ -167,36 +193,34 @@ const ScheduledPetPage = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetList
     <div id='scheduled' style={{ height: bodyHeight }}>
       <div className="allPetHeard">
         <div className="addDeviceTitle flex" style={{ fontSize: 26, paddingLeft: px(20) }}>
-          <div className="title">Scheduled Patients</div>
+          <div className="title">December 12, 2012 </div>
           <div className="refresh flex"
             style={{ fontSize: px(25), marginLeft: px(10) }}
           >
             <SyncOutlined onClick={_refresh} spin={spin} />
           </div>
-
         </div>
-
-        <div className="walkBtn1" style={{ marginRight: px(80) }}>
+        <div className="walkBtn1" style={{ marginRight: px(40) }}>
           <div
             className="walkbtnBox"
-            style={{ height: px(40), width: px(200) }}
+            style={{ height: px(40), width: px(160), marginRight: px(40) }}
             onClick={() => {
-              let json = {
-                isWalkIn: true,
-                petId: null,
-                petName: null,
-                owner: null,
-                breed: null,
-
-              }
-              petDetailInfoFun(json)
-              setMenuNum("1")
+              setMenuNum('AddScheduledPet')
             }}
           >
-            <div className="walkText">Walk-In</div>
+            <div className="walkText">Edit Schedule</div>
+          </div>
+          <div
+            className="walkbtnBox"
+            style={{ height: px(40), width: px(160) }}
+          >
+            <div className="walkText"
+              onClick={() => {
+                setScheduleModal(true)
+              }}
+            >+Add Appointment</div>
           </div>
         </div>
-
       </div>
       <div className="body111" style={{ height: bodyHeight - px(100) }}>
 
@@ -208,20 +232,155 @@ const ScheduledPetPage = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetList
           type={'scheduled'}
 
         />
-        <div className="hread flex" style={{ alignItem: 'center' }}>
-          <div className="hread1" style={{ marginTop: px(10), justifyContent: 'flex-end', display: 'flex', }}>
-            <div className="walkin flex"
-              style={{ borderRadius: px(50), height: px(45), fontSize: px(20), marginRight: px(10) }}
-              onClick={() => {
-                setMenuNum('AddScheduledPet')
-
-              }}
-            >Create New Scheduled</div>
+      </div>
+      <Modal
+          title="Assign Measurement"
+          centered
+          open={addModal}
+          // onOk={this.handleOk}
+          onCancel={() => setScheduleModal(false)}
+          width={430}
+          maskClosable={false}
+          footer={null}
+          className="addScheduleModal"
+        >
+        <div className="modalContainer">
+          <div className="title">
+            Search patient or pet species
+          </div>
+          <div className="searchBox">
+            <Input
+              placeholder="Search Pet"
+              bordered={false}
+              allowClear={true}
+              prefix={<SearchOutlined />}
+              // onChange={onChange}
+            />
+          </div>
+          <div className="petList">
+            <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                    selsectwuzhong('dog')
+                }}>
+                <img src={wuzhong === 'dog' ? redDog : dog} alt="" width={px(40)} />
+                <span style={{marginLeft: '10px'}}>Dog</span>
+            </div>
+            <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                    selsectwuzhong('cat')
+                }}>
+                <img src={wuzhong === 'cat' ? redCat : cat} alt="" width={px(40)} />
+                <span style={{marginLeft: '10px'}}>Cat</span>
+            </div>
+            <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                    selsectwuzhong('other')
+                }}>
+                <img src={wuzhong === 'other' ? redother : other} alt="" width={px(40)} />
+                <span style={{marginLeft: '10px'}}>Other</span>
+            </div>
 
           </div>
+          <div className="formList">
+            <Form
+              form={form}
+              layout="vertical"
+              // onFinish={onFinish}
+              className="accountForm"
+            >
+              <Row>
+                <Col flex={1} >
+                  <Form.Item label="Pet Name" name="PetName">
+                    <Input placeholder="input placeholder" bordered={false} className="accountInput" />
+                  </Form.Item>
+                  <Form.Item label="Patient ID" name="PatientID">
+                    <Input placeholder="input placeholder" bordered={false} className="accountInput" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Form.Item className="expertiseFormItem" label="Procedure:" name="domain">
+                <Checkbox.Group>
+                  <Row>
+                    <Col span={8}>
+                      <Checkbox
+                        value='0'
+                        style={{
+                          lineHeight: '32px',
+                        }}
+                      >
+                        Check-Up
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox
+                        value='1'
+                        style={{
+                          lineHeight: '32px',
+                        }}
+                      >
+                        Follow-Up
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox
+                        value='2'
+                        style={{
+                          lineHeight: '32px',
+                        }}
+                      >
+                        Vaccination
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox
+                        value='3'
+                        style={{
+                          lineHeight: '32px',
+                        }}
+                      >
+                        Surgery
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox
+                        value='4'
+                        style={{
+                          lineHeight: '32px',
+                        }}
+                      >
+                        Dental
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox
+                        value='5'
+                        style={{
+                          lineHeight: '32px',
+                        }}
+                      >
+                        Other
+                      </Checkbox>
+                    </Col>
+                  </Row>
+                </Checkbox.Group>
+              </Form.Item>
+            </Form>
+          </div>
+          <div className="btnBox">
+            <Button
+              type="primary"
+              shape="round"
+              size="large"
+              block
+            >
+              Save
+            </Button>
+          </div>
         </div>
-      </div>
-
+      </Modal>
     </div >
 
   )

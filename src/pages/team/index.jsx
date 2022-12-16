@@ -294,7 +294,7 @@ export default class Team extends Component {
             onClick1={() => this.props.history.goBack()}
           />
           <div className="text">Invite your Team</div>
-
+          <div className="line"></div>
           <div className="addF">
             <p>To:</p>
             <div className="add">

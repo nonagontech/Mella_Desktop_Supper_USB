@@ -103,20 +103,21 @@ const Measurement = ({ petMessage, hardwareMessage }) => {
     <>
       {/* <HeaderItem /> */}
       <Content className={"measureContentBox"}>
-        <div style={{ marginTop: 16 }}>
-          <Progress
-            type="dashboard"
-            percent={_.round(mellaMeasureValue, 1)}
-            gapDegree={30}
-            // width={px(260)}
-            strokeWidth={"8"}
-            format={(percent) => ProgressTitle(percent)}
-            strokeColor={'#4C595E'}
-            className='measuringProgress'
-          />
+        <div style={{height: '100%', display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent:'center'}}>
+          <div style={{ marginTop: 16 }}>
+            <Progress
+              type="dashboard"
+              percent={_.round(mellaMeasureValue, 1)}
+              gapDegree={30}
+              // width={px(260)}
+              strokeWidth={"8"}
+              format={(percent) => ProgressTitle(percent)}
+              strokeColor={'#4C595E'}
+              className='measuringProgress'
+            />
+          </div>
+          {checkImage()}
         </div>
-
-        {checkImage()}
       </Content>
     </>
   );
