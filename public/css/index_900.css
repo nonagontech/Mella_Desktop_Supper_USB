@@ -281,11 +281,13 @@
 
 /*所有宠物列表界面*/
 .petTable .pet_table_heard {
-  margin-top: 40px;
+  /* margin-top: 40px; */
+  margin-top: 20px;
 }
 
 .petTable .heard2 {
-  margin-top: 40px;
+  /* margin-top: 40px; */
+  margin-top: 20px;
 }
 
 .petTable .table .allPetTable .ant-table-body {
