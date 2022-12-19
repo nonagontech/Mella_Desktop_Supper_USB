@@ -9,6 +9,7 @@ import placement_gang from "./../../assets/images/placement_gang.png";
 import placement_er from "./../../assets/images/placement_er.png";
 import palcement_ye from "./../../assets/images/palcement_ye.png";
 import thrDot from "./../../assets/img/thrDot.png"
+import completeMeasure from "./../../assets/img/completMeasure.png"
 import measuringDots from "./../../assets/img/measuringDots.png"
 import TempReady from "./../../assets/img/TempReady.png"
 import HeaderItem from "./../temperaturePage/components/headerItem";
@@ -568,6 +569,33 @@ const ClinicalStudy = ({
 
     return option;
   };
+  const getSwitch = (status, text) => {
+    switch (status) {
+      case 'disconnected':
+        return (
+          <span style={{ position: "absolute", left: '-20px', fontSize: px(32), fontWeight: "bold" }}>
+            {text}
+          </span>
+        )
+      case 'connected':
+        return (
+          <>
+            <img src={thrDot} alt="" style={{ height: '20px', position: "absolute", bottom: "140px", right: '20px' }} />
+            <img src={TempReady} alt="" style={{ height: '250px', position: "absolute", bottom: "-140px", right: 0 }} />
+          </>
+        )
+      case 'complete':
+        return (
+          <>
+            <span style={{ position: "absolute", bottom: '-140px', right: '30px', fontSize: px(32), fontWeight: "bold" }}>
+              {text}
+            </span>
+          </>
+        )
+      default:
+        break;
+    }
+  }
   const _status = () => {
     // let mellaConnectStatus = 'complete'
     let text = "",
@@ -642,7 +670,7 @@ const ClinicalStudy = ({
                 </sup>
               </span>
               <br />
-              {/* <span style={{ fontSize: px(22) }}>{text}</span> */}
+              <span style={{ fontSize: px(22) }}>{text}</span>
 
               <span
                 style={{
@@ -654,6 +682,11 @@ const ClinicalStudy = ({
             </>
           ) : (
             <>
+              {mellaConnectStatus === 'complete' &&
+                <>
+                  <img src={completeMeasure} alt="" style={{ height: '30px', position: "absolute", bottom: "140px", right: '20px' }} />
+                </>
+              }
               <span style={{ fontSize: px(46), fontWeight: "bold" }}>
                 {temp < 3 && !temp ? null : temp}{" "}
                 <sup style={{ fontSize: px(28), fontWeight: "bold" }}>
@@ -661,11 +694,7 @@ const ClinicalStudy = ({
                 </sup>
               </span>
               <br />
-              <img src={thrDot} alt="" style={{ height: '20px', position: "absolute", bottom: "140px", right: '20px' }} />
-              <img src={TempReady} alt="" style={{ height: '250px', position: "absolute", bottom: "-140px", right: 0 }} />
-              {/* <span style={{ fontSize: px(32), fontWeight: "bold" }}>
-                {text}
-              </span> */}
+              {getSwitch(mellaConnectStatus, text)}
             </>
           )
         ) : lowFlog ? (
@@ -683,7 +712,7 @@ const ClinicalStudy = ({
               <sup style={{ fontSize: px(28), fontWeight: "bold" }}>{unit}</sup>
             </span>
             <br />
-            <div style={{ position: "absolute", bottom: '-140px', right: '50px', color: '#3b3a3a', fontSize: '17px', fontFamily: 'VAG Rounded Std',fontWeight: 'bold' }}>Measuring...</div>
+            <div style={{ position: "absolute", bottom: '-140px', right: '50px', color: '#3b3a3a', fontSize: '17px', fontFamily: 'VAG Rounded Std', fontWeight: 'bold' }}>Measuring...</div>
           </>
         )}
       </div>
