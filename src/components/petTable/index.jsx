@@ -14,11 +14,79 @@ import './petTable.less';
 
 
 let storage = window.localStorage;
-const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNum, resetPetList, type, onScroll }) => {
+const PetTable = ({ searchVisible, petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNum, resetPetList, type, onScroll }) => {
   let history = useHistory()
   const [heardSearchText, setHeardSearchText] = useState('')
   //搜索后展示的宠物列表
   const [searchData, setSearchData] = useState([]);
+  const defaultColumns = [
+    {
+      title: 'Pet ID',
+      dataIndex: 'patientId',
+      key: 'patientId',
+      ellipsis: true,
+      align: "center",
+    },
+    {
+      title: 'Pet Name',
+      dataIndex: 'petName',
+      key: 'petName',
+      ellipsis: true,
+      align: "center",
+    },
+    {
+      title: 'Owner',
+      dataIndex: 'owner',
+      key: 'owner',
+      ellipsis: true,
+      align: "center",
+    },
+    {
+      title: 'Breed',
+      dataIndex: 'breed',
+      key: 'breed',
+      ellipsis: true,
+      align: "center",
+      render: (text, record, index) => {
+        if (!text || text === 'defaultdog' || text === 'defaultother' || text === 'defaultcat') {
+          return (
+            'unknown'
+          )
+        } else {
+          return (
+            text
+          )
+        }
+
+      }
+    },
+    {
+      title: 'Gender',
+      dataIndex: 'gender',
+      key: 'gender',
+      ellipsis: true,
+      align: "center",
+    },
+    {
+      title: 'Age',
+      dataIndex: 'age',
+      key: 'age',
+      ellipsis: true,
+      align: "center",
+      render: (text, record, index) => {
+        if (`${text}` === 'NaN') {
+          return (
+            'unknown'
+          )
+        } else {
+          return (
+            text
+          )
+        }
+
+      }
+    },
+  ];
   const columns = [
     {
       title: 'Time',
@@ -314,51 +382,56 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
   }
   return (
     <div className='petTable' >
-      <div className="pet_table_heard">
-        <div className="search" style={{ height: px(32) }}>
-          <input
-            type="text"
-            placeholder="&#xe61b;    search"
-            value={heardSearchText}
-            onChange={(e) => {
-              setHeardSearchText(e.target.value);
-              _search(e.target.value);
-            }
-            }
-          />
-        </div>
+      {
+        searchVisible ?
+        <>
+            <div className="pet_table_heard">
+              <div className="search" style={{ height: px(32) }}>
+                <input
+                  type="text"
+                  placeholder="&#xe61b;    search"
+                  value={heardSearchText}
+                  onChange={(e) => {
+                    setHeardSearchText(e.target.value);
+                    _search(e.target.value);
+                  }
+                  }
+                />
+              </div>
+              <div className="walkBtn1" style={{ marginRight: px(28) }}>
+                <div
+                  className="walkbtnBox"
+                  style={{ height: px(28), width: px(80) }}
+                  onClick={_search}
+                >
+                  <div className="walkText">Search</div>
+                </div>
+              </div>
+            </div>
+            <div className="heard2 flex" style={{ marginBottom: px(20) }}>
+              <div className="sort flex" >
+                <p style={{ fontSize: px(16), marginRight: px(10) }}>Sort By:</p>
+                <Select
+                  defaultValue={['Time']}
+                  onChange={handleChange}
+                  options={options}
+                  className="selectFilter"
+                />
+              </div>
+              <div className="sort flex" style={{ justifyContent: 'flex-end' }} >
+                <p style={{ fontSize: px(16), marginRight: px(10) }}>Vet:</p>
+                <Select
+                  defaultValue={['Time']}
+                  onChange={handleChange}
+                  options={options}
+                  className="selectFilter"
+                />
+              </div>
+            </div>
+        </> :
+        <></>
+      }
 
-        <div className="walkBtn1" style={{ marginRight: px(28) }}>
-          <div
-            className="walkbtnBox"
-            style={{ height: px(28), width: px(80) }}
-            onClick={_search}
-          >
-            <div className="walkText">Search</div>
-          </div>
-        </div>
-
-      </div>
-      <div className="heard2 flex" style={{ marginBottom: px(8) }}>
-        <div className="sort flex" >
-          <p style={{ fontSize: px(16), marginRight: px(10) }}>Sort By:</p>
-          <Select
-            defaultValue={['Time']}
-            onChange={handleChange}
-            options={options}
-            className="selectFilter"
-          />
-        </div>
-        <div className="sort flex" style={{ justifyContent: 'flex-end' }} >
-          <p style={{ fontSize: px(16), marginRight: px(10) }}>Vet:</p>
-          <Select
-            defaultValue={['Time']}
-            onChange={handleChange}
-            options={options}
-            className="selectFilter"
-          />
-        </div>
-      </div>
       <div className="table" onScrollCapture={onScrollCapture}>
         <ConfigProvider renderEmpty={noData}>
           <Table
@@ -370,7 +443,7 @@ const PetTable = ({ petListArr, loading, bodyHeight, petDetailInfoFun, setMenuNu
             }}
             rowKey={data => data.id}
             bordered
-            columns={columns}
+            columns={searchVisible ? columns : defaultColumns}
             dataSource={(heardSearchText.length === 0) ? petListArr : searchData}
             loading={loading}
             pagination={false}

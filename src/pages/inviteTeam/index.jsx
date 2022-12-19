@@ -127,6 +127,7 @@ export default class InviteTeam extends Component {
   };
 
   _next = () => {
+    console.log('this.props', this.props);
     let { isAddDoctor } = this.props
     message.destroy()
     let { tags } = this.state
@@ -142,35 +143,35 @@ export default class InviteTeam extends Component {
     })
     console.log('入参:', tags);
 
-    inviteUserByEmail(userId, organizationId, tags)
-      .then(res => {
-        console.log(res);
-        if (res.flag === true) {
-          console.log('成功，跳转');
-          message.success('Invitation successful', 3)
-          if (!isAddDoctor) {
-            this._logIn()
-          } else {
-            this.setState({
-              visible: false
-            })
-            this.props.history.goBack()
-          }
+    // inviteUserByEmail(userId, organizationId, tags)
+    //   .then(res => {
+    //     console.log(res);
+    //     if (res.flag === true) {
+    //       console.log('成功，跳转');
+    //       message.success('Invitation successful', 3)
+    //       if (!isAddDoctor) {
+    //         this._logIn()
+    //       } else {
+    //         this.setState({
+    //           visible: false
+    //         })
+    //         this.props.history.goBack()
+    //       }
 
-        } else {
-          this.setState({
-            visible: false
-          })
-        }
+    //     } else {
+    //       this.setState({
+    //         visible: false
+    //       })
+    //     }
 
-      })
-      .catch(err => {
-        this.setState({
-          visible: false
-        })
-        console.log(err);
-        message.error(err.message, 3)
-      })
+    //   })
+    //   .catch(err => {
+    //     this.setState({
+    //       visible: false
+    //     })
+    //     console.log(err);
+    //     message.error(err.message, 3)
+    //   })
   }
   _logIn = () => {
 
@@ -305,7 +306,7 @@ export default class InviteTeam extends Component {
             onClick={() => { this.props.history.push('/') }}
             onClick1={() => this.props.history.goBack()}
           /> */}
-          <div className="text">Invite your Team11</div>
+          <div className="text">Invite your Team</div>
 
           <div className="addF">
             <p>To:</p>

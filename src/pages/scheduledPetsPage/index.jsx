@@ -223,14 +223,13 @@ const ScheduledPetPage = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetList
         </div>
       </div>
       <div className="body111" style={{ height: bodyHeight - px(100) }}>
-
         <PetTable
           // bodyHeight={bodyHeight - devicesTitleHeight}
           petListArr={petListArr}
           loading={loading}
           resetPetList={(val) => setPetListArr(val)}
           type={'scheduled'}
-
+          searchVisible={true}
         />
       </div>
       <Modal

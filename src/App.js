@@ -32,6 +32,7 @@ import NewOrg from './pages/newOrg/index'
 import Team from './pages/team/index'
 import MainBody from './pages/mainbody'
 import Subscriptions from './pages/subscriptions'
+import addScheduledPet from './pages/addScheduledPet'
 import { setSystemTypeFun } from './store/actions'
 import { connect } from 'react-redux'
 class App extends Component {
@@ -51,7 +52,7 @@ class App extends Component {
       <HashRouter>
         <Switch>
           <Route exact path="/" component={Home} />
-
+          {/* <Route exact path="/" component={addScheduledPet} /> */}
 
           <Route exact path="/page7" component={MaxMinReturn} />
           <Route exact path="/page9" component={EditPetInfo} />

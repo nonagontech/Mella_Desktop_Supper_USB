@@ -112,9 +112,7 @@ const AddScheduledPet = ({ bodyHeight, setMenuNum }) => {
         let addPetist = [].concat(addPetist1)
         addPetist.push(defaultData)
         console.log('新的:', addPetist);
-
         let options = addPetist.map((item, index) => {
-
 
             if (index === addPetist.length - 1) {
                 return <li key={`${index}`} style={{ width: '100%', }}>
@@ -245,7 +243,7 @@ const AddScheduledPet = ({ bodyHeight, setMenuNum }) => {
     }
     return (
         <div className='addScjediled' style={{ height: bodyHeight }}>
-            <div className="addDeviceTitle" style={{ height: px(100), fontSize: 26, paddingLeft: px(20) }}>
+            <div className="addDeviceTitle" style={{ height: px(100), fontSize: 26 }}>
                 <div>December 2022 </div>
                 <div style={{ width: '200px' }}>
                     <Button
@@ -254,7 +252,7 @@ const AddScheduledPet = ({ bodyHeight, setMenuNum }) => {
                         size="large"
                         block
                     >
-                    Save
+                    Save Schedule
                     </Button>
                 </div>
             </div>
