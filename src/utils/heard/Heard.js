@@ -1441,7 +1441,13 @@ const Heard = ({
       <div
         id="heardUITop"
         style={{ ...color }}
-      />
+      >
+        {
+          systemType === 'mac'
+          ? <div style={{ height: '100%', backgroundColor: '#E7E7E7', width: '80px'}}></div>
+          : <></>
+        }
+      </div>
       <div
         id="heard"
         style={{ ...size, ...color }}
@@ -1450,11 +1456,17 @@ const Heard = ({
         }}
       >
         <div className="l">
-          {systemType === 'mac' && <MinClose />}
+          {systemType === 'mac' ?
+          (
+            <div className="macMinClose">
+              <MinClose />
+            </div>
+          ) : <></>
+        }
 
           <div
             className="menuF"
-            style={{ marginLeft: px(parseInt(`${systemType === 'mac' ? '20' : '40'}`)), marginRight: px(40) }}
+            style={{ marginLeft: px(parseInt(`${systemType === 'mac' ? '20' : '30'}`)), marginRight: px(40) }}
           >
             <div
               className="menu"

@@ -73,7 +73,7 @@ const MinClose = ({ minHeight, imgWidth, systemType }) => {
         <>
           <div
             className='macStyle'
-            // style={{ marginLeft: '21px' }}
+            style={{ marginLeft: '21px' }}
             onClick={closeClock}
             onMouseEnter={closeMouseEnter}
             onMouseLeave={closeMouseLeave}
