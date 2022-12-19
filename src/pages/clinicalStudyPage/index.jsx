@@ -1072,47 +1072,16 @@ const ClinicalStudy = ({
               className="activeImageBox"
               style={{
                 display: "flex",
+                justifyContent: 'center'
               }}
             >
-              <Popconfirm
-                title="Sure to delete?"
-                onConfirm={() => _del(record.historyId, record)}
-              >
-                <img src={del} alt="" className="activeImages" />
-              </Popconfirm>
-              {petDetailInfo.isWalkIn ? (
-                <div
-                  className="assign"
-                  style={{
-                    fontSize: px(14),
-                  }}
-                  onClick={() => {
-                    setSelectPetVisible(true);
-                    setSeleceEmergencies(record);
-                    setLastLastWorkplaceId(storage.lastOrganization);
-                  }}
-                >
-                  Assign
-                </div>
-              ) : (
-                <>
-                  <img
-                    src={edit}
-                    alt=""
-                    // style={{ width: px(25) }}
-                    onClick={() => _edit(record.historyId, record)}
-                    className="activeImages"
-                  />
-
-                  <img
-                    src={start}
-                    alt=""
-                    // style={{ width: px(25) }}
-                    onClick={() => see(record.historyId, record)}
-                    className="activeImages"
-                  />
-                </>
-              )}
+              <img
+                src={start}
+                alt=""
+                // style={{ width: px(25) }}
+                onClick={() => see(record.historyId, record)}
+                className="activeImages"
+              />
             </div>
           );
         },
@@ -1299,6 +1268,58 @@ const ClinicalStudy = ({
         align: "center",
         render: (text, record, index) => {
           return <p style={{ width: "100%" }}>{text}</p>;
+        },
+      },
+      {
+        title: "",
+        dataIndex: "operation",
+        key: "operation",
+        className: `${isflog ? "operation" : ""}`,
+
+        render: (text, record, index) => {
+          return (
+            <div
+              className="activeImageBox"
+              style={{
+                display: "flex",
+                justifyContent: 'space-around'
+              }}
+            >
+
+              {petDetailInfo.isWalkIn ? (
+                <div
+                  className="assign"
+                  style={{
+                    fontSize: px(14),
+                  }}
+                  onClick={() => {
+                    setSelectPetVisible(true);
+                    setSeleceEmergencies(record);
+                    setLastLastWorkplaceId(storage.lastOrganization);
+                  }}
+                >
+                  Assign
+                </div>
+              ) : (
+                <>
+                  <img
+                    src={edit}
+                    alt=""
+                    // style={{ width: px(25) }}
+                    onClick={() => _edit(record.historyId, record)}
+                    className="activeImages"
+                  />
+                </>
+              )}
+
+              <Popconfirm
+                title="Sure to delete?"
+                onConfirm={() => _del(record.historyId, record)}
+              >
+                <img src={del} alt="" className="activeImages" />
+              </Popconfirm>
+            </div>
+          );
         },
       },
     ];
