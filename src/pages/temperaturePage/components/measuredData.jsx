@@ -68,6 +68,8 @@ const MeasuredData = ({
   const [newMemo, setNewMemo] = useState(""); //note内容
   const [petMessages, setPetMessages] = useState({}); //接收点击了那个的值
   const [saveType, setSaveType] = useState(false); //是否隐藏按钮
+  const [temHistory, setTempHsitory] = useState(true); //是否隐藏历史
+
   const [bounds, setBounds] = useState({
     left: 0,
     top: 0,
@@ -220,6 +222,14 @@ const MeasuredData = ({
         </p>
       </>
     );
+  };
+  // 历史记录显隐
+  const TempHisVisible = () => {
+    if (temHistory === false) {
+      setTempHsitory(true)
+    } else {
+      setTempHsitory(false)
+    }
   };
   //获取历史宠物温度数据
   const getPetTemperatureData = (currPage) => {
@@ -516,37 +526,40 @@ const MeasuredData = ({
     <>
       <Content className="measurementBox">
         <div className="container">
-          {/* <div className="progress">
-            <Progress
-              type="dashboard"
-              percent={_.round(mellaMeasureValue, 1)}
-              gapDegree={30}
-              // width={px(260)}
-              strokeWidth={"8"}
-              format={(percent) => ProgressTitle(percent)}
-              strokeColor={{
-                "0%": "#7bd163",
-                "100%": "#19ade4",
-              }}
-              className="measurementProgress"
-            />
-
-
-          </div> */}
+          {
+            temHistory ?
+              (
+                <div className="progress">
+                  <Progress
+                    type="dashboard"
+                    percent={_.round(mellaMeasureValue, 1)}
+                    gapDegree={30}
+                    // width={px(260)}
+                    strokeWidth={"8"}
+                    format={(percent) => ProgressTitle(percent)}
+                    strokeColor={{
+                      "0%": "#7bd163",
+                      "100%": "#19ade4",
+                    }}
+                    className="measurementProgress"
+                  />
+                </div>
+              ) : <></>
+          }
           <div className="bottomContent">
             <div className="measureContent">
               {btnList.map((item, index) => (
-                  // <li key={index}>
-                  //   <>
-                  //     <img src={data.img} alt="" />
-                  //     <p>{data.title}</p>
-                  //   </>
-                  // </li>
+                // <li key={index}>
+                //   <>
+                //     <img src={data.img} alt="" />
+                //     <p>{data.title}</p>
+                //   </>
+                // </li>
                 <div key={index} className="item">
-                    <>
+                  <>
                     <p className="pSt1">{item.name}</p>
                     <p className="pSt2">{item.data}</p>
-                    </>
+                  </>
                 </div>
               ))}
             </div>
@@ -563,7 +576,7 @@ const MeasuredData = ({
                     Measure Again
                   </Button>
                   <Button
-                    style={{ backgroundColor: "#e1206d"}}
+                    style={{ backgroundColor: "#e1206d" }}
                     className="btn"
                     type="danger"
                     shape="round"
@@ -576,31 +589,36 @@ const MeasuredData = ({
               )}
             </div>
             <div className="scrollHistory">
-              <span className="his">Hisory</span>
-              <img src={xia_hui} style={{width: px(20)}} alt="" />
+              <span className="his" onClick={() => TempHisVisible()}>Hisory</span>
+              <img src={xia_hui} style={{ width: px(20) }} alt="" onClick={() => TempHisVisible()} />
             </div>
           </div>
-          <div className="hisTable">
-            <div className="listTitleBox1">
-              <p className="listTitle">Temperature History</p>
-            </div>
-            <div className="table" onScrollCapture={onScrollCapture}>
-              <Table
-                rowKey={"examId"}
-                columns={columns}
-                dataSource={petTemperatureData}
-                className="measuredTable"
-                pagination={false}
-                scroll={{
-                  y: '80%'
-                }}
-              />
-            </div>
-            <Button className="exportBtn">
-              <img src={exportHis} alt="" style={{width: '30px', marginRight: '10px'}} />
-              Export History
-            </Button>
-          </div>
+          {
+            !temHistory ?
+              (
+                <div className="hisTable">
+                  <div className="listTitleBox1">
+                    <p className="listTitle">Temperature History</p>
+                  </div>
+                  <div className="table" onScrollCapture={onScrollCapture}>
+                    <Table
+                      rowKey={"examId"}
+                      columns={columns}
+                      dataSource={petTemperatureData}
+                      className="measuredTable"
+                      pagination={false}
+                      scroll={{
+                        y: '80%'
+                      }}
+                    />
+                  </div>
+                  <Button className="exportBtn">
+                    <img src={exportHis} alt="" style={{ width: '30px', marginRight: '10px' }} />
+                    Export History
+                  </Button>
+                </div>
+              ) : <></>
+          }
         </div>
       </Content>
       {/*修改note弹窗 */}
