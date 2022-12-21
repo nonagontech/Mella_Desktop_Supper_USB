@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Button, Form, Input, Checkbox } from 'antd';
+import { Button, Form, Input, Checkbox, message } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 import { px } from '../../utils/px';
 import PetTable from '../../components/petTable';
@@ -23,6 +23,20 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
   const [pageSize, setPageSize] = useState(20); // 每页20条
   const [total, setTotal] = useState(0);//宠物列表数据的总条数
   const [currPage, setCurrPage, getCurrPage] = useGetState(1);//页码
+  //搜索后展示的宠物列表
+  const [searchData, setSearchData] = useState([]);
+  const handleDownChange1 = (e) =>{
+    const checked = e.target.checked
+    form.setFieldsValue({
+      Clients: checked ? '1' : '0'
+    })
+  }
+  const handleDownChange2 = (e)=>{
+    const checked = e.target.checked
+    form.setFieldsValue({
+      Patients: checked ? '1' : '0'
+    })
+  }
   const _getExam = async (currPageValue) => {
     setLoading(true);
     let params = {
@@ -150,6 +164,121 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
     setTotal(0);
     _getExam(1);
   }
+  const filterSearch = () => {
+    setLoading(true);
+    console.log('form.getFieldsValue()', form.getFieldsValue());
+    let search = form.getFieldsValue().petName != undefined ?  form.getFieldsValue().petName.replace(/(^\s*)|(\s*$)/g, ""): ''
+    let params = {
+      searchValue: search || ''
+    }
+    if (storage.lastOrganization) {
+      params.orgId = storage.lastOrganization
+    }
+    const isUnKnow = (val) => {
+      if (val) {
+        return val
+      } else {
+        return 'unknown'
+      }
+    }
+    getPetByPetNameOrPatientId(storage.userId, params)
+        .then((res) => {
+          if (res.msg === 'success') {
+            setLoading(false);
+            let newArr = res.success;
+            let data = [];
+
+            for (let i = 0; i < newArr.length; i++) {
+              let {
+                age,
+                url,
+                createTime,
+                patientId,
+                speciesId,
+                petName,
+                firstName,
+                birthday,
+                lastName,
+                breedName,
+                gender,
+                petId,
+                weight,
+                rfid,
+                l2rarmDistance,
+                neckCircumference,
+                upperTorsoCircumference,
+                lowerTorsoCircumference,
+                pethubId,
+                macId,
+                h2tLength,
+                torsoLength
+              } = newArr[i];
+              let owner = '';
+              patientId = isUnKnow(patientId);
+              petName = isUnKnow(petName);
+              breedName = isUnKnow(breedName);
+              age = isUnKnow(age);
+              weight = isUnKnow(weight);
+              if (!firstName) {
+                firstName = '';
+              }
+              if (!lastName) {
+                lastName = '';
+              }
+              if (lastName === '' && firstName === '') {
+                owner = 'unknown';
+              } else {
+                owner = `${lastName} ${firstName}`;
+              }
+              createTime = moment(createTime).format('X');
+              let petGender = '';
+              switch (`${gender}`) {
+                case '1': petGender = 'F'
+                  break;
+                case '0': petGender = "M"
+                  break;
+                default: petGender = 'unknown'
+                  break;
+              }
+              let petAge = 'unknown'
+              if (birthday) {
+                petAge = moment(new Date()).diff(moment(birthday), 'years')
+              }
+              let json = {
+                insertedAt: createTime,
+                patientId,
+                petName,
+                owner,
+                breed: breedName,
+                gender: petGender,
+                age: petAge,
+                petId,
+                id: i,
+                weight,
+                rfid,
+                url,
+                speciesId,
+                l2rarmDistance,
+                neckCircumference,
+                upperTorsoCircumference,
+                lowerTorsoCircumference,
+                h2tLength,
+                torsoLength,
+                pethubId,
+                macId,
+              }
+              data.push(json);
+            }
+            setPetListArr(data);
+            console.log('data', data)
+          } else {
+            message.warning('system error');
+          }
+        })
+        .catch((err) => {
+          message.warning('system error');
+        })
+  }
   useEffect(() => {
     //获取宠物列表
     _getExam(1);
@@ -166,7 +295,7 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
               shape="round"
               size="large"
               block
-              // onClick={handleCancelOrAddPet}
+              onClick={filterSearch}
             >
               Search
             </Button>
@@ -182,22 +311,22 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
               labelAlign="left"
               labelWrap
             >
-              <Form.Item label="Pet ID">
+              <Form.Item label="Pet ID" name="petId">
                 <Input placeholder="Given Name" className='filterInput' />
               </Form.Item>
-              <Form.Item label="Pet Name">
+              <Form.Item label="Pet Name" name="petName">
                 <Input placeholder="Pet Name" className='filterInput' />
               </Form.Item>
-              <Form.Item label="Owner">
+              <Form.Item label="Owner" name="owner">
                 <Input placeholder="Owner" className='filterInput' />
               </Form.Item>
-              <Form.Item label="Breed">
+              <Form.Item label="Breed" name="breed">
                 <Input placeholder="Breed" className='filterInput' />
               </Form.Item>
-              <Form.Item label="Gender">
+              <Form.Item label="Gender" name="gender">
                 <Input placeholder="Gender" className='filterInput' />
               </Form.Item>
-              <Form.Item label="Age">
+              <Form.Item label="Age" name="age">
                 <Input placeholder="Age" className='filterInput' />
               </Form.Item>
             </Form>
@@ -211,32 +340,30 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
               labelAlign="left"
               labelWrap
             >
-              <Form.Item label="Phone Number">
+              <Form.Item label="Phone Number" name="phoneNumber">
                 <Input placeholder="Phone Number" className='filterInput' />
               </Form.Item>
-              <Form.Item label="Email">
+              <Form.Item label="Email" name="email">
                 <Input placeholder="Email" className='filterInput' />
               </Form.Item>
-              <Form.Item label="Postal Code">
+              <Form.Item label="Postal Code" name="postalCode">
                 <Input placeholder="Code" className='filterInput' />
               </Form.Item>
-              <Form.Item label="Tag">
+              <Form.Item label="Tag" name="tag">
                 <Input placeholder="Tag" className='filterInput' />
               </Form.Item>
-              {/* <Form.Item label="Only Achive Clients" valuePropName="checked">
-                <Checkbox></Checkbox>
+              <Form.Item label="" name="Clients">
+                <div className='checkFilter'>
+                  <div>Only Achive Clients</div>
+                  <Checkbox  onChange={handleDownChange1}></Checkbox>
+                </div>
               </Form.Item>
-              <Form.Item label="Only Achive Patients"  valuePropName="checked">
-                <Checkbox></Checkbox>
-              </Form.Item> */}
-              <div className='checkFilter'>
-                <div>Only Achive Clients</div>
-                <Checkbox></Checkbox>
-              </div>
-              <div className='checkFilter'>
-                <div>Only Achive Patients</div>
-                <Checkbox></Checkbox>
-              </div>
+              <Form.Item label="" name="Patients">
+                <div className='checkFilter'>
+                  <div>Only Achive Patients</div>
+                  <Checkbox  onChange={handleDownChange2}></Checkbox>
+                </div>
+              </Form.Item>
             </Form>
           </div>
         </div>

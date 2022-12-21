@@ -8,7 +8,8 @@ import {
 import mellaLogo from "./../../assets/images/mellaLogo.png";
 import dui from "./../../assets/images/dui.png";
 import back_white from "./../../assets/img/back-white.png";
-import back_hui from "./../../assets/img/back-hui.png";
+import back_hui from "./../../assets/img/back_hui.png";
+import back_hong from "./../../assets/img/back-hui.png";
 
 import { getLoginQRcode, loginWithQRcode, mellaLogin } from "../../api"
 
@@ -410,7 +411,7 @@ class SignIn extends Component {
     this._getQRCode();
   };
   beforeDiv = () => {
-    return <img src={back_hui} alt="" style={{ width: px(15) }} />;
+    return <img src={back_hong} alt="" style={{ width: px(15) }} />;
   };
   afterDiv = () => {
     return <img src={back_white} alt="" style={{ width: px(15) }} />;
@@ -421,7 +422,8 @@ class SignIn extends Component {
       return (
         <div className="macheard"  >
           <div className="macheardson" >
-            <MinClose />
+            {/* 根据ppt修改去掉，并向下移 */}
+            {/* <MinClose /> */}
             <img
               onClick={() => {
                 this.props.history.push("/");
