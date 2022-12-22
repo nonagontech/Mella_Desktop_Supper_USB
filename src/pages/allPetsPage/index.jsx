@@ -354,13 +354,13 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
               </Form.Item>
               <Form.Item label="" name="Clients">
                 <div className='checkFilter'>
-                  <div>Only Achive Clients</div>
+                  <div>Only Active Clients</div>
                   <Checkbox  onChange={handleDownChange1}></Checkbox>
                 </div>
               </Form.Item>
               <Form.Item label="" name="Patients">
                 <div className='checkFilter'>
-                  <div>Only Achive Patients</div>
+                  <div>Only Active Patients</div>
                   <Checkbox  onChange={handleDownChange2}></Checkbox>
                 </div>
               </Form.Item>

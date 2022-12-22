@@ -210,6 +210,7 @@ export default class ConnectWorkplace extends Component {
     let data = (search.length > 0) ? searchData : workplaceList
     let option = data.map((item, index) => {
       return <li key={item.workplaceId}
+        className={ this.state.selectworkplace === item ? 'highlight' : null }
         onClick={() => {
           this.setState({
             selectworkplace: item

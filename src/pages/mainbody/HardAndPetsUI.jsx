@@ -66,7 +66,7 @@ const HardAndPetsUI = ({ bodyHeight, selectHardwareType, selectHardwareModalShow
         }}
       >
         <div className="devicesName" style={{ fontSize: px(30) }}>
-          {selectHardwareDetail.name || "No Equipment"}
+          {selectHardwareDetail.name || "No Device"}
         </div>
         <div className="imgBox" style={{ marginLeft: px(7)}}>
           <img src={xia} alt="" width={px(25)} />

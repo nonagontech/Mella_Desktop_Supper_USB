@@ -6,6 +6,7 @@ import {
   message,
 } from "antd";
 import { ExclamationCircleOutlined, DownOutlined } from "@ant-design/icons";
+import { useHistory } from "react-router-dom";
 import { updatePetInfo1 } from "../../../api";
 import { petPicture, calculateAge, catLeanBodyMass, catFatMass, dogLeanBodyMass, dogFatMass, dogBodyFatPercentage } from '../../../utils/commonFun';
 
@@ -19,8 +20,13 @@ import {
   setRulerUnitFun,
   setRulerConfirmCountFun,
 } from "../../../store/actions";
+import xia_hui from "./../../../assets/img/xia_hui.png";
+import up_red from "./../../../assets/img/up_red.png"
+import down_red from "./../../../assets/img/down_red.png"
+import down_black from "./../../../assets/img/down_black.png"
 import { useUpdateEffect } from 'ahooks';
 import _ from "lodash";
+import moment from "moment/moment";
 
 import "./calculationResult.less";
 
@@ -33,8 +39,13 @@ const CalculationResult = ({
   getMeasureData,
   setRulerUnitFun
 }) => {
+  let history = useHistory();
+  const [lastWeightValue, setLastWeightValue] = useState('');//最近一次的体重值
+  const [lastWeightTimeValue, setLastWeightTimeValue] = useState('');//最近一次的体重测量时间
+  const [lastRuleTimeValue, setLastRuleTimeValue] = useState('');//最近一次的尺子测量时间
+
   let { petId, petSpeciesBreedId, weight, birthday } = petMessage;
-  let { rulerUnit } = ruleMessage;
+  let { rulerUnit, biggieUnit } = ruleMessage;
   let {
     headValue,
     neckValue,
@@ -47,6 +58,33 @@ const CalculationResult = ({
     forelimbCircumferenceValue,
   } = getMeasureData;
   let storage = window.localStorage;
+
+  let btnList = [
+    {
+      key: 'LBM',
+      name: 'Previous LBM',
+      data: '1',
+      unit: 'lb'
+    },
+    {
+      key: 'FM',
+      name: 'Previous FM',
+      data: '1',
+      unit: 'lb'
+    },
+    {
+      key: 'BF',
+      name: 'Previous BF%',
+      data: '1',
+      unit: 'lb'
+    },
+    {
+      key: 'day',
+      name: 'Days to goal',
+      data: '2'
+    }
+  ]
+
   //重新测量
   const onAgainMeasure = () => {
     type(false);
@@ -128,6 +166,31 @@ const CalculationResult = ({
         return;
     }
   }
+  // 下拉历史
+  const TempHisVisible = () => {
+    console.log('1');
+  }
+  //判断上一次测量的体重是否超过一个月
+  const judgeWightTime = () => {
+    let newTime = moment();
+    let diffTime = newTime.diff(moment(lastWeightTimeValue), 'month');
+    if (diffTime >= 1 && lastWeightValue) {
+      return (
+        <p className="historyWeightWarningTitle">Last Weighed {moment(lastWeightTimeValue).format("LL")}.Please
+          <a onClick={() => updatePetMessage()}>update the pet's weight</a>.
+        </p>
+      );
+    } else if (diffTime === 0 && lastWeightValue) {
+      return <p className="historyWeightTitle">Last Weighed {moment(lastWeightTimeValue).format("LL")}: {lastWeightValue} {biggieUnit === 'kg' ? 'kg' : 'lbs'}</p>
+    } else {
+      return null
+    }
+  }
+  //用户更新宠物体重信息
+  const updatePetMessage = () => {
+    //跳转到编辑宠物信息页面
+    history.push("/page9");
+  }
   //获取BodyFatPercent
   const getBodyFatPercent = () => {
     switch (petPicture(petSpeciesBreedId)) {
@@ -149,6 +212,11 @@ const CalculationResult = ({
 
   return (
     <Content className="calculationResultContentBox">
+      <div className="historyWeightBox">
+        {
+          judgeWightTime()
+        }
+      </div>
       <div className="localityGroup">
         <div className="localityBox">
           <div className="circleBox">
@@ -159,7 +227,7 @@ const CalculationResult = ({
           <div className="localityTitleBox">
             <p className="localityTitle">Lean Body Mass</p>
           </div>
-          <DownOutlined />
+          <img src={down_black} className="downBlack" alt=""  />
         </div>
         <div className="localityBox">
           <div className="circleBox">
@@ -170,7 +238,7 @@ const CalculationResult = ({
           <div className="localityTitleBox">
             <p className="localityTitle">Body Fat Percent</p>
           </div>
-          <DownOutlined />
+          <img src={down_black} className="downBlack" alt=""  />
         </div>
         <div className="localityBox">
           <div className="circleBox">
@@ -181,8 +249,33 @@ const CalculationResult = ({
           <div className="localityTitleBox">
             <p className="localityTitle">Fat Mass</p>
           </div>
-          <DownOutlined />
+          <img src={down_black} className="downBlack" alt=""  />
         </div>
+      </div>
+      <div className="measureContent">
+        {btnList.map((item, index) => (
+          // <li key={index}>
+          //   <>
+          //     <img src={data.img} alt="" />
+          //     <p>{data.title}</p>
+          //   </>
+          // </li>
+          <div key={index} className="item">
+            <>
+              <p className="pSt1">{item.name}</p>
+              <div className="bottom">
+                {
+                  item.key != 'day' && <img src={up_red} style={{ width: "20px" , marginRight: "10px"}} alt=""  />
+                }
+                {/* <img src={up_red} style={{ width: "20px" , marginRight: "10px"}} alt=""  />
+                <img src={down_red} style={{ width: "20px" , marginRight: "10px"}} alt=""  /> */}
+                <p className="pSt2">{item.data}</p>
+                <p className="pSt2">{ item.key != 'day' ? item.unit : null}</p>
+              </div>
+              {/* <p className="pSt2">{item.data}</p> */}
+            </>
+          </div>
+        ))}
       </div>
       <div className="calculateBtnBox">
         <Button
@@ -203,6 +296,10 @@ const CalculationResult = ({
         >
           Save
         </Button>
+      </div>
+      <div className="scrollHistory">
+        <span className="his" onClick={() => TempHisVisible()}>Hisory</span>
+        <img src={xia_hui} style={{ width: "30px", cursor: "pointer" }} alt="" onClick={() => TempHisVisible()} />
       </div>
     </Content>
   );

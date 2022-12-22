@@ -198,6 +198,15 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
                       })}
                     </ul>
                   </div>
+                  <Button
+                    style={{ backgroundColor: "#e1206d" }}
+                    className="btn"
+                    type="danger"
+                    shape="round"
+                    onClick={() => setType(false)}
+                  >
+                    Return To Measuring Screen
+                  </Button>
                 </>
               )}
             </div>
