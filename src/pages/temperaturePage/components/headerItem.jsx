@@ -204,7 +204,7 @@ const HeaderItem = ({
             </div>
           </div>
         </Menu.Item>
-        <Menu.Item style={{ paddingLeft: '8px' }}>
+        <Menu.Item key={"temperatureHistory"} style={{ paddingLeft: '8px' }}>
           <p className="itemList">Temperature History</p>
         </Menu.Item>
         <Menu.Item key={"editPetInfo"} style={{ paddingLeft: '8px' }}>
@@ -849,7 +849,7 @@ const HeaderItem = ({
                   >
                     {petPicture(50)}
                     <div className="petMessageBox">
-                      <p className="petName">
+                      <div className="petName">
                         {!_.isEmpty(petMessage.patientId)
                           ? petMessage.patientId
                           : "unknown"}
@@ -857,7 +857,7 @@ const HeaderItem = ({
                         {!_.isEmpty(petMessage.petName)
                           ? petMessage.petName
                           : "unknown"}
-                      </p>
+                      </div>
                       <img src={xia} alt="" width={px(25)}  />
                     </div>
                   </div>

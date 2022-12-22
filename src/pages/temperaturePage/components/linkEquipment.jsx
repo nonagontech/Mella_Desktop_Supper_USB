@@ -116,13 +116,13 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
         {_.isEqual(mellaConnectStatus, "disconnected") ? (
           <>
             <div className="startBox">
-              <p className="startTitle">
+              <span className="startTitle">
                 Turn on your
                 <br />
                 Mella Thermometer
                 <br />
                 or Pair New Mella
-              </p>
+              </span>
               <div style={{ display: 'flex', justifyContent: 'center', width: "100%" }}>
                 <img src={PressButton_Pro} className="PressButton_Pro" />
               </div>

@@ -6,7 +6,7 @@ import Icon, { DownOutlined, UpOutlined } from '@ant-design/icons';
 
 import { px } from '../../utils/px';
 
-import { buy, getOrderInfo, getPreOrderById, payForOrder } from '../../api'
+import { buy, getOrderInfo, getPreOrderById, payForOrder, reFund  } from '../../api'
 import BuySub from '../../components/buySub'
 import MyModal from '../../utils/myModal/MyModal'
 import { win } from '../../utils/px'
@@ -222,6 +222,13 @@ export default class Subscriptions extends Component {
             })
     }
 
+    // 取消订阅，退款
+    cancelSub = (value) => {
+      reFund(value).then(res => {
+        console.log('cancelRes', res);
+      })
+    }
+
     typeText = (text) => {
       switch (text) {
         case 1:
@@ -247,31 +254,41 @@ export default class Subscriptions extends Component {
         } catch (error) {
 
         }
-        const expandedRowRender = () => {
+        const expandedRowRender = (record) => {
+          let expandList = []
+          expandList.push(record)
+          console.log('record111', expandList);
           const columns = [
             {
               title: '',
               dataIndex: 'quotaType',
               key: 'quotaType',
-              align: "center",
+              width: '30%',
+              align: "left",
               render: (text, record, index) => {
-                return <p style={{ textAlign: "center" }}>{text}</p>;
+                return <>
+                  <p style={{ textAlign: "left" }}>{record.quotaType}</p>
+                  <p style={{ textAlign: "left" }}>{text}</p>
+                  <p style={{ textAlign: "left" }}>{text}</p>
+                  <p style={{ textAlign: "left" }}>{text}</p>
+                </>
               },
             },
             {
               title: '',
               dataIndex: 'startTime',
               key: 'name',
-              render: (text, record) => <p>Start Date: {moment(text).format("MMM D, YYYY")}</p>,
+              render: (text, record) => <p style={{ textAlign: "left" }}>Start Date: {moment(text).format("MMM D, YYYY")}</p>,
             },
           ];
-          return <Table className="expandTable" showHeader={false} columns={columns} dataSource={tableData} pagination={false} />;
+          return <Table className="expandTable" border={false} showHeader={false} columns={columns} dataSource={expandList} pagination={false} />;
         };
         const columns = [
           {
             title: '',
             dataIndex: 'quotaType',
             key: 'quotaType',
+            width: '30%',
             render: (text, record, index) => {
               if (text === 1) {
                 return <p>Premium Monthly</p>;
@@ -307,16 +324,6 @@ export default class Subscriptions extends Component {
           },
 
         ];
-        // const data = [];
-        // for (let i = 0; i < 3; ++i) {
-        //   data.push({
-        //     key: i.toString(),
-        //     name: 'Premium Monthly',
-        //     platform: 'Expires Jul 25, 2022',
-        //     version: 'Active',
-        //   });
-        // }
-        // let
         let tableData = subscriptionData;
         return (
             <div id="subscriptions">
@@ -344,7 +351,7 @@ export default class Subscriptions extends Component {
                     >
                       <div className="walkText">Change Subscription</div>
                     </div>
-                    <div className="sub" style={{ marginTop: px(12) }}>Cancel Subscription</div>
+                    <div className="sub" style={{ marginTop: px(12) }} onClick={() => this.cancelSub('13f215776b104325a6ba23b0c5931d14')}>Cancel Subscription</div>
 
                   </div>
                 </div>
@@ -359,6 +366,7 @@ export default class Subscriptions extends Component {
                     expandable={{
                       expandedRowRender,
                       defaultExpandedRowKeys: ['0'],
+                      // columnWidth: '100px',
                       expandIconColumnIndex: '4',
                       expandIcon: ({ expanded, onExpand, record }) =>
                                 expanded ? (

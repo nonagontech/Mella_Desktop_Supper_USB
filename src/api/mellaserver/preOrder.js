@@ -31,7 +31,17 @@ export const buy = (userId, params) => {
 export const payForOrder = (preOrderId, params) => {
     return postFormData2(`${baseURL}/payForOrder/${preOrderId}`, params)
 }
-// 更新
+// //退款,等待审核
+// export const reFund = (preOrderId) => {
+//   return get(`${baseURL}/checkRefund/${preOrderId}`, '')
+// }
+
+//管理员审核退款
+export const reFund = (preOrderId) => {
+  return postFormData2(`${baseURL}/refund/${preOrderId}`, {
+    isPassCheck: 'true'
+  })
+}
 
 /**
  * 根据订单号获取订单是否支付、过期等

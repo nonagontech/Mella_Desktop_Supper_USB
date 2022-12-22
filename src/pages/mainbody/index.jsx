@@ -1314,6 +1314,8 @@ class App extends Component {
         return <ScheduledPetPage bodyHeight={bodyHeight} />;
       case "5":
         return <Settings />
+      case "HardWareSettings":
+        return <Settings />
       case "PetAndParents":
         return <PetAndParents />;
       case "AddScheduledPet":
@@ -1325,6 +1327,8 @@ class App extends Component {
         return <Unassigned deviceType={1} />;
       case "InviteTeam":
         return <InviteTeam isAddDoctor={true} />;
+      // case "TemperatureHistory":
+      //   return <AddScheduledPet bodyHeight={bodyHeight} />;
         //   case "AddScheduledPet":
         // return <AddScheduledPet />;
         // case "AddScheduledPet":
