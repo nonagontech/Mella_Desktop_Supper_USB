@@ -21,8 +21,10 @@ import MyModal from '../../utils/myModal/MyModal';
 import './index.less';
 import { checkUser, mellaLogin } from '../../api';
 import { inviteUserByEmail } from '../../api/melladesk/user';
+import { connect } from 'react-redux';
+import { setMenuNum } from '../../store/actions';
 let storage = window.localStorage;
-export default class InviteTeam extends Component {
+class InviteTeam extends Component {
   state = {
     tags: [],
     inputVisible: false,
@@ -143,35 +145,39 @@ export default class InviteTeam extends Component {
     })
     console.log('入参:', tags);
 
-    // inviteUserByEmail(userId, organizationId, tags)
-    //   .then(res => {
-    //     console.log(res);
-    //     if (res.flag === true) {
-    //       console.log('成功，跳转');
-    //       message.success('Invitation successful', 3)
-    //       if (!isAddDoctor) {
-    //         this._logIn()
-    //       } else {
-    //         this.setState({
-    //           visible: false
-    //         })
-    //         this.props.history.goBack()
-    //       }
+    inviteUserByEmail(userId, organizationId, tags)
+      .then(res => {
+        console.log(res);
+        if (res.flag === true) {
+          console.log('成功，跳转');
+          message.success('Invitation successful', 3)
+          if (!isAddDoctor) {
+            this._logIn()
+          } else {
+            this.setState({
+              visible: false
+            })
+            this.props.setMenuNum('5')
+          }
 
-    //     } else {
-    //       this.setState({
-    //         visible: false
-    //       })
-    //     }
+        } else {
+          this.setState({
+            visible: false
+          })
+          if (res.code === 14003) {
+            message.destroy()
+            message.warn('Insufficient permissions')
+          }
+        }
 
-    //   })
-    //   .catch(err => {
-    //     this.setState({
-    //       visible: false
-    //     })
-    //     console.log(err);
-    //     message.error(err.message, 3)
-    //   })
+      })
+      .catch(err => {
+        this.setState({
+          visible: false
+        })
+        console.log(err);
+        message.error(err.message, 3)
+      })
   }
   _logIn = () => {
 
@@ -393,3 +399,9 @@ export default class InviteTeam extends Component {
     )
   }
 }
+export default connect(
+  state => ({
+
+  }),
+  { setMenuNum }
+)(InviteTeam) 

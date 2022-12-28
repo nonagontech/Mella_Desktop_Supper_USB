@@ -2,7 +2,8 @@
 import React, { Component } from 'react'
 import {
   Select,
-  message
+  message,
+  Button
 } from 'antd'
 
 import parent from '../../assets/img/parent.png'
@@ -18,11 +19,12 @@ import moment from 'moment'
 import './index.less';
 import { listDoctorsByAdmin } from '../../api/mellaserver/organization'
 import { admin_users } from '../../api/mellaserver/new'
+import { connect } from 'react-redux'
 
 const { Option } = Select;
 let storage = window.localStorage;
 
-export default class Veterinarians extends Component {
+class Veterinarians extends Component {
 
   state = {
     parentList: [],
@@ -43,27 +45,13 @@ export default class Veterinarians extends Component {
   componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     let { height, width } = window.screen
-    ipcRenderer.send('Lowbig')
-    ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
+
 
     this._getExam()
 
   }
-  componentWillUnmount() {
-    let ipcRenderer = window.electron.ipcRenderer
 
-    ipcRenderer.removeListener('changeFenBianLv', this.changeFenBianLv)
-  }
-  changeFenBianLv = (e) => {
-    console.log(e);
-    let ipcRenderer = window.electron.ipcRenderer
-    let { height, width } = window.screen
-    let windowsHeight = height > width ? width : height
-    ipcRenderer.send('Lowbig')
-    this.setState({
 
-    })
-  }
 
   _getExam = async () => {
     console.log('进来了');
@@ -493,15 +481,13 @@ export default class Veterinarians extends Component {
     }
     return (
       <div id="veterinarians">
-        <div className="heard">
-          <Heart />
-        </div>
 
 
-        <div className="body" style={{ height: bodyHeight, padding: `0 ${px(35)}px` }}>
+
+        <div className="body" style={{ height: bodyHeight, }}>
           <div className="title">
-            <h1 style={{ fontSize: px(38) }}>{`Veterinarians`}</h1>
-            <div className="btn" style={{ fontSize: px(24), height: px(45) }}>+ New Vet</div>
+            <h1 style={{ fontSize: px(34), marginLeft: px(10) }}>{`Veterinarians`}</h1>
+            <div className="btn" style={{ fontSize: px(18), height: px(35) }}>+ New Vet</div>
           </div>
 
           <div className="search">
@@ -516,8 +502,14 @@ export default class Veterinarians extends Component {
                 }}
               />
             </div>
-            <div className="searchr" style={{ fontSize: px(18), height: px(40) }}>
-              Search
+            <div className="searchR" style={{ fontSize: px(18), height: px(40) }}>
+              <Button
+                type="primary"
+                size="small"
+                shape="round"
+              >
+                Search
+              </Button>
             </div>
           </div>
 
@@ -586,3 +578,6 @@ export default class Veterinarians extends Component {
     )
   }
 }
+export default connect(
+
+)(Veterinarians)

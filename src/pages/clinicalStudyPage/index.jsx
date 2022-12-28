@@ -126,7 +126,9 @@ const ClinicalStudy = ({
   const chartsBox = useCallback((node) => {
     if (node !== null && echartsElement.current) {
       setTimeout(() => {
-        echartsElement.current.getEchartsInstance().resize({ height: px(380) });
+        if (echartsElement.current) {
+          echartsElement.current.getEchartsInstance().resize({ height: px(380) });
+        }
       }, 1000)
     }
   }, [window.screen.availWidth]);

@@ -30,6 +30,7 @@ import MyAccount from "../../pages/myAccount";
 import TemperaturePage from "../../pages/temperaturePage";
 import MabelPage from "../mabelPage";
 import EnrolledPlan from '../enrolledPlan';
+import ConnectWorkplace from './../../pages/connectWorkplace'
 
 import ModalClose from "../../assets/img/ModalClose.png"
 import DetectBase from "../../assets/img/DetectBase.png"
@@ -66,6 +67,7 @@ import "./mainbody.less";
 import { devType } from "../../config/config";
 import MotionCamera from "../motionCamera";
 import DoctorAddPet from "../doctorAddPet";
+import Veterinarians from "../admin_VetProfile";
 
 
 // let ipcRenderer = window.require("electron").ipcRenderer;
@@ -793,10 +795,10 @@ class App extends Component {
           this.timeER = setTimeout(() => {
             setBiggieConnectStatusFun('disconnected')
           }, 3000)
-          if(bluData.length == 0 ) {
+          if (bluData.length == 0) {
             setBiggieConnectStatusFun('connected')
-          } else if ( bluData.length <= 13 ) {
-            return ;
+          } else if (bluData.length <= 13) {
+            return;
           }
           // console.log("biggie", bluData);
           if (bluData[0] !== "aa") {
@@ -1252,6 +1254,7 @@ class App extends Component {
     //clickMenuIndex 点击菜单的序号
     switch (clickMenuIndex) {
       case "1":
+        // return <Veterinarians history={this.props.history} />
         if (electronStore.get(`${storage.userId}-isClical`)) {
           return (
             <>
@@ -1303,21 +1306,19 @@ class App extends Component {
         }
       case "2":
         return <AllPets bodyHeight={bodyHeight} />;
-      case "CombineScales":
+      case "CombineScales":   //体重秤组合
         return <CombineScales bodyHeight={bodyHeight} />;
       case "AddDevice":
         return <AddDevice bodyHeight={bodyHeight} />;
       // 配置左侧菜单
       case "AddPet":
-        return <DoctorAddPet />;
+        return <DoctorAddPet history={this.props.history} />;
       case "3":
         return <ScheduledPetPage bodyHeight={bodyHeight} />;
       case "5":
-        return <Settings />
-      case "HardWareSettings":
-        return <Settings />
+        return <Settings history={this.props.history} />
       case "PetAndParents":
-        return <PetAndParents />;
+        return <PetAndParents history={this.props.history} />;
       case "AddScheduledPet":
         return <AddScheduledPet bodyHeight={bodyHeight} />;
       // 配置菜单
@@ -1326,17 +1327,20 @@ class App extends Component {
       case "Unassigned1":
         return <Unassigned deviceType={1} />;
       case "InviteTeam":
-        return <InviteTeam isAddDoctor={true} />;
-      // case "TemperatureHistory":
-      //   return <AddScheduledPet bodyHeight={bodyHeight} />;
-        //   case "AddScheduledPet":
-        // return <AddScheduledPet />;
-        // case "AddScheduledPet":
-        // return <AddScheduledPet />;
-        // case "AddScheduledPet":
-        // return <AddScheduledPet />;
-        // case "AddScheduledPet":
-        // return <AddScheduledPet />;
+        return <InviteTeam isAddDoctor={true} history={this.props.history} />;
+      case "veterinarians":
+        return <Veterinarians history={this.props.history} />
+      //   case "AddScheduledPet":
+      // return <AddScheduledPet />;
+      // case "AddScheduledPet":
+      // return <AddScheduledPet />;
+      // case "AddScheduledPet":
+      // return <AddScheduledPet />;
+      // case "AddScheduledPet":
+      // return <AddScheduledPet />;
+
+      case "ConnectWorkplace":
+        return <ConnectWorkplace history={this.props.history} />
       case "6":
         return (
           <>
@@ -1414,7 +1418,7 @@ class App extends Component {
             </div>
           </div>
         </Modal>
-         <Modal
+        <Modal
           open={this.state.baseModalVisible}
           onOk={this.handleOk}
           centered
@@ -1431,9 +1435,9 @@ class App extends Component {
             <div className="content">
               <p>Please connect your </p>
               <p>charging base to computer </p>
-              <p>or <span style={{textDecoration: 'underline', color: '#E1206D'}}>update your base.</span> </p>
+              <p>or <span style={{ textDecoration: 'underline', color: '#E1206D' }}>update your base.</span> </p>
             </div>
-            <img style={{marginBottom: '20px'}} src={DetectBase} alt="" width={280} height={200} />
+            <img style={{ marginBottom: '20px' }} src={DetectBase} alt="" width={280} height={200} />
           </div>
         </Modal>
       </div>

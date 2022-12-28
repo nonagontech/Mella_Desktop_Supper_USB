@@ -123,8 +123,11 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
                 <br />
                 or Pair New Mella
               </span>
-              <div style={{ display: 'flex', justifyContent: 'center', width: "100%" }}>
-                <img src={PressButton_Pro} className="PressButton_Pro" />
+              <div style={{ display: 'flex', justifyContent: 'center', width: px(520) }}>
+                <img src={PressButton_Pro} className="PressButton_Pro"
+
+
+                />
               </div>
             </div>
             <div className="tableBox">
@@ -136,7 +139,7 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
           </>
         ) : (
           <>
-            <div className="startBox" style={{height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+            <div className="startBox" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <p className="startTitle">
                 {!type
                   ? title

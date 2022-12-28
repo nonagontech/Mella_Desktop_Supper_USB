@@ -45,6 +45,8 @@ class App extends Component {
     console.log('agent', agent);
     var isMac = /macintosh|mac os x/i.test(navigator.userAgent);
     this.props.setSystemTypeFun(`${isMac ? "mac" : "windows"}`)
+    // this.props.setSystemTypeFun(`windows`)
+
   }
 
   render() {

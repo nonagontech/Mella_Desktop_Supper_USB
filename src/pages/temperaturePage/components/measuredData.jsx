@@ -589,7 +589,7 @@ const MeasuredData = ({
               )}
             </div>
             <div className="scrollHistory">
-              <span className="his" onClick={() => TempHisVisible()}>Hisory</span>
+              <span className="his" onClick={() => TempHisVisible()}>History</span>
               <img src={xia_hui} style={{ width: px(20) }} alt="" onClick={() => TempHisVisible()} />
             </div>
           </div>
