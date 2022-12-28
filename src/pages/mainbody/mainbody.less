@@ -102,6 +102,10 @@
         overflow: hidden;
         text-overflow: ellipsis;
         position: relative;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: keep-all;
+        white-space: nowrap;
       }
 
       .hardList {
@@ -586,6 +590,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     .title {
       height: 30px;
       line-height: 30px;
@@ -596,6 +601,7 @@
       margin-top: 20px;
 
     }
+
     .content {
       width: 100%;
       height: 80px;
@@ -607,4 +613,3 @@
     }
   }
 }
-

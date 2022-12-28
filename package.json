@@ -1,6 +1,6 @@
 {
   "name": "supermella",
-  "version": "v1.1.55",
+  "version": "v1.1.57",
   "main": "main.js",
   "private": true,
   "author": {
@@ -128,11 +128,8 @@
     },
     "files": [
       "build/**/*",
-      "node_modules/**/*",
       "package.json",
-      "main.js",
-      "dist1/**/*",
-      "nsis/**/*"
+      "main.js"
     ],
     "extends": null,
     "win": {

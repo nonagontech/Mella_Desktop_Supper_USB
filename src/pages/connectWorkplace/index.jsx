@@ -14,17 +14,19 @@ import MyModal from '../../utils/myModal/MyModal';
 import { listAll } from '../../api';
 import { listAllWorkplaceByOrganizationId } from '../../api/mellaserver/workplace';
 import { addOrganization } from '../../api';
+import { setMenuNum, setMenuActive } from "../../store/actions";
 
 import Draggable from "react-draggable";
 
 import Button from '../../utils/button/Button'
+import { connect } from "react-redux";
 
 
 const { Option } = Select;
 let storage = window.localStorage;
 console.log('storage: ', storage);
 
-export default class ConnectWorkplace extends Component {
+class ConnectWorkplace extends Component {
   state = {
     orgArr: [],
     workplaceJson: {},
@@ -119,13 +121,13 @@ export default class ConnectWorkplace extends Component {
       }
     }
     listAll().then((res) => {
-        console.log(res);
-        if (res.msg === 'success') {
-          this.setState({
-            listData: res.data
-          })
-        }
-      })
+      console.log(res);
+      if (res.msg === 'success') {
+        this.setState({
+          listData: res.data
+        })
+      }
+    })
       .catch((err) => {
         console.log(err);
       })
@@ -169,13 +171,13 @@ export default class ConnectWorkplace extends Component {
         })
       }
     })
-    .catch((err) => {
-      console.log(err);
-    })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   deleteWorkPlace = (item) => {
-    console.log('@',item);
+    console.log('@', item);
   }
 
   // 选择组织列表
@@ -184,7 +186,7 @@ export default class ConnectWorkplace extends Component {
     let data = (search.length > 0) ? searchData : listData
     let option = data.map((item, index) => {
       return <li key={item.organizationId}
-      className={ this.state.selectId.organizationId === item.organizationId ? 'highlight' : null }
+        className={this.state.selectId.organizationId === item.organizationId ? 'highlight' : null}
         onClick={() => {
           this.setState({
             selectId: item
@@ -213,7 +215,7 @@ export default class ConnectWorkplace extends Component {
         onClick={() => {
           this.setState({
             selectworkplace: item
-        })
+          })
         }}
 
       >
@@ -377,7 +379,7 @@ export default class ConnectWorkplace extends Component {
   };
 
   render() {
-    let { orgArr, selectOrgId,  bounds, visible, disabled, isOrg, isWorkplace } = this.state;
+    let { orgArr, selectOrgId, bounds, visible, disabled, isOrg, isWorkplace } = this.state;
     let option = orgArr.map((item, index) => {
       let bac =
         `${selectOrgId}` === `${item.organizationId}` ? "#e1206d" : "#fff";
@@ -402,16 +404,14 @@ export default class ConnectWorkplace extends Component {
               e.stopPropagation();
               e.nativeEvent.stopImmediatePropagation();
               this.deleteWorkPlace(item)
-              }}><CloseCircleOutlined /></span>
+            }}><CloseCircleOutlined /></span>
           </div>
         </li>
       );
     });
     return (
       <div id="connectworkplace">
-        <div className="heard">
-          <Heart />
-        </div>
+
 
         <div className="body">
           <div className="top">
@@ -459,7 +459,9 @@ export default class ConnectWorkplace extends Component {
                   storage.lastWorkplaceId = lastWorkplaceId;
                 } catch (error) { }
                 storage.connectionKey = connectionKey;
-                this.props.history.goBack();
+                this.props.setMenuNum('1')
+                this.props.setMenuActive('1')
+                // this.props.history.goBack();
               }}
             >
               <p style={{ fontSize: px(18) }}>Save Changes</p>
@@ -657,3 +659,10 @@ export default class ConnectWorkplace extends Component {
     );
   }
 }
+
+export default connect(
+  state => ({
+
+  }),
+  { setMenuNum, setMenuActive }
+)(ConnectWorkplace)

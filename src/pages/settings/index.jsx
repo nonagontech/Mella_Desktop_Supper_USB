@@ -425,7 +425,7 @@ class Settings extends Component {
                 <div className="item" style={{ marginBottom: px(10) }}>
                   <div className="l" onClick={() => {
                     this.props.setMenuNum('ConnectWorkplace')
-                    // this.props.history.push('/menuOptions/ConnectWorkplace') }
+                    // this.props.history.push('/menuOptions/ConnectWorkplace')
                   }}
                   >
                     <div className="text">{`Org & Practice Profiles`}</div>
@@ -449,7 +449,8 @@ class Settings extends Component {
                       console.log(storage.roleId);
                       message.destroy()
                       if (storage.roleId === '3') {
-                        this.props.history.push('/menuOptions/veterinarians')
+                        // this.props.history.push('/menuOptions/veterinarians')
+                        this.props.setMenuNum('veterinarians')
                       } else {
                         message.error('You do not have administrator rights')
                       }
@@ -574,7 +575,7 @@ class Settings extends Component {
                   </div>
                 </div>
 
-                <div className="l" onClick={() => this.props.history.push('/menuOptions/advancedsettings')}>
+                <div className="l cursor" onClick={() => this.props.history.push('/menuOptions/advancedsettings')}>
                   <div className="text">Advanced Settings</div>
                   <div className="rightIcon">&#xe60c;</div>
                 </div>
@@ -639,5 +640,5 @@ export default connect(
   state => ({
 
   }),
-  {  setMenuNum }
+  { setMenuNum }
 )(Settings)

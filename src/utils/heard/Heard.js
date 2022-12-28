@@ -630,23 +630,16 @@ const Heard = ({
     setMenuVisible(false);
     setMenuMouseOverIndex("");
     setMenuActive(e.index)
+    console.log('000000000000', e.index);
     switch (e.index) {
       case "1":
-        history.push("/MainBody");
-        setMenuNum(e.index);
-        break;
+
       case "2":
-        history.push("/MainBody");
-        setMenuNum(e.index);
-        break;
+
       case "3":
-        history.push("/MainBody");
-        setMenuNum(e.index);
-        break;
+
       case "4":
-        history.push("/MainBody");
-        setMenuNum(e.index);
-        break;
+
       case "5":
         //跳转到设置
         history.push("/MainBody");
@@ -686,13 +679,15 @@ const Heard = ({
         break;
 
       case "10":
-        history.push('/menuOptions/ConnectWorkplace');
+        // history.push('/menuOptions/ConnectWorkplace');
+        setMenuNum("ConnectWorkplace");
         break;
 
       default:
         break;
     }
   };
+
   const menuMouseOut = () => {
     mouseoutTimer && clearTimeout(mouseoutTimer);
     mouseoutTimer = setTimeout(() => {
@@ -1444,8 +1439,8 @@ const Heard = ({
       >
         {
           systemType === 'mac'
-          ? <div style={{ height: '100%', backgroundColor: '#E7E7E7', width: '80px'}}></div>
-          : <></>
+            ? <div style={{ height: '100%', backgroundColor: '#E7E7E7', width: '80px' }}></div>
+            : <></>
         }
       </div>
       <div
@@ -1457,12 +1452,12 @@ const Heard = ({
       >
         <div className="l">
           {systemType === 'mac' ?
-          (
-            <div className="macMinClose">
-              <MinClose />
-            </div>
-          ) : <></>
-        }
+            (
+              <div className="macMinClose">
+                <MinClose />
+              </div>
+            ) : <></>
+          }
 
           <div
             className="menuF"

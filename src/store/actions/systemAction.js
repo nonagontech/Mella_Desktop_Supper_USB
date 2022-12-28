@@ -10,7 +10,7 @@ const getAction = (data, type) => {
     }
 }
 
-//改变宠物排序的方式
+//改变系统的类型
 export const setSystemTypeFun = (data) => getAction(data, SYSTEMTYPE)
 
 //改变菜单高亮

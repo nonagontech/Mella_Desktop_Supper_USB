@@ -41,23 +41,14 @@ class PetAndParents extends Component {
   componentDidMount() {
     let ipcRenderer = window.electron.ipcRenderer
     let { height, width } = window.screen
-    ipcRenderer.send('Lowbig')
-    ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
     this._getExam()
 
   }
   componentWillUnmount() {
     let ipcRenderer = window.electron.ipcRenderer
 
-    ipcRenderer.removeListener('changeFenBianLv', this.changeFenBianLv)
   }
-  changeFenBianLv = (e) => {
-    console.log(e);
-    let ipcRenderer = window.electron.ipcRenderer
-    let { height, width } = window.screen
-    let windowsHeight = height > width ? width : height
-    ipcRenderer.send('Lowbig')
-  }
+
   _getExam = async () => {
     this.setState({
       loading: true,
@@ -160,7 +151,7 @@ class PetAndParents extends Component {
       }
     }
     let options = data.map((item, index) => {
-      let { speciesId, url, userImageUrl, patientId, petId, name,userId } = item
+      let { speciesId, url, userImageUrl, patientId, petId, name, userId } = item
       let images = null
       if (value === 'parent') {
         images = `url(${userImageUrl}?download=0&width=150)`
@@ -275,7 +266,7 @@ class PetAndParents extends Component {
     return (
       <div id="PetAndParents">
         <div className="body">
-        <div className='titleBox'>
+          <div className='titleBox'>
             <h1 style={{ fontSize: px(20) }}>{`Pet & Parents Profile Management`}</h1>
           </div>
           <div className="search">
@@ -301,12 +292,16 @@ class PetAndParents extends Component {
               >
               </Input>
             </div>
-            <Button
-              type="primary"
-              shape="round"
-            >
-              Search
-            </Button>
+            <div className="searchR">
+              <Button
+                type="primary"
+                size="small"
+                shape="round"
+              >
+                Search
+              </Button>
+            </div>
+
           </div>
           <div className="btns">
             <Button
