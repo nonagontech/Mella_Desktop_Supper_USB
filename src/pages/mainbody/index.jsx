@@ -1435,7 +1435,9 @@ class App extends Component {
             <div className="content">
               <p>Please connect your </p>
               <p>charging base to computer </p>
-              <p>or <span style={{ textDecoration: 'underline', color: '#E1206D' }}>update your base.</span> </p>
+              <a onClick={() => {
+                this.props.history.push('/menuOptions/advancedsettings')
+              }}>update your base.</a>
             </div>
             <img style={{ marginBottom: '20px' }} src={DetectBase} alt="" width={280} height={200} />
           </div>

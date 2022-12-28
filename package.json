@@ -70,7 +70,7 @@
     "disk": "electron-builder",
     "release": "cross-env GH_TOKEN=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  electron-builder",
     "releasemac": "yarn cleanmac && cross-env GH_TOKEN=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  electron-builder",
-    "clear": "rd /s/q dist1 && md dist1",
+    "clean": "rd /s/q dist1 && md dist1",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "cleanmac": "rm -rf dist1 && mkdir dist1"
   },

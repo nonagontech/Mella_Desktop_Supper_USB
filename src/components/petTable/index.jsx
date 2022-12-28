@@ -316,25 +316,28 @@ const PetTable = ({ searchVisible, petListArr, loading, bodyHeight, petDetailInf
   const noData = () => {
     return (
       <div className='flex nodata' style={{ paddingTop: px(60), paddingBottom: px(60) }}>
-        <p style={{ fontSize: px(22) }}> {type !== 'scheduled' ? `No Pets&` : `No Pets Scheduled&`}</p>  &nbsp;&nbsp;
-        <a style={{ fontSize: px(22) }} href="#"
-          onClick={(e) => {
-            try {
-              if (type === 'scheduled') {
-                setMenuNum('AddScheduledPet');
-              } else {
-                // setMenuNum('AddPet');
-                history.push("/pet/doctorAddPet");
+        <p style={{ fontSize: px(22), textAlign: 'center' }}> {type !== 'scheduled' ? `No Pets&` : `No Pets Scheduled`}
+          <br />
+          <a style={{ fontSize: px(22) }} href="#"
+            onClick={(e) => {
+              try {
+                if (type === 'scheduled') {
+                  setMenuNum('AddScheduledPet');
+                } else {
+                  // setMenuNum('AddPet');
+                  history.push("/pet/doctorAddPet");
+                }
+              } catch (error) {
+                console.log('错误信息', error);
               }
-            } catch (error) {
-              console.log('错误信息', error);
-            }
-            e.preventDefault();
-          }}
+              e.preventDefault();
+            }}
 
-        >
-          {type !== 'scheduled' ? `Create a Pet` : `Schedule a Pet`}
-        </a>
+          >
+            {type !== 'scheduled' ? `Create a Pet` : `+ Add Appointment`}
+          </a>
+        </p>
+
       </div>
     )
   }
@@ -384,7 +387,7 @@ const PetTable = ({ searchVisible, petListArr, loading, bodyHeight, petDetailInf
     <div className='petTable' >
       {
         searchVisible ?
-        <>
+          <>
             <div className="pet_table_heard">
               <div className="search" style={{ height: px(32) }}>
                 <input
@@ -421,15 +424,15 @@ const PetTable = ({ searchVisible, petListArr, loading, bodyHeight, petDetailInf
               <div className="sort flex" style={{ justifyContent: 'flex-end' }} >
                 <p style={{ fontSize: px(16), marginRight: px(10) }}>Vet:</p>
                 <Select
-                  defaultValue={['Time']}
-                  onChange={handleChange}
-                  options={options}
+                  // defaultValue={['Time']}
+                  // onChange={handleChange}
+                  // options={options}
                   className="selectFilter"
                 />
               </div>
             </div>
-        </> :
-        <></>
+          </> :
+          <></>
       }
 
       <div className="table" onScrollCapture={onScrollCapture}>

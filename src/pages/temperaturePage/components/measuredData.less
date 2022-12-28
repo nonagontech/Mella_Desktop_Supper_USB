@@ -3,11 +3,17 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  // background-color: pink;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  height: 95%;
 
   .container {
     height: 100%;
     padding: 20px 0;
     width: 100%;
+
     .progress {
       display: flex;
       align-items: center;
@@ -15,18 +21,25 @@
       flex-direction: column;
       width: 100%;
       height: 60%;
+      max-height: 430px;
+
       background-color: #fff;
+      // background-color: pink;
       // margin-top: 16px;
       margin: 15px 0;
+
+
     }
 
     .bottomContent {
       width: 100%;
       height: 40%;
+      max-height: 320px;
       display: flex;
       flex-direction: column;
       justify-content: space-evenly;
       align-items: center;
+
       .measureContent {
         width: 100%;
         height: 100px;
@@ -34,23 +47,26 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
         .item {
           width: 125px;
           height: 100px;
           border-radius: 30px;
           background-color: #fff;
-          box-shadow: 0px 4px 7px rgba(100,100,100,0.5);
+          box-shadow: 0px 4px 7px rgba(100, 100, 100, 0.5);
           border: 0.8958333px solid #808080;
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
+
           .pSt1 {
             color: #3b3a3a;
             font-family: "VAG Rounded Std";
             font-size: 18px;
             font-weight: 700;
           }
+
           .pSt2 {
             color: #3b3a3a;
             font-family: "VAG Rounded Std";
@@ -68,9 +84,14 @@
         display: flex;
         margin-top: 0 !important;
         justify-content: space-between;
+        // justify-content: center;
+        // align-items: center;
+        // background-color: pink;
+
         .btn {
           width: 48%;
           height: 50px;
+          font-size: 19px;
         }
 
         .qwe {
@@ -85,6 +106,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
         .his {
           color: #8e8d8d;
           font-family: Arial;
@@ -97,10 +119,12 @@
       height: 60%;
       width: 100%;
       position: relative;
+
       .listTitleBox1 {
         width: 100%;
         height: 55px;
         background-color: #19ade4;
+
         .listTitle {
           font-size: 23px;
           font-family: Arial;

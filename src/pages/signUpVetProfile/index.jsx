@@ -94,23 +94,12 @@ class VetPrifile extends Component {
         email: this.props.location.email
       })
     }
-    //监听屏幕分辩率是否变化，变化就去更改界面内容距离大小
-    ipcRenderer.on('changeFenBianLv', this.changeFenBianLv)
+
 
 
   }
-  componentWillUnmount() {
-    let ipcRenderer = window.electron.ipcRenderer
-    ipcRenderer.removeListener('changeFenBianLv', this.changeFenBianLv)
-  }
-  changeFenBianLv = (e) => {
-    console.log(e);
-    let ipcRenderer = window.electron.ipcRenderer
-    ipcRenderer.send('big')
-    this.setState({
 
-    })
-  }
+
 
   _next = () => {
     let { name, lastName, email, code, phone, password1, password, } = this.state
@@ -256,10 +245,6 @@ class VetPrifile extends Component {
       <div id="vetPrifile" >
         {/* 关闭缩小 */}
         <div className="heard">
-          {/* <MaxMin
-            onClick={() => { this.props.history.push('/') }}
-            onClick1={() => this.props.history.push('/')}
-          /> */}
           {this.heard()}
         </div>
         <div className="body">
