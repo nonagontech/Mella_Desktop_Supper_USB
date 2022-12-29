@@ -150,15 +150,23 @@
             font-size: 17px;
             font-weight: 700;
         }
-        .searchBox {
-            width: 80%;
+        .search {
+          position: relative;
+          width: 80%;
+          margin: 16px 16px 24px 16px;
+          .searchBox {
+            width: 100%;
             align-items: center;
             background-color: rgba(212, 208, 208, 0.4);
             border-radius: 10px;
-            margin: 16px 16px 24px 16px;
             .ant-modal-close {
                 color: rgb(216, 216, 216) !important
             }
+          }
+          .triangle {
+            width: 0;
+            height: 0;
+          }
         }
         .petList {
             height: 40px;

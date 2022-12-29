@@ -32,7 +32,7 @@ import redother from '../../assets/images/redother.png'
 import other from '../../assets/images/other.png'
 
 import './index.less'
-import { pet_subscribe_page } from '../../api';
+import { pet_subscribe_page, getPetByPetNameOrPatientId } from '../../api';
 
 let storage = window.localStorage;
 const ScheduledPetPage = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) => {
@@ -41,10 +41,17 @@ const ScheduledPetPage = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetList
   const [petListArr, setPetListArr] = useState([])
   //定义宠物列表是否加载中
   const [loading, setLoading] = useState(true)
+  //搜索框下面的搜索model
+  const [visible, setVisible] = useState(false)
+  //搜索宠物过程中的加载图标
+  const [petLoading, setPetLoading] = useState(false)
   // 添加预约宠物弹窗
   const [addModal, setScheduleModal] = useState(false)
   // 选择物种
   const [wuzhong, setWuzhong] = useState('dog');
+
+
+
   const [form] = Form.useForm();
 
   const [spin, setSpin] = useState(false)
@@ -189,6 +196,246 @@ const ScheduledPetPage = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetList
     _getExam()
   }, [])
 
+  // 查询宠物
+  const searchPet = (value) => {
+    setVisible(true);
+    setLoading(true);
+    let search = value.replace(/(^\s*)|(\s*$)/g, "");
+      let params = {
+        searchValue: search,
+      }
+      if (storage.lastOrganization) {
+        params.orgId = storage.lastOrganization
+      }
+      const isUnKnow = (val) => {
+        if (val) {
+          return val
+        } else {
+          return 'unknown'
+        }
+      }
+      // 如果有输入东西查询，就进行下一步
+      if (search.length > 0) {
+        setVisible(true);
+        setLoading(true);
+        getPetByPetNameOrPatientId(storage.userId, params)
+        .then((res) => {
+          if (res.msg === 'success') {
+            setLoading(false);
+            let newArr = res.success;
+            let data = [];
+
+            for (let i = 0; i < newArr.length; i++) {
+              let {
+                age,
+                url,
+                createTime,
+                patientId,
+                speciesId,
+                petName,
+                firstName,
+                birthday,
+                lastName,
+                breedName,
+                gender,
+                petId,
+                weight,
+                rfid,
+                l2rarmDistance,
+                neckCircumference,
+                upperTorsoCircumference,
+                lowerTorsoCircumference,
+                pethubId,
+                macId,
+                h2tLength,
+                torsoLength
+              } = newArr[i];
+              let owner = '';
+              patientId = isUnKnow(patientId);
+              petName = isUnKnow(petName);
+              breedName = isUnKnow(breedName);
+              age = isUnKnow(age);
+              weight = isUnKnow(weight);
+              if (!firstName) {
+                firstName = '';
+              }
+              if (!lastName) {
+                lastName = '';
+              }
+              if (lastName === '' && firstName === '') {
+                owner = 'unknown';
+              } else {
+                owner = `${lastName} ${firstName}`;
+              }
+              createTime = moment(createTime).format('X');
+              let petGender = '';
+              switch (`${gender}`) {
+                case '1': petGender = 'F'
+                  break;
+                case '0': petGender = "M"
+                  break;
+                default: petGender = 'unknown'
+                  break;
+              }
+              let petAge = 'unknown'
+              if (birthday) {
+                petAge = moment(new Date()).diff(moment(birthday), 'years')
+              }
+              let json = {
+                insertedAt: createTime,
+                patientId,
+                petName,
+                owner,
+                breed: breedName,
+                gender: petGender,
+                age: petAge,
+                petId,
+                id: i,
+                weight,
+                rfid,
+                url,
+                speciesId,
+                l2rarmDistance,
+                neckCircumference,
+                upperTorsoCircumference,
+                lowerTorsoCircumference,
+                h2tLength,
+                torsoLength,
+                pethubId,
+                macId,
+              }
+              data.push(json);
+            }
+            // setSearchData(data);
+          } else {
+            message.warning('system error');
+          }
+        })
+        .catch((err) => {
+          message.warning('system error');
+        })
+      } else {            // 没有东西查询，隐藏。
+        setVisible(false);
+      }
+
+  }
+
+  // 搜索框内容
+  const searchPetBody = () => {
+    // if (petLoading) {
+    //   //加载中
+    //   return (
+    //     <div className="searchPetLoading" style={{ padding: `${20}px 0` }}>
+    //       <div className="loadIcon" style={{ paddingTop: MTop(15) }}>
+    //         <LoadingOutlined
+    //           style={{ fontSize: 30, color: "#e1206d", marginTop: mTop(-30) }}
+    //         />
+    //       </div>
+    //       <p style={{ color: "#e1206d", marginTop: px(5) }}>loading...</p>
+    //     </div>
+    //   );
+    // } else {
+    //   if (petList.length > 0) {
+    //     //找到了宠物，展示出来
+    //     let option = petList.map((item, index) => {
+    //       let { speciesId, url } = item;
+
+    //       let images = `url(${url}?download=0&width=150)`;
+    //       if (!url) {
+    //         switch (speciesId) {
+    //           case 1:
+    //             images = `url(${cat})`;
+
+    //             break;
+    //           case 2:
+    //             images = `url(${dog})`;
+    //             break;
+    //           default:
+    //             images = `url(${other})`;
+    //             break;
+    //         }
+    //       }
+    //       return (
+    //         <li
+    //           key={`${index}`}
+    //           style={{ margin: `${px(20)}px 0` }}
+    //           onClick={() => {
+    //             setValue('')
+    //             setVisible(false)
+    //             setPetList([])
+    //             petDetailInfoFun(item)
+    //             // onSearch(item)
+    //             history.push('/MainBody')
+    //           }}
+    //         >
+    //           <div className="item" style={{ paddingLeft: px(40) }}>
+    //             <div
+    //               className="img"
+    //               style={{
+    //                 width: px(50),
+    //                 height: px(50),
+    //                 marginRight: px(40),
+    //                 borderRadius: px(60),
+    //                 backgroundImage: images,
+    //               }}
+    //             >
+
+    //             </div>
+
+    //             <div className="petInfo">
+    //               <p
+    //                 style={{
+    //                   color: "#141414",
+    //                   fontWeight: 600,
+    //                   fontSize: px(20),
+    //                 }}
+    //               >
+    //                 {item.petName}
+    //               </p>
+    //               <p
+    //                 style={{ color: "#797979", fontSize: px(18) }}
+    //               >{`Patient ID: ${item.patientId}`}</p>
+    //               <p
+    //                 style={{ color: "#797979", fontSize: px(18) }}
+    //               >{`Owner: ${item.owner}`}</p>
+    //             </div>
+    //           </div>
+    //         </li>
+    //       );
+    //     });
+    //     let liStyle = { backgroundColor: "#fff" };
+    //     if (petList.length > 4) {
+    //       liStyle = { height: px(500), overflowY: "auto" };
+    //     }
+
+    //     return (
+    //       <div className="searchPetList">
+    //         <ul style={liStyle}>{option}</ul>
+    //       </div>
+    //     );
+    //   } else {
+    //     //没有发现这个宠物
+    //     return (
+    //       <div className="searchPetLoading" style={{ padding: `${10}px 0` }}>
+    //         <p style={{ width: "80%", fontSize: px(18) }}>
+    //           Pet not found. Would you like to add a new patient?
+    //         </p>
+
+    //         <div
+    //           className="searchPetBtn"
+    //           style={{ fontSize: px(18) }}
+    //           onClick={() => {
+    //             history.push("/pet/doctorAddPet");
+    //           }}
+    //         >
+    //           <p style={{ padding: `${px(8)}px 0` }}>+ New Patient</p>
+    //         </div>
+    //       </div>
+    //     );
+    //   }
+    // }
+  };
+
   return (
     <div id='scheduled' style={{ height: bodyHeight }}>
       <div className="allPetHeard">
@@ -247,14 +494,43 @@ const ScheduledPetPage = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetList
           <div className="title">
             Search patient or pet species
           </div>
-          <div className="searchBox">
-            <Input
-              placeholder="Search Pet"
-              bordered={false}
-              allowClear={true}
-              prefix={<SearchOutlined />}
-              // onChange={onChange}
-            />
+          <div className="search">
+            <div className="searchBox">
+              <Input
+                placeholder="Search Pet"
+                bordered={false}
+                allowClear={true}
+                prefix={<SearchOutlined />}
+                onChange={(e) => searchPet(e.target.value)}
+                onKeyUp={(e) => {
+                  // console.log(e);
+                  if (e.keyCode === 13) {
+                    console.log("回车,去搜索");
+                  }
+                  if (e.keyCode === 27) {
+                    console.log("清空");
+                    setVisible(false);
+                  }
+                }}
+              />
+
+            </div>
+            {visible ? (
+                <div className="searchPet" style={{ top: px(35), width: "100%" }}>
+                  {/* <div
+                    className="triangle"
+                    style={{
+                      borderLeft: `${px(20)}px solid transparent`,
+                      borderRight: `${px(20)}px solid transparent`,
+                      borderBottom: `${px(25)}px solid #fff`,
+                      marginLeft: px(30),
+                      zIndex: 999,
+                    }}
+                  /> */}
+
+                  {/* <div className="searchPetBody">{searchPetBody()}</div> */}
+                </div>
+              ) : null}
           </div>
           <div className="petList">
             <div

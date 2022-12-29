@@ -278,7 +278,7 @@ const AllPet = ({ bodyHeight, petDetailInfoFun, setMenuNum, setPetListArrFun }) 
         .catch((err) => {
           message.warning('system error');
         })
-  }
+    }
   useEffect(() => {
     //获取宠物列表
     _getExam(1);

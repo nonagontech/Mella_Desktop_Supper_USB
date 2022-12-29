@@ -7,7 +7,7 @@ import moment from 'moment';
  * @param {Number} decimal 小数点位数
  * @return {Number} 华氏度
  */
-function CtoF(celsius, decimal = 1) {
+export function CtoF(celsius, decimal = 1) {
   let fahrenheit = (celsius * 1.8) + 32;
   return parseFloat(fahrenheit.toFixed(decimal));
 }
@@ -17,7 +17,7 @@ function CtoF(celsius, decimal = 1) {
  * @param {Number} decimal 小数点位数
  * @return {Number} 摄氏度
  */
-function FtoC(fahrenheit, decimal = 1) {
+export function FtoC(fahrenheit, decimal = 1) {
   let celsius = (fahrenheit - 32) / 1.8;
   return parseFloat(celsius.toFixed(decimal));
 }
@@ -255,8 +255,8 @@ export const changeThemeColor = (selectHardwareType) => {
 
 /**
  * @dec buffer转hex文本
- * @param {*} buffer 
- * @returns 
+ * @param {*} buffer
+ * @returns
  */
 export const buf2hex = (buffer) => {
 
@@ -266,8 +266,8 @@ export const buf2hex = (buffer) => {
 }
 /**
  * @dec hex转buffer文本
- * @param {*} hex 
- * @returns 
+ * @param {*} hex
+ * @returns
  */
 export const hex2buf = (hex) => {
   return new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
@@ -276,7 +276,7 @@ export const hex2buf = (hex) => {
 }
 /**
  * @dec 将hex字符串转换成十进制数字数组
- * @param {string} hex 
+ * @param {string} hex
  */
 export const hex2arr = (hex) => {
   let hexArr = [...hex];

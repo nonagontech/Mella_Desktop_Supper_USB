@@ -32,6 +32,9 @@ import {
 import Draggable from "react-draggable";
 import { px, mTop } from "../../../utils/px";
 import moment from "moment";
+import {
+  getRecentPetData
+} from "./../../../api";
 import electronStore from "../../../utils/electronStore";
 import "./measuredData.less";
 import {
@@ -44,6 +47,7 @@ import {
   vetspireGetPetLatestExam
 } from "./../../../api";
 import { addClamantPetExam } from './../../../api/mellaserver/exam'
+import { CtoF, FtoC } from '../../../utils/commonFun'
 
 const { Content } = Layout;
 const MeasuredData = ({
@@ -70,6 +74,10 @@ const MeasuredData = ({
   const [saveType, setSaveType] = useState(false); //是否隐藏按钮
   const [temHistory, setTempHsitory] = useState(true); //是否隐藏历史
 
+  const [loding, setLoding] = useState(false);//界面加载
+  const [lastTemperatureValue, setLastTemperatureValue] = useState('');//最近一次的温度
+  const [lastTemperatureTimeValue, setLastTemperatureTimeValue] = useState('');//最近一次的温度测量时间
+  const [lastPetVitalTypeId, setLastPetVitalTypeId] = useState('');//最近一次的测量部位
   const [bounds, setBounds] = useState({
     left: 0,
     top: 0,
@@ -84,20 +92,20 @@ const MeasuredData = ({
   let btnList = [
     {
       name: 'Date',
-      data: 'Nov 26'
+      data: moment(lastTemperatureTimeValue).format("MMM D")
     },
     {
       name: 'Time',
-      data: '09:05 AM'
+      data: moment(lastTemperatureTimeValue).format("hh:mm A")
     },
     {
       name: 'Temperature',
-      data: '101.2 ',
-      unit: '%F'
+      data:  lastTemperatureValue + `${isHua ? " ℉" : " ℃"}`,
+      unit: '°F',
     },
     {
       name: 'Placement',
-      data: 'dog'
+      data: lastPetVitalTypeId
     }
   ]
 
@@ -256,6 +264,38 @@ const MeasuredData = ({
         console.log(err);
       });
   };
+  // 获取上一次测量的温度
+  const getRecentPet = () => {
+    setLoding(true);
+    getRecentPetData(petId)
+      .then((res) => {
+        setLoding(false);
+        if (res.msg === 'success') {
+          // if (res.weight) {
+          //   setLastWeightValue(biggieUnit === 'kg' ? res.weight.weight : KgtoLb(res.weight.weight));
+          //   setLastWeightTimeValue(res.weight.createTime);
+          // } else {
+          //   setLastWeightValue('');
+          //   setLastWeightTimeValue('');
+          // }
+          if (res.temperature) {
+            setLastTemperatureValue(isHua ? CtoF(res.temperature.temperature) : FtoC(res.temperature.temperature))
+            setLastTemperatureTimeValue(res.temperature.createTime)
+            setLastPetVitalTypeId(res.temperature.petVitalTypeId)
+          } else {
+            setLastTemperatureValue('')
+            setLastTemperatureTimeValue('')
+            setLastPetVitalTypeId('')
+          }
+        } else {
+          message.error('The latest data cannot be obtained');
+        }
+      })
+      .catch((err) => {
+        setLoding(false);
+        message.error('The latest data cannot be obtained');
+      })
+  }
   //返回准备测量界面
   const backConnectedPage = () => {
     if (mellaConnectStatus != "connected") {
@@ -510,6 +550,8 @@ const MeasuredData = ({
     setPetTemperatureData([]);
     setTotal(0);
     getPetTemperatureData(1);
+    //获取上一次测量的体重
+    getRecentPet();
     return (() => { })
   }, [petId]);
 
@@ -521,6 +563,20 @@ const MeasuredData = ({
       setIsHua(isHua);
     }
   }, []);
+
+  // 判断上次测量的是那个部位的图片
+  const petType = (text) => {
+    if (text === 1) {
+      return <img src={measuredTable_2} />;
+    } else if (text === 3) {
+      return <img src={measuredTable_1} />;
+    } else if (text === 4) {
+      return <img src={measuredTable_3} />;
+    } else {
+      return <img src={measuredTable_2} />;
+    }
+  }
+
 
   return (
     <>
@@ -549,16 +605,13 @@ const MeasuredData = ({
           <div className="bottomContent">
             <div className="measureContent">
               {btnList.map((item, index) => (
-                // <li key={index}>
-                //   <>
-                //     <img src={data.img} alt="" />
-                //     <p>{data.title}</p>
-                //   </>
-                // </li>
                 <div key={index} className="item">
                   <>
                     <p className="pSt1">{item.name}</p>
-                    <p className="pSt2">{item.data}</p>
+                    {
+                      item.name !== 'Placement' ? <p className="pSt2">{item.data}</p>
+                      :  petType(item.data)
+                    }
                   </>
                 </div>
               ))}

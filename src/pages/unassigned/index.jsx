@@ -421,6 +421,7 @@ export default class Unassigned extends Component {
                 fontSize: px(16),
                 paddingTop: px(5),
                 paddingBottom: px(5),
+                fontFamily: 'serif'
               }}
               onClick={() => {
                 this.setState({
@@ -484,12 +485,14 @@ export default class Unassigned extends Component {
               <p>Search</p>
             </div>
           </div>
-          <div className="tableBox"  onScrollCapture={() => this.onScrollCapture()}>
+          <div className="tableBox" onScrollCapture={() => this.onScrollCapture()}>
             <Table
               style={{
                 width: "95%",
                 margin: "0 auto",
-                border: '1px solid #979797'
+                border: '1px solid #979797',
+                fontFamily: 'serif'
+
               }}
               bordered
               loading={loading}

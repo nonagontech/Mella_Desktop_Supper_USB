@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ConfigProvider, Table, Select, message } from 'antd';
+import { ConfigProvider, Table, Select, message, Input } from 'antd';
 
 import { mTop, px, MTop, pX } from '../../utils/px';
 import { getPetByPetNameOrPatientId } from '../../api';
-
+import { SyncOutlined, SearchOutlined } from '@ant-design/icons';
 import { petDetailInfoFun, setMenuNum, } from '../../store/actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -186,6 +186,7 @@ const PetTable = ({ searchVisible, petListArr, loading, bodyHeight, petDetailInf
        *
        */
       let list = petListArr
+      console.log('keyWord', keyWord);
       let searchData = []
       for (let i = 0; i < list.length; i++) {
         let petName = list[i].petName.toLowerCase() || ''
@@ -316,25 +317,28 @@ const PetTable = ({ searchVisible, petListArr, loading, bodyHeight, petDetailInf
   const noData = () => {
     return (
       <div className='flex nodata' style={{ paddingTop: px(60), paddingBottom: px(60) }}>
-        <p style={{ fontSize: px(22) }}> {type !== 'scheduled' ? `No Pets&` : `No Pets Scheduled&`}</p>  &nbsp;&nbsp;
-        <a style={{ fontSize: px(22) }} href="#"
-          onClick={(e) => {
-            try {
-              if (type === 'scheduled') {
-                setMenuNum('AddScheduledPet');
-              } else {
-                // setMenuNum('AddPet');
-                history.push("/pet/doctorAddPet");
+        <p style={{ fontSize: px(22), textAlign: 'center' }}> {type !== 'scheduled' ? `No Pets&` : `No Pets Scheduled`}
+          <br />
+          <a style={{ fontSize: px(22) }} href="#"
+            onClick={(e) => {
+              try {
+                if (type === 'scheduled') {
+                  setMenuNum('AddScheduledPet');
+                } else {
+                  // setMenuNum('AddPet');
+                  history.push("/pet/doctorAddPet");
+                }
+              } catch (error) {
+                console.log('错误信息', error);
               }
-            } catch (error) {
-              console.log('错误信息', error);
-            }
-            e.preventDefault();
-          }}
+              e.preventDefault();
+            }}
 
-        >
-          {type !== 'scheduled' ? `Create a Pet` : `Schedule a Pet`}
-        </a>
+          >
+            {type !== 'scheduled' ? `Create a Pet` : `+ Add Appointment`}
+          </a>
+        </p>
+
       </div>
     )
   }
@@ -384,10 +388,10 @@ const PetTable = ({ searchVisible, petListArr, loading, bodyHeight, petDetailInf
     <div className='petTable' >
       {
         searchVisible ?
-        <>
+          <>
             <div className="pet_table_heard">
               <div className="search" style={{ height: px(32) }}>
-                <input
+                {/* <input
                   type="text"
                   placeholder="&#xe61b;    search"
                   value={heardSearchText}
@@ -396,6 +400,17 @@ const PetTable = ({ searchVisible, petListArr, loading, bodyHeight, petDetailInf
                     _search(e.target.value);
                   }
                   }
+                /> */}
+                <Input
+                  placeholder="Search"
+                  bordered={false}
+                  allowClear={true}
+                  prefix={<SearchOutlined />}
+                  value={heardSearchText}
+                  onChange={(e) => {
+                    setHeardSearchText(e.target.value);
+                    _search(e.target.value);
+                  }}
                 />
               </div>
               <div className="walkBtn1" style={{ marginRight: px(28) }}>
@@ -421,15 +436,15 @@ const PetTable = ({ searchVisible, petListArr, loading, bodyHeight, petDetailInf
               <div className="sort flex" style={{ justifyContent: 'flex-end' }} >
                 <p style={{ fontSize: px(16), marginRight: px(10) }}>Vet:</p>
                 <Select
-                  defaultValue={['Time']}
-                  onChange={handleChange}
-                  options={options}
+                  // defaultValue={['Time']}
+                  // onChange={handleChange}
+                  // options={options}
                   className="selectFilter"
                 />
               </div>
             </div>
-        </> :
-        <></>
+          </> :
+          <></>
       }
 
       <div className="table" onScrollCapture={onScrollCapture}>

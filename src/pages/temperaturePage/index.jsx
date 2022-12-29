@@ -53,7 +53,7 @@ const TemperaturePage = ({ petMessage, hardwareMessage, bodyHeight }) => {
           </div>
         </div>
         {_.isEmpty(petMessage) ? (
-          <div className="chackPatientBox" style={{ height: bodyHeight - 100,  flexDirection: 'column'}}>
+          <div className="chackPatientBox" style={{ height: bodyHeight - 100, flexDirection: 'column' }}>
             <img style={{ width: '500px' }} src={SelectPatient} alt="" />
             <p className="chackPatientTitle">Select a patient</p>
           </div>
