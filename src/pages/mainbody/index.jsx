@@ -37,6 +37,7 @@ import DetectBase from "../../assets/img/DetectBase.png"
 
 
 
+
 import { connect } from "react-redux";
 import {
   setHardwareList,

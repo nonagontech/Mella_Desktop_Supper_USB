@@ -125,8 +125,6 @@ const LinkEquipment = ({ petMessage, hardwareMessage }) => {
               </span>
               <div style={{ display: 'flex', justifyContent: 'center', width: px(520) }}>
                 <img src={PressButton_Pro} className="PressButton_Pro"
-
-
                 />
               </div>
             </div>

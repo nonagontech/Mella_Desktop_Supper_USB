@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button, Progress, Layout, Carousel } from "antd";
+import { Button, Progress, Layout, Carousel, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 import Animation_1 from "./../../../assets/img/Animation_1.png";
 import Animation_2 from "./../../../assets/img/Animation_2.png";
 import Animation_3 from "./../../../assets/img/Animation_3.png";
-
+import mellaCoolDown from "./../../../assets/img/mellaCoolDown.png"
 import { connect } from "react-redux";
 import {
   selectHardwareModalShowFun,
@@ -31,6 +31,8 @@ const Measurement = ({ petMessage, hardwareMessage }) => {
   const [value, setValue] = useState(0);
   const [timers, setTimers] = useState(0);
   const [isHua, setIsHua] = useState(true);
+  // 温度太高弹窗
+  const [mellaCoolDown, setMellaCoolDown] = useState(true);
   const saveCallBack = useRef();
   const callBack = () => {
     const random = 1;
@@ -118,6 +120,35 @@ const Measurement = ({ petMessage, hardwareMessage }) => {
           </div>
           {checkImage()}
         </div>
+        {/* <Modal
+          open={mellaCoolDown}
+          // onOk={handleOk}
+          centered
+          // onCancel={() => this.setState({ baseModalVisible: false })}
+          width={430}
+          footer={[]}
+          className="mellaCoolDown"
+        >
+          <div className="modalContainer">
+            <div className="title">Mella Needs To Cooldown</div>
+            <div className="subTitle">Mella is still cooling down. <br /> Wait a bit then try again.</div>
+            <img src={mellaCoolDown} alt="" width={180} height={180} />
+            <div className="bottomTitle">
+              Tip: Wave thermometer in the air or use a <br />
+              cold damp cloth to wipe off the tip of the <br />
+              thermometer until it is at 85°F
+            </div>
+            <Button
+              style={{ backgroundColor: "#e1206d" }}
+              className="btn"
+              type="danger"
+              shape="round"
+              color="#e1206d"
+            >
+              OK
+            </Button>
+          </div>
+        </Modal> */}
       </Content>
     </>
   );
